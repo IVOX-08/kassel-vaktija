@@ -6,9 +6,11 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,15 +19,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -207,7 +218,6 @@ private fun SectionHeader(text: String) {
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PrayerSettingCard(
     prayer: Prayer,
@@ -216,31 +226,77 @@ private fun PrayerSettingCard(
     onSelectMinutes: (Int) -> Unit,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+                .padding(start = 16.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(prayer.labelRes),
                 style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
             )
-            // Per-prayer alert: Off (no Adhan) · 0 min (Adhan on time) · 5/10/15 min (Adhan on time
-            // + a reminder that many minutes earlier).
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(
-                    selected = !prefs.enabled,
-                    onClick = onDisable,
-                    label = { Text(stringResource(R.string.settings_off)) },
+            PreWarnSelector(prefs = prefs, onDisable = onDisable, onSelectMinutes = onSelectMinutes)
+        }
+    }
+}
+
+/**
+ * Compact per-prayer alert selector: a pill showing the current choice that opens a dropdown — far
+ * smaller than a row of chips. Off = no Adhan; 0 min = Adhan exactly on time; 5/10/15/30 min = Adhan
+ * on time + a reminder that many minutes earlier.
+ */
+@Composable
+private fun PreWarnSelector(
+    prefs: PrayerAlarmPrefs,
+    onDisable: () -> Unit,
+    onSelectMinutes: (Int) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val currentLabel = if (!prefs.enabled) {
+        stringResource(R.string.settings_off)
+    } else {
+        stringResource(R.string.settings_minutes, prefs.preWarnMinutes)
+    }
+    Box {
+        OutlinedButton(
+            onClick = { expanded = true },
+            contentPadding = PaddingValues(start = 16.dp, end = 10.dp, top = 8.dp, bottom = 8.dp),
+        ) {
+            Text(currentLabel)
+            Icon(
+                imageVector = Icons.Filled.ArrowDropDown,
+                contentDescription = null,
+                modifier = Modifier.padding(start = 4.dp),
+            )
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.settings_off)) },
+                onClick = {
+                    onDisable()
+                    expanded = false
+                },
+                trailingIcon = if (!prefs.enabled) {
+                    { Icon(Icons.Filled.Check, contentDescription = null) }
+                } else {
+                    null
+                },
+            )
+            AlarmSettings.PRE_WARN_OPTIONS.forEach { minutes ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.settings_minutes, minutes)) },
+                    onClick = {
+                        onSelectMinutes(minutes)
+                        expanded = false
+                    },
+                    trailingIcon = if (prefs.enabled && prefs.preWarnMinutes == minutes) {
+                        { Icon(Icons.Filled.Check, contentDescription = null) }
+                    } else {
+                        null
+                    },
                 )
-                AlarmSettings.PRE_WARN_OPTIONS.forEach { minutes ->
-                    FilterChip(
-                        selected = prefs.enabled && prefs.preWarnMinutes == minutes,
-                        onClick = { onSelectMinutes(minutes) },
-                        label = { Text(stringResource(R.string.settings_minutes, minutes)) },
-                    )
-                }
             }
         }
     }
