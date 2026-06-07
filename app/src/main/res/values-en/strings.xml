@@ -13,6 +13,12 @@
     <string name="prayer_asr">Asr</string>
     <string name="prayer_maghrib">Maghrib</string>
     <string name="prayer_isha">Isha</string>
+    <string name="prayer_abbr_fajr">Fajr</string>
+    <string name="prayer_abbr_sunrise">Sun.</string>
+    <string name="prayer_abbr_dhuhr">Dhuhr</string>
+    <string name="prayer_abbr_asr">Asr</string>
+    <string name="prayer_abbr_maghrib">Magh.</string>
+    <string name="prayer_abbr_isha">Isha</string>
     <string name="prayer_jumua">Jumu\'ah</string>
 
     <string name="action_change_language">Change language</string>

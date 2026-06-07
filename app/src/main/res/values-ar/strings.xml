@@ -13,6 +13,12 @@
     <string name="prayer_asr">العصر</string>
     <string name="prayer_maghrib">المغرب</string>
     <string name="prayer_isha">العشاء</string>
+    <string name="prayer_abbr_fajr">فجر</string>
+    <string name="prayer_abbr_sunrise">شروق</string>
+    <string name="prayer_abbr_dhuhr">ظهر</string>
+    <string name="prayer_abbr_asr">عصر</string>
+    <string name="prayer_abbr_maghrib">مغرب</string>
+    <string name="prayer_abbr_isha">عشاء</string>
     <string name="prayer_jumua">صلاة الجمعة</string>
 
     <string name="action_change_language">تغيير اللغة</string>

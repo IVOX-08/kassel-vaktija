@@ -207,8 +207,7 @@ private fun Header(gregorianDate: String, hijriDate: String) {
             HeaderSideItem(
                 icon = Icons.Filled.Place,
                 label = stringResource(R.string.community_address),
-                horizontalAlignment = Alignment.Start,
-                textAlign = TextAlign.Start,
+                emphasized = false,
                 onClick = { uriHandler.openUri(MAPS_URL) },
                 modifier = Modifier.weight(1f),
             )
@@ -218,8 +217,7 @@ private fun Header(gregorianDate: String, hijriDate: String) {
             HeaderSideItem(
                 icon = Icons.Filled.Favorite,
                 label = stringResource(R.string.action_donate),
-                horizontalAlignment = Alignment.End,
-                textAlign = TextAlign.End,
+                emphasized = true,
                 onClick = { uriHandler.openUri(PAYPAL_URL) },
                 modifier = Modifier.weight(1f),
             )
@@ -240,13 +238,15 @@ private fun Header(gregorianDate: String, hijriDate: String) {
     }
 }
 
-/** A tappable icon + text block flanking the emblem (mosque address / donate). */
+/**
+ * A tappable, centred icon + text block flanking the emblem (mosque address / donate). When
+ * [emphasized] (donate), the icon and word are larger and brand-green so the call to donate stands out.
+ */
 @Composable
 private fun HeaderSideItem(
     icon: ImageVector,
     label: String,
-    horizontalAlignment: Alignment.Horizontal,
-    textAlign: TextAlign,
+    emphasized: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -255,20 +255,21 @@ private fun HeaderSideItem(
             .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
             .padding(vertical = 6.dp, horizontal = 4.dp),
-        horizontalAlignment = horizontalAlignment,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(if (emphasized) 30.dp else 22.dp),
         )
-        Spacer(Modifier.height(3.dp))
+        Spacer(Modifier.height(4.dp))
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = textAlign,
+            style = if (emphasized) MaterialTheme.typography.titleMedium else MaterialTheme.typography.labelMedium,
+            fontWeight = if (emphasized) FontWeight.Bold else FontWeight.Medium,
+            color = if (emphasized) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
         )
     }
 }

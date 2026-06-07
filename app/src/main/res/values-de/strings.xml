@@ -13,6 +13,12 @@
     <string name="prayer_asr">Nachmittagsgebet</string>
     <string name="prayer_maghrib">Abendgebet</string>
     <string name="prayer_isha">Nachtgebet</string>
+    <string name="prayer_abbr_fajr">Morg.</string>
+    <string name="prayer_abbr_sunrise">Aufg.</string>
+    <string name="prayer_abbr_dhuhr">Mitt.</string>
+    <string name="prayer_abbr_asr">Nachm.</string>
+    <string name="prayer_abbr_maghrib">Abend</string>
+    <string name="prayer_abbr_isha">Nacht</string>
     <string name="prayer_jumua">Freitagsgebet</string>
 
     <string name="action_change_language">Sprache ändern</string>

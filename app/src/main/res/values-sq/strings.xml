@@ -13,6 +13,12 @@
     <string name="prayer_asr">Ikindia</string>
     <string name="prayer_maghrib">Akshami</string>
     <string name="prayer_isha">Jacia</string>
+    <string name="prayer_abbr_fajr">Sabahu</string>
+    <string name="prayer_abbr_sunrise">Lindja</string>
+    <string name="prayer_abbr_dhuhr">Dreka</string>
+    <string name="prayer_abbr_asr">Ikind.</string>
+    <string name="prayer_abbr_maghrib">Aksh.</string>
+    <string name="prayer_abbr_isha">Jacia</string>
     <string name="prayer_jumua">Namazi i xhumasë</string>
 
     <string name="action_change_language">Ndrysho gjuhën</string>

@@ -13,6 +13,12 @@
     <string name="prayer_asr">İkindi</string>
     <string name="prayer_maghrib">Akşam</string>
     <string name="prayer_isha">Yatsı</string>
+    <string name="prayer_abbr_fajr">Sabah</string>
+    <string name="prayer_abbr_sunrise">Güneş</string>
+    <string name="prayer_abbr_dhuhr">Öğle</string>
+    <string name="prayer_abbr_asr">İkindi</string>
+    <string name="prayer_abbr_maghrib">Akşam</string>
+    <string name="prayer_abbr_isha">Yatsı</string>
     <string name="prayer_jumua">Cuma Namazı</string>
 
     <string name="action_change_language">Dili değiştir</string>

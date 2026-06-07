@@ -42,12 +42,13 @@
 
     <!-- Month calendar. Column abbreviations use the conventional Bosnian vaktija names
          (kept identical across locales, as is customary for vaktija tables). -->
-    <string name="prayer_abbr_fajr" translatable="false">Sab.</string>
-    <string name="prayer_abbr_sunrise" translatable="false">Izl.</string>
-    <string name="prayer_abbr_dhuhr" translatable="false">Pod.</string>
-    <string name="prayer_abbr_asr" translatable="false">Iki.</string>
-    <string name="prayer_abbr_maghrib" translatable="false">Akš.</string>
-    <string name="prayer_abbr_isha" translatable="false">Jac.</string>
+    <!-- Calendar column headers (short prayer names). Localized per language. -->
+    <string name="prayer_abbr_fajr">Sab.</string>
+    <string name="prayer_abbr_sunrise">Izl.</string>
+    <string name="prayer_abbr_dhuhr">Pod.</string>
+    <string name="prayer_abbr_asr">Iki.</string>
+    <string name="prayer_abbr_maghrib">Akš.</string>
+    <string name="prayer_abbr_isha">Jac.</string>
     <string name="cd_prev_month">Prethodni mjesec</string>
     <string name="cd_next_month">Sljedeći mjesec</string>
 
