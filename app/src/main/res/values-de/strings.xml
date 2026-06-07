@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) -->
+<resources>
+    <string name="nav_dashboard">Startseite</string>
+    <string name="nav_qibla">Qibla</string>
+    <string name="nav_news">Nachrichten</string>
+    <string name="nav_zakat">Zakat</string>
+    <string name="nav_settings">Einstellungen</string>
+
+    <string name="prayer_fajr">Morgengebet</string>
+    <string name="prayer_sunrise">Sonnenaufgang</string>
+    <string name="prayer_dhuhr">Mittagsgebet</string>
+    <string name="prayer_asr">Nachmittagsgebet</string>
+    <string name="prayer_maghrib">Abendgebet</string>
+    <string name="prayer_isha">Nachtgebet</string>
+    <string name="prayer_jumua">Freitagsgebet</string>
+
+    <string name="action_change_language">Sprache ändern</string>
+    <string name="language_picker_title">Sprache</string>
+
+    <string name="dashboard_next_prayer_in">NÄCHSTES GEBET IN</string>
+    <string name="label_iqamah">IQAMAH</string>
+    <string name="cache_stale_warning">Zeiten möglicherweise nicht aktuell (offline).</string>
+
+    <string name="sound_placeholder">Testton (vorläufig)</string>
+    <string name="notif_channel_adhan">Adhan</string>
+    <string name="notif_channel_adhan_desc">Adhan-Wiedergabe zur Gebetszeit.</string>
+    <string name="notif_channel_prewarn">Gebetsvorwarnung</string>
+    <string name="notif_channel_prewarn_desc">Erinnerung vor der Gebetszeit.</string>
+    <string name="notif_adhan_title">Zeit für %1$s</string>
+    <string name="notif_adhan_text">Die Gebetszeit ist da.</string>
+    <string name="notif_prewarn_title">%1$s in %2$d Min.</string>
+    <string name="notif_stop">Stopp</string>
+
+    <string name="settings_notifications_header">Gebetsbenachrichtigungen</string>
+    <string name="settings_master_toggle">Benachrichtigungen aktivieren</string>
+    <string name="settings_prewarn">Vorwarnung</string>
+    <string name="settings_off">Aus</string>
+    <string name="settings_minutes">%1$d Min.</string>
+    <string name="settings_test_adhan">Adhan testen</string>
+    <string name="settings_permissions_header">Berechtigungen</string>
+    <string name="settings_perm_notifications">Benachrichtigungen erlauben</string>
+    <string name="settings_perm_exact_alarm">Exakte Alarme erlauben</string>
+    <string name="settings_perm_battery">Akkuoptimierung deaktivieren</string>
+    <string name="settings_perm_granted">Erlaubt</string>
+
+    <string name="placeholder_coming_soon">Demnächst verfügbar</string>
+    <string name="cd_app_logo">Logo der Gemeinde</string>
+    <string name="cd_back">Zurück</string>
+</resources>

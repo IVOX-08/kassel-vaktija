@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Russian (ru) — TBD-decision: needs native-speaker review before publishing. -->
+<resources>
+    <string name="nav_dashboard">Главная</string>
+    <string name="nav_qibla">Кибла</string>
+    <string name="nav_news">Новости</string>
+    <string name="nav_zakat">Закят</string>
+    <string name="nav_settings">Настройки</string>
+
+    <string name="prayer_fajr">Фаджр</string>
+    <string name="prayer_sunrise">Восход солнца</string>
+    <string name="prayer_dhuhr">Зухр</string>
+    <string name="prayer_asr">Аср</string>
+    <string name="prayer_maghrib">Магриб</string>
+    <string name="prayer_isha">Иша</string>
+    <string name="prayer_jumua">Джума-намаз</string>
+
+    <string name="action_change_language">Изменить язык</string>
+    <string name="language_picker_title">Язык</string>
+
+    <string name="dashboard_next_prayer_in">СЛЕДУЮЩИЙ НАМАЗ ЧЕРЕЗ</string>
+    <string name="label_iqamah">ИКАМАТ</string>
+
+    <string name="placeholder_coming_soon">Скоро</string>
+    <string name="cd_app_logo">Логотип общины</string>
+    <string name="cd_back">Назад</string>
+</resources>

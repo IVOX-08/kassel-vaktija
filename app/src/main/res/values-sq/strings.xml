@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Albanian (sq) — TBD-decision: needs native-speaker review before publishing. -->
+<resources>
+    <string name="nav_dashboard">Ballina</string>
+    <string name="nav_qibla">Kibla</string>
+    <string name="nav_news">Lajme</string>
+    <string name="nav_zakat">Zekati</string>
+    <string name="nav_settings">Cilësimet</string>
+
+    <string name="prayer_fajr">Sabahu</string>
+    <string name="prayer_sunrise">Lindja e diellit</string>
+    <string name="prayer_dhuhr">Dreka</string>
+    <string name="prayer_asr">Ikindia</string>
+    <string name="prayer_maghrib">Akshami</string>
+    <string name="prayer_isha">Jacia</string>
+    <string name="prayer_jumua">Namazi i xhumasë</string>
+
+    <string name="action_change_language">Ndrysho gjuhën</string>
+    <string name="language_picker_title">Gjuha</string>
+
+    <string name="dashboard_next_prayer_in">NAMAZI TJETËR PAS</string>
+    <string name="label_iqamah">IKAMETI</string>
+
+    <string name="placeholder_coming_soon">Së shpejti</string>
+    <string name="cd_app_logo">Logoja e bashkësisë</string>
+    <string name="cd_back">Prapa</string>
+</resources>

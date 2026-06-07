@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Urdu (ur) — RTL. TBD-decision: needs native-speaker review before publishing. -->
+<resources>
+    <string name="nav_dashboard">ہوم</string>
+    <string name="nav_qibla">قبلہ</string>
+    <string name="nav_news">خبریں</string>
+    <string name="nav_zakat">زکات</string>
+    <string name="nav_settings">ترتیبات</string>
+
+    <string name="prayer_fajr">فجر</string>
+    <string name="prayer_sunrise">طلوعِ آفتاب</string>
+    <string name="prayer_dhuhr">ظہر</string>
+    <string name="prayer_asr">عصر</string>
+    <string name="prayer_maghrib">مغرب</string>
+    <string name="prayer_isha">عشاء</string>
+    <string name="prayer_jumua">نمازِ جمعہ</string>
+
+    <string name="action_change_language">زبان تبدیل کریں</string>
+    <string name="language_picker_title">زبان</string>
+
+    <string name="dashboard_next_prayer_in">اگلی نماز میں باقی</string>
+    <string name="label_iqamah">اقامہ</string>
+
+    <string name="placeholder_coming_soon">جلد آ رہا ہے</string>
+    <string name="cd_app_logo">کمیونٹی کا لوگو</string>
+    <string name="cd_back">واپس</string>
+</resources>

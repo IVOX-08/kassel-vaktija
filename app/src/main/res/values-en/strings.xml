@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- English (en) -->
+<resources>
+    <string name="nav_dashboard">Home</string>
+    <string name="nav_qibla">Qibla</string>
+    <string name="nav_news">News</string>
+    <string name="nav_zakat">Zakat</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="prayer_fajr">Fajr</string>
+    <string name="prayer_sunrise">Sunrise</string>
+    <string name="prayer_dhuhr">Dhuhr</string>
+    <string name="prayer_asr">Asr</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_isha">Isha</string>
+    <string name="prayer_jumua">Jumu\'ah</string>
+
+    <string name="action_change_language">Change language</string>
+    <string name="language_picker_title">Language</string>
+
+    <string name="dashboard_next_prayer_in">NEXT PRAYER IN</string>
+    <string name="label_iqamah">IQAMAH</string>
+    <string name="cache_stale_warning">Times may be out of date (offline).</string>
+
+    <string name="sound_placeholder">Test tone (placeholder)</string>
+    <string name="notif_channel_adhan">Adhan</string>
+    <string name="notif_channel_adhan_desc">Plays the Adhan at prayer time.</string>
+    <string name="notif_channel_prewarn">Prayer pre-warning</string>
+    <string name="notif_channel_prewarn_desc">Reminder before a prayer time.</string>
+    <string name="notif_adhan_title">Time for %1$s</string>
+    <string name="notif_adhan_text">It\'s prayer time.</string>
+    <string name="notif_prewarn_title">%1$s in %2$d min</string>
+    <string name="notif_stop">Stop</string>
+
+    <string name="settings_notifications_header">Prayer notifications</string>
+    <string name="settings_master_toggle">Enable notifications</string>
+    <string name="settings_prewarn">Pre-warning</string>
+    <string name="settings_off">Off</string>
+    <string name="settings_minutes">%1$d min</string>
+    <string name="settings_test_adhan">Test Adhan</string>
+    <string name="settings_permissions_header">Permissions</string>
+    <string name="settings_perm_notifications">Allow notifications</string>
+    <string name="settings_perm_exact_alarm">Allow exact alarms</string>
+    <string name="settings_perm_battery">Disable battery optimization</string>
+    <string name="settings_perm_granted">Granted</string>
+
+    <string name="placeholder_coming_soon">Coming soon</string>
+    <string name="cd_app_logo">Community logo</string>
+    <string name="cd_back">Back</string>
+</resources>

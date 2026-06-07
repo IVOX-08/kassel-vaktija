@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bosnian (bs) — PRIMARY language. All other values-XX/ files mirror these keys. -->
+<resources>
+    <!-- Brand name: kept identical across all locales. -->
+    <string name="app_name" translatable="false">Kassel Vaktija</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_dashboard">Početna</string>
+    <string name="nav_qibla">Kibla</string>
+    <string name="nav_news">Vijesti</string>
+    <string name="nav_zakat">Zekat</string>
+    <string name="nav_settings">Postavke</string>
+
+    <!-- Prayer names -->
+    <string name="prayer_fajr">Sabah</string>
+    <string name="prayer_sunrise">Izlazak sunca</string>
+    <string name="prayer_dhuhr">Podne</string>
+    <string name="prayer_asr">Ikindija</string>
+    <string name="prayer_maghrib">Akšam</string>
+    <string name="prayer_isha">Jacija</string>
+    <string name="prayer_jumua">Džuma namaz</string>
+
+    <!-- Language switching -->
+    <string name="action_change_language">Promijeni jezik</string>
+    <string name="language_picker_title">Jezik</string>
+
+    <!-- Language endonyms (shown in own script; identical across all locales) -->
+    <string name="lang_bs" translatable="false">Bosanski</string>
+    <string name="lang_de" translatable="false">Deutsch</string>
+    <string name="lang_ar" translatable="false">العربية</string>
+    <string name="lang_tr" translatable="false">Türkçe</string>
+    <string name="lang_sq" translatable="false">Shqip</string>
+    <string name="lang_en" translatable="false">English</string>
+    <string name="lang_ur" translatable="false">اردو</string>
+    <string name="lang_ru" translatable="false">Русский</string>
+
+    <!-- Dashboard -->
+    <string name="header_subtitle" translatable="false">IGBD-Gemeinde Sandžak-Kassel</string>
+    <string name="dashboard_next_prayer_in">SLJEDEĆI NAMAZ ZA</string>
+    <string name="label_iqamah">IKAMET</string>
+    <string name="cache_stale_warning">Vremena možda nisu ažurna (offline).</string>
+
+    <!-- Notifications -->
+    <string name="sound_placeholder">Test zvuk (privremeno)</string>
+    <string name="notif_channel_adhan">Ezan</string>
+    <string name="notif_channel_adhan_desc">Oglašavanje ezana u vrijeme namaza.</string>
+    <string name="notif_channel_prewarn">Najava namaza</string>
+    <string name="notif_channel_prewarn_desc">Podsjetnik prije nastupanja namaza.</string>
+    <string name="notif_adhan_title">Vrijeme za %1$s</string>
+    <string name="notif_adhan_text">Nastupilo je namasko vrijeme.</string>
+    <string name="notif_prewarn_title">%1$s za %2$d min</string>
+    <string name="notif_stop">Zaustavi</string>
+
+    <!-- Settings: notifications -->
+    <string name="settings_notifications_header">Obavijesti o namazu</string>
+    <string name="settings_master_toggle">Uključi obavijesti</string>
+    <string name="settings_prewarn">Najava</string>
+    <string name="settings_off">Isključeno</string>
+    <string name="settings_minutes">%1$d min</string>
+    <string name="settings_test_adhan">Testiraj ezan</string>
+    <string name="settings_permissions_header">Dozvole</string>
+    <string name="settings_perm_notifications">Dozvoli obavijesti</string>
+    <string name="settings_perm_exact_alarm">Dozvoli tačne alarme</string>
+    <string name="settings_perm_battery">Isključi optimizaciju baterije</string>
+    <string name="settings_perm_granted">Dozvoljeno</string>
+
+    <!-- Generic / placeholders -->
+    <string name="placeholder_coming_soon">Uskoro dostupno</string>
+    <string name="cd_app_logo">Logo zajednice</string>
+    <string name="cd_back">Nazad</string>
+</resources>

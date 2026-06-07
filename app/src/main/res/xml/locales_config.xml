@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Supported app languages (Android 13+ per-app language settings + AppCompat backport).
+    Bosnian (bs) is the primary/default. Adding a new values-XX/ folder and a matching
+    <locale> entry here is all that's needed to support another language.
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="bs" />
+    <locale android:name="de" />
+    <locale android:name="ar" />
+    <locale android:name="tr" />
+    <locale android:name="sq" />
+    <locale android:name="en" />
+    <locale android:name="ur" />
+    <locale android:name="ru" />
+</locale-config>

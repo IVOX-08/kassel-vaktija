@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Arabic (ar) — RTL. TBD-decision: needs native-speaker review before publishing. -->
+<resources>
+    <string name="nav_dashboard">الرئيسية</string>
+    <string name="nav_qibla">القبلة</string>
+    <string name="nav_news">الأخبار</string>
+    <string name="nav_zakat">الزكاة</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <string name="prayer_fajr">الفجر</string>
+    <string name="prayer_sunrise">الشروق</string>
+    <string name="prayer_dhuhr">الظهر</string>
+    <string name="prayer_asr">العصر</string>
+    <string name="prayer_maghrib">المغرب</string>
+    <string name="prayer_isha">العشاء</string>
+    <string name="prayer_jumua">صلاة الجمعة</string>
+
+    <string name="action_change_language">تغيير اللغة</string>
+    <string name="language_picker_title">اللغة</string>
+
+    <string name="dashboard_next_prayer_in">الصلاة القادمة بعد</string>
+    <string name="label_iqamah">الإقامة</string>
+
+    <string name="placeholder_coming_soon">قريبًا</string>
+    <string name="cd_app_logo">شعار الجماعة</string>
+    <string name="cd_back">رجوع</string>
+</resources>

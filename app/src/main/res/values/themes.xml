@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Window-level theme. The UI is drawn by Jetpack Compose (Material 3); this XML theme
+        only styles the window. It descends from Theme.AppCompat.DayNight so MainActivity can
+        be an AppCompatActivity — required for reliable per-app language selection
+        (AppCompatDelegate.setApplicationLocales) and RTL down to minSdk 26.
+        Day/night surface colors come from values(-night)/colors.xml automatically.
+    -->
+    <style name="Theme.KasselVaktija" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>
