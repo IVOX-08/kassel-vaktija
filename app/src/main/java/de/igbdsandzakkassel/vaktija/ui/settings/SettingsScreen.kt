@@ -111,6 +111,54 @@ fun SettingsScreen(
         }
 
         Spacer(Modifier.height(8.dp))
+        Card(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(R.string.settings_autosilence),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.weight(1f),
+                    )
+                    Switch(
+                        checked = settings.autoSilenceEnabled,
+                        onCheckedChange = viewModel::setAutoSilence,
+                    )
+                }
+                if (settings.autoSilenceEnabled) {
+                    Text(
+                        text = stringResource(R.string.settings_silence_duration),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        AlarmSettings.SILENCE_OPTIONS.forEach { minutes ->
+                            FilterChip(
+                                selected = settings.silenceMinutes == minutes,
+                                onClick = { viewModel.setSilenceMinutes(minutes) },
+                                label = { Text(stringResource(R.string.settings_minutes, minutes)) },
+                            )
+                        }
+                    }
+                    if (!viewModel.hasDndAccess()) {
+                        OutlinedButton(
+                            onClick = {
+                                context.startActivity(
+                                    Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS),
+                                )
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) { Text(stringResource(R.string.settings_perm_dnd)) }
+                    }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(8.dp))
         SectionHeader(stringResource(R.string.settings_permissions_header))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notifPermission.status.isGranted) {

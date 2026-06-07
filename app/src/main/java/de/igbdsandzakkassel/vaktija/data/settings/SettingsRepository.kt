@@ -27,6 +27,9 @@ class SettingsRepository @Inject constructor(
         AlarmSettings(
             masterEnabled = prefs[MASTER_ENABLED] ?: true,
             sound = AdhanSound.PLACEHOLDER,
+            autoSilenceEnabled = prefs[AUTO_SILENCE] ?: false,
+            silenceMinutes = (prefs[SILENCE_MINUTES] ?: 15)
+                .takeIf { it in AlarmSettings.SILENCE_OPTIONS } ?: 15,
             perPrayer = Prayer.OBLIGATORY.associateWith { prayer ->
                 PrayerAlarmPrefs(
                     enabled = prefs[enabledKey(prayer)] ?: true,
@@ -48,6 +51,21 @@ class SettingsRepository @Inject constructor(
     suspend fun setPreWarnMinutes(prayer: Prayer, minutes: Int) {
         store.edit { it[preWarnKey(prayer)] = minutes }
     }
+
+    suspend fun setAutoSilence(enabled: Boolean) {
+        store.edit { it[AUTO_SILENCE] = enabled }
+    }
+
+    suspend fun setSilenceMinutes(minutes: Int) {
+        store.edit { it[SILENCE_MINUTES] = minutes }
+    }
+
+    /** Remembers the phone's DND state before we silenced it, so it can be restored afterwards. */
+    suspend fun setSavedInterruptionFilter(filter: Int) {
+        store.edit { it[SAVED_FILTER] = filter }
+    }
+
+    suspend fun getSavedInterruptionFilter(): Int? = store.data.first()[SAVED_FILTER]
 
     private fun coercePreWarn(value: Int): Int =
         if (value in AlarmSettings.PRE_WARN_OPTIONS) {
@@ -77,6 +95,9 @@ class SettingsRepository @Inject constructor(
 
     private companion object {
         val MASTER_ENABLED = booleanPreferencesKey("master_enabled")
+        val AUTO_SILENCE = booleanPreferencesKey("auto_silence")
+        val SILENCE_MINUTES = intPreferencesKey("silence_minutes")
+        val SAVED_FILTER = intPreferencesKey("saved_dnd_filter")
         val THEME_MODE = stringPreferencesKey("theme_mode")
         val CALIBRATION = stringPreferencesKey("month_calibration")
         fun enabledKey(p: Prayer) = booleanPreferencesKey("enabled_${p.name}")

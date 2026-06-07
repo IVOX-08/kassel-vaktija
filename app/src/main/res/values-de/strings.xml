@@ -65,4 +65,7 @@
     <string name="qibla_hint">Halte das Handy flach und drehe dich, bis der Pfeil nach oben zeigt.</string>
     <string name="qibla_facing">Du schaust Richtung Qibla</string>
     <string name="qibla_no_sensor">Kompass-Sensor auf diesem Gerät nicht verfügbar.</string>
+    <string name="settings_autosilence">Während des Gebets stummschalten</string>
+    <string name="settings_silence_duration">Dauer</string>
+    <string name="settings_perm_dnd">Zugriff auf „Nicht stören“ erlauben</string>
 </resources>

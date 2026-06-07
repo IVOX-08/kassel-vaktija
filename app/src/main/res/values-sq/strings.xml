@@ -65,4 +65,7 @@
     <string name="qibla_hint">Mbaje telefonin horizontalisht dhe rrotullohu derisa shigjeta të tregojë lart.</string>
     <string name="qibla_facing">Je i kthyer nga Kibla</string>
     <string name="qibla_no_sensor">Sensori i busullës nuk është i disponueshëm në këtë pajisje.</string>
+    <string name="settings_autosilence">Heshtje gjatë namazit</string>
+    <string name="settings_silence_duration">Kohëzgjatja</string>
+    <string name="settings_perm_dnd">Lejo qasjen te „Mos shqetëso“</string>
 </resources>

@@ -65,4 +65,7 @@
     <string name="qibla_hint">Держите телефон горизонтально и поворачивайтесь, пока стрелка не укажет вверх.</string>
     <string name="qibla_facing">Вы обращены к Кибле</string>
     <string name="qibla_no_sensor">Датчик компаса недоступен на этом устройстве.</string>
+    <string name="settings_autosilence">Беззвучный режим во время намаза</string>
+    <string name="settings_silence_duration">Длительность</string>
+    <string name="settings_perm_dnd">Разрешить доступ к «Не беспокоить»</string>
 </resources>

@@ -65,4 +65,7 @@
     <string name="qibla_hint">أمسك الهاتف أفقيًا واستدر حتى يشير السهم إلى الأعلى.</string>
     <string name="qibla_facing">أنت متّجه نحو القبلة</string>
     <string name="qibla_no_sensor">مستشعر البوصلة غير متوفّر على هذا الجهاز.</string>
+    <string name="settings_autosilence">كتم الهاتف أثناء الصلاة</string>
+    <string name="settings_silence_duration">المدة</string>
+    <string name="settings_perm_dnd">السماح بالوصول إلى «عدم الإزعاج»</string>
 </resources>

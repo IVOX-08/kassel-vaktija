@@ -12,6 +12,7 @@ import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
 import de.igbdsandzakkassel.vaktija.service.alarm.AlarmScheduler
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
+import de.igbdsandzakkassel.vaktija.service.dnd.DndController
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -23,6 +24,7 @@ class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val settingsRepository: SettingsRepository,
     private val alarmScheduler: AlarmScheduler,
+    private val dndController: DndController,
 ) : ViewModel() {
 
     val settings: StateFlow<AlarmSettings> = settingsRepository.observe()
@@ -57,12 +59,22 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.setPreWarnMinutes(prayer, minutes)
     }
 
+    fun setAutoSilence(enabled: Boolean) = applyThenReschedule {
+        settingsRepository.setAutoSilence(enabled)
+    }
+
+    fun setSilenceMinutes(minutes: Int) = applyThenReschedule {
+        settingsRepository.setSilenceMinutes(minutes)
+    }
+
     /** Plays the Adhan immediately so the user can preview it (and verify permissions/audio). */
     fun testAdhan() {
         AdhanForegroundService.start(context, Prayer.DHUHR, AdhanSound.PLACEHOLDER.rawResName)
     }
 
     fun canScheduleExact(): Boolean = alarmScheduler.canScheduleExact()
+
+    fun hasDndAccess(): Boolean = dndController.hasAccess()
 
     private fun applyThenReschedule(block: suspend () -> Unit) {
         viewModelScope.launch {

@@ -65,4 +65,7 @@
     <string name="qibla_hint">فون کو سیدھا رکھیں اور گھومیں جب تک تیر اوپر کی طرف اشارہ نہ کرے۔</string>
     <string name="qibla_facing">آپ قبلہ رخ ہیں</string>
     <string name="qibla_no_sensor">اس آلے پر قطب نما سینسر دستیاب نہیں۔</string>
+    <string name="settings_autosilence">نماز کے دوران فون خاموش کریں</string>
+    <string name="settings_silence_duration">دورانیہ</string>
+    <string name="settings_perm_dnd">«ڈسٹرب نہ کریں» تک رسائی کی اجازت دیں</string>
 </resources>

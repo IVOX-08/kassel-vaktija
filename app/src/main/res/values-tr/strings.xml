@@ -65,4 +65,7 @@
     <string name="qibla_hint">Telefonu düz tutun ve ok yukarıyı gösterene kadar dönün.</string>
     <string name="qibla_facing">Kıbleye dönüksünüz</string>
     <string name="qibla_no_sensor">Bu cihazda pusula sensörü bulunmuyor.</string>
+    <string name="settings_autosilence">Namaz sırasında sessize al</string>
+    <string name="settings_silence_duration">Süre</string>
+    <string name="settings_perm_dnd">„Rahatsız Etme“ erişimine izin ver</string>
 </resources>

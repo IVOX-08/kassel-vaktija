@@ -22,6 +22,10 @@ data class PrayerAlarmPrefs(
 data class AlarmSettings(
     val masterEnabled: Boolean = true,
     val sound: AdhanSound = AdhanSound.PLACEHOLDER,
+    /** Auto-silence (Do Not Disturb) the phone around each prayer time. */
+    val autoSilenceEnabled: Boolean = false,
+    /** How long the phone stays silenced after each prayer's Adhan time. */
+    val silenceMinutes: Int = 15,
     val perPrayer: Map<Prayer, PrayerAlarmPrefs> = Prayer.OBLIGATORY.associateWith { PrayerAlarmPrefs() },
 ) {
     fun prefs(prayer: Prayer): PrayerAlarmPrefs = perPrayer[prayer] ?: PrayerAlarmPrefs()
@@ -29,5 +33,8 @@ data class AlarmSettings(
     companion object {
         /** Pre-warning options offered in the UI (minutes before Adhan; 0 = exactly at Adhan). */
         val PRE_WARN_OPTIONS = listOf(0, 5, 10, 15)
+
+        /** Auto-silence duration options (minutes after the Adhan). */
+        val SILENCE_OPTIONS = listOf(10, 15, 20, 30)
     }
 }

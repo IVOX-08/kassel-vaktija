@@ -40,7 +40,6 @@ class AlarmScheduler @Inject constructor(
     suspend fun rescheduleAll() {
         cancelAll()
         val settings = settingsRepository.observe().first()
-        if (!settings.masterEnabled) return
         val times = timesRepository.observeToday().first() ?: return
 
         val now = LocalDateTime.now()
@@ -48,23 +47,37 @@ class AlarmScheduler @Inject constructor(
 
         Prayer.OBLIGATORY.forEach { prayer ->
             val prefs = settings.prefs(prayer)
-            if (!prefs.enabled) return@forEach
-
             val adhanAt = LocalDateTime.of(today, times.adhan(prayer))
-            if (adhanAt.isAfter(now)) {
-                schedule(prayer, adhanAt, preWarn = false, minutes = 0, sound = settings.sound)
+
+            // Adhan + pre-warning (gated by the notifications master toggle + per-prayer enable).
+            if (settings.masterEnabled && prefs.enabled) {
+                if (adhanAt.isAfter(now)) {
+                    schedule(prayer, adhanAt, AlarmType.ADHAN, minutes = 0, sound = settings.sound)
+                }
+                if (prefs.preWarnMinutes > 0) {
+                    val warnAt = adhanAt.minusMinutes(prefs.preWarnMinutes.toLong())
+                    if (warnAt.isAfter(now)) {
+                        schedule(prayer, warnAt, AlarmType.PREWARN, minutes = prefs.preWarnMinutes, sound = settings.sound)
+                    }
+                }
             }
-            if (prefs.preWarnMinutes > 0) {
-                val warnAt = adhanAt.minusMinutes(prefs.preWarnMinutes.toLong())
-                if (warnAt.isAfter(now)) {
-                    schedule(prayer, warnAt, preWarn = true, minutes = prefs.preWarnMinutes, sound = settings.sound)
+
+            // Auto-silence window (independent of the notifications toggle): DND on at the Adhan,
+            // off again after the configured duration.
+            if (settings.autoSilenceEnabled) {
+                if (adhanAt.isAfter(now)) {
+                    schedule(prayer, adhanAt, AlarmType.SILENCE_START, minutes = 0, sound = settings.sound)
+                }
+                val endAt = adhanAt.plusMinutes(settings.silenceMinutes.toLong())
+                if (endAt.isAfter(now)) {
+                    schedule(prayer, endAt, AlarmType.SILENCE_END, minutes = 0, sound = settings.sound)
                 }
             }
         }
     }
 
-    private fun schedule(prayer: Prayer, at: LocalDateTime, preWarn: Boolean, minutes: Int, sound: AdhanSound) {
-        val pendingIntent = pendingIntent(prayer, preWarn, minutes, sound)
+    private fun schedule(prayer: Prayer, at: LocalDateTime, type: AlarmType, minutes: Int, sound: AdhanSound) {
+        val pendingIntent = pendingIntent(prayer, type, minutes, sound)
         val triggerAtMillis = at.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
         try {
             if (canScheduleExact()) {
@@ -80,23 +93,30 @@ class AlarmScheduler @Inject constructor(
 
     private fun cancelAll() {
         Prayer.OBLIGATORY.forEach { prayer ->
-            listOf(false, true).forEach { preWarn ->
-                alarmManager.cancel(pendingIntent(prayer, preWarn, 0, AdhanSound.PLACEHOLDER))
+            AlarmType.entries.forEach { type ->
+                alarmManager.cancel(pendingIntent(prayer, type, 0, AdhanSound.PLACEHOLDER))
             }
         }
     }
 
-    private fun pendingIntent(prayer: Prayer, preWarn: Boolean, minutes: Int, sound: AdhanSound): PendingIntent {
+    private fun pendingIntent(prayer: Prayer, type: AlarmType, minutes: Int, sound: AdhanSound): PendingIntent {
         val intent = Intent(context, PrayerAlarmReceiver::class.java).apply {
-            action = if (preWarn) PrayerAlarmReceiver.ACTION_PREWARN else PrayerAlarmReceiver.ACTION_ADHAN
+            action = type.action
             putExtra(PrayerAlarmReceiver.EXTRA_PRAYER, prayer.ordinal)
             putExtra(PrayerAlarmReceiver.EXTRA_MINUTES, minutes)
             putExtra(PrayerAlarmReceiver.EXTRA_SOUND, sound.rawResName)
         }
-        val requestCode = prayer.ordinal * 2 + if (preWarn) 1 else 0
+        val requestCode = prayer.ordinal * AlarmType.entries.size + type.ordinal
         return PendingIntent.getBroadcast(
             context, requestCode, intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
+    }
+
+    private enum class AlarmType(val action: String) {
+        ADHAN(PrayerAlarmReceiver.ACTION_ADHAN),
+        PREWARN(PrayerAlarmReceiver.ACTION_PREWARN),
+        SILENCE_START(PrayerAlarmReceiver.ACTION_SILENCE_START),
+        SILENCE_END(PrayerAlarmReceiver.ACTION_SILENCE_END),
     }
 }

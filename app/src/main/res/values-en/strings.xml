@@ -65,4 +65,7 @@
     <string name="qibla_hint">Hold the phone flat and turn until the arrow points up.</string>
     <string name="qibla_facing">You are facing the Qibla</string>
     <string name="qibla_no_sensor">Compass sensor not available on this device.</string>
+    <string name="settings_autosilence">Silence phone during prayer</string>
+    <string name="settings_silence_duration">Duration</string>
+    <string name="settings_perm_dnd">Allow Do Not Disturb access</string>
 </resources>

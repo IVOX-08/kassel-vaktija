@@ -93,4 +93,9 @@
     <string name="qibla_hint">Drži telefon vodoravno i okreći se dok strelica ne pokaže prema gore.</string>
     <string name="qibla_facing">Okrenuti ste prema Kibli</string>
     <string name="qibla_no_sensor">Senzor kompasa nije dostupan na ovom uređaju.</string>
+
+    <!-- Auto-silence (DND) -->
+    <string name="settings_autosilence">Utišaj telefon za vrijeme namaza</string>
+    <string name="settings_silence_duration">Trajanje</string>
+    <string name="settings_perm_dnd">Dozvoli „Ne uznemiravaj“</string>
 </resources>
