@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Status-bar notification icon: white shield silhouette (the coat-of-arms shape). Android tints
-     status-bar icons to a flat color, so this is a monochrome silhouette; the full colored emblem
-     is set as the notification's large icon. -->
+<!-- Status-bar notification icon: a white mosque (dome + crescent) silhouette. Android forces
+     small/status-bar icons to be a flat, system-tinted silhouette, so this is monochrome; the full
+     colored community emblem is shown as the notification's LARGE icon. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Base -->
+    <path android:fillColor="#FFFFFFFF" android:pathData="M3.5,18 H20.5 V20.5 H3.5 Z" />
+    <!-- Dome / prayer hall -->
+    <path android:fillColor="#FFFFFFFF" android:pathData="M5,18 C5,9.5 19,9.5 19,18 Z" />
+    <!-- Crescent finial pole -->
+    <path android:fillColor="#FFFFFFFF" android:pathData="M11.6,6.5 H12.4 V11 H11.6 Z" />
+    <!-- Crescent -->
     <path
         android:fillColor="#FFFFFFFF"
-        android:pathData="M5,4 H19 V11 C19,16 15.5,19.5 12,21.5 C8.5,19.5 5,16 5,11 Z" />
+        android:fillType="evenOdd"
+        android:pathData="M12,2.5 a2.2,2.2 0 1,0 0,4.4 a2.2,2.2 0 1,0 0,-4.4 Z
+                          M12.9,3 a1.7,1.7 0 1,1 0,3.4 a1.7,1.7 0 1,1 0,-3.4 Z" />
 </vector>
