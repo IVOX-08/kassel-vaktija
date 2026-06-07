@@ -1,21 +1,14 @@
 package de.igbdsandzakkassel.vaktija.ui.dashboard
 
 import android.provider.Settings
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.animateScrollBy
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,7 +44,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -99,10 +91,6 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
         Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f
     }
 
-    // The hero countdown shows on entry and stays through the programmatic auto-scroll; the first
-    // genuine user touch hides it. `remember` (not saveable) so it returns fresh each Dashboard open.
-    var heroVisible by remember { mutableStateOf(true) }
-
     val highlightedName = state.rows.firstOrNull { it.isHighlighted }?.prayer?.name
     val highlightIndexInRows = state.rows.indexOfFirst { it.isHighlighted }
     // Lazy index of the highlighted prayer row. Only the optional stale banner precedes it now —
@@ -135,26 +123,10 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
         pulseToken++ // one-shot illumination on the highlighted card
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            // First REAL pointer-down hides the hero. Programmatic scrolls emit no pointer events,
-            // so the auto-scroll intro never triggers this. Non-consuming → scroll/taps still work.
-            .pointerInput(Unit) {
-                awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false)
-                    heroVisible = false
-                }
-            },
-    ) {
+    Column(modifier = modifier.fillMaxSize()) {
         Header(state.gregorianDate, state.hijriDate)
-        AnimatedVisibility(
-            visible = heroVisible,
-            enter = fadeIn() + slideInVertically { -it },
-            exit = fadeOut() + slideOutVertically { -it },
-        ) {
-            CountdownCard(state, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
-        }
+        // Pinned above the list, always visible — never hides on touch/scroll.
+        CountdownCard(state, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
         LazyColumn(
             state = listState,
             modifier = Modifier
