@@ -11,7 +11,8 @@ val BrandGoldLight = Color(0xFFD4AF37)
 
 // --- Neutrals ---
 val NearBlack = Color(0xFF1A1A1A)
-val SurfaceLight = Color(0xFFFFFFFF)
+val SurfaceLight = Color(0xFFFFFFFF)          // white cards
+val PageBackgroundLight = Color(0xFFF4F4F4)   // page background (matches the website --bg-dark)
 val SurfaceVariantLight = Color(0xFFF1F4F1)
 // True black to exactly match the dark logo's #000000 background (blends seamlessly,
 // and is OLED-friendly on the community's devices).

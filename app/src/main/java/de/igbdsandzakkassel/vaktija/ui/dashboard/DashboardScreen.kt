@@ -265,7 +265,7 @@ private fun PrayerCard(row: PrayerRowUi, pulseToken: Int = 0) {
     val nameColor = if (row.isHighlighted) BrandGoldLight else MaterialTheme.colorScheme.secondary
     val adhanColor = if (row.isHighlighted) Color.White else MaterialTheme.colorScheme.primary
     val iqamahLabelColor =
-        if (row.isHighlighted) Color.White.copy(alpha = 0.85f) else MaterialTheme.colorScheme.onSurfaceVariant
+        if (row.isHighlighted) Color.White.copy(alpha = 0.85f) else MaterialTheme.colorScheme.primary
     val iqamahColor = if (row.isHighlighted) BrandGoldLight else MaterialTheme.colorScheme.secondary
     val dividerColor =
         if (row.isHighlighted) Color.White.copy(alpha = 0.35f) else MaterialTheme.colorScheme.outlineVariant
@@ -352,49 +352,35 @@ private fun PrayerCard(row: PrayerRowUi, pulseToken: Int = 0) {
     }
 }
 
-/** Full-width Friday prayer card, distinguished by a gold accent bar. */
+/** Full-width Friday prayer card, distinguished by a green border (matches the website CSS). */
 @Composable
 private fun JumuaCard(time: LocalTime) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.surface,
-        shadowElevation = 2.dp,
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+        shadowElevation = 1.dp,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(start = 10.dp, top = 12.dp, bottom = 12.dp)
-                    .width(5.dp)
-                    .fillMaxHeight()
-                    .clip(RoundedCornerShape(3.dp))
-                    .background(BrandGold),
+            Text(
+                text = stringResource(R.string.prayer_jumua),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.weight(1f),
             )
-            Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 14.dp, end = 20.dp, top = 18.dp, bottom = 18.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(R.string.prayer_jumua),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.weight(1f),
-                )
-                Text(
-                    text = time.hhmm(),
-                    fontSize = 34.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
+            Text(
+                text = time.hhmm(),
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }
