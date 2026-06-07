@@ -1,14 +1,21 @@
 package de.igbdsandzakkassel.vaktija.ui.dashboard
 
 import android.provider.Settings
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -91,10 +99,15 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
         Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f
     }
 
+    // The hero countdown shows on entry and stays through the programmatic auto-scroll; the first
+    // genuine user touch hides it. `remember` (not saveable) so it returns fresh each Dashboard open.
+    var heroVisible by remember { mutableStateOf(true) }
+
     val highlightedName = state.rows.firstOrNull { it.isHighlighted }?.prayer?.name
     val highlightIndexInRows = state.rows.indexOfFirst { it.isHighlighted }
-    // Lazy index of the highlighted prayer row (stale banner? + Header + CountdownCard precede it).
-    val targetIndex = if (highlightIndexInRows >= 0) (if (state.isStale) 1 else 0) + 2 + highlightIndexInRows else -1
+    // Lazy index of the highlighted prayer row. Only the optional stale banner precedes it now —
+    // the Header and countdown are pinned above the list, not list items.
+    val targetIndex = if (highlightIndexInRows >= 0) (if (state.isStale) 1 else 0) + highlightIndexInRows else -1
 
     // Guard against replays: only animate on first entry and when the active prayer actually changes.
     var lastAnimated by rememberSaveable { mutableStateOf<String?>(null) }
@@ -109,7 +122,8 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
             listState.scrollToItem(targetIndex)
             return@LaunchedEffect
         }
-        // Gentle scroll, then center the card in the viewport.
+        // Gentle scroll, then center the card in the viewport. (Programmatic — emits no pointer
+        // events, so it never trips the user-touch detector and the hero stays visible.)
         listState.animateScrollToItem(targetIndex)
         val layout = listState.layoutInfo
         val item = layout.visibleItemsInfo.firstOrNull { it.index == targetIndex }
@@ -121,21 +135,41 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
         pulseToken++ // one-shot illumination on the highlighted card
     }
 
-    LazyColumn(
-        state = listState,
+    Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+            // First REAL pointer-down hides the hero. Programmatic scrolls emit no pointer events,
+            // so the auto-scroll intro never triggers this. Non-consuming → scroll/taps still work.
+            .pointerInput(Unit) {
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false)
+                    heroVisible = false
+                }
+            },
     ) {
-        if (state.isStale) item { StaleBanner() }
-        item { Header(state.gregorianDate, state.hijriDate) }
-        item { CountdownCard(state) }
-        items(state.rows, key = { it.prayer }) { row ->
-            PrayerCard(row, pulseToken = if (row.isHighlighted) pulseToken else 0)
+        Header(state.gregorianDate, state.hijriDate)
+        AnimatedVisibility(
+            visible = heroVisible,
+            enter = fadeIn() + slideInVertically { -it },
+            exit = fadeOut() + slideOutVertically { -it },
+        ) {
+            CountdownCard(state, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
         }
-        state.jumua?.let { jumua -> item { JumuaCard(jumua) } }
-        item { Spacer(Modifier.height(8.dp)) }
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            if (state.isStale) item { StaleBanner() }
+            items(state.rows, key = { it.prayer }) { row ->
+                PrayerCard(row, pulseToken = if (row.isHighlighted) pulseToken else 0)
+            }
+            state.jumua?.let { jumua -> item { JumuaCard(jumua) } }
+            item { Spacer(Modifier.height(8.dp)) }
+        }
     }
 }
 
@@ -190,9 +224,9 @@ private fun Header(gregorianDate: String, hijriDate: String) {
 
 /** Green hero card: only the "next prayer in" label + live countdown. */
 @Composable
-private fun CountdownCard(state: DashboardUiState) {
+private fun CountdownCard(state: DashboardUiState, modifier: Modifier = Modifier) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = BrandGreen),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),

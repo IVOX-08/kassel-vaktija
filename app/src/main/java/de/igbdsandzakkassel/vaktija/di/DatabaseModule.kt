@@ -20,6 +20,9 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): KasselDatabase =
         Room.databaseBuilder(context, KasselDatabase::class.java, "kassel-vaktija.db")
+            // This DB is a disposable CACHE only (scraped today + computed month). Destructive
+            // migration on a schema bump simply rebuilds it on next refresh/open — no user data is
+            // lost. (If the DB ever holds non-rebuildable data, replace this with real migrations.)
             .fallbackToDestructiveMigration()
             .build()
 

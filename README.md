@@ -23,11 +23,15 @@ Native Android prayer-times app for the **IGBD-Gemeinde Sandžak-Kassel**. Andro
 - [x] **Phase 3 — Notifications & Adhan**: exact alarms (AlarmManager) per prayer + pre-warnings,
   foreground playback service (placeholder sound — real Adhans TBD, Open Item #4), reschedule on
   boot/time/locale, Settings with per-prayer toggles + pre-warning + permissions + test button.
+- [x] **Feature batch**: light/dark/system **theme selector**; Dashboard **auto-scroll + one-shot
+  pulse** to the next prayer; **Month Calendar** (full month via adhan2, calibrated to today's
+  official value, cached in Room) — replaces the Zakat calculator; bottom nav reordered
+  (Home · Calendar · News · Qibla · Settings); pre-warning options 0/5/10/15/30; emblem launcher icon.
 - [ ] Phase 4 — Auto-silence / DND
 - [ ] Phase 4b — Admin mode & Firebase backend
 - [ ] Phase 5 — Widgets (Glance)
 - [ ] Phase 6 — Qibla compass
-- [ ] Phase 7 — Zakat calculator
+- [ ] ~~Zakat calculator~~ → replaced by the Month Calendar (above)
 - [ ] Phase 8 — News & Donations
 - [ ] Phase 9 — Polish, accessibility, release prep
 

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import de.igbdsandzakkassel.vaktija.R
 
 /**
- * Android TV / Fire TV variant of the Dashboard: no bottom navigation, no Qibla/Zakat/News/
+ * Android TV / Fire TV variant of the Dashboard: no bottom navigation, no Calendar/News/Qibla/
  * Settings, a big clock and a clean prayer-times table. Notifications and DND are disabled on
  * TV builds. The full table arrives with the data layer.
  *
