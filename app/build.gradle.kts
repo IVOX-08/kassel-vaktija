@@ -105,6 +105,10 @@ dependencies {
     implementation(libs.jsoup)
     implementation(libs.coil.compose)
 
+    // --- Prayer-time calculation (month calendar) ---
+    implementation(libs.adhan2)
+    implementation(libs.kotlinx.datetime)
+
     // --- Widgets (Phase 5) ---
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)

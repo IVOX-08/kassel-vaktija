@@ -4,7 +4,7 @@
     <string name="nav_dashboard">ہوم</string>
     <string name="nav_qibla">قبلہ</string>
     <string name="nav_news">خبریں</string>
-    <string name="nav_zakat">زکات</string>
+    <string name="nav_calendar">کیلنڈر</string>
     <string name="nav_settings">ترتیبات</string>
 
     <string name="prayer_fajr">فجر</string>

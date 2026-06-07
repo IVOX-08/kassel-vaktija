@@ -4,7 +4,7 @@
     <string name="nav_dashboard">Startseite</string>
     <string name="nav_qibla">Qibla</string>
     <string name="nav_news">Nachrichten</string>
-    <string name="nav_zakat">Zakat</string>
+    <string name="nav_calendar">Kalender</string>
     <string name="nav_settings">Einstellungen</string>
 
     <string name="prayer_fajr">Morgengebet</string>
@@ -21,6 +21,9 @@
     <string name="dashboard_next_prayer_in">NÄCHSTES GEBET IN</string>
     <string name="label_iqamah">IQAMAH</string>
     <string name="cache_stale_warning">Zeiten möglicherweise nicht aktuell (offline).</string>
+
+    <string name="cd_prev_month">Voriger Monat</string>
+    <string name="cd_next_month">Nächster Monat</string>
 
     <string name="sound_placeholder">Testton (vorläufig)</string>
     <string name="notif_channel_adhan">Adhan</string>
@@ -43,6 +46,11 @@
     <string name="settings_perm_exact_alarm">Exakte Alarme erlauben</string>
     <string name="settings_perm_battery">Akkuoptimierung deaktivieren</string>
     <string name="settings_perm_granted">Erlaubt</string>
+
+    <string name="settings_theme_header">Design</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
 
     <string name="placeholder_coming_soon">Demnächst verfügbar</string>
     <string name="cd_app_logo">Logo der Gemeinde</string>

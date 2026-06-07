@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import de.igbdsandzakkassel.vaktija.data.local.KasselDatabase
+import de.igbdsandzakkassel.vaktija.data.local.MonthTimesDao
 import de.igbdsandzakkassel.vaktija.data.local.PrayerTimesDao
 import javax.inject.Singleton
 
@@ -24,4 +25,7 @@ object DatabaseModule {
 
     @Provides
     fun providePrayerTimesDao(database: KasselDatabase): PrayerTimesDao = database.prayerTimesDao()
+
+    @Provides
+    fun provideMonthTimesDao(database: KasselDatabase): MonthTimesDao = database.monthTimesDao()
 }

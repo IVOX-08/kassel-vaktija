@@ -41,15 +41,17 @@ import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.PrayerAlarmPrefs
+import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
 import de.igbdsandzakkassel.vaktija.ui.components.ChangeLanguagePill
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val settings by viewModel.settings.collectAsStateWithLifecycle()
+    val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val notifPermission = rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
 
@@ -60,6 +62,18 @@ fun SettingsScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        SectionHeader(stringResource(R.string.settings_theme_header))
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            ThemeMode.entries.forEach { mode ->
+                FilterChip(
+                    selected = themeMode == mode,
+                    onClick = { viewModel.setThemeMode(mode) },
+                    label = { Text(stringResource(mode.labelRes)) },
+                )
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+
         SectionHeader(stringResource(R.string.settings_notifications_header))
 
         Card(modifier = Modifier.fillMaxWidth()) {

@@ -4,7 +4,7 @@
     <string name="nav_dashboard">Ballina</string>
     <string name="nav_qibla">Kibla</string>
     <string name="nav_news">Lajme</string>
-    <string name="nav_zakat">Zekati</string>
+    <string name="nav_calendar">Kalendari</string>
     <string name="nav_settings">Cilësimet</string>
 
     <string name="prayer_fajr">Sabahu</string>

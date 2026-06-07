@@ -9,6 +9,7 @@ import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
+import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
 import de.igbdsandzakkassel.vaktija.service.alarm.AlarmScheduler
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import kotlinx.coroutines.flow.SharingStarted
@@ -26,6 +27,13 @@ class SettingsViewModel @Inject constructor(
 
     val settings: StateFlow<AlarmSettings> = settingsRepository.observe()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AlarmSettings())
+
+    val themeMode: StateFlow<ThemeMode> = settingsRepository.observeThemeMode()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ThemeMode.SYSTEM)
+
+    fun setThemeMode(mode: ThemeMode) {
+        viewModelScope.launch { settingsRepository.setThemeMode(mode) }
+    }
 
     fun setMasterEnabled(enabled: Boolean) = applyThenReschedule {
         settingsRepository.setMasterEnabled(enabled)

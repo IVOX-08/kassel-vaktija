@@ -7,7 +7,6 @@
     <!-- Window background used by the launch theme before Compose draws. -->
     <color name="window_background">#FFFFFFFF</color>
 
-    <!-- Adaptive launcher icon background: transparent, so only the shield shows
-         (no white tile/frame behind it). -->
-    <color name="ic_launcher_background">#00000000</color>
+    <!-- Adaptive launcher icon background: white tile behind the full emblem. -->
+    <color name="ic_launcher_background">#FFFFFFFF</color>
 </resources>

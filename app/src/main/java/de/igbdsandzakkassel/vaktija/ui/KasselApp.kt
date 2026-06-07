@@ -16,12 +16,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import de.igbdsandzakkassel.vaktija.ui.calendar.MonthCalendarScreen
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardScreen
 import de.igbdsandzakkassel.vaktija.ui.navigation.TopLevelDestination
 import de.igbdsandzakkassel.vaktija.ui.news.NewsScreen
 import de.igbdsandzakkassel.vaktija.ui.qibla.QiblaScreen
 import de.igbdsandzakkassel.vaktija.ui.settings.SettingsScreen
-import de.igbdsandzakkassel.vaktija.ui.zakat.ZakatScreen
 
 /**
  * Single-Activity phone/tablet scaffold: a bottom navigation bar over a Navigation-Compose host.
@@ -67,9 +67,9 @@ fun KasselApp() {
                 .padding(innerPadding),
         ) {
             composable(TopLevelDestination.DASHBOARD.route) { DashboardScreen() }
-            composable(TopLevelDestination.QIBLA.route) { QiblaScreen() }
+            composable(TopLevelDestination.CALENDAR.route) { MonthCalendarScreen() }
             composable(TopLevelDestination.NEWS.route) { NewsScreen() }
-            composable(TopLevelDestination.ZAKAT.route) { ZakatScreen() }
+            composable(TopLevelDestination.QIBLA.route) { QiblaScreen() }
             composable(TopLevelDestination.SETTINGS.route) { SettingsScreen() }
         }
     }

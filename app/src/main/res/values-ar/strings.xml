@@ -4,7 +4,7 @@
     <string name="nav_dashboard">الرئيسية</string>
     <string name="nav_qibla">القبلة</string>
     <string name="nav_news">الأخبار</string>
-    <string name="nav_zakat">الزكاة</string>
+    <string name="nav_calendar">التقويم</string>
     <string name="nav_settings">الإعدادات</string>
 
     <string name="prayer_fajr">الفجر</string>

@@ -24,6 +24,10 @@ room = "2.6.1"
 datastore = "1.1.1"
 work = "2.10.0"
 
+# Prayer-time calculation (for the month calendar; today stays the scraped official value)
+adhan2 = "0.0.4"
+kotlinxDatetime = "0.6.1"
+
 # Networking
 retrofit = "2.11.0"
 okhttp = "4.12.0"
@@ -85,6 +89,10 @@ okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-i
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
+# --- Prayer-time calculation ---
+adhan2 = { group = "com.batoulapps.adhan", name = "adhan2", version.ref = "adhan2" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 # --- Widgets (Glance) ---
 androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }

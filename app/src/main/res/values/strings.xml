@@ -8,7 +8,7 @@
     <string name="nav_dashboard">Početna</string>
     <string name="nav_qibla">Kibla</string>
     <string name="nav_news">Vijesti</string>
-    <string name="nav_zakat">Zekat</string>
+    <string name="nav_calendar">Kalendar</string>
     <string name="nav_settings">Postavke</string>
 
     <!-- Prayer names -->
@@ -40,6 +40,17 @@
     <string name="label_iqamah">IKAMET</string>
     <string name="cache_stale_warning">Vremena možda nisu ažurna (offline).</string>
 
+    <!-- Month calendar. Column abbreviations use the conventional Bosnian vaktija names
+         (kept identical across locales, as is customary for vaktija tables). -->
+    <string name="prayer_abbr_fajr" translatable="false">Sab.</string>
+    <string name="prayer_abbr_sunrise" translatable="false">Izl.</string>
+    <string name="prayer_abbr_dhuhr" translatable="false">Pod.</string>
+    <string name="prayer_abbr_asr" translatable="false">Iki.</string>
+    <string name="prayer_abbr_maghrib" translatable="false">Akš.</string>
+    <string name="prayer_abbr_isha" translatable="false">Jac.</string>
+    <string name="cd_prev_month">Prethodni mjesec</string>
+    <string name="cd_next_month">Sljedeći mjesec</string>
+
     <!-- Notifications -->
     <string name="sound_placeholder">Test zvuk (privremeno)</string>
     <string name="notif_channel_adhan">Ezan</string>
@@ -63,6 +74,12 @@
     <string name="settings_perm_exact_alarm">Dozvoli tačne alarme</string>
     <string name="settings_perm_battery">Isključi optimizaciju baterije</string>
     <string name="settings_perm_granted">Dozvoljeno</string>
+
+    <!-- Settings: theme -->
+    <string name="settings_theme_header">Tema</string>
+    <string name="theme_system">Sistem</string>
+    <string name="theme_light">Svijetlo</string>
+    <string name="theme_dark">Tamno</string>
 
     <!-- Generic / placeholders -->
     <string name="placeholder_coming_soon">Uskoro dostupno</string>

@@ -1,9 +1,14 @@
 package de.igbdsandzakkassel.vaktija.ui.dashboard
 
+import android.provider.Settings
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,12 +33,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -71,7 +84,45 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
         return
     }
 
+    val listState = rememberLazyListState()
+    val context = LocalContext.current
+    // "Remove animations" accessibility setting → skip the pulse and jump instead of animate-scroll.
+    val reduceMotion = remember {
+        Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f
+    }
+
+    val highlightedName = state.rows.firstOrNull { it.isHighlighted }?.prayer?.name
+    val highlightIndexInRows = state.rows.indexOfFirst { it.isHighlighted }
+    // Lazy index of the highlighted prayer row (stale banner? + Header + CountdownCard precede it).
+    val targetIndex = if (highlightIndexInRows >= 0) (if (state.isStale) 1 else 0) + 2 + highlightIndexInRows else -1
+
+    // Guard against replays: only animate on first entry and when the active prayer actually changes.
+    var lastAnimated by rememberSaveable { mutableStateOf<String?>(null) }
+    var pulseToken by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(highlightedName, state.loading) {
+        if (state.loading || highlightedName == null || targetIndex < 0) return@LaunchedEffect
+        if (lastAnimated == highlightedName) return@LaunchedEffect
+        lastAnimated = highlightedName
+
+        if (reduceMotion) {
+            listState.scrollToItem(targetIndex)
+            return@LaunchedEffect
+        }
+        // Gentle scroll, then center the card in the viewport.
+        listState.animateScrollToItem(targetIndex)
+        val layout = listState.layoutInfo
+        val item = layout.visibleItemsInfo.firstOrNull { it.index == targetIndex }
+        if (item != null) {
+            val viewportCenter = (layout.viewportStartOffset + layout.viewportEndOffset) / 2f
+            val itemCenter = item.offset + item.size / 2f
+            listState.animateScrollBy(itemCenter - viewportCenter)
+        }
+        pulseToken++ // one-shot illumination on the highlighted card
+    }
+
     LazyColumn(
+        state = listState,
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
@@ -80,7 +131,9 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
         if (state.isStale) item { StaleBanner() }
         item { Header(state.gregorianDate, state.hijriDate) }
         item { CountdownCard(state) }
-        items(state.rows, key = { it.prayer }) { PrayerCard(it) }
+        items(state.rows, key = { it.prayer }) { row ->
+            PrayerCard(row, pulseToken = if (row.isHighlighted) pulseToken else 0)
+        }
         state.jumua?.let { jumua -> item { JumuaCard(jumua) } }
         item { Spacer(Modifier.height(8.dp)) }
     }
@@ -168,7 +221,7 @@ private fun CountdownCard(state: DashboardUiState) {
 }
 
 @Composable
-private fun PrayerCard(row: PrayerRowUi) {
+private fun PrayerCard(row: PrayerRowUi, pulseToken: Int = 0) {
     val container by animateColorAsState(
         targetValue = if (row.isHighlighted) BrandGreen else MaterialTheme.colorScheme.surface,
         animationSpec = tween(400),
@@ -183,11 +236,27 @@ private fun PrayerCard(row: PrayerRowUi) {
     val dividerColor =
         if (row.isHighlighted) Color.White.copy(alpha = 0.35f) else MaterialTheme.colorScheme.outlineVariant
 
+    // One-shot illumination pulse when this becomes the active card (token increments once).
+    val glow = remember { Animatable(0f) }
+    LaunchedEffect(pulseToken) {
+        if (pulseToken > 0) {
+            glow.snapTo(0f)
+            glow.animateTo(1f, tween(350, easing = FastOutSlowInEasing))
+            glow.animateTo(0f, tween(450, easing = FastOutSlowInEasing))
+        }
+    }
+    val glowValue = glow.value
+
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
         color = container,
-        shadowElevation = 2.dp,
+        shadowElevation = 2.dp + (glowValue * 12f).dp,
+        border = if (glowValue > 0.01f) {
+            BorderStroke((2.5f * glowValue).dp, BrandGoldLight.copy(alpha = glowValue))
+        } else {
+            null
+        },
     ) {
         Row(
             modifier = Modifier

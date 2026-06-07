@@ -28,6 +28,6 @@ data class AlarmSettings(
 
     companion object {
         /** Pre-warning options offered in the UI (minutes before Adhan). */
-        val PRE_WARN_OPTIONS = listOf(0, 5, 10, 15)
+        val PRE_WARN_OPTIONS = listOf(0, 5, 10, 15, 30)
     }
 }
