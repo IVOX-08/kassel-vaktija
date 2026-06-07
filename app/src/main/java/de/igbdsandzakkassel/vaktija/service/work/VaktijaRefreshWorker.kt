@@ -8,7 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import de.igbdsandzakkassel.vaktija.service.alarm.AlarmScheduler
-import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidget
+import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
 
 /**
  * Refreshes the cached prayer times from vaktija.eu. Scheduled daily (the source publishes one day
@@ -26,7 +26,7 @@ class VaktijaRefreshWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         val refreshed = repository.refresh()
         alarmScheduler.rescheduleAll()
-        PrayerTimesWidget.refresh(applicationContext)
+        PrayerTimesWidgetReceiver.refresh(applicationContext)
         return if (refreshed) Result.success() else Result.retry()
     }
 
