@@ -47,6 +47,16 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.setPreWarnMinutes(prayer, minutes)
     }
 
+    /**
+     * Enables the prayer and sets its alert timing in one step. Used by the per-prayer chips:
+     * "0 min" = Adhan exactly on time; "5/10/15 min" = Adhan on time + a reminder that many minutes
+     * earlier. ("Off" calls [setPrayerEnabled] with false.)
+     */
+    fun selectPreWarn(prayer: Prayer, minutes: Int) = applyThenReschedule {
+        settingsRepository.setPrayerEnabled(prayer, true)
+        settingsRepository.setPreWarnMinutes(prayer, minutes)
+    }
+
     /** Plays the Adhan immediately so the user can preview it (and verify permissions/audio). */
     fun testAdhan() {
         AdhanForegroundService.start(context, Prayer.DHUHR, AdhanSound.PLACEHOLDER.rawResName)

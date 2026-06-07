@@ -26,9 +26,37 @@
 
     <string name="dashboard_next_prayer_in">NAMAZI TJETËR PAS</string>
     <string name="label_iqamah">IKAMETI</string>
+    <string name="cache_stale_warning">Oraret mund të mos jenë të përditësuara (offline).</string>
+
+    <string name="cd_prev_month">Muaji i mëparshëm</string>
+    <string name="cd_next_month">Muaji tjetër</string>
+
+    <string name="sound_placeholder">Toni provë (përkohshëm)</string>
+    <string name="notif_channel_adhan">Ezani</string>
+    <string name="notif_channel_adhan_desc">Luan ezanin në kohën e namazit.</string>
+    <string name="notif_channel_prewarn">Paralajmërim namazi</string>
+    <string name="notif_channel_prewarn_desc">Kujtesë para kohës së namazit.</string>
+    <string name="notif_adhan_title">Koha për %1$s</string>
+    <string name="notif_adhan_text">Hyri koha e namazit.</string>
+    <string name="notif_prewarn_title">%1$s për %2$d min</string>
+    <string name="notif_stop">Ndalo</string>
+
+    <string name="settings_notifications_header">Njoftimet e namazit</string>
+    <string name="settings_master_toggle">Aktivizo njoftimet</string>
     <string name="settings_prewarn">Paralajmërim</string>
     <string name="settings_off">Joaktiv</string>
     <string name="settings_minutes">%1$d min</string>
+    <string name="settings_test_adhan">Testo ezanin</string>
+    <string name="settings_permissions_header">Lejet</string>
+    <string name="settings_perm_notifications">Lejo njoftimet</string>
+    <string name="settings_perm_exact_alarm">Lejo alarmet e sakta</string>
+    <string name="settings_perm_battery">Çaktivizo optimizimin e baterisë</string>
+    <string name="settings_perm_granted">E lejuar</string>
+
+    <string name="settings_theme_header">Tema</string>
+    <string name="theme_system">Sistemi</string>
+    <string name="theme_light">E çelët</string>
+    <string name="theme_dark">E errët</string>
 
     <string name="placeholder_coming_soon">Së shpejti</string>
     <string name="cd_app_logo">Logoja e bashkësisë</string>

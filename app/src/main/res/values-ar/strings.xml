@@ -26,9 +26,37 @@
 
     <string name="dashboard_next_prayer_in">الصلاة القادمة بعد</string>
     <string name="label_iqamah">الإقامة</string>
+    <string name="cache_stale_warning">قد تكون الأوقات غير محدّثة (دون اتصال).</string>
+
+    <string name="cd_prev_month">الشهر السابق</string>
+    <string name="cd_next_month">الشهر التالي</string>
+
+    <string name="sound_placeholder">نغمة تجريبية (مؤقتة)</string>
+    <string name="notif_channel_adhan">الأذان</string>
+    <string name="notif_channel_adhan_desc">تشغيل الأذان عند وقت الصلاة.</string>
+    <string name="notif_channel_prewarn">تنبيه قبل الصلاة</string>
+    <string name="notif_channel_prewarn_desc">تذكير قبل دخول وقت الصلاة.</string>
+    <string name="notif_adhan_title">حان وقت %1$s</string>
+    <string name="notif_adhan_text">دخل وقت الصلاة.</string>
+    <string name="notif_prewarn_title">%1$s بعد %2$d دقيقة</string>
+    <string name="notif_stop">إيقاف</string>
+
+    <string name="settings_notifications_header">إشعارات الصلاة</string>
+    <string name="settings_master_toggle">تفعيل الإشعارات</string>
     <string name="settings_prewarn">تنبيه مسبق</string>
     <string name="settings_off">إيقاف</string>
     <string name="settings_minutes">%1$d دقيقة</string>
+    <string name="settings_test_adhan">اختبار الأذان</string>
+    <string name="settings_permissions_header">الأذونات</string>
+    <string name="settings_perm_notifications">السماح بالإشعارات</string>
+    <string name="settings_perm_exact_alarm">السماح بالمنبّهات الدقيقة</string>
+    <string name="settings_perm_battery">تعطيل تحسين البطارية</string>
+    <string name="settings_perm_granted">مُمنوح</string>
+
+    <string name="settings_theme_header">المظهر</string>
+    <string name="theme_system">النظام</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
 
     <string name="placeholder_coming_soon">قريبًا</string>
     <string name="cd_app_logo">شعار الجماعة</string>

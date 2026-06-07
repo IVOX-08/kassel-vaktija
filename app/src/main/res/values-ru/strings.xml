@@ -26,9 +26,37 @@
 
     <string name="dashboard_next_prayer_in">СЛЕДУЮЩИЙ НАМАЗ ЧЕРЕЗ</string>
     <string name="label_iqamah">ИКАМАТ</string>
+    <string name="cache_stale_warning">Время может быть неактуальным (офлайн).</string>
+
+    <string name="cd_prev_month">Предыдущий месяц</string>
+    <string name="cd_next_month">Следующий месяц</string>
+
+    <string name="sound_placeholder">Тестовый звук (временно)</string>
+    <string name="notif_channel_adhan">Азан</string>
+    <string name="notif_channel_adhan_desc">Воспроизведение азана во время намаза.</string>
+    <string name="notif_channel_prewarn">Напоминание о намазе</string>
+    <string name="notif_channel_prewarn_desc">Напоминание перед наступлением намаза.</string>
+    <string name="notif_adhan_title">Время %1$s</string>
+    <string name="notif_adhan_text">Наступило время намаза.</string>
+    <string name="notif_prewarn_title">%1$s через %2$d мин</string>
+    <string name="notif_stop">Стоп</string>
+
+    <string name="settings_notifications_header">Уведомления о намазе</string>
+    <string name="settings_master_toggle">Включить уведомления</string>
     <string name="settings_prewarn">Предупреждение</string>
     <string name="settings_off">Выкл.</string>
     <string name="settings_minutes">%1$d мин</string>
+    <string name="settings_test_adhan">Проверить азан</string>
+    <string name="settings_permissions_header">Разрешения</string>
+    <string name="settings_perm_notifications">Разрешить уведомления</string>
+    <string name="settings_perm_exact_alarm">Разрешить точные сигналы</string>
+    <string name="settings_perm_battery">Отключить оптимизацию батареи</string>
+    <string name="settings_perm_granted">Разрешено</string>
+
+    <string name="settings_theme_header">Тема</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
 
     <string name="placeholder_coming_soon">Скоро</string>
     <string name="cd_app_logo">Логотип общины</string>

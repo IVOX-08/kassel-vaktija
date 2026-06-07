@@ -26,9 +26,37 @@
 
     <string name="dashboard_next_prayer_in">اگلی نماز میں باقی</string>
     <string name="label_iqamah">اقامہ</string>
+    <string name="cache_stale_warning">اوقات پرانے ہو سکتے ہیں (آف لائن)۔</string>
+
+    <string name="cd_prev_month">پچھلا مہینہ</string>
+    <string name="cd_next_month">اگلا مہینہ</string>
+
+    <string name="sound_placeholder">ٹیسٹ آواز (عارضی)</string>
+    <string name="notif_channel_adhan">اذان</string>
+    <string name="notif_channel_adhan_desc">نماز کے وقت اذان چلاتا ہے۔</string>
+    <string name="notif_channel_prewarn">نماز سے پہلے اطلاع</string>
+    <string name="notif_channel_prewarn_desc">نماز کے وقت سے پہلے یاد دہانی۔</string>
+    <string name="notif_adhan_title">%1$s کا وقت</string>
+    <string name="notif_adhan_text">نماز کا وقت ہو گیا ہے۔</string>
+    <string name="notif_prewarn_title">%1$s %2$d منٹ میں</string>
+    <string name="notif_stop">روکیں</string>
+
+    <string name="settings_notifications_header">نماز کی اطلاعات</string>
+    <string name="settings_master_toggle">اطلاعات فعال کریں</string>
     <string name="settings_prewarn">پیشگی اطلاع</string>
     <string name="settings_off">بند</string>
     <string name="settings_minutes">%1$d منٹ</string>
+    <string name="settings_test_adhan">اذان آزمائیں</string>
+    <string name="settings_permissions_header">اجازتیں</string>
+    <string name="settings_perm_notifications">اطلاعات کی اجازت دیں</string>
+    <string name="settings_perm_exact_alarm">درست الارم کی اجازت دیں</string>
+    <string name="settings_perm_battery">بیٹری بہتری بند کریں</string>
+    <string name="settings_perm_granted">اجازت دی گئی</string>
+
+    <string name="settings_theme_header">تھیم</string>
+    <string name="theme_system">سسٹم</string>
+    <string name="theme_light">روشن</string>
+    <string name="theme_dark">گہرا</string>
 
     <string name="placeholder_coming_soon">جلد آ رہا ہے</string>
     <string name="cd_app_logo">کمیونٹی کا لوگو</string>

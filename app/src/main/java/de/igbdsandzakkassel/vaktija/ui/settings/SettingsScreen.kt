@@ -100,8 +100,8 @@ fun SettingsScreen(
                 PrayerSettingCard(
                     prayer = prayer,
                     prefs = settings.prefs(prayer),
-                    onEnabledChange = { viewModel.setPrayerEnabled(prayer, it) },
-                    onPreWarnChange = { viewModel.setPreWarn(prayer, it) },
+                    onDisable = { viewModel.setPrayerEnabled(prayer, false) },
+                    onSelectMinutes = { viewModel.selectPreWarn(prayer, it) },
                 )
             }
             Button(
@@ -164,46 +164,34 @@ private fun SectionHeader(text: String) {
 private fun PrayerSettingCard(
     prayer: Prayer,
     prefs: PrayerAlarmPrefs,
-    onEnabledChange: (Boolean) -> Unit,
-    onPreWarnChange: (Int) -> Unit,
+    onDisable: () -> Unit,
+    onSelectMinutes: (Int) -> Unit,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(prayer.labelRes),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.weight(1f),
+            Text(
+                text = stringResource(prayer.labelRes),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            // Per-prayer alert: Off (no Adhan) · 0 min (Adhan on time) · 5/10/15 min (Adhan on time
+            // + a reminder that many minutes earlier).
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(
+                    selected = !prefs.enabled,
+                    onClick = onDisable,
+                    label = { Text(stringResource(R.string.settings_off)) },
                 )
-                Switch(checked = prefs.enabled, onCheckedChange = onEnabledChange)
-            }
-            if (prefs.enabled) {
-                Text(
-                    text = stringResource(R.string.settings_prewarn),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    AlarmSettings.PRE_WARN_OPTIONS.forEach { minutes ->
-                        FilterChip(
-                            selected = prefs.preWarnMinutes == minutes,
-                            onClick = { onPreWarnChange(minutes) },
-                            label = {
-                                Text(
-                                    if (minutes == 0) {
-                                        stringResource(R.string.settings_off)
-                                    } else {
-                                        stringResource(R.string.settings_minutes, minutes)
-                                    },
-                                )
-                            },
-                        )
-                    }
+                AlarmSettings.PRE_WARN_OPTIONS.forEach { minutes ->
+                    FilterChip(
+                        selected = prefs.enabled && prefs.preWarnMinutes == minutes,
+                        onClick = { onSelectMinutes(minutes) },
+                        label = { Text(stringResource(R.string.settings_minutes, minutes)) },
+                    )
                 }
             }
         }
