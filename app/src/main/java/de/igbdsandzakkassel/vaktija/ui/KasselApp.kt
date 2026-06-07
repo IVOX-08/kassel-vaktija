@@ -62,7 +62,7 @@ fun KasselApp() {
                             // ("Einstellungen", "Nachrichten") from wrapping to two lines.
                             Text(
                                 text = stringResource(destination.labelRes),
-                                fontSize = 10.sp,
+                                fontSize = 9.sp,
                                 maxLines = 1,
                                 softWrap = false,
                                 overflow = TextOverflow.Ellipsis,
