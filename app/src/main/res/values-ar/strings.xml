@@ -62,4 +62,7 @@
     <string name="cd_app_logo">شعار الجماعة</string>
     <string name="cd_back">رجوع</string>
     <string name="action_donate">تبرّع</string>
+    <string name="qibla_hint">أمسك الهاتف أفقيًا واستدر حتى يشير السهم إلى الأعلى.</string>
+    <string name="qibla_facing">أنت متّجه نحو القبلة</string>
+    <string name="qibla_no_sensor">مستشعر البوصلة غير متوفّر على هذا الجهاز.</string>
 </resources>

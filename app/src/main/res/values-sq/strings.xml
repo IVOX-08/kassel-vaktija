@@ -62,4 +62,7 @@
     <string name="cd_app_logo">Logoja e bashkësisë</string>
     <string name="cd_back">Prapa</string>
     <string name="action_donate">Dhuro</string>
+    <string name="qibla_hint">Mbaje telefonin horizontalisht dhe rrotullohu derisa shigjeta të tregojë lart.</string>
+    <string name="qibla_facing">Je i kthyer nga Kibla</string>
+    <string name="qibla_no_sensor">Sensori i busullës nuk është i disponueshëm në këtë pajisje.</string>
 </resources>

@@ -62,4 +62,7 @@
     <string name="cd_app_logo">Логотип общины</string>
     <string name="cd_back">Назад</string>
     <string name="action_donate">Пожертвовать</string>
+    <string name="qibla_hint">Держите телефон горизонтально и поворачивайтесь, пока стрелка не укажет вверх.</string>
+    <string name="qibla_facing">Вы обращены к Кибле</string>
+    <string name="qibla_no_sensor">Датчик компаса недоступен на этом устройстве.</string>
 </resources>

@@ -88,4 +88,9 @@
     <string name="cd_back">Nazad</string>
     <string name="action_donate">Doniraj</string>
     <string name="community_address" translatable="false">Schwanenweg 13\n34123 Kassel</string>
+
+    <!-- Qibla -->
+    <string name="qibla_hint">Drži telefon vodoravno i okreći se dok strelica ne pokaže prema gore.</string>
+    <string name="qibla_facing">Okrenuti ste prema Kibli</string>
+    <string name="qibla_no_sensor">Senzor kompasa nije dostupan na ovom uređaju.</string>
 </resources>

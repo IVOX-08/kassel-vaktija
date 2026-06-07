@@ -62,4 +62,7 @@
     <string name="cd_app_logo">Community logo</string>
     <string name="cd_back">Back</string>
     <string name="action_donate">Donate</string>
+    <string name="qibla_hint">Hold the phone flat and turn until the arrow points up.</string>
+    <string name="qibla_facing">You are facing the Qibla</string>
+    <string name="qibla_no_sensor">Compass sensor not available on this device.</string>
 </resources>

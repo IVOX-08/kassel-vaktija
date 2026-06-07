@@ -62,4 +62,7 @@
     <string name="cd_app_logo">Logo der Gemeinde</string>
     <string name="cd_back">Zurück</string>
     <string name="action_donate">Spenden</string>
+    <string name="qibla_hint">Halte das Handy flach und drehe dich, bis der Pfeil nach oben zeigt.</string>
+    <string name="qibla_facing">Du schaust Richtung Qibla</string>
+    <string name="qibla_no_sensor">Kompass-Sensor auf diesem Gerät nicht verfügbar.</string>
 </resources>
