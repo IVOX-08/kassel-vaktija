@@ -27,4 +27,5 @@
     <string name="placeholder_coming_soon">Скоро</string>
     <string name="cd_app_logo">Логотип общины</string>
     <string name="cd_back">Назад</string>
+    <string name="action_donate">Пожертвовать</string>
 </resources>

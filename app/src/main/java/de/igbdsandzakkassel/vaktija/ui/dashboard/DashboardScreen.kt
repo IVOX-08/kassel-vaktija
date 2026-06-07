@@ -6,8 +6,9 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,20 +16,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,13 +50,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,6 +78,15 @@ import java.time.format.DateTimeFormatter
 
 private val TIME: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 private fun LocalTime.hhmm(): String = format(TIME)
+
+// TBD-community-rule: confirm the donation target. For now this opens PayPal's donate flow for the
+// community's PayPal e-mail. A hosted PayPal donate button or a paypal.me handle would give a nicer
+// flow if the community sets one up.
+private const val PAYPAL_URL =
+    "https://www.paypal.com/donate/?business=ikzsandzakkassel@gmail.com&currency_code=EUR"
+// Opens Google Maps at the mosque address.
+private const val MAPS_URL =
+    "https://www.google.com/maps/search/?api=1&query=Schwanenweg+13%2C+34123+Kassel"
 
 @Composable
 fun DashboardScreen(
@@ -166,18 +190,40 @@ private fun StaleBanner() {
 
 @Composable
 private fun Header(gregorianDate: String, hijriDate: String) {
+    val uriHandler = LocalUriHandler.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp),
+            .padding(top = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            painter = painterResource(R.drawable.logo_community),
-            contentDescription = stringResource(R.string.cd_app_logo),
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.height(110.dp),
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Left: mosque address → opens Maps.
+            HeaderSideItem(
+                icon = Icons.Filled.Place,
+                label = stringResource(R.string.community_address),
+                horizontalAlignment = Alignment.Start,
+                textAlign = TextAlign.Start,
+                onClick = { uriHandler.openUri(MAPS_URL) },
+                modifier = Modifier.weight(1f),
+            )
+            // Center: community emblem, blended into the page background (like the website logo).
+            BlendedEmblem(modifier = Modifier.height(96.dp))
+            // Right: donate → opens PayPal.
+            HeaderSideItem(
+                icon = Icons.Filled.Favorite,
+                label = stringResource(R.string.action_donate),
+                horizontalAlignment = Alignment.End,
+                textAlign = TextAlign.End,
+                onClick = { uriHandler.openUri(PAYPAL_URL) },
+                modifier = Modifier.weight(1f),
+            )
+        }
         Spacer(Modifier.height(6.dp))
         Text(
             text = gregorianDate,
@@ -190,6 +236,66 @@ private fun Header(gregorianDate: String, hijriDate: String) {
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             textAlign = TextAlign.Center,
+        )
+    }
+}
+
+/** A tappable icon + text block flanking the emblem (mosque address / donate). */
+@Composable
+private fun HeaderSideItem(
+    icon: ImageVector,
+    label: String,
+    horizontalAlignment: Alignment.Horizontal,
+    textAlign: TextAlign,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(onClick = onClick)
+            .padding(vertical = 6.dp, horizontal = 4.dp),
+        horizontalAlignment = horizontalAlignment,
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(20.dp),
+        )
+        Spacer(Modifier.height(3.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = textAlign,
+        )
+    }
+}
+
+/**
+ * The community emblem drawn so its backdrop blends into the page background. In light mode we draw
+ * with [BlendMode.Multiply] (like the website's `mix-blend-mode: multiply`), which turns the emblem's
+ * white backdrop into the grey page colour. In dark mode the emblem already sits on black, so we draw
+ * it normally.
+ */
+@Composable
+private fun BlendedEmblem(modifier: Modifier = Modifier) {
+    val emblem = ImageBitmap.imageResource(R.drawable.logo_community)
+    val isLight = MaterialTheme.colorScheme.background.luminance() > 0.5f
+    val description = stringResource(R.string.cd_app_logo)
+    Canvas(
+        modifier = modifier
+            .aspectRatio(emblem.width.toFloat() / emblem.height.toFloat())
+            .semantics { contentDescription = description },
+    ) {
+        drawImage(
+            image = emblem,
+            srcOffset = IntOffset.Zero,
+            srcSize = IntSize(emblem.width, emblem.height),
+            dstOffset = IntOffset.Zero,
+            dstSize = IntSize(size.width.toInt(), size.height.toInt()),
+            blendMode = if (isLight) BlendMode.Multiply else BlendMode.SrcOver,
         )
     }
 }

@@ -27,4 +27,5 @@
     <string name="placeholder_coming_soon">قريبًا</string>
     <string name="cd_app_logo">شعار الجماعة</string>
     <string name="cd_back">رجوع</string>
+    <string name="action_donate">تبرّع</string>
 </resources>

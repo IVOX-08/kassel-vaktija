@@ -55,4 +55,5 @@
     <string name="placeholder_coming_soon">Demnächst verfügbar</string>
     <string name="cd_app_logo">Logo der Gemeinde</string>
     <string name="cd_back">Zurück</string>
+    <string name="action_donate">Spenden</string>
 </resources>

@@ -85,4 +85,6 @@
     <string name="placeholder_coming_soon">Uskoro dostupno</string>
     <string name="cd_app_logo">Logo zajednice</string>
     <string name="cd_back">Nazad</string>
+    <string name="action_donate">Doniraj</string>
+    <string name="community_address" translatable="false">Schwanenweg 13\n34123 Kassel</string>
 </resources>

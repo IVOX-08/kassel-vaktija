@@ -3,14 +3,18 @@ package de.igbdsandzakkassel.vaktija.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,7 +39,7 @@ fun KasselApp() {
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 TopLevelDestination.entries.forEach { destination ->
                     val selected = currentRoute?.hierarchy?.any { it.route == destination.route } == true
                     NavigationBarItem(
@@ -53,7 +57,25 @@ fun KasselApp() {
                                 contentDescription = stringResource(destination.labelRes),
                             )
                         },
-                        label = { Text(stringResource(destination.labelRes)) },
+                        label = {
+                            // Single line, smaller, ellipsised — keeps long German labels
+                            // ("Einstellungen", "Nachrichten") from wrapping to two lines.
+                            Text(
+                                text = stringResource(destination.labelRes),
+                                fontSize = 10.sp,
+                                maxLines = 1,
+                                softWrap = false,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
+                        // Brand-green selection instead of the default purple.
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
                     )
                 }
             }

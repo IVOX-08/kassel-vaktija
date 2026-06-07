@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.YearMonth
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,7 +33,10 @@ class MonthCalendarRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
 ) {
     suspend fun getMonth(month: YearMonth): List<DailyTimes> = withContext(Dispatchers.Default) {
-        val prefix = "%04d-%02d%%".format(month.year, month.monthValue)
+        // Locale.ROOT → ASCII digits. Using the default locale here would emit Arabic-Indic digits
+        // under an Arabic UI ("٢٠٢٦-٠٦%"), which never matches the ASCII dates stored in Room and
+        // left the whole calendar empty (blank/black screen).
+        val prefix = String.format(Locale.ROOT, "%04d-%02d%%", month.year, month.monthValue)
 
         var cached = monthDao.getMonth(prefix)
         if (cached.size < month.lengthOfMonth()) {
@@ -69,13 +73,19 @@ class MonthCalendarRepository @Inject constructor(
         isha = diff(official.isha, raw.isha),
     )
 
-    // Difference in seconds, clamped to ±15 min. Real calibration is a couple of minutes; the clamp
-    // guards against a pathological offset (e.g. a bad scrape) that could otherwise distort the month.
-    private fun diff(a: LocalTime, b: LocalTime): Int =
-        (a.toSecondOfDay() - b.toSecondOfDay()).coerceIn(-MAX_OFFSET_SEC, MAX_OFFSET_SEC)
+    // Nearest signed difference in seconds, wrapped to (−12h, +12h]. This is essential at Kassel's
+    // latitude: in summer the locally-computed Isha can fall *past midnight* (e.g. 01:21), so a naive
+    // `official − raw` would yield a bogus ~+22h offset instead of the true ~−2h. Picking the nearest
+    // wrap fixes that. (A previous ±15 min clamp here is what made the whole month "completely
+    // incorrect" — the real high-latitude offset is far larger than 15 min.)
+    private fun diff(a: LocalTime, b: LocalTime): Int {
+        val raw = a.toSecondOfDay() - b.toSecondOfDay()
+        return (raw + HALF_DAY_SEC).mod(DAY_SEC) - HALF_DAY_SEC
+    }
 
     private companion object {
-        const val MAX_OFFSET_SEC = 15 * 60
+        const val DAY_SEC = 24 * 60 * 60
+        const val HALF_DAY_SEC = DAY_SEC / 2
     }
 }
 
@@ -99,8 +109,9 @@ private data class CalibrationOffsets(
     fun toList(): List<Int> = listOf(fajr, sunrise, dhuhr, asr, maghrib, isha)
 
     private fun shift(time: LocalTime, seconds: Int): LocalTime =
-        // Clamp within the same day so a shift can never silently wrap past midnight.
-        LocalTime.ofSecondOfDay((time.toSecondOfDay() + seconds).coerceIn(0, 86_399).toLong())
+        // Wrap around midnight (mod 24h) so a large offset maps to the correct time of day instead of
+        // being clamped to 00:00 / 23:59 (needed when the computed Isha sits just past midnight).
+        LocalTime.ofSecondOfDay((time.toSecondOfDay() + seconds).mod(86_400).toLong())
 
     companion object {
         val ZERO = CalibrationOffsets(0, 0, 0, 0, 0, 0)

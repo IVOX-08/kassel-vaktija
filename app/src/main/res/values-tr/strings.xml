@@ -27,4 +27,5 @@
     <string name="placeholder_coming_soon">Çok yakında</string>
     <string name="cd_app_logo">Cemaat logosu</string>
     <string name="cd_back">Geri</string>
+    <string name="action_donate">Bağış yap</string>
 </resources>
