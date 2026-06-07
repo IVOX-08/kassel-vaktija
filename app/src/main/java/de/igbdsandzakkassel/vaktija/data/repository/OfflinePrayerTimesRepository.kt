@@ -50,9 +50,14 @@ class OfflinePrayerTimesRepository @Inject constructor(
 
     override suspend fun refresh(): Boolean = try {
         val times = remote.fetchLatest()
-        dao.upsert(times.toEntity(fetchedAt = System.currentTimeMillis()))
+        val today = LocalDate.now()
+        // vaktija.eu/kassel always publishes the CURRENT day's times, but its JSON-LD `startDate`
+        // can lag by a day (e.g. just after midnight / edge caching). Trusting it would key today's
+        // correct times under yesterday's date and wrongly show the "offline/stale" banner. So key
+        // the cache by the device's current date instead.
+        dao.upsert(times.copy(date = today).toEntity(fetchedAt = System.currentTimeMillis()))
         // Keep the cache small: drop anything older than ~2 weeks.
-        dao.deleteOlderThan(LocalDate.now().minusWeeks(2).toString())
+        dao.deleteOlderThan(today.minusWeeks(2).toString())
         true
     } catch (e: Exception) {
         false
