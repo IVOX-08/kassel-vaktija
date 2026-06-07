@@ -208,6 +208,7 @@ private fun Header(gregorianDate: String, hijriDate: String) {
                 icon = Icons.Filled.Place,
                 label = stringResource(R.string.community_address),
                 emphasized = false,
+                alignment = Alignment.Start,
                 onClick = { uriHandler.openUri(MAPS_URL) },
                 modifier = Modifier.weight(1f),
             )
@@ -218,6 +219,7 @@ private fun Header(gregorianDate: String, hijriDate: String) {
                 icon = Icons.Filled.Favorite,
                 label = stringResource(R.string.action_donate),
                 emphasized = true,
+                alignment = Alignment.End,
                 onClick = { uriHandler.openUri(PAYPAL_URL) },
                 modifier = Modifier.weight(1f),
             )
@@ -247,30 +249,35 @@ private fun HeaderSideItem(
     icon: ImageVector,
     label: String,
     emphasized: Boolean,
+    alignment: Alignment.Horizontal,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick)
-            .padding(vertical = 6.dp, horizontal = 4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(if (emphasized) 30.dp else 22.dp),
-        )
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = label,
-            style = if (emphasized) MaterialTheme.typography.titleMedium else MaterialTheme.typography.labelMedium,
-            fontWeight = if (emphasized) FontWeight.Bold else FontWeight.Medium,
-            color = if (emphasized) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
+    // Outer column positions the block toward the screen edge (Start = address/left, End = donate/right);
+    // the inner column keeps the icon centred over its text.
+    Column(modifier = modifier, horizontalAlignment = alignment) {
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(12.dp))
+                .clickable(onClick = onClick)
+                .padding(vertical = 6.dp, horizontal = 4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(if (emphasized) 30.dp else 22.dp),
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = label,
+                style = if (emphasized) MaterialTheme.typography.titleMedium else MaterialTheme.typography.labelMedium,
+                fontWeight = if (emphasized) FontWeight.Bold else FontWeight.Medium,
+                color = if (emphasized) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -305,7 +312,10 @@ private fun BlendedEmblem(modifier: Modifier = Modifier) {
 @Composable
 private fun CountdownCard(state: DashboardUiState, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        // Slightly narrower than the prayer cards (extra horizontal inset) and a touch shorter.
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = BrandGreen),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -313,7 +323,7 @@ private fun CountdownCard(state: DashboardUiState, modifier: Modifier = Modifier
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 22.dp, horizontal = 24.dp),
+                .padding(vertical = 16.dp, horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -322,10 +332,10 @@ private fun CountdownCard(state: DashboardUiState, modifier: Modifier = Modifier
                 fontWeight = FontWeight.SemiBold,
                 color = BrandGoldLight,
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(6.dp))
             Text(
                 text = state.countdown,
-                fontSize = 56.sp,
+                fontSize = 48.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
             )
