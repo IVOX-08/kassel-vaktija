@@ -1,5 +1,8 @@
 package de.igbdsandzakkassel.vaktija.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -10,8 +13,16 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
@@ -37,8 +48,28 @@ fun KasselApp() {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination
 
+    // Hide the bottom bar while scrolling content down, show it again on scroll up.
+    var barVisible by remember { mutableStateOf(true) }
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                if (consumed.y < -1f) barVisible = false
+                else if (consumed.y > 1f) barVisible = true
+                return Offset.Zero
+            }
+        }
+    }
+    // Always reveal the bar when switching tabs.
+    LaunchedEffect(currentRoute?.route) { barVisible = true }
+
     Scaffold(
+        modifier = Modifier.nestedScroll(nestedScrollConnection),
         bottomBar = {
+            AnimatedVisibility(
+                visible = barVisible,
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it }),
+            ) {
             NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 TopLevelDestination.entries.forEach { destination ->
                     val selected = currentRoute?.hierarchy?.any { it.route == destination.route } == true
@@ -78,6 +109,7 @@ fun KasselApp() {
                         ),
                     )
                 }
+            }
             }
         },
     ) { innerPadding ->
