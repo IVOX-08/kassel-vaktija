@@ -8,6 +8,7 @@ import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
+import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,8 +50,13 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 when (action) {
-                    // Re-arm subsequent alarms (today's remaining events).
-                    ACTION_ADHAN, ACTION_PREWARN -> alarmScheduler.rescheduleAll()
+                    // Re-arm subsequent alarms (today's remaining events) + advance the widget's
+                    // "next prayer" highlight.
+                    ACTION_ADHAN -> {
+                        alarmScheduler.rescheduleAll()
+                        PrayerTimesWidget.refresh(context)
+                    }
+                    ACTION_PREWARN -> alarmScheduler.rescheduleAll()
                     ACTION_SILENCE_START -> dndController.silence()
                     ACTION_SILENCE_END -> dndController.restore()
                 }

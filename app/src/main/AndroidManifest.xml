@@ -93,6 +93,19 @@
             android:name=".service.alarm.PrayerAlarmReceiver"
             android:exported="false" />
 
+        <!-- Home-screen prayer-times widget (Glance). -->
+        <receiver
+            android:name=".service.widget.PrayerTimesWidgetReceiver"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/prayer_widget_info" />
+        </receiver>
+
         <!-- Re-arms alarms after boot / app update / time/timezone/locale changes. -->
         <receiver
             android:name=".service.alarm.RescheduleReceiver"
