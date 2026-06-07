@@ -3,54 +3,54 @@
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/widget_card_bg"
     android:gravity="center_vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/widget_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dashboard_next_prayer_in"
-        android:textColor="#D4AF37"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:maxLines="1"
-        android:ellipsize="end" />
-
-    <Chronometer
-        android:id="@+id/widget_chrono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="#FFFFFF"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/widget_logo"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:background="@drawable/widget_logo_chip"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo_notification"
+        android:contentDescription="@string/cd_app_logo" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:layout_marginStart="14dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/widget_prayer_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textColor="#FFD9A21A"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:maxLines="1"
-            android:ellipsize="end" />
+            android:ellipsize="end"
+            android:letterSpacing="0.02" />
+
+        <Chronometer
+            android:id="@+id/widget_chrono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:includeFontPadding="false" />
 
         <TextView
             android:id="@+id/widget_prayer_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#D4AF37"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="1dp"
+            android:textColor="#CCFFFFFF"
+            android:textSize="13sp" />
     </LinearLayout>
 </LinearLayout>
