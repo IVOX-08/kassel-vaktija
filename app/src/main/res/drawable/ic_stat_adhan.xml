@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Status-bar notification icon: white crescent on transparent (Android tints status icons). -->
+<!-- Status-bar notification icon: white shield silhouette (the coat-of-arms shape). Android tints
+     status-bar icons to a flat color, so this is a monochrome silhouette; the full colored emblem
+     is set as the notification's large icon. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
@@ -7,7 +9,5 @@
     android:viewportHeight="24">
     <path
         android:fillColor="#FFFFFFFF"
-        android:fillType="evenOdd"
-        android:pathData="M2,12 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0 Z
-                          M8,12 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0 Z" />
+        android:pathData="M5,4 H19 V11 C19,16 15.5,19.5 12,21.5 C8.5,19.5 5,16 5,11 Z" />
 </vector>

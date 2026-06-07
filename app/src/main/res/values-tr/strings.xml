@@ -20,6 +20,9 @@
 
     <string name="dashboard_next_prayer_in">SONRAKİ NAMAZA KALAN</string>
     <string name="label_iqamah">İKAMET</string>
+    <string name="settings_prewarn">Ön uyarı</string>
+    <string name="settings_off">Kapalı</string>
+    <string name="settings_minutes">%1$d dk</string>
 
     <string name="placeholder_coming_soon">Çok yakında</string>
     <string name="cd_app_logo">Cemaat logosu</string>

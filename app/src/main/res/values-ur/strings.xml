@@ -20,6 +20,9 @@
 
     <string name="dashboard_next_prayer_in">اگلی نماز میں باقی</string>
     <string name="label_iqamah">اقامہ</string>
+    <string name="settings_prewarn">پیشگی اطلاع</string>
+    <string name="settings_off">بند</string>
+    <string name="settings_minutes">%1$d منٹ</string>
 
     <string name="placeholder_coming_soon">جلد آ رہا ہے</string>
     <string name="cd_app_logo">کمیونٹی کا لوگو</string>

@@ -20,6 +20,9 @@
 
     <string name="dashboard_next_prayer_in">СЛЕДУЮЩИЙ НАМАЗ ЧЕРЕЗ</string>
     <string name="label_iqamah">ИКАМАТ</string>
+    <string name="settings_prewarn">Предупреждение</string>
+    <string name="settings_off">Выкл.</string>
+    <string name="settings_minutes">%1$d мин</string>
 
     <string name="placeholder_coming_soon">Скоро</string>
     <string name="cd_app_logo">Логотип общины</string>

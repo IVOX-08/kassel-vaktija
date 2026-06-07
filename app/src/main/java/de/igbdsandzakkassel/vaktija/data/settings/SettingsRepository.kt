@@ -30,7 +30,8 @@ class SettingsRepository @Inject constructor(
             perPrayer = Prayer.OBLIGATORY.associateWith { prayer ->
                 PrayerAlarmPrefs(
                     enabled = prefs[enabledKey(prayer)] ?: true,
-                    preWarnMinutes = prefs[preWarnKey(prayer)] ?: 0,
+                    // Coerce legacy/invalid values (e.g. a previously-saved 30) to a valid option.
+                    preWarnMinutes = coercePreWarn(prefs[preWarnKey(prayer)] ?: 0),
                 )
             },
         )
@@ -47,6 +48,13 @@ class SettingsRepository @Inject constructor(
     suspend fun setPreWarnMinutes(prayer: Prayer, minutes: Int) {
         store.edit { it[preWarnKey(prayer)] = minutes }
     }
+
+    private fun coercePreWarn(value: Int): Int =
+        if (value in AlarmSettings.PRE_WARN_OPTIONS) {
+            value
+        } else {
+            AlarmSettings.PRE_WARN_OPTIONS.minByOrNull { kotlin.math.abs(it - value) } ?: 0
+        }
 
     fun observeThemeMode(): Flow<ThemeMode> = store.data.map { prefs ->
         prefs[THEME_MODE]?.let { runCatching { ThemeMode.valueOf(it) }.getOrNull() } ?: ThemeMode.SYSTEM

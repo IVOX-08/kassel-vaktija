@@ -20,6 +20,9 @@
 
     <string name="dashboard_next_prayer_in">NAMAZI TJETËR PAS</string>
     <string name="label_iqamah">IKAMETI</string>
+    <string name="settings_prewarn">Paralajmërim</string>
+    <string name="settings_off">Joaktiv</string>
+    <string name="settings_minutes">%1$d min</string>
 
     <string name="placeholder_coming_soon">Së shpejti</string>
     <string name="cd_app_logo">Logoja e bashkësisë</string>

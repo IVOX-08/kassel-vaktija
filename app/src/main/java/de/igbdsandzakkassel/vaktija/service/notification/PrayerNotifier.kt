@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
@@ -54,6 +55,7 @@ object PrayerNotifier {
         stopIntent: PendingIntent,
     ): Notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
         .setSmallIcon(R.drawable.ic_stat_adhan)
+        .setLargeIcon(communityLogo(context))
         .setContentTitle(context.getString(R.string.notif_adhan_title, context.getString(prayer.labelRes)))
         .setContentText(context.getString(R.string.notif_adhan_text))
         .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -67,6 +69,7 @@ object PrayerNotifier {
     fun postPreWarning(context: Context, prayer: Prayer, minutes: Int) {
         val notification = NotificationCompat.Builder(context, CHANNEL_PREWARN)
             .setSmallIcon(R.drawable.ic_stat_adhan)
+            .setLargeIcon(communityLogo(context))
             .setContentTitle(
                 context.getString(R.string.notif_prewarn_title, context.getString(prayer.labelRes), minutes),
             )
@@ -91,4 +94,8 @@ object PrayerNotifier {
 
     private fun hasNotificationPermission(context: Context): Boolean =
         NotificationManagerCompat.from(context).areNotificationsEnabled()
+
+    /** The community coat-of-arms as the notification's large (colored) icon. */
+    private fun communityLogo(context: Context) =
+        BitmapFactory.decodeResource(context.resources, R.drawable.logo_notification)
 }

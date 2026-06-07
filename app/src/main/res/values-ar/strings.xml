@@ -20,6 +20,9 @@
 
     <string name="dashboard_next_prayer_in">الصلاة القادمة بعد</string>
     <string name="label_iqamah">الإقامة</string>
+    <string name="settings_prewarn">تنبيه مسبق</string>
+    <string name="settings_off">إيقاف</string>
+    <string name="settings_minutes">%1$d دقيقة</string>
 
     <string name="placeholder_coming_soon">قريبًا</string>
     <string name="cd_app_logo">شعار الجماعة</string>
