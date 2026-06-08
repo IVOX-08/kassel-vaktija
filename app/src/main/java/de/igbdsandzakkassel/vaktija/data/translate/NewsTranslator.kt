@@ -52,8 +52,13 @@ class NewsTranslator @Inject constructor() {
             )
             try {
                 translator.downloadModelIfNeeded().await()
-                if (title.isNotBlank()) titleByLang[target.tag] = translator.translate(title).await()
-                if (body.isNotBlank()) bodyByLang[target.tag] = translator.translate(body).await()
+                // Swap community/Islamic terms for their correct target-language form BEFORE
+                // translating, so the engine keeps them instead of transliterating (e.g. "Bajram"
+                // → "صلاة العيد" rather than a meaningless "باجرام").
+                val srcTitle = CommunityGlossary.localize(title, target.tag)
+                val srcBody = CommunityGlossary.localize(body, target.tag)
+                if (title.isNotBlank()) titleByLang[target.tag] = translator.translate(srcTitle).await()
+                if (body.isNotBlank()) bodyByLang[target.tag] = translator.translate(srcBody).await()
             } catch (e: CancellationException) {
                 throw e // propagate cancellation; the finally still closes the translator
             } catch (_: Exception) {
