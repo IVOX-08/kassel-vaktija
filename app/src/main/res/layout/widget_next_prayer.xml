@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@drawable/widget_card_bg"
+    android:background="@android:color/transparent"
     android:gravity="center_vertical"
-    android:padding="16dp">
+    android:padding="12dp">
 
     <ImageView
         android:id="@+id/widget_logo"
@@ -29,12 +29,15 @@
             android:id="@+id/widget_prayer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFD9A21A"
+            android:textColor="#FFE0A93A"
             android:textSize="15sp"
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end"
-            android:letterSpacing="0.02" />
+            android:shadowColor="#A6000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="5" />
 
         <Chronometer
             android:id="@+id/widget_chrono"
@@ -43,14 +46,22 @@
             android:textColor="#FFFFFFFF"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:includeFontPadding="false" />
+            android:includeFontPadding="false"
+            android:shadowColor="#BF000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="6" />
 
         <TextView
             android:id="@+id/widget_prayer_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
-            android:textColor="#CCFFFFFF"
-            android:textSize="13sp" />
+            android:textColor="#FFFFFFFF"
+            android:textSize="13sp"
+            android:shadowColor="#BF000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="5" />
     </LinearLayout>
 </LinearLayout>
