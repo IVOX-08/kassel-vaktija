@@ -6,6 +6,10 @@
     <string name="nav_news">Lajme</string>
     <string name="nav_calendar">Kalendari</string>
     <string name="nav_settings">Cilësimet</string>
+    <string name="nav_more">Më shumë</string>
+    <string name="library_quran">Kur\'ani</string>
+    <string name="library_hadith">Hadithe</string>
+    <string name="library_dhikr">Dhikr</string>
 
     <string name="prayer_fajr">Sabahu</string>
     <string name="prayer_sunrise">Lindja e diellit</string>

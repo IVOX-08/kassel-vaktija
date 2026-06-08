@@ -6,6 +6,10 @@
     <string name="nav_news">Новости</string>
     <string name="nav_calendar">Календарь</string>
     <string name="nav_settings">Настройки</string>
+    <string name="nav_more">Ещё</string>
+    <string name="library_quran">Коран</string>
+    <string name="library_hadith">Хадисы</string>
+    <string name="library_dhikr">Зикр</string>
 
     <string name="prayer_fajr">Фаджр</string>
     <string name="prayer_sunrise">Восход солнца</string>

@@ -10,6 +10,12 @@
     <string name="nav_news">Vijesti</string>
     <string name="nav_calendar">Kalendar</string>
     <string name="nav_settings">Postavke</string>
+    <string name="nav_more">Više</string>
+
+    <!-- Library / "More" hub -->
+    <string name="library_quran">Kur\'an</string>
+    <string name="library_hadith">Hadis</string>
+    <string name="library_dhikr">Zikr</string>
 
     <!-- Prayer names -->
     <string name="prayer_fajr">Sabah</string>

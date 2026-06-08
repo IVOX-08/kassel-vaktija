@@ -6,6 +6,10 @@
     <string name="nav_news">Haberler</string>
     <string name="nav_calendar">Takvim</string>
     <string name="nav_settings">Ayarlar</string>
+    <string name="nav_more">Daha fazla</string>
+    <string name="library_quran">Kur\'an</string>
+    <string name="library_hadith">Hadis</string>
+    <string name="library_dhikr">Zikir</string>
 
     <string name="prayer_fajr">Sabah</string>
     <string name="prayer_sunrise">Güneş</string>

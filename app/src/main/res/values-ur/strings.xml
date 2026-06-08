@@ -6,6 +6,10 @@
     <string name="nav_news">خبریں</string>
     <string name="nav_calendar">کیلنڈر</string>
     <string name="nav_settings">ترتیبات</string>
+    <string name="nav_more">مزید</string>
+    <string name="library_quran">قرآن</string>
+    <string name="library_hadith">حدیث</string>
+    <string name="library_dhikr">اذکار</string>
 
     <string name="prayer_fajr">فجر</string>
     <string name="prayer_sunrise">طلوعِ آفتاب</string>

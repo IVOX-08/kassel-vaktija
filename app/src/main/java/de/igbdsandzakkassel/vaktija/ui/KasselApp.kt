@@ -37,6 +37,12 @@ import de.igbdsandzakkassel.vaktija.ui.navigation.TopLevelDestination
 import de.igbdsandzakkassel.vaktija.ui.news.NewsScreen
 import de.igbdsandzakkassel.vaktija.ui.qibla.QiblaScreen
 import de.igbdsandzakkassel.vaktija.ui.settings.SettingsScreen
+import de.igbdsandzakkassel.vaktija.R
+import de.igbdsandzakkassel.vaktija.ui.components.PlaceholderContent
+import de.igbdsandzakkassel.vaktija.ui.dhikr.DhikrScreen
+import de.igbdsandzakkassel.vaktija.ui.library.LibraryDetail
+import de.igbdsandzakkassel.vaktija.ui.library.LibraryScreen
+import de.igbdsandzakkassel.vaktija.ui.library.LibrarySection
 
 /**
  * Single-Activity phone/tablet scaffold: a bottom navigation bar over a Navigation-Compose host.
@@ -72,7 +78,11 @@ fun KasselApp() {
             ) {
             NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 TopLevelDestination.entries.forEach { destination ->
-                    val selected = currentRoute?.hierarchy?.any { it.route == destination.route } == true
+                    val selected = if (destination == TopLevelDestination.LIBRARY) {
+                        currentRoute?.route in LibrarySection.ROUTES
+                    } else {
+                        currentRoute?.hierarchy?.any { it.route == destination.route } == true
+                    }
                     NavigationBarItem(
                         selected = selected,
                         onClick = {
@@ -123,8 +133,28 @@ fun KasselApp() {
             composable(TopLevelDestination.DASHBOARD.route) { DashboardScreen() }
             composable(TopLevelDestination.CALENDAR.route) { MonthCalendarScreen() }
             composable(TopLevelDestination.NEWS.route) { NewsScreen() }
-            composable(TopLevelDestination.QIBLA.route) { QiblaScreen() }
+            composable(TopLevelDestination.LIBRARY.route) {
+                LibraryScreen(onOpen = { route -> navController.navigate(route) })
+            }
             composable(TopLevelDestination.SETTINGS.route) { SettingsScreen() }
+
+            // "More" (Više) hub sub-pages. Bottom bar stays visible; back returns to the hub.
+            composable(LibrarySection.QIBLA.route) {
+                LibraryDetail(R.string.nav_qibla, onBack = { navController.popBackStack() }) { QiblaScreen() }
+            }
+            composable(LibrarySection.DHIKR.route) {
+                LibraryDetail(R.string.library_dhikr, onBack = { navController.popBackStack() }) { DhikrScreen() }
+            }
+            composable(LibrarySection.QURAN.route) {
+                LibraryDetail(R.string.library_quran, onBack = { navController.popBackStack() }) {
+                    PlaceholderContent(title = stringResource(R.string.library_quran))
+                }
+            }
+            composable(LibrarySection.HADITH.route) {
+                LibraryDetail(R.string.library_hadith, onBack = { navController.popBackStack() }) {
+                    PlaceholderContent(title = stringResource(R.string.library_hadith))
+                }
+            }
         }
     }
 }
