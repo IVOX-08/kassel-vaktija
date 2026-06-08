@@ -8,8 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-    // TBD-decision: apply google-services once app/google-services.json is added (Phase 1 / 4b).
-    // alias(libs.plugins.google.services)
+    alias(libs.plugins.google.services)
 }
 
 // Release signing credentials, loaded from the gitignored keystore.properties (if present).
@@ -35,9 +34,9 @@ android {
         // res/xml/locales_config.xml. Adding a new values-XX/ should "just work".
         resourceConfigurations += listOf("bs", "de", "ar", "tr", "sq", "en", "ur", "ru")
 
-        // TBD-decision: the developer/admin Firebase UID is baked in here in Phase 4b.
-        // The real protection is the Firestore Security Rule on the server, not this value.
-        buildConfigField("String", "ADMIN_UID", "\"\"")
+        // Admin's Firebase Auth UID. Used to show admin tools to the right person; the real
+        // protection is the Firestore security rule on the server, which checks this same UID.
+        buildConfigField("String", "ADMIN_UID", "\"1a7xqRgIYDR0RZqa3KghBlz98PK2\"")
     }
 
     signingConfigs {
@@ -138,10 +137,9 @@ dependencies {
     // --- Permissions helper (Phase 3+) ---
     implementation(libs.accompanist.permissions)
 
-    // --- Firebase (Phase 1 / 4b) — uncomment after google-services.json is added ---
-    // implementation(platform(libs.firebase.bom))
-    // implementation(libs.firebase.firestore)
-    // implementation(libs.firebase.auth)
-    // implementation(libs.firebase.messaging)
-    // implementation(libs.firebase.storage)
+    // --- Firebase (admin-edited community rules + news) ---
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.kotlinx.coroutines.play.services)
 }

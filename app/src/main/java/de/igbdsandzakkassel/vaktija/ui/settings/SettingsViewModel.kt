@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.repository.AdminController
+import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
@@ -25,6 +28,8 @@ class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val alarmScheduler: AlarmScheduler,
     private val dndController: DndController,
+    private val adminController: AdminController,
+    private val communityRuleProvider: CommunityRuleProvider,
 ) : ViewModel() {
 
     val settings: StateFlow<AlarmSettings> = settingsRepository.observe()
@@ -32,6 +37,29 @@ class SettingsViewModel @Inject constructor(
 
     val themeMode: StateFlow<ThemeMode> = settingsRepository.observeThemeMode()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ThemeMode.SYSTEM)
+
+    /** True while signed in as the admin → reveals the admin editor. */
+    val isAdmin: StateFlow<Boolean> = adminController.observeIsAdmin()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /** Current community rules (Fajr Iqamah, Jumua, offsets) — what the admin edits. */
+    val communityRules: StateFlow<CommunityRules> = communityRuleProvider.observeRules()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CommunityRules.DEFAULT)
+
+    fun signIn(email: String, password: String, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            onResult(adminController.signIn(email, password).isSuccess)
+        }
+    }
+
+    fun signOut() = adminController.signOut()
+
+    fun saveRules(rules: CommunityRules, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val ok = runCatching { communityRuleProvider.saveRules(rules) }.isSuccess
+            onResult(ok)
+        }
+    }
 
     fun setThemeMode(mode: ThemeMode) {
         viewModelScope.launch { settingsRepository.setThemeMode(mode) }

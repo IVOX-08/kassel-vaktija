@@ -106,4 +106,15 @@
     <string name="settings_about_header">O nama</string>
     <string name="about_imam">Imam</string>
     <string name="about_dev_promo">Želite aplikaciju ili web stranicu? Nazovite:</string>
+
+    <!-- Admin (hidden) -->
+    <string name="admin_section_header">Administrator</string>
+    <string name="admin_login_title">Admin-prijava</string>
+    <string name="admin_email">E-mail</string>
+    <string name="admin_password">Lozinka</string>
+    <string name="admin_sign_in">Prijava</string>
+    <string name="admin_sign_out">Odjava</string>
+    <string name="admin_login_failed">Prijava nije uspjela</string>
+    <string name="admin_save">Sačuvaj</string>
+    <string name="admin_saved">Sačuvano</string>
 </resources>

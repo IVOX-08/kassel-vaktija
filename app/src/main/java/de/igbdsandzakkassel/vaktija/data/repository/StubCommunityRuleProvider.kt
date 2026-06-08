@@ -11,4 +11,5 @@ import javax.inject.Inject
  */
 class StubCommunityRuleProvider @Inject constructor() : CommunityRuleProvider {
     override fun observeRules(): Flow<CommunityRules> = flowOf(CommunityRules.DEFAULT)
+    override suspend fun saveRules(rules: CommunityRules) = Unit
 }

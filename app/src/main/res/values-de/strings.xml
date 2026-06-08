@@ -72,4 +72,13 @@
     <string name="settings_about_header">Über uns</string>
     <string name="about_imam">Imam</string>
     <string name="about_dev_promo">App oder Website gewünscht? Anrufen:</string>
+    <string name="admin_section_header">Administrator</string>
+    <string name="admin_login_title">Admin-Anmeldung</string>
+    <string name="admin_email">E-Mail</string>
+    <string name="admin_password">Passwort</string>
+    <string name="admin_sign_in">Anmelden</string>
+    <string name="admin_sign_out">Abmelden</string>
+    <string name="admin_login_failed">Anmeldung fehlgeschlagen</string>
+    <string name="admin_save">Speichern</string>
+    <string name="admin_saved">Gespeichert</string>
 </resources>
