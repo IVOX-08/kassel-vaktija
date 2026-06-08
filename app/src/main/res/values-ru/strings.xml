@@ -72,4 +72,13 @@
     <string name="settings_about_header">О нас</string>
     <string name="about_imam">Имам</string>
     <string name="about_dev_promo">Нужно приложение или сайт? Звоните:</string>
+
+    <!-- News / announcements -->
+    <string name="news_empty">Объявлений пока нет.</string>
+    <string name="news_add">Новое объявление</string>
+    <string name="news_title_label">Заголовок</string>
+    <string name="news_body_label">Сообщение</string>
+    <string name="news_post">Опубликовать</string>
+    <string name="news_delete">Удалить</string>
+    <string name="news_delete_confirm">Удалить это объявление?</string>
 </resources>

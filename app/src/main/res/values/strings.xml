@@ -107,6 +107,15 @@
     <string name="about_imam">Imam</string>
     <string name="about_dev_promo">Želite aplikaciju ili web stranicu? Nazovite:</string>
 
+    <!-- News / announcements -->
+    <string name="news_empty">Trenutno nema obavijesti.</string>
+    <string name="news_add">Nova obavijest</string>
+    <string name="news_title_label">Naslov</string>
+    <string name="news_body_label">Poruka</string>
+    <string name="news_post">Objavi</string>
+    <string name="news_delete">Obriši</string>
+    <string name="news_delete_confirm">Obrisati ovu obavijest?</string>
+
     <!-- Admin (hidden) -->
     <string name="admin_section_header">Administrator</string>
     <string name="admin_login_title">Admin-prijava</string>

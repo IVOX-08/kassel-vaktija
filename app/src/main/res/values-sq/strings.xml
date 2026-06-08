@@ -72,4 +72,13 @@
     <string name="settings_about_header">Rreth nesh</string>
     <string name="about_imam">Imami</string>
     <string name="about_dev_promo">Doni një aplikacion ose faqe interneti? Telefononi:</string>
+
+    <!-- News / announcements -->
+    <string name="news_empty">Ende nuk ka njoftime.</string>
+    <string name="news_add">Njoftim i ri</string>
+    <string name="news_title_label">Titulli</string>
+    <string name="news_body_label">Mesazhi</string>
+    <string name="news_post">Publiko</string>
+    <string name="news_delete">Fshi</string>
+    <string name="news_delete_confirm">Të fshihet ky njoftim?</string>
 </resources>

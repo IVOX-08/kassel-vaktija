@@ -8,6 +8,8 @@ import de.igbdsandzakkassel.vaktija.data.remote.RemoteVaktijaSource
 import de.igbdsandzakkassel.vaktija.data.remote.VaktijaEuSource
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.repository.FirestoreCommunityRuleProvider
+import de.igbdsandzakkassel.vaktija.data.repository.FirestoreNewsRepository
+import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
 import de.igbdsandzakkassel.vaktija.data.repository.OfflinePrayerTimesRepository
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import javax.inject.Singleton
@@ -32,4 +34,8 @@ abstract class DataModule {
     @Binds
     @Singleton
     abstract fun bindCommunityRuleProvider(impl: FirestoreCommunityRuleProvider): CommunityRuleProvider
+
+    @Binds
+    @Singleton
+    abstract fun bindNewsRepository(impl: FirestoreNewsRepository): NewsRepository
 }

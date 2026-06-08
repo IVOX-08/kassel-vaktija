@@ -72,4 +72,13 @@
     <string name="settings_about_header">عن الجماعة</string>
     <string name="about_imam">الإمام</string>
     <string name="about_dev_promo">تريد تطبيقًا أو موقعًا إلكترونيًا؟ اتصل:</string>
+
+    <!-- News / announcements -->
+    <string name="news_empty">لا توجد إعلانات بعد.</string>
+    <string name="news_add">إعلان جديد</string>
+    <string name="news_title_label">العنوان</string>
+    <string name="news_body_label">الرسالة</string>
+    <string name="news_post">نشر</string>
+    <string name="news_delete">حذف</string>
+    <string name="news_delete_confirm">حذف هذا الإعلان؟</string>
 </resources>

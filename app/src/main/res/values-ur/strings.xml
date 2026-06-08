@@ -72,4 +72,13 @@
     <string name="settings_about_header">ہمارے بارے میں</string>
     <string name="about_imam">امام</string>
     <string name="about_dev_promo">ایپ یا ویب سائٹ چاہیے؟ کال کریں:</string>
+
+    <!-- News / announcements -->
+    <string name="news_empty">ابھی کوئی اعلان نہیں۔</string>
+    <string name="news_add">نیا اعلان</string>
+    <string name="news_title_label">عنوان</string>
+    <string name="news_body_label">پیغام</string>
+    <string name="news_post">شائع کریں</string>
+    <string name="news_delete">حذف کریں</string>
+    <string name="news_delete_confirm">کیا یہ اعلان حذف کریں؟</string>
 </resources>

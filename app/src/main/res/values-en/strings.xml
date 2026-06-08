@@ -72,6 +72,13 @@
     <string name="settings_about_header">About</string>
     <string name="about_imam">Imam</string>
     <string name="about_dev_promo">Want an app or website? Call:</string>
+    <string name="news_empty">No announcements yet.</string>
+    <string name="news_add">New announcement</string>
+    <string name="news_title_label">Title</string>
+    <string name="news_body_label">Message</string>
+    <string name="news_post">Post</string>
+    <string name="news_delete">Delete</string>
+    <string name="news_delete_confirm">Delete this announcement?</string>
     <string name="admin_section_header">Administrator</string>
     <string name="admin_login_title">Admin login</string>
     <string name="admin_email">Email</string>
