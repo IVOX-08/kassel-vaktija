@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,6 +12,12 @@ plugins {
     // alias(libs.plugins.google.services)
 }
 
+// Release signing credentials, loaded from the gitignored keystore.properties (if present).
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) FileInputStream(keystorePropertiesFile).use { load(it) }
+}
+
 android {
     namespace = "de.igbdsandzakkassel.vaktija"
     compileSdk = 35
@@ -18,7 +27,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "0.1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -31,18 +40,31 @@ android {
         buildConfigField("String", "ADMIN_UID", "\"\"")
     }
 
+    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists()) {
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
         }
         release {
-            isMinifyEnabled = false // enabled with full ProGuard/R8 rules in Phase 9
+            // R8/minify can be enabled later after a full release QA pass; off for now to avoid
+            // shipping a subtly-stripped build without device verification.
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            // TBD-decision: real signing config (keystore) is added in Phase 9.
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
