@@ -70,4 +70,6 @@
     <string name="settings_perm_dnd">Allow Do Not Disturb access</string>
     <string name="widget_remaining">remaining</string>
     <string name="settings_about_header">About</string>
+    <string name="about_imam">Imam</string>
+    <string name="about_dev_promo">Want an app or website? Call:</string>
 </resources>

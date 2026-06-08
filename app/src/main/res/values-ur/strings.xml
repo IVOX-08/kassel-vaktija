@@ -70,4 +70,6 @@
     <string name="settings_perm_dnd">«ڈسٹرب نہ کریں» تک رسائی کی اجازت دیں</string>
     <string name="widget_remaining">باقی</string>
     <string name="settings_about_header">ہمارے بارے میں</string>
+    <string name="about_imam">امام</string>
+    <string name="about_dev_promo">ایپ یا ویب سائٹ چاہیے؟ کال کریں:</string>
 </resources>

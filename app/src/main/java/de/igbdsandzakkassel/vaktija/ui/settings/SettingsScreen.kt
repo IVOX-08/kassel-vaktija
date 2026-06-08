@@ -24,9 +24,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -227,6 +229,12 @@ private const val PAYPAL_URL =
 private const val MAPS_URL =
     "https://www.google.com/maps/search/?api=1&query=Schwanenweg+13%2C+34123+Kassel"
 
+private const val IMAM_NAME = "Alen Golac"
+private const val IMAM_PHONE_DISPLAY = "0176 3037 2402"
+private const val IMAM_PHONE_DIAL = "017630372402"
+private const val DEV_PHONE_DISPLAY = "0176 6188 7123"
+private const val DEV_PHONE_DIAL = "017661887123"
+
 /** "About the community" card: name, address (→Maps), e-mail (→mail app), donate (→PayPal), version. */
 @Composable
 private fun AboutCard() {
@@ -253,6 +261,18 @@ private fun AboutCard() {
             }
             AboutRow(Icons.Filled.Favorite, stringResource(R.string.action_donate)) {
                 context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PAYPAL_URL)))
+            }
+            AboutRow(
+                Icons.Filled.Person,
+                "${stringResource(R.string.about_imam)}: $IMAM_NAME\n$IMAM_PHONE_DISPLAY",
+            ) {
+                context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$IMAM_PHONE_DIAL")))
+            }
+            AboutRow(
+                Icons.Filled.Call,
+                "${stringResource(R.string.about_dev_promo)}\n$DEV_PHONE_DISPLAY",
+            ) {
+                context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$DEV_PHONE_DIAL")))
             }
             Spacer(Modifier.height(8.dp))
             Text(

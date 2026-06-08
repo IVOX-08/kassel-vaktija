@@ -70,4 +70,6 @@
     <string name="settings_perm_dnd">السماح بالوصول إلى «عدم الإزعاج»</string>
     <string name="widget_remaining">متبقٍ</string>
     <string name="settings_about_header">عن الجماعة</string>
+    <string name="about_imam">الإمام</string>
+    <string name="about_dev_promo">تريد تطبيقًا أو موقعًا إلكترونيًا؟ اتصل:</string>
 </resources>

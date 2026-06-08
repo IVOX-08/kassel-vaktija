@@ -70,4 +70,6 @@
     <string name="settings_perm_dnd">„Rahatsız Etme“ erişimine izin ver</string>
     <string name="widget_remaining">kaldı</string>
     <string name="settings_about_header">Hakkında</string>
+    <string name="about_imam">İmam</string>
+    <string name="about_dev_promo">Uygulama veya web sitesi mi istiyorsunuz? Arayın:</string>
 </resources>

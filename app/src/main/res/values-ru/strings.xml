@@ -70,4 +70,6 @@
     <string name="settings_perm_dnd">Разрешить доступ к «Не беспокоить»</string>
     <string name="widget_remaining">осталось</string>
     <string name="settings_about_header">О нас</string>
+    <string name="about_imam">Имам</string>
+    <string name="about_dev_promo">Нужно приложение или сайт? Звоните:</string>
 </resources>

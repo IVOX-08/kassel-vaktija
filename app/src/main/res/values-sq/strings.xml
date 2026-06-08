@@ -70,4 +70,6 @@
     <string name="settings_perm_dnd">Lejo qasjen te „Mos shqetëso“</string>
     <string name="widget_remaining">mbetur</string>
     <string name="settings_about_header">Rreth nesh</string>
+    <string name="about_imam">Imami</string>
+    <string name="about_dev_promo">Doni një aplikacion ose faqe interneti? Telefononi:</string>
 </resources>

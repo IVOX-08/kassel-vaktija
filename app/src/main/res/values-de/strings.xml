@@ -70,4 +70,6 @@
     <string name="settings_perm_dnd">Zugriff auf „Nicht stören“ erlauben</string>
     <string name="widget_remaining">verbleibend</string>
     <string name="settings_about_header">Über uns</string>
+    <string name="about_imam">Imam</string>
+    <string name="about_dev_promo">App oder Website gewünscht? Anrufen:</string>
 </resources>
