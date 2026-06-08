@@ -95,7 +95,10 @@ class PrayerTimesWidgetReceiver : AppWidgetProvider() {
                 val now = LocalDateTime.now()
                 val (prayer, at) = nextPrayer(times, now)
                 views.setTextViewText(R.id.widget_prayer_name, appContext.getString(prayer.labelRes))
-                views.setTextViewText(R.id.widget_prayer_time, at.toLocalTime().format(TIME_FMT))
+                views.setTextViewText(
+                    R.id.widget_prayer_time,
+                    appContext.getString(R.string.widget_remaining) + "  ·  " + at.toLocalTime().format(TIME_FMT),
+                )
                 val millisUntil = Duration.between(now, at).toMillis().coerceAtLeast(0L)
                 views.setChronometer(R.id.widget_chrono, SystemClock.elapsedRealtime() + millisUntil, null, true)
                 views.setChronometerCountDown(R.id.widget_chrono, true)

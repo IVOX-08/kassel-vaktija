@@ -10,10 +10,10 @@
 
     <ImageView
         android:id="@+id/widget_logo"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
         android:background="@drawable/widget_logo_chip"
-        android:padding="5dp"
+        android:padding="6dp"
         android:scaleType="fitCenter"
         android:src="@drawable/logo_notification"
         android:contentDescription="@string/cd_app_logo" />
