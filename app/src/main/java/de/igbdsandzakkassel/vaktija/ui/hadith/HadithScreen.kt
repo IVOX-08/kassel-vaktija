@@ -122,8 +122,30 @@ fun HadithListScreen(
             contentPadding = PaddingValues(vertical = 12.dp),
         ) {
             items(list, key = { it.number }) { hadith -> HadithCard(hadith) }
+            item { HadithCredit(creditFor(collection, lang)) }
         }
     }
+}
+
+/** Translator/source credit shown at the end of a collection. */
+private fun creditFor(collection: String, lang: String): String = when {
+    collection == "nawawi40" && lang == "bs" ->
+        "Prijevod na bosanski: Bilal Dervišić — „40 Nevevijevih hadisa“ (Sehara / minber.ba, Sarajevo 2010)."
+    lang == "en" -> "English: Ezzeddin Ibrahim & Denys Johnson-Davies."
+    else -> "Izvor / Source: hadith-api (public domain)."
+}
+
+@Composable
+private fun HadithCredit(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+    )
 }
 
 @Composable
