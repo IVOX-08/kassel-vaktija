@@ -40,6 +40,8 @@ import de.igbdsandzakkassel.vaktija.ui.settings.SettingsScreen
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.ui.components.PlaceholderContent
 import de.igbdsandzakkassel.vaktija.ui.dhikr.DhikrScreen
+import de.igbdsandzakkassel.vaktija.ui.hadith.HadithCollectionsScreen
+import de.igbdsandzakkassel.vaktija.ui.hadith.HadithListScreen
 import de.igbdsandzakkassel.vaktija.ui.library.LibraryDetail
 import de.igbdsandzakkassel.vaktija.ui.library.LibraryScreen
 import de.igbdsandzakkassel.vaktija.ui.library.LibrarySection
@@ -152,7 +154,17 @@ fun KasselApp() {
             }
             composable(LibrarySection.HADITH.route) {
                 LibraryDetail(R.string.library_hadith, onBack = { navController.popBackStack() }) {
-                    PlaceholderContent(title = stringResource(R.string.library_hadith))
+                    HadithCollectionsScreen(onOpen = { route -> navController.navigate(route) })
+                }
+            }
+            composable("hadith_nawawi") {
+                LibraryDetail(R.string.hadith_nawawi, onBack = { navController.popBackStack() }) {
+                    HadithListScreen(collection = "nawawi40")
+                }
+            }
+            composable("hadith_riyad") {
+                LibraryDetail(R.string.hadith_riyad, onBack = { navController.popBackStack() }) {
+                    HadithListScreen(collection = "riyadussalihin")
                 }
             }
         }

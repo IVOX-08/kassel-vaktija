@@ -10,6 +10,8 @@
     <string name="library_quran">Koran</string>
     <string name="library_hadith">Hadith</string>
     <string name="library_dhikr">Dhikr</string>
+    <string name="hadith_nawawi">An-Nawawis 40 Hadithe</string>
+    <string name="hadith_riyad">Riyad as-Salihin</string>
 
     <string name="prayer_fajr">Morgengebet</string>
     <string name="prayer_sunrise">Sonnenaufgang</string>

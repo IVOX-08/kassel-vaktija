@@ -10,6 +10,8 @@
     <string name="library_quran">القرآن الكريم</string>
     <string name="library_hadith">الحديث</string>
     <string name="library_dhikr">الأذكار</string>
+    <string name="hadith_nawawi">الأربعون النووية</string>
+    <string name="hadith_riyad">رياض الصالحين</string>
 
     <string name="prayer_fajr">الفجر</string>
     <string name="prayer_sunrise">الشروق</string>

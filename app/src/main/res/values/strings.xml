@@ -16,6 +16,8 @@
     <string name="library_quran">Kur\'an</string>
     <string name="library_hadith">Hadis</string>
     <string name="library_dhikr">Zikr</string>
+    <string name="hadith_nawawi">40 hadisa imama Nevevija</string>
+    <string name="hadith_riyad">Rijadus-salihin</string>
 
     <!-- Prayer names -->
     <string name="prayer_fajr">Sabah</string>

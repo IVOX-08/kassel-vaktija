@@ -10,6 +10,8 @@
     <string name="library_quran">Коран</string>
     <string name="library_hadith">Хадисы</string>
     <string name="library_dhikr">Зикр</string>
+    <string name="hadith_nawawi">40 хадисов имама ан-Навави</string>
+    <string name="hadith_riyad">Сады праведных</string>
 
     <string name="prayer_fajr">Фаджр</string>
     <string name="prayer_sunrise">Восход солнца</string>

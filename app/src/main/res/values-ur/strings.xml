@@ -10,6 +10,8 @@
     <string name="library_quran">قرآن</string>
     <string name="library_hadith">حدیث</string>
     <string name="library_dhikr">اذکار</string>
+    <string name="hadith_nawawi">امام نووی کی 40 احادیث</string>
+    <string name="hadith_riyad">ریاض الصالحین</string>
 
     <string name="prayer_fajr">فجر</string>
     <string name="prayer_sunrise">طلوعِ آفتاب</string>

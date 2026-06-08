@@ -10,6 +10,8 @@
     <string name="library_quran">Kur\'an</string>
     <string name="library_hadith">Hadis</string>
     <string name="library_dhikr">Zikir</string>
+    <string name="hadith_nawawi">İmam Nevevî\'nin 40 Hadisi</string>
+    <string name="hadith_riyad">Riyâzü\'s-Sâlihîn</string>
 
     <string name="prayer_fajr">Sabah</string>
     <string name="prayer_sunrise">Güneş</string>
