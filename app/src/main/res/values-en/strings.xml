@@ -69,4 +69,5 @@
     <string name="settings_silence_duration">Duration</string>
     <string name="settings_perm_dnd">Allow Do Not Disturb access</string>
     <string name="widget_remaining">remaining</string>
+    <string name="settings_about_header">About</string>
 </resources>

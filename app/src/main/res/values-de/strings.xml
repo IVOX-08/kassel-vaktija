@@ -69,4 +69,5 @@
     <string name="settings_silence_duration">Dauer</string>
     <string name="settings_perm_dnd">Zugriff auf „Nicht stören“ erlauben</string>
     <string name="widget_remaining">verbleibend</string>
+    <string name="settings_about_header">Über uns</string>
 </resources>

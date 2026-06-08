@@ -69,4 +69,5 @@
     <string name="settings_silence_duration">دورانیہ</string>
     <string name="settings_perm_dnd">«ڈسٹرب نہ کریں» تک رسائی کی اجازت دیں</string>
     <string name="widget_remaining">باقی</string>
+    <string name="settings_about_header">ہمارے بارے میں</string>
 </resources>

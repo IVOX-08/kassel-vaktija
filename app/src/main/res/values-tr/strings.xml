@@ -69,4 +69,5 @@
     <string name="settings_silence_duration">Süre</string>
     <string name="settings_perm_dnd">„Rahatsız Etme“ erişimine izin ver</string>
     <string name="widget_remaining">kaldı</string>
+    <string name="settings_about_header">Hakkında</string>
 </resources>

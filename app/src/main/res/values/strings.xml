@@ -101,4 +101,7 @@
 
     <!-- Widget -->
     <string name="widget_remaining">preostalo</string>
+
+    <!-- About -->
+    <string name="settings_about_header">O nama</string>
 </resources>
