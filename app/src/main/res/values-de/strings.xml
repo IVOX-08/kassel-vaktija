@@ -79,6 +79,9 @@
     <string name="news_post">Veröffentlichen</string>
     <string name="news_delete">Löschen</string>
     <string name="news_delete_confirm">Diese Mitteilung löschen?</string>
+    <string name="news_translating">Übersetzen und veröffentlichen…</string>
+    <string name="news_post_failed">Veröffentlichen fehlgeschlagen.</string>
+    <string name="news_translate_partial">Veröffentlicht, aber einige Sprachen konnten nicht übersetzt werden (im Original angezeigt). Tipp: mit WLAN veröffentlichen.</string>
     <string name="admin_section_header">Administrator</string>
     <string name="admin_login_title">Admin-Anmeldung</string>
     <string name="admin_email">E-Mail</string>

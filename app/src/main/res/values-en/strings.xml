@@ -79,6 +79,9 @@
     <string name="news_post">Post</string>
     <string name="news_delete">Delete</string>
     <string name="news_delete_confirm">Delete this announcement?</string>
+    <string name="news_translating">Translating and posting…</string>
+    <string name="news_post_failed">Posting failed.</string>
+    <string name="news_translate_partial">Posted, but some languages couldn\'t be translated (shown as written). Tip: post on Wi-Fi.</string>
     <string name="admin_section_header">Administrator</string>
     <string name="admin_login_title">Admin login</string>
     <string name="admin_email">Email</string>

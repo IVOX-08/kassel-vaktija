@@ -115,6 +115,9 @@
     <string name="news_post">Objavi</string>
     <string name="news_delete">Obriši</string>
     <string name="news_delete_confirm">Obrisati ovu obavijest?</string>
+    <string name="news_translating">Prevođenje i objavljivanje…</string>
+    <string name="news_post_failed">Objavljivanje nije uspjelo.</string>
+    <string name="news_translate_partial">Objavljeno, ali neki jezici nisu prevedeni (prikazani u originalu). Savjet: objavljujte uz Wi-Fi.</string>
 
     <!-- Admin (hidden) -->
     <string name="admin_section_header">Administrator</string>

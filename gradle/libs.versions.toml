@@ -46,6 +46,10 @@ accompanistPermissions = "0.36.0"
 googleServices = "4.4.2"
 firebaseBom = "33.7.0"
 
+# On-device translation (auto-translate announcements into every app language)
+mlkitTranslate = "17.0.3"
+mlkitLanguageId = "17.0.6"
+
 [libraries]
 # --- AndroidX core ---
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -108,6 +112,10 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
+
+# --- On-device translation (ML Kit) ---
+mlkit-translate = { group = "com.google.mlkit", name = "translate", version.ref = "mlkitTranslate" }
+mlkit-language-id = { group = "com.google.mlkit", name = "language-id", version.ref = "mlkitLanguageId" }
 
 [bundles]
 compose = [

@@ -3,9 +3,11 @@ package de.igbdsandzakkassel.vaktija.ui.news
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
+import de.igbdsandzakkassel.vaktija.data.translate.NewsTranslator
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -15,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
+    private val translator: NewsTranslator,
     adminController: AdminController,
 ) : ViewModel() {
 
@@ -26,10 +29,27 @@ class NewsViewModel @Inject constructor(
     val isAdmin: StateFlow<Boolean> = adminController.observeIsAdmin()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
-    fun postNews(title: String, body: String, onResult: (Boolean) -> Unit) {
+    /** Outcome of a post: whether it was saved, and any languages that couldn't be translated. */
+    data class PostOutcome(val ok: Boolean, val failedLangs: List<String>)
+
+    /**
+     * Translates the announcement into every app language, then publishes it. The admin writes once
+     * (in any language); auto-detection picks the source, falling back to the current UI language.
+     * Reports any languages that failed to translate so the admin can be warned (e.g. posted offline).
+     */
+    fun postNews(title: String, body: String, onResult: (PostOutcome) -> Unit) {
+        val fallbackLang = LocaleController.current().tag
         viewModelScope.launch {
-            val ok = runCatching { newsRepository.postNews(title.trim(), body.trim()) }.isSuccess
-            onResult(ok)
+            val result = runCatching {
+                val translated = translator.translateToAll(title.trim(), body.trim(), fallbackLang)
+                newsRepository.postNews(
+                    titleByLang = translated.titleByLang,
+                    bodyByLang = translated.bodyByLang,
+                    sourceLang = translated.sourceLang,
+                )
+                translated.failedLangs
+            }
+            onResult(PostOutcome(result.isSuccess, result.getOrDefault(emptyList())))
         }
     }
 

@@ -142,4 +142,8 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
     implementation(libs.kotlinx.coroutines.play.services)
+
+    // --- On-device translation (auto-translate announcements; models download on demand) ---
+    implementation(libs.mlkit.translate)
+    implementation(libs.mlkit.language.id)
 }
