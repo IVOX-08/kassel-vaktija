@@ -125,6 +125,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.jsoup)
     implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
 
     // --- Prayer-time calculation (month calendar) ---
     implementation(libs.adhan2)

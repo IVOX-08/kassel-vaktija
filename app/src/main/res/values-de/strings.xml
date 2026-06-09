@@ -13,6 +13,17 @@
     <string name="hadith_nawawi">An-Nawawis 40 Hadithe</string>
     <string name="hadith_riyad">Riyad as-Salihin</string>
     <string name="quran_verses">%1$d Verse</string>
+    <string name="onb_welcome_title">Willkommen</string>
+    <string name="onb_welcome_body">Die App der IGBD-Gemeinde Sandžak-Kassel — Gebetszeiten, Koran, Hadithe und mehr, in Ihrer Sprache.</string>
+    <string name="onb_notif_title">Gebet &amp; Adhan</string>
+    <string name="onb_notif_body">Genaue Gebetszeiten mit Benachrichtigungen. Wählen Sie pro Gebet den Adhan oder einen kurzen Ton und passen Sie die Benachrichtigungen an — in den Einstellungen.</string>
+    <string name="onb_content_title">Koran, Hadith &amp; Dhikr</string>
+    <string name="onb_content_body">Der vollständige Koran auf Arabisch, die 40 Hadithe von an-Nawawi und eine Auswahl aus Riyad as-Salihin sowie Dhikr — auf Arabisch und in Ihrer Sprache.</string>
+    <string name="onb_more_title">Und mehr</string>
+    <string name="onb_more_body">Qibla, Kalender, Gemeinde-Nachrichten und ein Startbildschirm-Widget. Möge Allah es annehmen.</string>
+    <string name="onb_start">Los geht\'s</string>
+    <string name="onb_next">Weiter</string>
+    <string name="onb_skip">Überspringen</string>
 
     <string name="prayer_fajr">Morgengebet</string>
     <string name="prayer_sunrise">Sonnenaufgang</string>

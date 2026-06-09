@@ -29,9 +29,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.core.locale.AppLanguage
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
+import de.igbdsandzakkassel.vaktija.ui.onboarding.InAppLanguagePicker
 
 /** A language's flag, rendered as a small bordered rectangle. Decorative — the text labels it. */
 @Composable
@@ -112,5 +115,12 @@ fun ChangeLanguagePill(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(start = 8.dp),
         )
     }
-    if (show) LanguagePickerDialog(onDismiss = { show = false })
+    if (show) {
+        Dialog(
+            onDismissRequest = { show = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false),
+        ) {
+            InAppLanguagePicker(onClose = { show = false })
+        }
+    }
 }

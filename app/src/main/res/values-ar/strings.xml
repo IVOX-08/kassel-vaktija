@@ -13,6 +13,17 @@
     <string name="hadith_nawawi">الأربعون النووية</string>
     <string name="hadith_riyad">رياض الصالحين</string>
     <string name="quran_verses">%1$d آية</string>
+    <string name="onb_welcome_title">أهلاً وسهلاً</string>
+    <string name="onb_welcome_body">تطبيق جماعة سنجق-كاسل (IGBD): مواقيت الصلاة، والقرآن الكريم، والحديث، والمزيد، بلغتك.</string>
+    <string name="onb_notif_title">الصلاة والأذان</string>
+    <string name="onb_notif_body">مواقيت دقيقة للصلاة مع التنبيهات. اختر لكل صلاة الأذان أو نغمة قصيرة، واضبط التنبيهات، كل ذلك من الإعدادات.</string>
+    <string name="onb_content_title">القرآن والحديث والذكر</string>
+    <string name="onb_content_body">القرآن الكريم كاملاً بالعربية، والأربعون النووية، ومختارات من رياض الصالحين، إضافةً إلى الأذكار، بالعربية وبلغتك.</string>
+    <string name="onb_more_title">والمزيد</string>
+    <string name="onb_more_body">القبلة، والتقويم، وأخبار الجماعة، وأداة على الشاشة الرئيسية. تقبّل الله منا ومنكم.</string>
+    <string name="onb_start">ابدأ الآن</string>
+    <string name="onb_next">التالي</string>
+    <string name="onb_skip">تخطّي</string>
 
     <string name="prayer_fajr">الفجر</string>
     <string name="prayer_sunrise">الشروق</string>

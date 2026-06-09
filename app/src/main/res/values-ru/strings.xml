@@ -13,6 +13,17 @@
     <string name="hadith_nawawi">40 хадисов имама ан-Навави</string>
     <string name="hadith_riyad">Сады праведных</string>
     <string name="quran_verses">%1$d аятов</string>
+    <string name="onb_welcome_title">Добро пожаловать</string>
+    <string name="onb_welcome_body">Приложение общины IGBD Санджак-Кассель — время намаза, Коран, хадисы и многое другое на вашем языке.</string>
+    <string name="onb_notif_title">Намаз и азан</string>
+    <string name="onb_notif_body">Точное время намаза с уведомлениями. Для каждого намаза выберите азан или короткий сигнал и настройте оповещения — всё в настройках.</string>
+    <string name="onb_content_title">Коран, хадисы и зикр</string>
+    <string name="onb_content_body">Полный Коран на арабском, 40 хадисов имама ан-Навави и подборка из «Сада праведных» (Рияд ас-Салихин), а также зикры — на арабском и на вашем языке.</string>
+    <string name="onb_more_title">И не только</string>
+    <string name="onb_more_body">Кибла, календарь, новости общины и виджет на главном экране. Да примет это Аллах.</string>
+    <string name="onb_start">Начать</string>
+    <string name="onb_next">Далее</string>
+    <string name="onb_skip">Пропустить</string>
 
     <string name="prayer_fajr">Фаджр</string>
     <string name="prayer_sunrise">Восход солнца</string>

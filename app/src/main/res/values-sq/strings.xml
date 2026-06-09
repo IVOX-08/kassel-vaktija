@@ -13,6 +13,17 @@
     <string name="hadith_nawawi">40 Hadithet e Imam Neveviut</string>
     <string name="hadith_riyad">Rijadus-salihin</string>
     <string name="quran_verses">%1$d ajete</string>
+    <string name="onb_welcome_title">Mirë se vini</string>
+    <string name="onb_welcome_body">Aplikacioni i bashkësisë IGBD Sanxhak-Kassel — kohët e namazit, Kur\'ani, hadithet dhe më shumë, në gjuhën tuaj.</string>
+    <string name="onb_notif_title">Namazi dhe Ezani</string>
+    <string name="onb_notif_body">Kohë të sakta të namazit me njoftime. Për çdo namaz zgjidhni ezanin ose një tingull të shkurtër dhe rregulloni njoftimet — të gjitha te Cilësimet.</string>
+    <string name="onb_content_title">Kur\'ani, Hadithi dhe Dhikri</string>
+    <string name="onb_content_body">I gjithë Kur\'ani në arabisht, 40 hadithet e Neveviut dhe një përzgjedhje nga Rijad us-Salihin, si dhe dhikri — në arabisht dhe në gjuhën tuaj.</string>
+    <string name="onb_more_title">Dhe më shumë</string>
+    <string name="onb_more_body">Kibla, kalendari, lajmet e bashkësisë dhe një vegël për ekranin kryesor. Allahu e pranoftë.</string>
+    <string name="onb_start">Fillo</string>
+    <string name="onb_next">Vazhdo</string>
+    <string name="onb_skip">Anashkalo</string>
 
     <string name="prayer_fajr">Sabahu</string>
     <string name="prayer_sunrise">Lindja e diellit</string>

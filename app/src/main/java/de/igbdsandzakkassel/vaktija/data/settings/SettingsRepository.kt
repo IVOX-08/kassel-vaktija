@@ -74,6 +74,13 @@ class SettingsRepository @Inject constructor(
             AlarmSettings.PRE_WARN_OPTIONS.minByOrNull { kotlin.math.abs(it - value) } ?: 0
         }
 
+    /** Whether the first-launch onboarding (language pick + intro) has been completed. */
+    fun observeOnboardingComplete(): Flow<Boolean> = store.data.map { it[ONBOARDING_DONE] ?: false }
+
+    suspend fun setOnboardingComplete() {
+        store.edit { it[ONBOARDING_DONE] = true }
+    }
+
     fun observeThemeMode(): Flow<ThemeMode> = store.data.map { prefs ->
         prefs[THEME_MODE]?.let { runCatching { ThemeMode.valueOf(it) }.getOrNull() } ?: ThemeMode.SYSTEM
     }
@@ -99,6 +106,7 @@ class SettingsRepository @Inject constructor(
         val SILENCE_MINUTES = intPreferencesKey("silence_minutes")
         val SAVED_FILTER = intPreferencesKey("saved_dnd_filter")
         val THEME_MODE = stringPreferencesKey("theme_mode")
+        val ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")
         val CALIBRATION = stringPreferencesKey("month_calibration")
         fun enabledKey(p: Prayer) = booleanPreferencesKey("enabled_${p.name}")
         fun preWarnKey(p: Prayer) = intPreferencesKey("prewarn_${p.name}")

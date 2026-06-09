@@ -13,6 +13,17 @@
     <string name="hadith_nawawi">İmam Nevevî\'nin 40 Hadisi</string>
     <string name="hadith_riyad">Riyâzü\'s-Sâlihîn</string>
     <string name="quran_verses">%1$d ayet</string>
+    <string name="onb_welcome_title">Hoş geldiniz</string>
+    <string name="onb_welcome_body">IGBD Sancak-Kassel cemaatinin uygulaması — namaz vakitleri, Kur\'an, hadis ve daha fazlası, kendi dilinizde.</string>
+    <string name="onb_notif_title">Namaz ve Ezan</string>
+    <string name="onb_notif_body">Bildirimlerle doğru namaz vakitleri. Her namaz için ezanı ya da kısa bir sesi seçin ve uyarıları ayarlayın — hepsi Ayarlar\'da.</string>
+    <string name="onb_content_title">Kur\'an, Hadis ve Zikir</string>
+    <string name="onb_content_body">Arapça olarak Kur\'an\'ın tamamı, İmam Nevevî\'nin 40 hadisi ve Riyâzü\'s-Sâlihîn\'den bir seçki, ayrıca zikirler — Arapça ve kendi dilinizde.</string>
+    <string name="onb_more_title">Ve dahası</string>
+    <string name="onb_more_body">Kıble, takvim, cemaat haberleri ve bir ana ekran widget\'ı. Allah kabul etsin.</string>
+    <string name="onb_start">Başla</string>
+    <string name="onb_next">İleri</string>
+    <string name="onb_skip">Atla</string>
 
     <string name="prayer_fajr">Sabah</string>
     <string name="prayer_sunrise">Güneş</string>

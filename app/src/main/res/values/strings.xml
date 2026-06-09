@@ -20,6 +20,19 @@
     <string name="hadith_riyad">Rijadus-salihin</string>
     <string name="quran_verses">%1$d ajeta</string>
 
+    <!-- Onboarding -->
+    <string name="onb_welcome_title">Dobro došli</string>
+    <string name="onb_welcome_body">Aplikacija zajednice IGBD Sandžak-Kassel — namaska vremena, Kur\'an, hadisi i još mnogo toga, na vašem jeziku.</string>
+    <string name="onb_notif_title">Namaz i ezan</string>
+    <string name="onb_notif_body">Tačna namaska vremena uz obavijesti. Za svaki namaz birajte ezan ili kratki zvuk i podesite obavijesti — sve u Postavkama.</string>
+    <string name="onb_content_title">Kur\'an, hadis i zikr</string>
+    <string name="onb_content_body">Cijeli Kur\'an na arapskom, Nevevijevih 40 hadisa i izbor iz Rijadus-salihina te zbirka zikrova — na arapskom i vašem jeziku.</string>
+    <string name="onb_more_title">I još više</string>
+    <string name="onb_more_body">Kibla, kalendar, vijesti zajednice i widget za početni ekran. Neka vam Allah primi.</string>
+    <string name="onb_start">Započni</string>
+    <string name="onb_next">Dalje</string>
+    <string name="onb_skip">Preskoči</string>
+
     <!-- Prayer names -->
     <string name="prayer_fajr">Sabah</string>
     <string name="prayer_sunrise">Izlazak sunca</string>
