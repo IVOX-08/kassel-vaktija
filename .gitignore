@@ -9,3 +9,7 @@ app/google-services.json
 *.keystore
 keystore.properties
 .kotlin/
+
+# Local debug screenshots
+_news_*.png
+_o.png
