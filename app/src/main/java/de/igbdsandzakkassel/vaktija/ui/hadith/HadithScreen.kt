@@ -122,17 +122,19 @@ fun HadithListScreen(
             contentPadding = PaddingValues(vertical = 12.dp),
         ) {
             items(list, key = { it.number }) { hadith -> HadithCard(hadith) }
-            item { HadithCredit(creditFor(collection, lang)) }
+            item { HadithCredit(creditFor(lang)) }
         }
     }
 }
 
 /** Translator/source credit shown at the end of a collection. */
-private fun creditFor(collection: String, lang: String): String = when {
-    collection == "nawawi40" && lang == "bs" ->
-        "Prijevod na bosanski: Bilal Dervišić — „40 Nevevijevih hadisa“ (Sehara / minber.ba, Sarajevo 2010)."
-    lang == "en" -> "English: Ezzeddin Ibrahim & Denys Johnson-Davies."
-    else -> "Izvor / Source: hadith-api (public domain)."
+private fun creditFor(lang: String): String = when (lang) {
+    "bs" -> "Prijevod: Bilal Dervišić — „40 Nevevijevih hadisa“ (Sehara / minber.ba, 2010)."
+    "sq" -> "Përktheu: Hoxhë Agim Bekiri (albislam.com)."
+    "ur" -> "ترجمہ: شیخ عبد الہادی عبد الخالق مدنی"
+    "ru" -> "Перевод: Абдулла (В.) Нирша."
+    "en", "de" -> "English: Ezzeddin Ibrahim & Denys Johnson-Davies."
+    else -> "Izvor / Source: hadith-api (public domain)." // ar, tr
 }
 
 @Composable
