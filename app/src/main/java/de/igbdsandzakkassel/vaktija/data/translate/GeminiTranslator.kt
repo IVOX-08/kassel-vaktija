@@ -142,7 +142,7 @@ class GeminiTranslator @Inject constructor(
     """.trimIndent()
 
     private companion object {
-        const val MODEL = "gemini-2.0-flash"
+        const val MODEL = "gemini-2.5-flash"
         const val ENDPOINT =
             "https://generativelanguage.googleapis.com/v1beta/models/$MODEL:generateContent"
         val JSON_MEDIA = "application/json; charset=utf-8".toMediaType()

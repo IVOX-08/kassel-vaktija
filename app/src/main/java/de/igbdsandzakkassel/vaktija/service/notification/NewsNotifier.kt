@@ -22,7 +22,10 @@ import de.igbdsandzakkassel.vaktija.data.model.NewsItem
  */
 object NewsNotifier {
 
-    const val CHANNEL_NEWS = "news_announcements"
+    // Bump the suffix whenever the channel's sound changes (a channel's sound is fixed at creation,
+    // so a new id is the only way existing installs pick up a new tone). v2 = owner's glass-clink tone.
+    const val CHANNEL_NEWS = "news_announcements_v2"
+    private const val CHANNEL_NEWS_OLD = "news_announcements"
     const val NEWS_NOTIFICATION_ID = 3001
 
     /** Short, light double-buzz — distinct from the Adhan channel's firmer pattern. */
@@ -30,6 +33,8 @@ object NewsNotifier {
 
     fun ensureChannel(context: Context) {
         val manager = context.getSystemService<NotificationManager>() ?: return
+        // Drop the previous channel (old tone) so only the current one remains.
+        runCatching { manager.deleteNotificationChannel(CHANNEL_NEWS_OLD) }
         val channel = NotificationChannel(
             CHANNEL_NEWS,
             context.getString(R.string.notif_channel_news),
