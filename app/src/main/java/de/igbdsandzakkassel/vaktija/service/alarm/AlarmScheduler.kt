@@ -94,7 +94,8 @@ class AlarmScheduler @Inject constructor(
     private fun cancelAll() {
         Prayer.OBLIGATORY.forEach { prayer ->
             AlarmType.entries.forEach { type ->
-                alarmManager.cancel(pendingIntent(prayer, type, 0, AdhanSound.PLACEHOLDER))
+                // Extras are ignored when matching a PendingIntent for cancellation, so any sound works.
+                alarmManager.cancel(pendingIntent(prayer, type, 0, AdhanSound.DEFAULT))
             }
         }
     }
@@ -104,7 +105,7 @@ class AlarmScheduler @Inject constructor(
             action = type.action
             putExtra(PrayerAlarmReceiver.EXTRA_PRAYER, prayer.ordinal)
             putExtra(PrayerAlarmReceiver.EXTRA_MINUTES, minutes)
-            putExtra(PrayerAlarmReceiver.EXTRA_SOUND, sound.rawResName)
+            putExtra(PrayerAlarmReceiver.EXTRA_SOUND, sound.name)
         }
         val requestCode = prayer.ordinal * AlarmType.entries.size + type.ordinal
         return PendingIntent.getBroadcast(

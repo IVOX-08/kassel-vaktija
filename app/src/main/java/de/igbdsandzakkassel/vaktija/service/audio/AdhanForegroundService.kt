@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.ServiceCompat
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 
 /**
@@ -31,10 +32,10 @@ class AdhanForegroundService : Service() {
 
         PrayerNotifier.ensureChannels(this)
         val prayer = Prayer.entries.getOrElse(intent?.getIntExtra(EXTRA_PRAYER, -1) ?: -1) { Prayer.FAJR }
-        val soundResName = intent?.getStringExtra(EXTRA_SOUND) ?: "adhan_placeholder"
+        val sound = AdhanSound.fromName(intent?.getStringExtra(EXTRA_SOUND))
 
         startForegroundCompat(prayer)
-        playSound(soundResName)
+        playSound(sound.rawResName ?: FALLBACK_SOUND)
         return START_NOT_STICKY
     }
 
@@ -53,7 +54,12 @@ class AdhanForegroundService : Service() {
     }
 
     private fun playSound(soundResName: String) {
-        val resId = resources.getIdentifier(soundResName, "raw", packageName)
+        // If the selected Adhan file isn't bundled yet (e.g. adhan_short before the owner adds it),
+        // fall back to the placeholder chime so something always plays. // TBD-asset:
+        var resId = resources.getIdentifier(soundResName, "raw", packageName)
+        if (resId == 0 && soundResName != FALLBACK_SOUND) {
+            resId = resources.getIdentifier(FALLBACK_SOUND, "raw", packageName)
+        }
         if (resId == 0) {
             stop()
             return
@@ -107,10 +113,14 @@ class AdhanForegroundService : Service() {
         const val EXTRA_PRAYER = "extra_prayer"
         const val EXTRA_SOUND = "extra_sound"
 
-        fun start(context: Context, prayer: Prayer, soundResName: String) {
+        /** Bundled chime used when the selected Adhan audio isn't present yet. */
+        private const val FALLBACK_SOUND = "adhan_placeholder"
+
+        /** [soundName] is an [AdhanSound] enum name (resolved on the service side). */
+        fun start(context: Context, prayer: Prayer, soundName: String) {
             val intent = Intent(context, AdhanForegroundService::class.java)
                 .putExtra(EXTRA_PRAYER, prayer.ordinal)
-                .putExtra(EXTRA_SOUND, soundResName)
+                .putExtra(EXTRA_SOUND, soundName)
             androidx.core.content.ContextCompat.startForegroundService(context, intent)
         }
     }

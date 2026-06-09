@@ -26,6 +26,9 @@ object PrayerNotifier {
     const val ADHAN_NOTIFICATION_ID = 1001
     private const val PREWARN_BASE_ID = 2000
 
+    /** Two firm pulses, so the vibrate-only mode feels deliberate (wait, buzz, gap, buzz). */
+    private val ADHAN_VIBRATION = longArrayOf(0, 400, 200, 400)
+
     fun ensureChannels(context: Context) {
         val manager = context.getSystemService<NotificationManager>() ?: return
         val adhan = NotificationChannel(
@@ -36,6 +39,7 @@ object PrayerNotifier {
             description = context.getString(R.string.notif_channel_adhan_desc)
             setSound(null, null) // audio handled by the foreground service
             enableVibration(true)
+            vibrationPattern = ADHAN_VIBRATION
         }
         val preWarn = NotificationChannel(
             CHANNEL_PREWARN,
@@ -64,6 +68,27 @@ object PrayerNotifier {
         .setOngoing(true)
         .addAction(0, context.getString(R.string.notif_stop), stopIntent)
         .build()
+
+    /**
+     * Vibrate-only alert: a prayer time has arrived but no long audio plays. A normal (auto-cancel)
+     * high-priority notification on the Adhan channel — the channel's vibration pattern fires it.
+     */
+    fun postAdhanReached(context: Context, prayer: Prayer) {
+        val notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
+            .setSmallIcon(R.drawable.ic_stat_adhan)
+            .setLargeIcon(communityLogo(context))
+            .setContentTitle(context.getString(R.string.notif_adhan_title, context.getString(prayer.labelRes)))
+            .setContentText(context.getString(R.string.notif_adhan_text))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setVibrate(ADHAN_VIBRATION)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(context))
+            .build()
+        if (hasNotificationPermission(context)) {
+            NotificationManagerCompat.from(context).notify(ADHAN_NOTIFICATION_ID, notification)
+        }
+    }
 
     /** Pre-warning notification ("Dhuhr in 10 min"). */
     fun postPreWarning(context: Context, prayer: Prayer, minutes: Int) {

@@ -99,4 +99,10 @@
     <string name="news_post">Publiko</string>
     <string name="news_delete">Fshi</string>
     <string name="news_delete_confirm">Të fshihet ky njoftim?</string>
+    <!-- Notification sound options -->
+    <string name="settings_notification_sound">Tingulli i njoftimit</string>
+    <string name="sound_full_adhan">Ezani i plotë</string>
+    <string name="sound_short_adhan">Ezan i shkurtër</string>
+    <string name="sound_chime">Tingull sinjali</string>
+    <string name="sound_vibrate_only">Vetëm dridhje</string>
 </resources>

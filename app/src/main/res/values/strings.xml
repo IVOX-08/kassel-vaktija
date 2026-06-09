@@ -92,6 +92,12 @@
     <string name="settings_off">Isključeno</string>
     <string name="settings_minutes">%1$d min</string>
     <string name="settings_test_adhan">Testiraj ezan</string>
+    <!-- Notification sound options -->
+    <string name="settings_notification_sound">Zvuk obavijesti</string>
+    <string name="sound_full_adhan">Potpuni ezan</string>
+    <string name="sound_short_adhan">Kratki ezan</string>
+    <string name="sound_chime">Zvono</string>
+    <string name="sound_vibrate_only">Samo vibracija</string>
     <string name="settings_permissions_header">Dozvole</string>
     <string name="settings_perm_notifications">Dozvoli obavijesti</string>
     <string name="settings_perm_exact_alarm">Dozvoli tačne alarme</string>

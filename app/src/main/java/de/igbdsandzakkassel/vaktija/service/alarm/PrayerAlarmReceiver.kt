@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.AndroidEntryPoint
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
@@ -35,8 +36,15 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         when (action) {
             ACTION_ADHAN -> {
                 val prayer = prayerFrom(intent) ?: return
-                val sound = intent.getStringExtra(EXTRA_SOUND) ?: "adhan_placeholder"
-                AdhanForegroundService.start(context, prayer, sound)
+                val sound = AdhanSound.fromName(intent.getStringExtra(EXTRA_SOUND))
+                PrayerNotifier.ensureChannels(context)
+                if (sound.hasAudio) {
+                    // Long audio → play via the foreground service (won't be truncated).
+                    AdhanForegroundService.start(context, prayer, sound.name)
+                } else {
+                    // Vibrate-only: no audio, just a heads-up notification on the vibrating channel.
+                    PrayerNotifier.postAdhanReached(context, prayer)
+                }
             }
 
             ACTION_PREWARN -> {

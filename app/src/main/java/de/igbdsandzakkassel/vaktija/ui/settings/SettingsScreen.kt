@@ -76,6 +76,7 @@ import de.igbdsandzakkassel.vaktija.BuildConfig
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.PrayerAlarmPrefs
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
@@ -154,6 +155,10 @@ fun SettingsScreen(
         }
 
         if (settings.masterEnabled) {
+            SoundSelectorCard(
+                selected = settings.sound,
+                onSelect = viewModel::setSound,
+            )
             Prayer.OBLIGATORY.forEach { prayer ->
                 PrayerSettingCard(
                     prayer = prayer,
@@ -495,6 +500,61 @@ private fun SectionHeader(text: String) {
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.primary,
     )
+}
+
+/**
+ * Notification-sound picker: a labelled row with a dropdown pill (full Adhan / short Adhan / chime /
+ * vibrate only). Mirrors the per-prayer alert pill. "Test" (below) previews the current choice.
+ */
+@Composable
+private fun SoundSelectorCard(
+    selected: AdhanSound,
+    onSelect: (AdhanSound) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.settings_notification_sound),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
+            )
+            Box {
+                OutlinedButton(
+                    onClick = { expanded = true },
+                    contentPadding = PaddingValues(start = 16.dp, end = 10.dp, top = 8.dp, bottom = 8.dp),
+                ) {
+                    Text(stringResource(selected.labelRes))
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = null,
+                        modifier = Modifier.padding(start = 4.dp),
+                    )
+                }
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    AdhanSound.entries.forEach { sound ->
+                        DropdownMenuItem(
+                            text = { Text(stringResource(sound.labelRes)) },
+                            onClick = {
+                                onSelect(sound)
+                                expanded = false
+                            },
+                            trailingIcon = if (sound == selected) {
+                                { Icon(Icons.Filled.Check, contentDescription = null) }
+                            } else {
+                                null
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable

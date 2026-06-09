@@ -109,4 +109,10 @@
     <string name="admin_login_failed">Anmeldung fehlgeschlagen</string>
     <string name="admin_save">Speichern</string>
     <string name="admin_saved">Gespeichert</string>
+    <!-- Notification sound options -->
+    <string name="settings_notification_sound">Benachrichtigungston</string>
+    <string name="sound_full_adhan">Voller Adhan</string>
+    <string name="sound_short_adhan">Kurzer Adhan</string>
+    <string name="sound_chime">Signalton</string>
+    <string name="sound_vibrate_only">Nur Vibration</string>
 </resources>

@@ -26,7 +26,7 @@ class SettingsRepository @Inject constructor(
     fun observe(): Flow<AlarmSettings> = store.data.map { prefs ->
         AlarmSettings(
             masterEnabled = prefs[MASTER_ENABLED] ?: true,
-            sound = AdhanSound.PLACEHOLDER,
+            sound = AdhanSound.fromName(prefs[SOUND]),
             autoSilenceEnabled = prefs[AUTO_SILENCE] ?: false,
             silenceMinutes = (prefs[SILENCE_MINUTES] ?: 15)
                 .takeIf { it in AlarmSettings.SILENCE_OPTIONS } ?: 15,
@@ -42,6 +42,11 @@ class SettingsRepository @Inject constructor(
 
     suspend fun setMasterEnabled(enabled: Boolean) {
         store.edit { it[MASTER_ENABLED] = enabled }
+    }
+
+    /** The sound/vibration mode played when a prayer time arrives. */
+    suspend fun setSound(sound: AdhanSound) {
+        store.edit { it[SOUND] = sound.name }
     }
 
     suspend fun setPrayerEnabled(prayer: Prayer, enabled: Boolean) {
@@ -102,6 +107,7 @@ class SettingsRepository @Inject constructor(
 
     private companion object {
         val MASTER_ENABLED = booleanPreferencesKey("master_enabled")
+        val SOUND = stringPreferencesKey("adhan_sound")
         val AUTO_SILENCE = booleanPreferencesKey("auto_silence")
         val SILENCE_MINUTES = intPreferencesKey("silence_minutes")
         val SAVED_FILTER = intPreferencesKey("saved_dnd_filter")

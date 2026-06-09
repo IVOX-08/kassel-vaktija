@@ -99,4 +99,10 @@
     <string name="news_post">Yayınla</string>
     <string name="news_delete">Sil</string>
     <string name="news_delete_confirm">Bu duyuru silinsin mi?</string>
+    <!-- Notification sound options -->
+    <string name="settings_notification_sound">Bildirim sesi</string>
+    <string name="sound_full_adhan">Tam ezan</string>
+    <string name="sound_short_adhan">Kısa ezan</string>
+    <string name="sound_chime">Uyarı sesi</string>
+    <string name="sound_vibrate_only">Sadece titreşim</string>
 </resources>

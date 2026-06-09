@@ -109,4 +109,10 @@
     <string name="admin_login_failed">Sign-in failed</string>
     <string name="admin_save">Save</string>
     <string name="admin_saved">Saved</string>
+    <!-- Notification sound options -->
+    <string name="settings_notification_sound">Notification sound</string>
+    <string name="sound_full_adhan">Full Adhan</string>
+    <string name="sound_short_adhan">Short Adhan</string>
+    <string name="sound_chime">Chime</string>
+    <string name="sound_vibrate_only">Vibrate only</string>
 </resources>
