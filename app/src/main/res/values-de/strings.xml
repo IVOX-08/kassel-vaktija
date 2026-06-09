@@ -62,7 +62,6 @@
     <string name="settings_notifications_header">Gebetsbenachrichtigungen</string>
     <string name="settings_master_toggle">Benachrichtigungen aktivieren</string>
     <string name="settings_prewarn">Vorwarnung</string>
-    <string name="settings_off">Aus</string>
     <string name="settings_minutes">%1$d Min.</string>
     <string name="settings_test_adhan">Adhan testen</string>
     <string name="settings_permissions_header">Berechtigungen</string>
@@ -115,4 +114,9 @@
     <string name="sound_short_adhan">Kurzer Adhan</string>
     <string name="sound_chime">Signalton</string>
     <string name="sound_vibrate_only">Nur Vibration</string>
+    <!-- Community announcements (news) notifications -->
+    <string name="notif_channel_news">Mitteilungen</string>
+    <string name="notif_channel_news_desc">Benachrichtigung, wenn die Gemeinde eine neue Mitteilung veröffentlicht.</string>
+    <string name="settings_news_header">Mitteilungen</string>
+    <string name="settings_news_notifications">Mitteilungs-Benachrichtigungen</string>
 </resources>

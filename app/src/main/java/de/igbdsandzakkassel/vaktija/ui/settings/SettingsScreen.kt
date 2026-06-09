@@ -91,6 +91,7 @@ fun SettingsScreen(
 ) {
     val settings by viewModel.settings.collectAsStateWithLifecycle()
     val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
+    val newsNotifsEnabled by viewModel.newsNotificationsEnabled.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val notifPermission = rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
 
@@ -163,8 +164,8 @@ fun SettingsScreen(
                 PrayerSettingCard(
                     prayer = prayer,
                     prefs = settings.prefs(prayer),
-                    onDisable = { viewModel.setPrayerEnabled(prayer, false) },
-                    onSelectMinutes = { viewModel.selectPreWarn(prayer, it) },
+                    onToggle = { viewModel.setPrayerEnabled(prayer, it) },
+                    onSelectMinutes = { viewModel.setPreWarn(prayer, it) },
                 )
             }
             Button(
@@ -218,6 +219,27 @@ fun SettingsScreen(
                         ) { Text(stringResource(R.string.settings_perm_dnd)) }
                     }
                 }
+            }
+        }
+
+        Spacer(Modifier.height(8.dp))
+        SectionHeader(stringResource(R.string.settings_news_header))
+        Card(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.settings_news_notifications),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f),
+                )
+                Switch(
+                    checked = newsNotifsEnabled,
+                    onCheckedChange = viewModel::setNewsNotificationsEnabled,
+                )
             }
         }
 
@@ -561,7 +583,7 @@ private fun SoundSelectorCard(
 private fun PrayerSettingCard(
     prayer: Prayer,
     prefs: PrayerAlarmPrefs,
-    onDisable: () -> Unit,
+    onToggle: (Boolean) -> Unit,
     onSelectMinutes: (Int) -> Unit,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
@@ -576,34 +598,34 @@ private fun PrayerSettingCard(
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f),
             )
-            PreWarnSelector(prefs = prefs, onDisable = onDisable, onSelectMinutes = onSelectMinutes)
+            // When the prayer is on, the pill picks how many minutes early to also remind.
+            if (prefs.enabled) {
+                PreWarnSelector(preWarnMinutes = prefs.preWarnMinutes, onSelectMinutes = onSelectMinutes)
+                Spacer(Modifier.width(8.dp))
+            }
+            // Per-prayer on/off — e.g. turn Dhuhr off while at work/school.
+            Switch(checked = prefs.enabled, onCheckedChange = onToggle)
         }
     }
 }
 
 /**
- * Compact per-prayer alert selector: a pill showing the current choice that opens a dropdown — far
- * smaller than a row of chips. Off = no Adhan; 0 min = Adhan exactly on time; 5/10/15/30 min = Adhan
- * on time + a reminder that many minutes earlier.
+ * Compact per-prayer pre-warning selector (only shown when the prayer is enabled): a pill showing
+ * the current choice that opens a dropdown. 0 min = notify exactly at the Adhan; 5/10/15/30 min =
+ * also remind that many minutes earlier.
  */
 @Composable
 private fun PreWarnSelector(
-    prefs: PrayerAlarmPrefs,
-    onDisable: () -> Unit,
+    preWarnMinutes: Int,
     onSelectMinutes: (Int) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val currentLabel = if (!prefs.enabled) {
-        stringResource(R.string.settings_off)
-    } else {
-        stringResource(R.string.settings_minutes, prefs.preWarnMinutes)
-    }
     Box {
         OutlinedButton(
             onClick = { expanded = true },
             contentPadding = PaddingValues(start = 16.dp, end = 10.dp, top = 8.dp, bottom = 8.dp),
         ) {
-            Text(currentLabel)
+            Text(stringResource(R.string.settings_minutes, preWarnMinutes))
             Icon(
                 imageVector = Icons.Filled.ArrowDropDown,
                 contentDescription = null,
@@ -611,18 +633,6 @@ private fun PreWarnSelector(
             )
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.settings_off)) },
-                onClick = {
-                    onDisable()
-                    expanded = false
-                },
-                trailingIcon = if (!prefs.enabled) {
-                    { Icon(Icons.Filled.Check, contentDescription = null) }
-                } else {
-                    null
-                },
-            )
             AlarmSettings.PRE_WARN_OPTIONS.forEach { minutes ->
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.settings_minutes, minutes)) },
@@ -630,7 +640,7 @@ private fun PreWarnSelector(
                         onSelectMinutes(minutes)
                         expanded = false
                     },
-                    trailingIcon = if (prefs.enabled && prefs.preWarnMinutes == minutes) {
+                    trailingIcon = if (preWarnMinutes == minutes) {
                         { Icon(Icons.Filled.Check, contentDescription = null) }
                     } else {
                         null

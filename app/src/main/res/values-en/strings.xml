@@ -62,7 +62,6 @@
     <string name="settings_notifications_header">Prayer notifications</string>
     <string name="settings_master_toggle">Enable notifications</string>
     <string name="settings_prewarn">Pre-warning</string>
-    <string name="settings_off">Off</string>
     <string name="settings_minutes">%1$d min</string>
     <string name="settings_test_adhan">Test Adhan</string>
     <string name="settings_permissions_header">Permissions</string>
@@ -115,4 +114,9 @@
     <string name="sound_short_adhan">Short Adhan</string>
     <string name="sound_chime">Chime</string>
     <string name="sound_vibrate_only">Vibrate only</string>
+    <!-- Community announcements (news) notifications -->
+    <string name="notif_channel_news">Announcements</string>
+    <string name="notif_channel_news_desc">Notification when the community posts a new announcement.</string>
+    <string name="settings_news_header">Announcements</string>
+    <string name="settings_news_notifications">Announcement notifications</string>
 </resources>

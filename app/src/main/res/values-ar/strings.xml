@@ -62,7 +62,6 @@
     <string name="settings_notifications_header">إشعارات الصلاة</string>
     <string name="settings_master_toggle">تفعيل الإشعارات</string>
     <string name="settings_prewarn">تنبيه مسبق</string>
-    <string name="settings_off">إيقاف</string>
     <string name="settings_minutes">%1$d دقيقة</string>
     <string name="settings_test_adhan">اختبار الأذان</string>
     <string name="settings_permissions_header">الأذونات</string>
@@ -105,4 +104,9 @@
     <string name="sound_short_adhan">أذان قصير</string>
     <string name="sound_chime">نغمة تنبيه</string>
     <string name="sound_vibrate_only">اهتزاز فقط</string>
+    <!-- Community announcements (news) notifications -->
+    <string name="notif_channel_news">إعلانات الجماعة</string>
+    <string name="notif_channel_news_desc">تنبيه عند نشر الجماعة إعلانًا جديدًا.</string>
+    <string name="settings_news_header">الإعلانات</string>
+    <string name="settings_news_notifications">إشعارات الإعلانات</string>
 </resources>

@@ -62,7 +62,6 @@
     <string name="settings_notifications_header">نماز کی اطلاعات</string>
     <string name="settings_master_toggle">اطلاعات فعال کریں</string>
     <string name="settings_prewarn">پیشگی اطلاع</string>
-    <string name="settings_off">بند</string>
     <string name="settings_minutes">%1$d منٹ</string>
     <string name="settings_test_adhan">اذان آزمائیں</string>
     <string name="settings_permissions_header">اجازتیں</string>
@@ -105,4 +104,9 @@
     <string name="sound_short_adhan">مختصر اذان</string>
     <string name="sound_chime">گھنٹی</string>
     <string name="sound_vibrate_only">صرف ارتعاش</string>
+    <!-- Community announcements (news) notifications -->
+    <string name="notif_channel_news">اعلانات</string>
+    <string name="notif_channel_news_desc">جب کمیونٹی نیا اعلان شائع کرے تو اطلاع۔</string>
+    <string name="settings_news_header">اعلانات</string>
+    <string name="settings_news_notifications">اعلانات کی اطلاعات</string>
 </resources>

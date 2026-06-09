@@ -7,6 +7,7 @@ import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,6 +37,13 @@ class FirestoreNewsRepository @Inject constructor(
         }
         awaitClose { registration.remove() }
     }
+
+    override suspend fun getLatestNews(): List<NewsItem>? =
+        runCatching {
+            collection.get().await().documents
+                .mapNotNull { it.toNewsItem() }
+                .sortedByDescending { it.createdAt }
+        }.getOrNull()
 
     override suspend fun postNews(
         titleByLang: Map<String, String>,

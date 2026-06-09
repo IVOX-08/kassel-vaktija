@@ -12,6 +12,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
+import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 import de.igbdsandzakkassel.vaktija.service.work.VaktijaRefreshWorker
 import java.util.concurrent.TimeUnit
@@ -35,6 +36,7 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         PrayerNotifier.ensureChannels(this)
+        NewsNotifier.ensureChannel(this)
         schedulePrayerTimesRefresh()
     }
 

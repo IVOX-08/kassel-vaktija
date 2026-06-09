@@ -13,6 +13,12 @@ interface NewsRepository {
     /** Newest-first stream of announcements; null while the first snapshot is still loading. */
     fun observeNews(): Flow<List<NewsItem>?>
 
+    /**
+     * One-shot newest-first fetch (no listener) for background checks (e.g. deciding whether to
+     * post a "new announcement" notification). Returns null on failure.
+     */
+    suspend fun getLatestNews(): List<NewsItem>?
+
     /** Admin-only: publish a new announcement (already translated into every app language). */
     suspend fun postNews(
         titleByLang: Map<String, String>,

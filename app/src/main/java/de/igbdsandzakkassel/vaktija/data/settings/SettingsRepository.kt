@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -79,6 +80,36 @@ class SettingsRepository @Inject constructor(
             AlarmSettings.PRE_WARN_OPTIONS.minByOrNull { kotlin.math.abs(it - value) } ?: 0
         }
 
+    // --- Community announcement (news) notifications ---
+
+    /** Whether the user wants a notification when a new announcement is posted (default on). */
+    fun observeNewsNotificationsEnabled(): Flow<Boolean> = store.data.map { it[NEWS_NOTIFS] ?: true }
+
+    suspend fun setNewsNotificationsEnabled(enabled: Boolean) {
+        store.edit { it[NEWS_NOTIFS] = enabled }
+    }
+
+    /** One-shot read for background checks (worker/receiver). */
+    suspend fun getNewsNotificationsEnabled(): Boolean = store.data.first()[NEWS_NOTIFS] ?: true
+
+    /** createdAt (epoch millis) of the newest announcement we've already notified about. */
+    suspend fun getLastNotifiedNewsMillis(): Long? = store.data.first()[LAST_NEWS_MILLIS]
+
+    suspend fun setLastNotifiedNewsMillis(millis: Long) {
+        store.edit { it[LAST_NEWS_MILLIS] = millis }
+    }
+
+    /**
+     * The user's selected app-language tag, persisted so background workers/receivers can localize
+     * notifications without relying on AppCompatDelegate (which can read empty on a cold wake-up).
+     * Synced from the UI (which reads it reliably with an Activity present).
+     */
+    suspend fun setLanguageTag(tag: String) {
+        store.edit { it[LANGUAGE_TAG] = tag }
+    }
+
+    suspend fun getLanguageTag(): String? = store.data.first()[LANGUAGE_TAG]
+
     /** Whether the first-launch onboarding (language pick + intro) has been completed. */
     fun observeOnboardingComplete(): Flow<Boolean> = store.data.map { it[ONBOARDING_DONE] ?: false }
 
@@ -114,6 +145,9 @@ class SettingsRepository @Inject constructor(
         val THEME_MODE = stringPreferencesKey("theme_mode")
         val ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")
         val CALIBRATION = stringPreferencesKey("month_calibration")
+        val NEWS_NOTIFS = booleanPreferencesKey("news_notifs_enabled")
+        val LAST_NEWS_MILLIS = longPreferencesKey("last_notified_news_millis")
+        val LANGUAGE_TAG = stringPreferencesKey("app_language_tag")
         fun enabledKey(p: Prayer) = booleanPreferencesKey("enabled_${p.name}")
         fun preWarnKey(p: Prayer) = intPreferencesKey("prewarn_${p.name}")
     }

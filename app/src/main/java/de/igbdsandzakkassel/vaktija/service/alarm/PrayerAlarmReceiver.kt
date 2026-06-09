@@ -10,6 +10,7 @@ import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
+import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,6 +64,9 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                     ACTION_ADHAN -> {
                         alarmScheduler.rescheduleAll()
                         PrayerTimesWidgetReceiver.refresh(context)
+                        // Check for new announcements in a worker (the network fetch must not run
+                        // inside the BroadcastReceiver's ~10s budget).
+                        NewsCheckWorker.enqueue(context)
                     }
                     ACTION_PREWARN -> alarmScheduler.rescheduleAll()
                     ACTION_SILENCE_START -> dndController.silence()

@@ -62,7 +62,6 @@
     <string name="settings_notifications_header">Уведомления о намазе</string>
     <string name="settings_master_toggle">Включить уведомления</string>
     <string name="settings_prewarn">Предупреждение</string>
-    <string name="settings_off">Выкл.</string>
     <string name="settings_minutes">%1$d мин</string>
     <string name="settings_test_adhan">Проверить азан</string>
     <string name="settings_permissions_header">Разрешения</string>
@@ -105,4 +104,9 @@
     <string name="sound_short_adhan">Короткий азан</string>
     <string name="sound_chime">Сигнал</string>
     <string name="sound_vibrate_only">Только вибрация</string>
+    <!-- Community announcements (news) notifications -->
+    <string name="notif_channel_news">Объявления</string>
+    <string name="notif_channel_news_desc">Уведомление, когда сообщество публикует новое объявление.</string>
+    <string name="settings_news_header">Объявления</string>
+    <string name="settings_news_notifications">Уведомления об объявлениях</string>
 </resources>

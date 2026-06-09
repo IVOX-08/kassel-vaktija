@@ -62,7 +62,6 @@
     <string name="settings_notifications_header">Njoftimet e namazit</string>
     <string name="settings_master_toggle">Aktivizo njoftimet</string>
     <string name="settings_prewarn">Paralajmërim</string>
-    <string name="settings_off">Joaktiv</string>
     <string name="settings_minutes">%1$d min</string>
     <string name="settings_test_adhan">Testo ezanin</string>
     <string name="settings_permissions_header">Lejet</string>
@@ -105,4 +104,9 @@
     <string name="sound_short_adhan">Ezan i shkurtër</string>
     <string name="sound_chime">Tingull sinjali</string>
     <string name="sound_vibrate_only">Vetëm dridhje</string>
+    <!-- Community announcements (news) notifications -->
+    <string name="notif_channel_news">Njoftime</string>
+    <string name="notif_channel_news_desc">Njoftim kur bashkësia publikon një lajmërim të ri.</string>
+    <string name="settings_news_header">Njoftime</string>
+    <string name="settings_news_notifications">Njoftimet për lajmërime</string>
 </resources>

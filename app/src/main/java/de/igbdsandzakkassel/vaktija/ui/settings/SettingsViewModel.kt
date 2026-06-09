@@ -39,6 +39,10 @@ class SettingsViewModel @Inject constructor(
     val themeMode: StateFlow<ThemeMode> = settingsRepository.observeThemeMode()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ThemeMode.SYSTEM)
 
+    /** Whether the user wants a (specially-toned) notification for new community announcements. */
+    val newsNotificationsEnabled: StateFlow<Boolean> = settingsRepository.observeNewsNotificationsEnabled()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
+
     /** True while signed in as the admin → reveals the admin editor. */
     val isAdmin: StateFlow<Boolean> = adminController.observeIsAdmin()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
@@ -74,21 +78,15 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.setSound(sound)
     }
 
+    fun setNewsNotificationsEnabled(enabled: Boolean) {
+        viewModelScope.launch { settingsRepository.setNewsNotificationsEnabled(enabled) }
+    }
+
     fun setPrayerEnabled(prayer: Prayer, enabled: Boolean) = applyThenReschedule {
         settingsRepository.setPrayerEnabled(prayer, enabled)
     }
 
     fun setPreWarn(prayer: Prayer, minutes: Int) = applyThenReschedule {
-        settingsRepository.setPreWarnMinutes(prayer, minutes)
-    }
-
-    /**
-     * Enables the prayer and sets its alert timing in one step. Used by the per-prayer chips:
-     * "0 min" = Adhan exactly on time; "5/10/15 min" = Adhan on time + a reminder that many minutes
-     * earlier. ("Off" calls [setPrayerEnabled] with false.)
-     */
-    fun selectPreWarn(prayer: Prayer, minutes: Int) = applyThenReschedule {
-        settingsRepository.setPrayerEnabled(prayer, true)
         settingsRepository.setPreWarnMinutes(prayer, minutes)
     }
 

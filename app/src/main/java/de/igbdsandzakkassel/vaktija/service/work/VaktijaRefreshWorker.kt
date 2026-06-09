@@ -8,6 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import de.igbdsandzakkassel.vaktija.service.alarm.AlarmScheduler
+import de.igbdsandzakkassel.vaktija.service.notification.NewsNotificationChecker
 import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
 
 /**
@@ -21,10 +22,13 @@ class VaktijaRefreshWorker @AssistedInject constructor(
     @Assisted params: WorkerParameters,
     private val repository: PrayerTimesRepository,
     private val alarmScheduler: AlarmScheduler,
+    private val newsChecker: NewsNotificationChecker,
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
         val refreshed = repository.refresh()
+        // Surface any newly-posted community announcement (best-effort; never fail the refresh on it).
+        runCatching { newsChecker.checkAndNotify(applicationContext) }
         alarmScheduler.rescheduleAll()
         PrayerTimesWidgetReceiver.refresh(applicationContext)
         return if (refreshed) Result.success() else Result.retry()

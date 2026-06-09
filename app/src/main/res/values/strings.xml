@@ -89,7 +89,6 @@
     <string name="settings_notifications_header">Obavijesti o namazu</string>
     <string name="settings_master_toggle">Uključi obavijesti</string>
     <string name="settings_prewarn">Najava</string>
-    <string name="settings_off">Isključeno</string>
     <string name="settings_minutes">%1$d min</string>
     <string name="settings_test_adhan">Testiraj ezan</string>
     <!-- Notification sound options -->
@@ -157,4 +156,9 @@
     <string name="admin_login_failed">Prijava nije uspjela</string>
     <string name="admin_save">Sačuvaj</string>
     <string name="admin_saved">Sačuvano</string>
+    <!-- Community announcements (news) notifications -->
+    <string name="notif_channel_news">Obavijesti zajednice</string>
+    <string name="notif_channel_news_desc">Obavijest kada zajednica objavi novu poruku.</string>
+    <string name="settings_news_header">Obavijesti</string>
+    <string name="settings_news_notifications">Obavijesti o novim porukama</string>
 </resources>
