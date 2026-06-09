@@ -34,7 +34,9 @@ class HadithRepository @Inject constructor(
 
     fun load(collection: String, lang: String): List<HadithItem> {
         val arabic = parse(collection, "ar") ?: return emptyList()
-        val translation = parse(collection, lang) ?: parse(collection, "en").orEmpty()
+        // For Arabic readers the matn IS the content — don't repeat it as a "translation".
+        val translation = if (lang == "ar") emptyList()
+        else parse(collection, lang) ?: parse(collection, "en").orEmpty()
         val byNumber = translation.associateBy { it.hadithnumber }
         return arabic
             .filter { it.hadithnumber > 0 && it.text.isNotBlank() }
