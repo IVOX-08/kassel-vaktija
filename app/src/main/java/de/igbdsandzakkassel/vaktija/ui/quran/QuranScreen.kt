@@ -13,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -29,8 +33,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -50,7 +56,7 @@ import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 
-private const val BISMILLAH = "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ"
+private const val BISMILLAH = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
 
 /** Chapter list: all 114 surahs. */
 @Composable
@@ -113,7 +119,11 @@ private fun SurahRow(surah: SurahMeta, onClick: () -> Unit) {
     }
 }
 
-/** Surah reader: Arabic ayahs only, with ornate ayah markers and a Bismillah header. */
+/**
+ * Surah reader: turn pages like a printed Mushaf. Ayahs are grouped by their official Mushaf page
+ * (604-page Madani layout) and laid out as continuous justified Arabic; swipe right-to-left to turn
+ * the page. No translations — Arabic only, by design.
+ */
 @Composable
 fun QuranSurahScreen(
     surahId: Int,
@@ -125,7 +135,6 @@ fun QuranSurahScreen(
     val ayahs by viewModel.ayahs.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Top bar: back + surah name.
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -143,22 +152,82 @@ fun QuranSurahScreen(
                 color = MaterialTheme.colorScheme.primary,
             )
         }
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
         val list = ayahs
         if (list == null) {
             Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
             return
         }
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            contentPadding = PaddingValues(bottom = 24.dp),
-        ) {
-            item { SurahTitleBlock(meta) }
-            if (surahId != 1 && surahId != 9) item { BismillahHeader() }
-            items(list, key = { it.number }) { ayah -> AyahBlock(ayah) }
+        val pages = remember(list) { groupByPage(list) }
+        val pagerState = rememberPagerState(pageCount = { pages.size })
+        // RTL pager: swiping right-to-left advances the page, like a real Mushaf.
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { index ->
+                val (pageNumber, pageAyahs) = pages[index]
+                QuranPage(
+                    surahId = surahId,
+                    meta = meta,
+                    isFirstPage = index == 0,
+                    pageNumber = pageNumber,
+                    ayahs = pageAyahs,
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun QuranPage(
+    surahId: Int,
+    meta: SurahMeta?,
+    isFirstPage: Boolean,
+    pageNumber: Int,
+    ayahs: List<Ayah>,
+) {
+    val styled = buildAnnotatedString {
+        ayahs.forEachIndexed { i, ayah ->
+            append(ayah.text)
+            append(" ")
+            withStyle(SpanStyle(color = BrandGold, fontWeight = FontWeight.Bold)) {
+                append("﴿${toArabicIndic(ayah.number)}﴾")
+            }
+            if (i != ayahs.lastIndex) append("  ")
+        }
+    }
+    Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp, vertical = 12.dp),
+        ) {
+            if (isFirstPage) {
+                SurahTitleBlock(meta)
+                if (surahId != 1 && surahId != 9) BismillahHeader()
+            }
+            Text(
+                text = styled,
+                fontSize = 22.sp,
+                lineHeight = 44.sp,
+                textAlign = TextAlign.Justify,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+            )
+        }
+        // Page number footer (Arabic-Indic), pinned at the bottom.
+        Text(
+            text = toArabicIndic(pageNumber),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp, top = 2.dp),
+        )
     }
 }
 
@@ -167,7 +236,7 @@ private fun SurahTitleBlock(meta: SurahMeta?) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
+            .padding(bottom = 12.dp),
         shape = RoundedCornerShape(20.dp),
         color = BrandGreen,
     ) {
@@ -187,7 +256,7 @@ private fun SurahTitleBlock(meta: SurahMeta?) {
                 Text(
                     text = meta.transliteration + "  ·  " + typeLabel(meta.type),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = androidx.compose.ui.graphics.Color.White,
+                    color = Color.White,
                 )
             }
         }
@@ -208,29 +277,18 @@ private fun BismillahHeader() {
     )
 }
 
-@Composable
-private fun AyahBlock(ayah: Ayah) {
-    val styled = buildAnnotatedString {
-        append(ayah.text)
-        append("  ")
-        withStyle(SpanStyle(color = BrandGold, fontWeight = FontWeight.Bold)) {
-            append("﴿${toArabicIndic(ayah.number)}﴾")
+/** Groups a surah's ayahs into consecutive Mushaf pages, preserving order. */
+private fun groupByPage(ayahs: List<Ayah>): List<Pair<Int, List<Ayah>>> {
+    val pages = mutableListOf<Pair<Int, MutableList<Ayah>>>()
+    for (ayah in ayahs) {
+        val last = pages.lastOrNull()
+        if (last == null || last.first != ayah.page) {
+            pages.add(ayah.page to mutableListOf(ayah))
+        } else {
+            last.second.add(ayah)
         }
     }
-    Column(modifier = Modifier.fillMaxWidth()) {
-        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-            Text(
-                text = styled,
-                fontSize = 23.sp,
-                lineHeight = 44.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-            )
-        }
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
-    }
+    return pages
 }
 
 private fun typeLabel(type: String): String = when (type.lowercase()) {
