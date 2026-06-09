@@ -76,8 +76,11 @@ class AdhanForegroundService : Service() {
                     this@AdhanForegroundService,
                     Uri.parse("android.resource://$packageName/$resId"),
                 )
-                setOnCompletionListener { stop() }
-                setOnErrorListener { _, _, _ -> stop(); true }
+                // NB: inside apply{} the receiver is the MediaPlayer, so an unqualified stop()
+                // would call MediaPlayer.stop() and leave the foreground service running. Qualify
+                // it to the service's stop() (which also tears down the notification + service).
+                setOnCompletionListener { this@AdhanForegroundService.stop() }
+                setOnErrorListener { _, _, _ -> this@AdhanForegroundService.stop(); true }
                 prepare()
                 start()
             }
