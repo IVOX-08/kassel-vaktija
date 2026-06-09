@@ -1,6 +1,7 @@
 package de.igbdsandzakkassel.vaktija.ui.settings
 
 import android.content.Context
+import android.os.PowerManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -105,6 +106,12 @@ class SettingsViewModel @Inject constructor(
     fun canScheduleExact(): Boolean = alarmScheduler.canScheduleExact()
 
     fun hasDndAccess(): Boolean = dndController.hasAccess()
+
+    /** True if the app is already exempt from battery optimization (then the button is hidden). */
+    fun isIgnoringBatteryOptimizations(): Boolean {
+        val pm = context.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return true
+        return pm.isIgnoringBatteryOptimizations(context.packageName)
+    }
 
     private fun applyThenReschedule(block: suspend () -> Unit) {
         viewModelScope.launch {

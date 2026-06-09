@@ -243,36 +243,48 @@ fun SettingsScreen(
             }
         }
 
-        Spacer(Modifier.height(8.dp))
-        SectionHeader(stringResource(R.string.settings_permissions_header))
+        // Only show a permission button when that permission is actually missing — so granted ones
+        // (and the whole section, once everything is granted) disappear instead of being dead taps.
+        val needNotif = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notifPermission.status.isGranted
+        val needExact = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !viewModel.canScheduleExact()
+        val needBattery = !viewModel.isIgnoringBatteryOptimizations()
+        if (needNotif || needExact || needBattery) {
+            Spacer(Modifier.height(8.dp))
+            SectionHeader(stringResource(R.string.settings_permissions_header))
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notifPermission.status.isGranted) {
-            OutlinedButton(
-                onClick = { notifPermission.launchPermissionRequest() },
-                modifier = Modifier.fillMaxWidth(),
-            ) { Text(stringResource(R.string.settings_perm_notifications)) }
+            if (needNotif) {
+                OutlinedButton(
+                    onClick = { notifPermission.launchPermissionRequest() },
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text(stringResource(R.string.settings_perm_notifications)) }
+            }
+
+            if (needExact) {
+                OutlinedButton(
+                    onClick = {
+                        context.startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text(stringResource(R.string.settings_perm_exact_alarm)) }
+            }
+
+            if (needBattery) {
+                OutlinedButton(
+                    onClick = {
+                        val pkgUri = Uri.parse("package:${context.packageName}")
+                        // Try the direct exemption dialog, then the battery-optimization list, then the
+                        // app's details page — so something always opens (some OEMs, e.g. Honor, don't
+                        // handle the first action, and it's a no-op once already exempt).
+                        listOf(
+                            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, pkgUri),
+                            Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS),
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri),
+                        ).firstOrNull { runCatching { context.startActivity(it); true }.getOrDefault(false) }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text(stringResource(R.string.settings_perm_battery)) }
+            }
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !viewModel.canScheduleExact()) {
-            OutlinedButton(
-                onClick = {
-                    context.startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
-                },
-                modifier = Modifier.fillMaxWidth(),
-            ) { Text(stringResource(R.string.settings_perm_exact_alarm)) }
-        }
-
-        OutlinedButton(
-            onClick = {
-                context.startActivity(
-                    Intent(
-                        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                        Uri.parse("package:${context.packageName}"),
-                    ),
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-        ) { Text(stringResource(R.string.settings_perm_battery)) }
 
         Spacer(Modifier.height(8.dp))
         SectionHeader(stringResource(R.string.language_picker_title))
