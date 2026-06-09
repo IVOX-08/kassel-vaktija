@@ -18,3 +18,5 @@ _o.png
 # Gemini API key (do not commit)
 gemini.properties
 _ui.xml
+/*.html
+/_hadith_*.json
