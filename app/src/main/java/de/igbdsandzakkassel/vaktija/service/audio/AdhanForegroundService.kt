@@ -35,7 +35,7 @@ class AdhanForegroundService : Service() {
         val sound = AdhanSound.fromName(intent?.getStringExtra(EXTRA_SOUND))
 
         startForegroundCompat(prayer)
-        playSound(sound.rawResName ?: FALLBACK_SOUND)
+        playSound(sound.rawResName)
         return START_NOT_STICKY
     }
 

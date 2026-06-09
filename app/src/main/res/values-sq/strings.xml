@@ -100,10 +100,8 @@
     <string name="news_delete_confirm">Të fshihet ky njoftim?</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Tingulli i njoftimit</string>
-    <string name="sound_full_adhan">Ezani i plotë</string>
     <string name="sound_short_adhan">Ezan i shkurtër</string>
     <string name="sound_chime">Tingull sinjali</string>
-    <string name="sound_vibrate_only">Vetëm dridhje</string>
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Njoftime</string>
     <string name="notif_channel_news_desc">Njoftim kur bashkësia publikon një lajmërim të ri.</string>

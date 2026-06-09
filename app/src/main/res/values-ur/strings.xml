@@ -100,10 +100,8 @@
     <string name="news_delete_confirm">کیا یہ اعلان حذف کریں؟</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">اطلاع کی آواز</string>
-    <string name="sound_full_adhan">مکمل اذان</string>
     <string name="sound_short_adhan">مختصر اذان</string>
     <string name="sound_chime">گھنٹی</string>
-    <string name="sound_vibrate_only">صرف ارتعاش</string>
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">اعلانات</string>
     <string name="notif_channel_news_desc">جب کمیونٹی نیا اعلان شائع کرے تو اطلاع۔</string>

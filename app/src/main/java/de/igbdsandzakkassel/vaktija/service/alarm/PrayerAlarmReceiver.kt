@@ -38,14 +38,8 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
             ACTION_ADHAN -> {
                 val prayer = prayerFrom(intent) ?: return
                 val sound = AdhanSound.fromName(intent.getStringExtra(EXTRA_SOUND))
-                PrayerNotifier.ensureChannels(context)
-                if (sound.hasAudio) {
-                    // Long audio → play via the foreground service (won't be truncated).
-                    AdhanForegroundService.start(context, prayer, sound.name)
-                } else {
-                    // Vibrate-only: no audio, just a heads-up notification on the vibrating channel.
-                    PrayerNotifier.postAdhanReached(context, prayer)
-                }
+                // Play via the foreground service (won't be truncated); it also vibrates via the channel.
+                AdhanForegroundService.start(context, prayer, sound.name)
             }
 
             ACTION_PREWARN -> {

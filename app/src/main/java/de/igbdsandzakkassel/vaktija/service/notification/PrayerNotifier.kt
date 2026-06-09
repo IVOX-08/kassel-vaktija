@@ -69,27 +69,6 @@ object PrayerNotifier {
         .addAction(0, context.getString(R.string.notif_stop), stopIntent)
         .build()
 
-    /**
-     * Vibrate-only alert: a prayer time has arrived but no long audio plays. A normal (auto-cancel)
-     * high-priority notification on the Adhan channel — the channel's vibration pattern fires it.
-     */
-    fun postAdhanReached(context: Context, prayer: Prayer) {
-        val notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
-            .setSmallIcon(R.drawable.ic_stat_adhan)
-            .setLargeIcon(communityLogo(context))
-            .setContentTitle(context.getString(R.string.notif_adhan_title, context.getString(prayer.labelRes)))
-            .setContentText(context.getString(R.string.notif_adhan_text))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setVibrate(ADHAN_VIBRATION)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
-            .setAutoCancel(true)
-            .setContentIntent(openAppIntent(context))
-            .build()
-        if (hasNotificationPermission(context)) {
-            NotificationManagerCompat.from(context).notify(ADHAN_NOTIFICATION_ID, notification)
-        }
-    }
-
     /** Pre-warning notification ("Dhuhr in 10 min"). */
     fun postPreWarning(context: Context, prayer: Prayer, minutes: Int) {
         val notification = NotificationCompat.Builder(context, CHANNEL_PREWARN)

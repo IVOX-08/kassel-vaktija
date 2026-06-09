@@ -110,10 +110,8 @@
     <string name="admin_saved">Gespeichert</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Benachrichtigungston</string>
-    <string name="sound_full_adhan">Voller Adhan</string>
     <string name="sound_short_adhan">Kurzer Adhan</string>
     <string name="sound_chime">Signalton</string>
-    <string name="sound_vibrate_only">Nur Vibration</string>
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Mitteilungen</string>
     <string name="notif_channel_news_desc">Benachrichtigung, wenn die Gemeinde eine neue Mitteilung veröffentlicht.</string>

@@ -100,10 +100,8 @@
     <string name="news_delete_confirm">حذف هذا الإعلان؟</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">صوت التنبيه</string>
-    <string name="sound_full_adhan">الأذان كاملاً</string>
     <string name="sound_short_adhan">أذان قصير</string>
     <string name="sound_chime">نغمة تنبيه</string>
-    <string name="sound_vibrate_only">اهتزاز فقط</string>
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">إعلانات الجماعة</string>
     <string name="notif_channel_news_desc">تنبيه عند نشر الجماعة إعلانًا جديدًا.</string>

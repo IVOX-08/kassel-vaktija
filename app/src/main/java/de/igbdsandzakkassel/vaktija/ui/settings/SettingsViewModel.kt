@@ -16,7 +16,6 @@ import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
 import de.igbdsandzakkassel.vaktija.service.alarm.AlarmScheduler
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
-import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -98,15 +97,9 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.setSilenceMinutes(minutes)
     }
 
-    /** Previews the currently-selected sound/vibration so the user can verify it (and permissions). */
+    /** Previews the currently-selected prayer sound so the user can verify it (and permissions). */
     fun testAdhan() {
-        val sound = settings.value.sound
-        if (sound.hasAudio) {
-            AdhanForegroundService.start(context, Prayer.DHUHR, sound.name)
-        } else {
-            PrayerNotifier.ensureChannels(context)
-            PrayerNotifier.postAdhanReached(context, Prayer.DHUHR)
-        }
+        AdhanForegroundService.start(context, Prayer.DHUHR, settings.value.sound.name)
     }
 
     fun canScheduleExact(): Boolean = alarmScheduler.canScheduleExact()

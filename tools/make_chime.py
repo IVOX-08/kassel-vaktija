@@ -35,12 +35,12 @@ def mix_at(buf, src, start_sec):
             buf[idx] += v
 
 
-total = int(SR * 2.3)
+total = int(SR * 1.1)
 buf = [0.0] * total
 
-# Two gentle strikes: high (E6) then a warmer (C6) — a calm "ding-dong".
-mix_at(buf, bell(1318.51, 1.3, 4.2), 0.00)
-mix_at(buf, bell(1046.50, 1.8, 3.4), 0.42)
+# A basic "ding-ding": two identical short bell strikes at the same pitch (E6).
+mix_at(buf, bell(1318.51, 0.55, 9.0), 0.00)
+mix_at(buf, bell(1318.51, 0.65, 8.0), 0.30)
 
 # Short fade-in (3 ms) to avoid a click, and a fade-out tail.
 fade_in = int(SR * 0.003)

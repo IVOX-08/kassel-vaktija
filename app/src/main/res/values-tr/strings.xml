@@ -100,10 +100,8 @@
     <string name="news_delete_confirm">Bu duyuru silinsin mi?</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Bildirim sesi</string>
-    <string name="sound_full_adhan">Tam ezan</string>
     <string name="sound_short_adhan">Kısa ezan</string>
     <string name="sound_chime">Uyarı sesi</string>
-    <string name="sound_vibrate_only">Sadece titreşim</string>
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Duyurular</string>
     <string name="notif_channel_news_desc">Cemaat yeni bir duyuru paylaştığında bildirim.</string>

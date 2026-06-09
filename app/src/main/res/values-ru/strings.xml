@@ -100,10 +100,8 @@
     <string name="news_delete_confirm">Удалить это объявление?</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Звук уведомления</string>
-    <string name="sound_full_adhan">Полный азан</string>
     <string name="sound_short_adhan">Короткий азан</string>
     <string name="sound_chime">Сигнал</string>
-    <string name="sound_vibrate_only">Только вибрация</string>
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Объявления</string>
     <string name="notif_channel_news_desc">Уведомление, когда сообщество публикует новое объявление.</string>

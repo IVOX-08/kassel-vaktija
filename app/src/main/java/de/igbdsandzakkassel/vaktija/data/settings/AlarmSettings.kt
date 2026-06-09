@@ -5,34 +5,22 @@ import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 
 /**
- * What plays when a prayer time arrives.
- *
- * - [rawResName] is the `res/raw` audio file to play (via the foreground service), or `null` for a
- *   vibrate-only alert that needs no long audio.
- * - [vibrate] is whether the phone vibrates for this mode.
- *
- * The full/short Adhan audio files (`adhan_full`, `adhan_short`) are dropped into `res/raw` by the
- * owner; until then the playback engine falls back to the bundled `adhan_placeholder` chime, so
- * every option works immediately. // TBD-asset: real adhan_full.mp3 / adhan_short.mp3
+ * Sound played when a prayer time arrives ([rawResName] = the `res/raw` audio file, played via the
+ * foreground service). The phone also vibrates (the Adhan channel carries a vibration pattern), so
+ * vibration always accompanies the sound rather than being a standalone option.
  */
 enum class AdhanSound(
     @param:StringRes val labelRes: Int,
-    val rawResName: String?,
-    val vibrate: Boolean,
+    val rawResName: String,
 ) {
-    FULL_ADHAN(R.string.sound_full_adhan, "adhan_full", true),
-    SHORT_ADHAN(R.string.sound_short_adhan, "adhan_short", true),
-    CHIME(R.string.sound_chime, "chime", true),
-    VIBRATE_ONLY(R.string.sound_vibrate_only, null, true),
+    SHORT_ADHAN(R.string.sound_short_adhan, "adhan_short"),
+    CHIME(R.string.sound_chime, "chime"),
     ;
-
-    /** True if this mode plays an audio file (vs. a vibrate-only alert). */
-    val hasAudio: Boolean get() = rawResName != null
 
     companion object {
         val DEFAULT = SHORT_ADHAN
 
-        /** Resolve a persisted/intent enum name, defaulting safely on any mismatch. */
+        /** Resolve a persisted/intent enum name, defaulting safely on any mismatch (incl. removed values). */
         fun fromName(name: String?): AdhanSound =
             name?.let { runCatching { valueOf(it) }.getOrNull() } ?: DEFAULT
     }
