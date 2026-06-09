@@ -133,7 +133,8 @@ private fun creditFor(lang: String): String = when (lang) {
     "sq" -> "Përktheu: Hoxhë Agim Bekiri (albislam.com)."
     "ur" -> "ترجمہ: شیخ عبد الہادی عبد الخالق مدنی"
     "ru" -> "Перевод: Абдулла (В.) Нирша."
-    "en", "de" -> "English: Ezzeddin Ibrahim & Denys Johnson-Davies."
+    "de" -> "Übersetzung: Ahmad von Denffer & K. Richards (IIFSO)."
+    "en" -> "English: Ezzeddin Ibrahim & Denys Johnson-Davies."
     else -> "Izvor / Source: hadith-api (public domain)." // ar, tr
 }
 
