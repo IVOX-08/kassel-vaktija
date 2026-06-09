@@ -12,6 +12,7 @@
     <string name="library_dhikr">Dhikr</string>
     <string name="hadith_nawawi">40 Hadithet e Imam Neveviut</string>
     <string name="hadith_riyad">Rijadus-salihin</string>
+    <string name="quran_verses">%1$d ajete</string>
 
     <string name="prayer_fajr">Sabahu</string>
     <string name="prayer_sunrise">Lindja e diellit</string>

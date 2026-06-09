@@ -12,6 +12,7 @@
     <string name="library_dhikr">Dhikr</string>
     <string name="hadith_nawawi">An-Nawawi\'s 40 Hadith</string>
     <string name="hadith_riyad">Riyad as-Salihin</string>
+    <string name="quran_verses">%1$d verses</string>
 
     <string name="prayer_fajr">Fajr</string>
     <string name="prayer_sunrise">Sunrise</string>

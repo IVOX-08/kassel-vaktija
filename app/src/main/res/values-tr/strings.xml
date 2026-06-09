@@ -12,6 +12,7 @@
     <string name="library_dhikr">Zikir</string>
     <string name="hadith_nawawi">İmam Nevevî\'nin 40 Hadisi</string>
     <string name="hadith_riyad">Riyâzü\'s-Sâlihîn</string>
+    <string name="quran_verses">%1$d ayet</string>
 
     <string name="prayer_fajr">Sabah</string>
     <string name="prayer_sunrise">Güneş</string>

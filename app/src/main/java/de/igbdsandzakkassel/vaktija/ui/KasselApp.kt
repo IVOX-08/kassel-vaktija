@@ -27,6 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -38,13 +40,14 @@ import de.igbdsandzakkassel.vaktija.ui.news.NewsScreen
 import de.igbdsandzakkassel.vaktija.ui.qibla.QiblaScreen
 import de.igbdsandzakkassel.vaktija.ui.settings.SettingsScreen
 import de.igbdsandzakkassel.vaktija.R
-import de.igbdsandzakkassel.vaktija.ui.components.PlaceholderContent
 import de.igbdsandzakkassel.vaktija.ui.dhikr.DhikrScreen
 import de.igbdsandzakkassel.vaktija.ui.hadith.HadithCollectionsScreen
 import de.igbdsandzakkassel.vaktija.ui.hadith.HadithListScreen
 import de.igbdsandzakkassel.vaktija.ui.library.LibraryDetail
 import de.igbdsandzakkassel.vaktija.ui.library.LibraryScreen
 import de.igbdsandzakkassel.vaktija.ui.library.LibrarySection
+import de.igbdsandzakkassel.vaktija.ui.quran.QuranListScreen
+import de.igbdsandzakkassel.vaktija.ui.quran.QuranSurahScreen
 
 /**
  * Single-Activity phone/tablet scaffold: a bottom navigation bar over a Navigation-Compose host.
@@ -149,8 +152,17 @@ fun KasselApp() {
             }
             composable(LibrarySection.QURAN.route) {
                 LibraryDetail(R.string.library_quran, onBack = { navController.popBackStack() }) {
-                    PlaceholderContent(title = stringResource(R.string.library_quran))
+                    QuranListScreen(onOpen = { id -> navController.navigate("quran_surah/$id") })
                 }
+            }
+            composable(
+                route = "quran_surah/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.IntType }),
+            ) { entry ->
+                QuranSurahScreen(
+                    surahId = entry.arguments?.getInt("id") ?: 1,
+                    onBack = { navController.popBackStack() },
+                )
             }
             composable(LibrarySection.HADITH.route) {
                 LibraryDetail(R.string.library_hadith, onBack = { navController.popBackStack() }) {
