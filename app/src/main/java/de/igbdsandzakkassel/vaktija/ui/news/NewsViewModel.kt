@@ -7,6 +7,7 @@ import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
+import de.igbdsandzakkassel.vaktija.data.translate.GeminiTranslator
 import de.igbdsandzakkassel.vaktija.data.translate.NewsTranslator
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
+    private val geminiTranslator: GeminiTranslator,
     private val translator: NewsTranslator,
     adminController: AdminController,
 ) : ViewModel() {
@@ -41,7 +43,12 @@ class NewsViewModel @Inject constructor(
         val fallbackLang = LocaleController.current().tag
         viewModelScope.launch {
             val result = runCatching {
-                val translated = translator.translateToAll(title.trim(), body.trim(), fallbackLang)
+                val t = title.trim()
+                val b = body.trim()
+                // Prefer the high-quality Gemini translation; fall back to on-device ML Kit if it's
+                // not configured or fails (e.g. offline) so a post is never blocked.
+                val translated = geminiTranslator.translateToAll(t, b, fallbackLang)
+                    ?: translator.translateToAll(t, b, fallbackLang)
                 newsRepository.postNews(
                     titleByLang = translated.titleByLang,
                     bodyByLang = translated.bodyByLang,

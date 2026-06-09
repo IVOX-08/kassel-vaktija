@@ -17,6 +17,14 @@ val keystoreProperties = Properties().apply {
     if (keystorePropertiesFile.exists()) FileInputStream(keystorePropertiesFile).use { load(it) }
 }
 
+// Gemini (announcement translation) API key, from the gitignored gemini.properties (if present).
+// Empty when absent → the app falls back to on-device ML Kit translation, so it still builds/runs.
+val geminiPropertiesFile = rootProject.file("gemini.properties")
+val geminiProperties = Properties().apply {
+    if (geminiPropertiesFile.exists()) FileInputStream(geminiPropertiesFile).use { load(it) }
+}
+val geminiApiKey = (geminiProperties["GEMINI_API_KEY"] as String?).orEmpty()
+
 android {
     namespace = "de.igbdsandzakkassel.vaktija"
     compileSdk = 35
@@ -37,6 +45,10 @@ android {
         // Admin's Firebase Auth UID. Used to show admin tools to the right person; the real
         // protection is the Firestore security rule on the server, which checks this same UID.
         buildConfigField("String", "ADMIN_UID", "\"1a7xqRgIYDR0RZqa3KghBlz98PK2\"")
+
+        // Gemini API key for high-quality announcement translation (admin device only, at post time).
+        // Supplied via gitignored gemini.properties; empty → ML Kit fallback.
+        buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
     }
 
     signingConfigs {
