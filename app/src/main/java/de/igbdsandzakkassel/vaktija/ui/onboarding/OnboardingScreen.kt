@@ -29,8 +29,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,9 +55,17 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun OnboardingScreen(onFinished: () -> Unit) {
-    val localesEmpty = AppCompatDelegate.getApplicationLocales().isEmpty
-    if (localesEmpty) {
-        LanguagePickerScreen(onSelected = { LocaleController.set(it) })
+    // Survives the Activity recreate that LocaleController.set triggers. We don't rely on
+    // AppCompatDelegate.getApplicationLocales() here because it can read empty right after the
+    // recreate (out of sync with the framework). Existing users (locale already set) skip step 1.
+    var languageChosen by rememberSaveable {
+        mutableStateOf(!AppCompatDelegate.getApplicationLocales().isEmpty)
+    }
+    if (!languageChosen) {
+        LanguagePickerScreen(onSelected = {
+            languageChosen = true
+            LocaleController.set(it)
+        })
     } else {
         OnboardingIntro(onFinished = onFinished)
     }
