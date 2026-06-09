@@ -33,20 +33,18 @@ class HadithRepository @Inject constructor(
     private val json = Json { ignoreUnknownKeys = true }
 
     fun load(collection: String, lang: String): List<HadithItem> {
-        val arabic = parse(collection, "ar") ?: return emptyList()
-        // For Arabic readers the matn IS the content — don't repeat it as a "translation".
-        val translation = if (lang == "ar") emptyList()
-        else parse(collection, lang) ?: parse(collection, "en").orEmpty()
-        val byNumber = translation.associateBy { it.hadithnumber }
-        return arabic
+        val arabic = (parse(collection, "ar") ?: return emptyList())
             .filter { it.hadithnumber > 0 && it.text.isNotBlank() }
-            .map { entry ->
-                HadithItem(
-                    number = entry.hadithnumber,
-                    arabic = entry.text,
-                    translation = byNumber[entry.hadithnumber]?.text.orEmpty(),
-                )
-            }
+        // For Arabic readers the matn IS the content — don't repeat it as a "translation".
+        if (lang == "ar") return arabic.map { HadithItem(it.hadithnumber, it.text, "") }
+        val byLang = parse(collection, lang).orEmpty().associateBy { it.hadithnumber }
+        // Per-hadith fallback to English when a language is missing a particular hadith.
+        val byEn = if (lang == "en") byLang else parse(collection, "en").orEmpty().associateBy { it.hadithnumber }
+        return arabic.map { entry ->
+            val text = byLang[entry.hadithnumber]?.text?.takeIf { it.isNotBlank() }
+                ?: byEn[entry.hadithnumber]?.text.orEmpty()
+            HadithItem(entry.hadithnumber, entry.text, text)
+        }
     }
 
     private fun parse(collection: String, lang: String): List<HadithEntry>? = runCatching {

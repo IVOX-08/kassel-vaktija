@@ -52,9 +52,7 @@ fun HadithCollectionsScreen(onOpen: (String) -> Unit, modifier: Modifier = Modif
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         CollectionCard(R.string.hadith_nawawi, subtitle = null) { onOpen("hadith_nawawi") }
-        CollectionCard(R.string.hadith_riyad, subtitle = stringResource(R.string.placeholder_coming_soon)) {
-            onOpen("hadith_riyad")
-        }
+        CollectionCard(R.string.hadith_riyad, subtitle = null) { onOpen("hadith_riyad") }
     }
 }
 
@@ -122,21 +120,30 @@ fun HadithListScreen(
             contentPadding = PaddingValues(vertical = 12.dp),
         ) {
             items(list, key = { it.number }) { hadith -> HadithCard(hadith) }
-            item { HadithCredit(creditFor(lang)) }
+            item { HadithCredit(creditFor(collection, lang)) }
         }
     }
 }
 
-/** Translator/source credit shown at the end of a collection. */
-private fun creditFor(lang: String): String = when (lang) {
-    "bs" -> "Prijevod: Bilal Dervišić — „40 Nevevijevih hadisa“ (Sehara / minber.ba, 2010)."
-    "sq" -> "Përktheu: Hoxhë Agim Bekiri (albislam.com)."
-    "ur" -> "ترجمہ: شیخ عبد الہادی عبد الخالق مدنی"
-    "ru" -> "Перевод: Абдулла (В.) Нирша."
-    "de" -> "Übersetzung: Ahmad von Denffer & K. Richards (IIFSO)."
-    "en" -> "English: Ezzeddin Ibrahim & Denys Johnson-Davies."
-    else -> "Izvor / Source: hadith-api (public domain)." // ar, tr
-}
+/** Translator/source credit shown at the end of a collection (per collection + language). */
+private fun creditFor(collection: String, lang: String): String =
+    if (collection == "riyadussalihin") when (lang) {
+        "bs" -> "Prijevod: Enciklopedija prevedenih hadisa (hadeethenc.com)."
+        "tr" -> "Çeviri: Kandemir, Çakan, Küçük — Riyâzü's-Sâlihîn (Erkam)."
+        "sq" -> "Përkthim: Rijadus Salihin (botim shqip)."
+        "ru" -> "Перевод: Абдулла Нирша — „Сады праведных“ (Умма)."
+        "ur" -> "ترجمہ: دائرۃ المعارف الحدیثیہ (hadeethenc.com)"
+        "en", "de" -> "English: Riyad us-Saliheen (Darussalam, S. Yusuf)."
+        else -> "المتن: رياض الصالحين للإمام النووي." // ar
+    } else when (lang) { // nawawi40
+        "bs" -> "Prijevod: Bilal Dervišić — „40 Nevevijevih hadisa“ (Sehara / minber.ba, 2010)."
+        "sq" -> "Përktheu: Hoxhë Agim Bekiri (albislam.com)."
+        "ur" -> "ترجمہ: شیخ عبد الہادی عبد الخالق مدنی"
+        "ru" -> "Перевод: Абдулла (В.) Нирша."
+        "de" -> "Übersetzung: Ahmad von Denffer & K. Richards (IIFSO)."
+        "en" -> "English: Ezzeddin Ibrahim & Denys Johnson-Davies."
+        else -> "Izvor / Source: hadith-api (public domain)." // ar, tr
+    }
 
 @Composable
 private fun HadithCredit(text: String) {
