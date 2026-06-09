@@ -133,7 +133,8 @@ private fun creditFor(collection: String, lang: String): String =
         "sq" -> "Përkthim: Rijadus Salihin (botim shqip)."
         "ru" -> "Перевод: Абдулла Нирша — „Сады праведных“ (Умма)."
         "ur" -> "ترجمہ: دائرۃ المعارف الحدیثیہ (hadeethenc.com)"
-        "en", "de" -> "English: Riyad us-Saliheen (Darussalam, S. Yusuf)."
+        "de" -> "Übersetzung: hadeethenc.com & dt. Ausgaben (Garten der Tugendhaften)."
+        "en" -> "English: Riyad us-Saliheen (Darussalam, S. Yusuf)."
         else -> "المتن: رياض الصالحين للإمام النووي." // ar
     } else when (lang) { // nawawi40
         "bs" -> "Prijevod: Bilal Dervišić — „40 Nevevijevih hadisa“ (Sehara / minber.ba, 2010)."

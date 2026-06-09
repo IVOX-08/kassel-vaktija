@@ -1,7 +1,7 @@
 {
  "metadata": {
   "name": "Riyad as-Salihin (selection)",
-  "translator": "Standard published Albanian \"Rijadus Salihin\" of Imam an-Nawawi — translators Miftar Ajdini, Qemajl Morina, Nexhat Ibrahimi (rev. 2009); the same edition hosted by islamhouse.com (sq_riyad_alsaliheen) and kuran-index.com."
+  "translator": "Standard published Albanian \"Rijadus Salihin\" of Imam an-Nawawi — translators Miftar Ajdini, Qemajl Morina, Nexhat Ibrahimi (rev. 2009); the same edition hosted by islamhouse.com (sq_riyad_alsaliheen) and kuran-index.com. Hadith 12: Enciklopedia e Haditheve Profetike (hadeethenc.com), free da'wah translation."
  },
  "hadiths": [
   {
@@ -47,6 +47,10 @@
   {
    "hadithnumber": 11,
    "text": "Ebu Dherri r.a. thotë: \"Pejgamberi sal-lall-llahu alejhi ve sel-lem. ka thënë: \"Asnjë punë të mirë mos e nënçmo, pra edhe atë që ta takosh mikun tënd me fytyrë të qeshur.\" (Transmeton Muslimi)"
+  },
+  {
+   "hadithnumber": 12,
+   "text": "Sehël ibën Sadi (Allahu qoftë i kënaqur me të!) transmeton se i Dërguari i Allahut sal-lall-llahu alejhi ve sel-lem. ka thënë: \"Atij që ma garanton atë që është mes dy nofullave dhe atë që është mes dy këmbëve, ia garantoj Xhenetin.\" (Sahih - Transmeton Buhariu, nr. 6474)"
   }
  ]
 }
