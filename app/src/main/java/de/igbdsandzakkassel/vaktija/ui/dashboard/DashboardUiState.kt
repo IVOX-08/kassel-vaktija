@@ -1,11 +1,16 @@
 package de.igbdsandzakkassel.vaktija.ui.dashboard
 
+import androidx.annotation.StringRes
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import java.time.LocalTime
 
-/** One prayer row on the dashboard. [isHighlighted] marks the NEXT upcoming prayer. */
+/**
+ * One prayer row on the dashboard. [isHighlighted] marks the NEXT upcoming prayer. [labelRes] is
+ * usually the prayer's own name, but on Fridays the Dhuhr row is shown as Jumu'ah.
+ */
 data class PrayerRowUi(
     val prayer: Prayer,
+    @param:StringRes val labelRes: Int,
     val adhan: LocalTime,
     val iqamah: LocalTime?,
     val isHighlighted: Boolean,

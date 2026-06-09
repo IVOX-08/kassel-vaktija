@@ -405,7 +405,7 @@ private fun PrayerCard(row: PrayerRowUi, pulseToken: Int = 0) {
                 // Prayer (Adhan) row
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = stringResource(row.prayer.labelRes),
+                        text = stringResource(row.labelRes),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = nameColor,

@@ -3,6 +3,7 @@ package de.igbdsandzakkassel.vaktija.ui.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.DailyTimes
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.chrono.HijrahDate
@@ -63,14 +65,20 @@ class DashboardViewModel @Inject constructor(
         now: LocalDateTime,
     ): DashboardUiState {
         val locale = Locale.getDefault()
-        val schedule = PrayerScheduleCalculator.compute(times, now)
+        // On Fridays the Dhuhr (Podne) congregation is replaced by Jumu'ah at the community time,
+        // so the Dhuhr slot is shown — and counted down to — at the Jumua time.
+        val isFriday = now.dayOfWeek == DayOfWeek.FRIDAY
+        val effectiveTimes = if (isFriday) times.copy(dhuhr = rules.jumua) else times
+        val schedule = PrayerScheduleCalculator.compute(effectiveTimes, now)
 
         val rows = Prayer.entries.map { prayer ->
-            val adhan = times.adhan(prayer)
+            val adhan = effectiveTimes.adhan(prayer)
+            val jumuaRow = isFriday && prayer == Prayer.DHUHR
             PrayerRowUi(
                 prayer = prayer,
+                labelRes = if (jumuaRow) R.string.prayer_jumua else prayer.labelRes,
                 adhan = adhan,
-                iqamah = rules.iqamah(prayer, adhan),
+                iqamah = if (jumuaRow) null else rules.iqamah(prayer, adhan),
                 // Highlight the NEXT upcoming prayer (matches the countdown above).
                 isHighlighted = prayer == schedule.nextPrayer,
             )
@@ -84,7 +92,8 @@ class DashboardViewModel @Inject constructor(
             rows = rows,
             nextPrayer = schedule.nextPrayer,
             countdown = formatCountdown(Duration.between(now, schedule.nextAdhan)),
-            jumua = rules.jumua,
+            // On Friday the Jumua time is shown in the list (no separate card).
+            jumua = if (isFriday) null else rules.jumua,
             isStale = !fresh,
         )
     }
