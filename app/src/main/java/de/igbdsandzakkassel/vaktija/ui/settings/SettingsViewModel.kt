@@ -102,6 +102,10 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.setSilenceMinutes(minutes)
     }
 
+    fun setSilenceBeforeMinutes(minutes: Int) = applyThenReschedule {
+        settingsRepository.setSilenceBeforeMinutes(minutes)
+    }
+
     /** Previews the currently-selected prayer sound so the user can verify it (and permissions). */
     fun testAdhan() {
         AdhanForegroundService.start(context, Prayer.DHUHR, settings.value.sound.name)

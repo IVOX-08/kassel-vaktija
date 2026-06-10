@@ -195,7 +195,21 @@ fun SettingsScreen(
                 }
                 if (settings.autoSilenceEnabled) {
                     Text(
-                        text = stringResource(R.string.settings_silence_duration),
+                        text = stringResource(R.string.settings_silence_before),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        AlarmSettings.SILENCE_OPTIONS.forEach { minutes ->
+                            FilterChip(
+                                selected = settings.silenceBeforeMinutes == minutes,
+                                onClick = { viewModel.setSilenceBeforeMinutes(minutes) },
+                                label = { Text(stringResource(R.string.settings_minutes, minutes)) },
+                            )
+                        }
+                    }
+                    Text(
+                        text = stringResource(R.string.settings_silence_after),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

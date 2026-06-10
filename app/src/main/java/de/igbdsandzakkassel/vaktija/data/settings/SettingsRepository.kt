@@ -29,8 +29,10 @@ class SettingsRepository @Inject constructor(
             masterEnabled = prefs[MASTER_ENABLED] ?: true,
             sound = AdhanSound.fromName(prefs[SOUND]),
             autoSilenceEnabled = prefs[AUTO_SILENCE] ?: false,
-            silenceMinutes = (prefs[SILENCE_MINUTES] ?: 15)
-                .takeIf { it in AlarmSettings.SILENCE_OPTIONS } ?: 15,
+            silenceBeforeMinutes = (prefs[SILENCE_BEFORE] ?: 5)
+                .takeIf { it in AlarmSettings.SILENCE_OPTIONS } ?: 5,
+            silenceMinutes = (prefs[SILENCE_MINUTES] ?: 10)
+                .takeIf { it in AlarmSettings.SILENCE_OPTIONS } ?: 10,
             weeklyReminderEnabled = prefs[WEEKLY_REMINDER] ?: true,
             perPrayer = Prayer.OBLIGATORY.associateWith { prayer ->
                 PrayerAlarmPrefs(
@@ -65,6 +67,10 @@ class SettingsRepository @Inject constructor(
 
     suspend fun setSilenceMinutes(minutes: Int) {
         store.edit { it[SILENCE_MINUTES] = minutes }
+    }
+
+    suspend fun setSilenceBeforeMinutes(minutes: Int) {
+        store.edit { it[SILENCE_BEFORE] = minutes }
     }
 
     /** Toggle the weekly (Friday) dhikr/hadith reminder. */
@@ -147,6 +153,7 @@ class SettingsRepository @Inject constructor(
         val SOUND = stringPreferencesKey("adhan_sound")
         val AUTO_SILENCE = booleanPreferencesKey("auto_silence")
         val SILENCE_MINUTES = intPreferencesKey("silence_minutes")
+        val SILENCE_BEFORE = intPreferencesKey("silence_before_minutes")
         val WEEKLY_REMINDER = booleanPreferencesKey("weekly_reminder_enabled")
         val SAVED_FILTER = intPreferencesKey("saved_dnd_filter")
         val THEME_MODE = stringPreferencesKey("theme_mode")

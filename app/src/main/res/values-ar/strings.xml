@@ -113,4 +113,7 @@
     <string name="notif_reminder_title">وقت الذكر والحديث</string>
     <string name="notif_reminder_text">خصّص لحظةً للذكر واقرأ حديثًا.</string>
     <string name="settings_weekly_reminder">تذكير أسبوعي (ذكر وحديث)</string>
+    <!-- Auto-silence before/after the Adhan -->
+    <string name="settings_silence_before">قبل الأذان</string>
+    <string name="settings_silence_after">بعد الأذان</string>
 </resources>

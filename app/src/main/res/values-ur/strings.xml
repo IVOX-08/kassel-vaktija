@@ -113,4 +113,7 @@
     <string name="notif_reminder_title">ذکر اور حدیث کا وقت</string>
     <string name="notif_reminder_text">ذرا ذکر کے لیے وقت نکالیں اور ایک حدیث پڑھیں۔</string>
     <string name="settings_weekly_reminder">ہفتہ وار یاد دہانی (ذکر و حدیث)</string>
+    <!-- Auto-silence before/after the Adhan -->
+    <string name="settings_silence_before">اذان سے پہلے</string>
+    <string name="settings_silence_after">اذان کے بعد</string>
 </resources>

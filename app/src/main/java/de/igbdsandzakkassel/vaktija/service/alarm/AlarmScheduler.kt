@@ -69,11 +69,12 @@ class AlarmScheduler @Inject constructor(
                 }
             }
 
-            // Auto-silence window (independent of the notifications toggle): DND on at the Adhan,
-            // off again after the configured duration.
+            // Auto-silence window (independent of the notifications toggle): DND on a few minutes
+            // BEFORE the Adhan, off again a few minutes AFTER it.
             if (settings.autoSilenceEnabled) {
-                if (adhanAt.isAfter(now)) {
-                    schedule(prayer, adhanAt, AlarmType.SILENCE_START, minutes = 0, sound = settings.sound)
+                val startAt = adhanAt.minusMinutes(settings.silenceBeforeMinutes.toLong())
+                if (startAt.isAfter(now)) {
+                    schedule(prayer, startAt, AlarmType.SILENCE_START, minutes = 0, sound = settings.sound)
                 }
                 val endAt = adhanAt.plusMinutes(settings.silenceMinutes.toLong())
                 if (endAt.isAfter(now)) {

@@ -38,8 +38,10 @@ data class AlarmSettings(
     val sound: AdhanSound = AdhanSound.DEFAULT,
     /** Auto-silence (Do Not Disturb) the phone around each prayer time. */
     val autoSilenceEnabled: Boolean = false,
-    /** How long the phone stays silenced after each prayer's Adhan time. */
-    val silenceMinutes: Int = 15,
+    /** How long the phone is silenced BEFORE each prayer's Adhan time. */
+    val silenceBeforeMinutes: Int = 5,
+    /** How long the phone stays silenced AFTER each prayer's Adhan time. */
+    val silenceMinutes: Int = 10,
     /** A gentle weekly reminder (Friday) to read some dhikr and a hadith. */
     val weeklyReminderEnabled: Boolean = true,
     val perPrayer: Map<Prayer, PrayerAlarmPrefs> = Prayer.OBLIGATORY.associateWith { PrayerAlarmPrefs() },
@@ -50,7 +52,7 @@ data class AlarmSettings(
         /** Pre-warning options offered in the UI (minutes before Adhan; 0 = exactly at Adhan). */
         val PRE_WARN_OPTIONS = listOf(0, 5, 10, 15, 30)
 
-        /** Auto-silence duration options (minutes after the Adhan). */
-        val SILENCE_OPTIONS = listOf(10, 15, 20, 30)
+        /** Auto-silence duration options (minutes before/after the Adhan). */
+        val SILENCE_OPTIONS = listOf(5, 10, 15, 20, 30)
     }
 }

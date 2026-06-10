@@ -123,4 +123,7 @@
     <string name="notif_reminder_title">Time for dhikr &amp; hadith</string>
     <string name="notif_reminder_text">Take a moment for dhikr and read a hadith.</string>
     <string name="settings_weekly_reminder">Weekly reminder (dhikr &amp; hadith)</string>
+    <!-- Auto-silence before/after the Adhan -->
+    <string name="settings_silence_before">Before the Adhan</string>
+    <string name="settings_silence_after">After the Adhan</string>
 </resources>

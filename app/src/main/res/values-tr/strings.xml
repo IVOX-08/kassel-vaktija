@@ -113,4 +113,7 @@
     <string name="notif_reminder_title">Zikir ve hadis vakti</string>
     <string name="notif_reminder_text">Bir an zikre ayır ve bir hadis oku.</string>
     <string name="settings_weekly_reminder">Haftalık hatırlatma (zikir ve hadis)</string>
+    <!-- Auto-silence before/after the Adhan -->
+    <string name="settings_silence_before">Ezandan önce</string>
+    <string name="settings_silence_after">Ezandan sonra</string>
 </resources>

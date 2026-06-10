@@ -113,4 +113,7 @@
     <string name="notif_reminder_title">Koha për dhikr dhe hadith</string>
     <string name="notif_reminder_text">Ndaj një moment për dhikr dhe lexo një hadith.</string>
     <string name="settings_weekly_reminder">Kujtesë javore (dhikr dhe hadith)</string>
+    <!-- Auto-silence before/after the Adhan -->
+    <string name="settings_silence_before">Para ezanit</string>
+    <string name="settings_silence_after">Pas ezanit</string>
 </resources>

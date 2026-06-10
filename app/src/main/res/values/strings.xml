@@ -165,4 +165,7 @@
     <string name="notif_reminder_title">Vrijeme za zikr i hadis</string>
     <string name="notif_reminder_text">Odvojite trenutak za zikr i pročitajte jedan hadis.</string>
     <string name="settings_weekly_reminder">Sedmični podsjetnik (zikr i hadis)</string>
+    <!-- Auto-silence before/after the Adhan -->
+    <string name="settings_silence_before">Prije ezana</string>
+    <string name="settings_silence_after">Poslije ezana</string>
 </resources>

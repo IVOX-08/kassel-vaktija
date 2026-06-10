@@ -113,4 +113,7 @@
     <string name="notif_reminder_title">Время для зикра и хадиса</string>
     <string name="notif_reminder_text">Уделите минуту зикру и прочитайте хадис.</string>
     <string name="settings_weekly_reminder">Еженедельное напоминание (зикр и хадис)</string>
+    <!-- Auto-silence before/after the Adhan -->
+    <string name="settings_silence_before">До азана</string>
+    <string name="settings_silence_after">После азана</string>
 </resources>
