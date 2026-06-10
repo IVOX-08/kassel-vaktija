@@ -149,7 +149,7 @@ private fun SlideContent(slide: Slide) {
     ) {
         if (slide.emblem) {
             Image(
-                painter = painterResource(R.drawable.logo_community),
+                painter = painterResource(R.drawable.logo_emblem),
                 contentDescription = null,
                 modifier = Modifier.size(150.dp),
             )

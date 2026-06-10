@@ -70,7 +70,7 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
     ) {
         if (state.loading) {
             Image(
-                painter = painterResource(R.drawable.logo_community),
+                painter = painterResource(R.drawable.logo_emblem),
                 contentDescription = stringResource(R.string.cd_app_logo),
                 modifier = Modifier.align(Alignment.Center).size(220.dp),
             )
@@ -85,7 +85,7 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.Center,
             ) {
                 Image(
-                    painter = painterResource(R.drawable.logo_community),
+                    painter = painterResource(R.drawable.logo_emblem),
                     contentDescription = stringResource(R.string.cd_app_logo),
                     modifier = Modifier.height(130.dp),
                 )

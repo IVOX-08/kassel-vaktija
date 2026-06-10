@@ -354,6 +354,13 @@ private const val PAYPAL_URL =
 private const val MAPS_URL =
     "https://www.google.com/maps/search/?api=1&query=Schwanenweg+13%2C+34123+Kassel"
 
+/**
+ * Wraps a left-to-right value (phone number, street address) in Unicode isolates so it keeps its
+ * natural LTR order even when the UI language is RTL (Arabic). Without this, "0176 3037 2402"
+ * renders as "2402 3037 0176". LRI (U+2066) … PDI (U+2069).
+ */
+private fun ltr(value: String): String = "⁦$value⁩"
+
 private const val IMAM_NAME = "Alen Golac"
 private const val IMAM_PHONE_DISPLAY = "0176 3037 2402"
 private const val IMAM_PHONE_DIAL = "017630372402"
@@ -378,7 +385,7 @@ private fun AboutCard(onVersionClick: () -> Unit) {
                 color = MaterialTheme.colorScheme.primary,
             )
             Spacer(Modifier.height(6.dp))
-            AboutRow(Icons.Filled.Place, stringResource(R.string.community_address)) {
+            AboutRow(Icons.Filled.Place, ltr(stringResource(R.string.community_address))) {
                 context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MAPS_URL)))
             }
             AboutRow(Icons.Filled.Email, COMMUNITY_EMAIL) {
@@ -389,13 +396,13 @@ private fun AboutCard(onVersionClick: () -> Unit) {
             }
             AboutRow(
                 Icons.Filled.Person,
-                "${stringResource(R.string.about_imam)}: $IMAM_NAME\n$IMAM_PHONE_DISPLAY",
+                "${stringResource(R.string.about_imam)}: $IMAM_NAME\n${ltr(IMAM_PHONE_DISPLAY)}",
             ) {
                 context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$IMAM_PHONE_DIAL")))
             }
             AboutRow(
                 Icons.Filled.Call,
-                "${stringResource(R.string.about_dev_promo)}\n$DEV_PHONE_DISPLAY",
+                "${stringResource(R.string.about_dev_promo)}\n${ltr(DEV_PHONE_DISPLAY)}",
             ) {
                 context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$DEV_PHONE_DIAL")))
             }
