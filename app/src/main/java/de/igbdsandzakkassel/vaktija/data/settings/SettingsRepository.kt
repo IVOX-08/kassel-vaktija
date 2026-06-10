@@ -31,6 +31,7 @@ class SettingsRepository @Inject constructor(
             autoSilenceEnabled = prefs[AUTO_SILENCE] ?: false,
             silenceMinutes = (prefs[SILENCE_MINUTES] ?: 15)
                 .takeIf { it in AlarmSettings.SILENCE_OPTIONS } ?: 15,
+            weeklyReminderEnabled = prefs[WEEKLY_REMINDER] ?: true,
             perPrayer = Prayer.OBLIGATORY.associateWith { prayer ->
                 PrayerAlarmPrefs(
                     enabled = prefs[enabledKey(prayer)] ?: true,
@@ -64,6 +65,11 @@ class SettingsRepository @Inject constructor(
 
     suspend fun setSilenceMinutes(minutes: Int) {
         store.edit { it[SILENCE_MINUTES] = minutes }
+    }
+
+    /** Toggle the weekly (Friday) dhikr/hadith reminder. */
+    suspend fun setWeeklyReminderEnabled(enabled: Boolean) {
+        store.edit { it[WEEKLY_REMINDER] = enabled }
     }
 
     /** Remembers the phone's DND state before we silenced it, so it can be restored afterwards. */
@@ -141,6 +147,7 @@ class SettingsRepository @Inject constructor(
         val SOUND = stringPreferencesKey("adhan_sound")
         val AUTO_SILENCE = booleanPreferencesKey("auto_silence")
         val SILENCE_MINUTES = intPreferencesKey("silence_minutes")
+        val WEEKLY_REMINDER = booleanPreferencesKey("weekly_reminder_enabled")
         val SAVED_FILTER = intPreferencesKey("saved_dnd_filter")
         val THEME_MODE = stringPreferencesKey("theme_mode")
         val ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")

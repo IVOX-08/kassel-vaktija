@@ -107,4 +107,10 @@
     <string name="notif_channel_news_desc">Уведомление, когда сообщество публикует новое объявление.</string>
     <string name="settings_news_header">Объявления</string>
     <string name="settings_news_notifications">Уведомления об объявлениях</string>
+    <!-- Weekly dhikr/hadith reminder -->
+    <string name="notif_channel_reminder">Еженедельное напоминание</string>
+    <string name="notif_channel_reminder_desc">Еженедельное напоминание читать зикр и хадис.</string>
+    <string name="notif_reminder_title">Время для зикра и хадиса</string>
+    <string name="notif_reminder_text">Уделите минуту зикру и прочитайте хадис.</string>
+    <string name="settings_weekly_reminder">Еженедельное напоминание (зикр и хадис)</string>
 </resources>

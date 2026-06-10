@@ -107,4 +107,10 @@
     <string name="notif_channel_news_desc">تنبيه عند نشر الجماعة إعلانًا جديدًا.</string>
     <string name="settings_news_header">الإعلانات</string>
     <string name="settings_news_notifications">إشعارات الإعلانات</string>
+    <!-- Weekly dhikr/hadith reminder -->
+    <string name="notif_channel_reminder">تذكير أسبوعي</string>
+    <string name="notif_channel_reminder_desc">تذكير أسبوعي بالذكر وقراءة الحديث.</string>
+    <string name="notif_reminder_title">وقت الذكر والحديث</string>
+    <string name="notif_reminder_text">خصّص لحظةً للذكر واقرأ حديثًا.</string>
+    <string name="settings_weekly_reminder">تذكير أسبوعي (ذكر وحديث)</string>
 </resources>

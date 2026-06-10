@@ -159,4 +159,10 @@
     <string name="notif_channel_news_desc">Obavijest kada zajednica objavi novu poruku.</string>
     <string name="settings_news_header">Obavijesti</string>
     <string name="settings_news_notifications">Obavijesti o novim porukama</string>
+    <!-- Weekly dhikr/hadith reminder -->
+    <string name="notif_channel_reminder">Sedmični podsjetnik</string>
+    <string name="notif_channel_reminder_desc">Sedmični podsjetnik za zikr i hadis.</string>
+    <string name="notif_reminder_title">Vrijeme za zikr i hadis</string>
+    <string name="notif_reminder_text">Odvojite trenutak za zikr i pročitajte jedan hadis.</string>
+    <string name="settings_weekly_reminder">Sedmični podsjetnik (zikr i hadis)</string>
 </resources>

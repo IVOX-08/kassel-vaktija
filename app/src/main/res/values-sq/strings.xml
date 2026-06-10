@@ -107,4 +107,10 @@
     <string name="notif_channel_news_desc">Njoftim kur bashkësia publikon një lajmërim të ri.</string>
     <string name="settings_news_header">Njoftime</string>
     <string name="settings_news_notifications">Njoftimet për lajmërime</string>
+    <!-- Weekly dhikr/hadith reminder -->
+    <string name="notif_channel_reminder">Kujtesë javore</string>
+    <string name="notif_channel_reminder_desc">Kujtesë javore për të lexuar dhikr dhe hadith.</string>
+    <string name="notif_reminder_title">Koha për dhikr dhe hadith</string>
+    <string name="notif_reminder_text">Ndaj një moment për dhikr dhe lexo një hadith.</string>
+    <string name="settings_weekly_reminder">Kujtesë javore (dhikr dhe hadith)</string>
 </resources>

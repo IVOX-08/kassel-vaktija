@@ -47,6 +47,8 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 PrayerNotifier.ensureChannels(context)
                 PrayerNotifier.postPreWarning(context, prayer, intent.getIntExtra(EXTRA_MINUTES, 0))
             }
+
+            ACTION_WEEKLY_REMINDER -> PrayerNotifier.postWeeklyReminder(context)
         }
 
         val pendingResult = goAsync()
@@ -65,6 +67,8 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                     ACTION_PREWARN -> alarmScheduler.rescheduleAll()
                     ACTION_SILENCE_START -> dndController.silence()
                     ACTION_SILENCE_END -> dndController.restore()
+                    // Re-arm next week's reminder.
+                    ACTION_WEEKLY_REMINDER -> alarmScheduler.rescheduleAll()
                 }
             } finally {
                 pendingResult.finish()
@@ -80,6 +84,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         const val ACTION_PREWARN = "de.igbdsandzakkassel.vaktija.ALARM_PREWARN"
         const val ACTION_SILENCE_START = "de.igbdsandzakkassel.vaktija.ALARM_SILENCE_START"
         const val ACTION_SILENCE_END = "de.igbdsandzakkassel.vaktija.ALARM_SILENCE_END"
+        const val ACTION_WEEKLY_REMINDER = "de.igbdsandzakkassel.vaktija.ALARM_WEEKLY_REMINDER"
         const val EXTRA_PRAYER = "extra_prayer"
         const val EXTRA_MINUTES = "extra_minutes"
         const val EXTRA_SOUND = "extra_sound"

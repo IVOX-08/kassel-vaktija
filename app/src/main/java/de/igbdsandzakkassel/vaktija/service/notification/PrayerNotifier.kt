@@ -23,8 +23,10 @@ object PrayerNotifier {
 
     const val CHANNEL_ADHAN = "prayer_adhan"
     const val CHANNEL_PREWARN = "prayer_prewarn"
+    const val CHANNEL_REMINDER = "weekly_reminder"
     const val ADHAN_NOTIFICATION_ID = 1001
     private const val PREWARN_BASE_ID = 2000
+    private const val REMINDER_NOTIFICATION_ID = 4001
 
     /** Two firm pulses, so the vibrate-only mode feels deliberate (wait, buzz, gap, buzz). */
     private val ADHAN_VIBRATION = longArrayOf(0, 400, 200, 400)
@@ -48,8 +50,19 @@ object PrayerNotifier {
         ).apply {
             description = context.getString(R.string.notif_channel_prewarn_desc)
         }
+        // Gentle weekly reminder — its own channel with the system default tone (distinct from the
+        // Adhan and announcement sounds).
+        val reminder = NotificationChannel(
+            CHANNEL_REMINDER,
+            context.getString(R.string.notif_channel_reminder),
+            NotificationManager.IMPORTANCE_DEFAULT,
+        ).apply {
+            description = context.getString(R.string.notif_channel_reminder_desc)
+            enableVibration(true)
+        }
         manager.createNotificationChannel(adhan)
         manager.createNotificationChannel(preWarn)
+        manager.createNotificationChannel(reminder)
     }
 
     /** High-priority Adhan notification shown by the foreground service while the sound plays. */
@@ -85,6 +98,25 @@ object PrayerNotifier {
         if (hasNotificationPermission(context)) {
             NotificationManagerCompat.from(context).notify(PREWARN_BASE_ID + prayer.ordinal, notification)
         }
+    }
+
+    /** Gentle weekly reminder to read some dhikr and a hadith. */
+    fun postWeeklyReminder(context: Context) {
+        ensureChannels(context)
+        if (!hasNotificationPermission(context)) return
+        val body = context.getString(R.string.notif_reminder_text)
+        val notification = NotificationCompat.Builder(context, CHANNEL_REMINDER)
+            .setSmallIcon(R.drawable.ic_stat_adhan)
+            .setLargeIcon(communityLogo(context))
+            .setContentTitle(context.getString(R.string.notif_reminder_title))
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setCategory(NotificationCompat.CATEGORY_REMINDER)
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(context))
+            .build()
+        NotificationManagerCompat.from(context).notify(REMINDER_NOTIFICATION_ID, notification)
     }
 
     private fun openAppIntent(context: Context): PendingIntent {

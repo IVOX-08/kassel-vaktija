@@ -40,6 +40,8 @@ data class AlarmSettings(
     val autoSilenceEnabled: Boolean = false,
     /** How long the phone stays silenced after each prayer's Adhan time. */
     val silenceMinutes: Int = 15,
+    /** A gentle weekly reminder (Friday) to read some dhikr and a hadith. */
+    val weeklyReminderEnabled: Boolean = true,
     val perPrayer: Map<Prayer, PrayerAlarmPrefs> = Prayer.OBLIGATORY.associateWith { PrayerAlarmPrefs() },
 ) {
     fun prefs(prayer: Prayer): PrayerAlarmPrefs = perPrayer[prayer] ?: PrayerAlarmPrefs()

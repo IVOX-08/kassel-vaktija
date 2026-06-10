@@ -107,4 +107,10 @@
     <string name="notif_channel_news_desc">Cemaat yeni bir duyuru paylaştığında bildirim.</string>
     <string name="settings_news_header">Duyurular</string>
     <string name="settings_news_notifications">Duyuru bildirimleri</string>
+    <!-- Weekly dhikr/hadith reminder -->
+    <string name="notif_channel_reminder">Haftalık hatırlatma</string>
+    <string name="notif_channel_reminder_desc">Zikir ve hadis okumak için haftalık hatırlatma.</string>
+    <string name="notif_reminder_title">Zikir ve hadis vakti</string>
+    <string name="notif_reminder_text">Bir an zikre ayır ve bir hadis oku.</string>
+    <string name="settings_weekly_reminder">Haftalık hatırlatma (zikir ve hadis)</string>
 </resources>

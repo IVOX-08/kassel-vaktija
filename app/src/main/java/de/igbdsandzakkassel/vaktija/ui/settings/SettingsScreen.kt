@@ -243,6 +243,25 @@ fun SettingsScreen(
             }
         }
 
+        Card(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.settings_weekly_reminder),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f),
+                )
+                Switch(
+                    checked = settings.weeklyReminderEnabled,
+                    onCheckedChange = viewModel::setWeeklyReminderEnabled,
+                )
+            }
+        }
+
         // Only show a permission button when that permission is actually missing — so granted ones
         // (and the whole section, once everything is granted) disappear instead of being dead taps.
         val needNotif = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notifPermission.status.isGranted

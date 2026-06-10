@@ -117,4 +117,10 @@
     <string name="notif_channel_news_desc">Notification when the community posts a new announcement.</string>
     <string name="settings_news_header">Announcements</string>
     <string name="settings_news_notifications">Announcement notifications</string>
+    <!-- Weekly dhikr/hadith reminder -->
+    <string name="notif_channel_reminder">Weekly reminder</string>
+    <string name="notif_channel_reminder_desc">Weekly reminder to read dhikr and hadith.</string>
+    <string name="notif_reminder_title">Time for dhikr &amp; hadith</string>
+    <string name="notif_reminder_text">Take a moment for dhikr and read a hadith.</string>
+    <string name="settings_weekly_reminder">Weekly reminder (dhikr &amp; hadith)</string>
 </resources>

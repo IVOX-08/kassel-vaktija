@@ -117,4 +117,10 @@
     <string name="notif_channel_news_desc">Benachrichtigung, wenn die Gemeinde eine neue Mitteilung veröffentlicht.</string>
     <string name="settings_news_header">Mitteilungen</string>
     <string name="settings_news_notifications">Mitteilungs-Benachrichtigungen</string>
+    <!-- Weekly dhikr/hadith reminder -->
+    <string name="notif_channel_reminder">Wöchentliche Erinnerung</string>
+    <string name="notif_channel_reminder_desc">Wöchentliche Erinnerung an Dhikr und Hadith.</string>
+    <string name="notif_reminder_title">Zeit für Dhikr &amp; Hadith</string>
+    <string name="notif_reminder_text">Nimm dir einen Moment für Dhikr und lies einen Hadith.</string>
+    <string name="settings_weekly_reminder">Wöchentliche Erinnerung (Dhikr &amp; Hadith)</string>
 </resources>

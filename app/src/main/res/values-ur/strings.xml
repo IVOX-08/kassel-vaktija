@@ -107,4 +107,10 @@
     <string name="notif_channel_news_desc">جب کمیونٹی نیا اعلان شائع کرے تو اطلاع۔</string>
     <string name="settings_news_header">اعلانات</string>
     <string name="settings_news_notifications">اعلانات کی اطلاعات</string>
+    <!-- Weekly dhikr/hadith reminder -->
+    <string name="notif_channel_reminder">ہفتہ وار یاد دہانی</string>
+    <string name="notif_channel_reminder_desc">ذکر اور حدیث پڑھنے کی ہفتہ وار یاد دہانی۔</string>
+    <string name="notif_reminder_title">ذکر اور حدیث کا وقت</string>
+    <string name="notif_reminder_text">ذرا ذکر کے لیے وقت نکالیں اور ایک حدیث پڑھیں۔</string>
+    <string name="settings_weekly_reminder">ہفتہ وار یاد دہانی (ذکر و حدیث)</string>
 </resources>

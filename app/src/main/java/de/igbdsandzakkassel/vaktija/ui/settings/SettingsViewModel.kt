@@ -94,6 +94,10 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.setAutoSilence(enabled)
     }
 
+    fun setWeeklyReminderEnabled(enabled: Boolean) = applyThenReschedule {
+        settingsRepository.setWeeklyReminderEnabled(enabled)
+    }
+
     fun setSilenceMinutes(minutes: Int) = applyThenReschedule {
         settingsRepository.setSilenceMinutes(minutes)
     }
