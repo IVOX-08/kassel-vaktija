@@ -59,7 +59,7 @@ class AlarmScheduler @Inject constructor(
             // Adhan + pre-warning (gated by the notifications master toggle + per-prayer enable).
             if (settings.masterEnabled && prefs.enabled) {
                 if (adhanAt.isAfter(now)) {
-                    schedule(prayer, adhanAt, AlarmType.ADHAN, minutes = 0, sound = settings.sound)
+                    schedule(prayer, adhanAt, AlarmType.ADHAN, minutes = 0, sound = settings.sound, playWhenSilent = settings.playWhenSilent)
                 }
                 if (prefs.preWarnMinutes > 0) {
                     val warnAt = adhanAt.minusMinutes(prefs.preWarnMinutes.toLong())
@@ -84,8 +84,15 @@ class AlarmScheduler @Inject constructor(
         }
     }
 
-    private fun schedule(prayer: Prayer, at: LocalDateTime, type: AlarmType, minutes: Int, sound: AdhanSound) {
-        val pendingIntent = pendingIntent(prayer, type, minutes, sound)
+    private fun schedule(
+        prayer: Prayer,
+        at: LocalDateTime,
+        type: AlarmType,
+        minutes: Int,
+        sound: AdhanSound,
+        playWhenSilent: Boolean = false,
+    ) {
+        val pendingIntent = pendingIntent(prayer, type, minutes, sound, playWhenSilent)
         val triggerAtMillis = at.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
         try {
             if (canScheduleExact()) {
@@ -103,7 +110,7 @@ class AlarmScheduler @Inject constructor(
         Prayer.OBLIGATORY.forEach { prayer ->
             AlarmType.entries.forEach { type ->
                 // Extras are ignored when matching a PendingIntent for cancellation, so any sound works.
-                alarmManager.cancel(pendingIntent(prayer, type, 0, AdhanSound.DEFAULT))
+                alarmManager.cancel(pendingIntent(prayer, type, 0, AdhanSound.DEFAULT, playWhenSilent = false))
             }
         }
         // Also clear the weekly reminder here (scheduleWeeklyReminder re-arms it right after) so
@@ -142,12 +149,19 @@ class AlarmScheduler @Inject constructor(
         )
     }
 
-    private fun pendingIntent(prayer: Prayer, type: AlarmType, minutes: Int, sound: AdhanSound): PendingIntent {
+    private fun pendingIntent(
+        prayer: Prayer,
+        type: AlarmType,
+        minutes: Int,
+        sound: AdhanSound,
+        playWhenSilent: Boolean,
+    ): PendingIntent {
         val intent = Intent(context, PrayerAlarmReceiver::class.java).apply {
             action = type.action
             putExtra(PrayerAlarmReceiver.EXTRA_PRAYER, prayer.ordinal)
             putExtra(PrayerAlarmReceiver.EXTRA_MINUTES, minutes)
             putExtra(PrayerAlarmReceiver.EXTRA_SOUND, sound.name)
+            putExtra(PrayerAlarmReceiver.EXTRA_PLAY_WHEN_SILENT, playWhenSilent)
         }
         val requestCode = prayer.ordinal * AlarmType.entries.size + type.ordinal
         return PendingIntent.getBroadcast(

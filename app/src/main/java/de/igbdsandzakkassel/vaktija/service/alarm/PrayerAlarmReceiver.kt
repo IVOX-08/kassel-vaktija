@@ -3,6 +3,7 @@ package de.igbdsandzakkassel.vaktija.service.alarm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import dagger.hilt.android.AndroidEntryPoint
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
@@ -38,8 +39,16 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
             ACTION_ADHAN -> {
                 val prayer = prayerFrom(intent) ?: return
                 val sound = AdhanSound.fromName(intent.getStringExtra(EXTRA_SOUND))
-                // Play via the foreground service (won't be truncated); it also vibrates via the channel.
-                AdhanForegroundService.start(context, prayer, sound.name)
+                val playWhenSilent = intent.getBooleanExtra(EXTRA_PLAY_WHEN_SILENT, false)
+                if (playWhenSilent || !isPhoneSilenced(context)) {
+                    // Play via the foreground service (won't be truncated); it also vibrates via the channel.
+                    AdhanForegroundService.start(context, prayer, sound.name)
+                } else {
+                    // Phone is on silent/vibrate and the user hasn't opted into overriding it: show a
+                    // quiet prayer-time notice instead of playing the Adhan out loud (e.g. at work).
+                    PrayerNotifier.ensureChannels(context)
+                    PrayerNotifier.postAdhanSilently(context, prayer)
+                }
             }
 
             ACTION_PREWARN -> {
@@ -79,6 +88,12 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
     private fun prayerFrom(intent: Intent): Prayer? =
         Prayer.entries.getOrNull(intent.getIntExtra(EXTRA_PRAYER, -1))
 
+    /** True if the phone's ringer is on silent or vibrate — then the Adhan should not play out loud. */
+    private fun isPhoneSilenced(context: Context): Boolean {
+        val audio = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return false
+        return audio.ringerMode != AudioManager.RINGER_MODE_NORMAL
+    }
+
     companion object {
         const val ACTION_ADHAN = "de.igbdsandzakkassel.vaktija.ALARM_ADHAN"
         const val ACTION_PREWARN = "de.igbdsandzakkassel.vaktija.ALARM_PREWARN"
@@ -88,5 +103,6 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         const val EXTRA_PRAYER = "extra_prayer"
         const val EXTRA_MINUTES = "extra_minutes"
         const val EXTRA_SOUND = "extra_sound"
+        const val EXTRA_PLAY_WHEN_SILENT = "extra_play_when_silent"
     }
 }

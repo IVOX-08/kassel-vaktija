@@ -28,6 +28,7 @@ class SettingsRepository @Inject constructor(
         AlarmSettings(
             masterEnabled = prefs[MASTER_ENABLED] ?: true,
             sound = AdhanSound.fromName(prefs[SOUND]),
+            playWhenSilent = prefs[PLAY_WHEN_SILENT] ?: false,
             autoSilenceEnabled = prefs[AUTO_SILENCE] ?: false,
             silenceBeforeMinutes = (prefs[SILENCE_BEFORE] ?: 5)
                 .takeIf { it in AlarmSettings.SILENCE_OPTIONS } ?: 5,
@@ -51,6 +52,11 @@ class SettingsRepository @Inject constructor(
     /** The sound/vibration mode played when a prayer time arrives. */
     suspend fun setSound(sound: AdhanSound) {
         store.edit { it[SOUND] = sound.name }
+    }
+
+    /** Whether the Adhan plays out loud even when the phone is on silent/vibrate (default off). */
+    suspend fun setPlayWhenSilent(enabled: Boolean) {
+        store.edit { it[PLAY_WHEN_SILENT] = enabled }
     }
 
     suspend fun setPrayerEnabled(prayer: Prayer, enabled: Boolean) {
@@ -151,6 +157,7 @@ class SettingsRepository @Inject constructor(
     private companion object {
         val MASTER_ENABLED = booleanPreferencesKey("master_enabled")
         val SOUND = stringPreferencesKey("adhan_sound")
+        val PLAY_WHEN_SILENT = booleanPreferencesKey("play_when_silent")
         val AUTO_SILENCE = booleanPreferencesKey("auto_silence")
         val SILENCE_MINUTES = intPreferencesKey("silence_minutes")
         val SILENCE_BEFORE = intPreferencesKey("silence_before_minutes")

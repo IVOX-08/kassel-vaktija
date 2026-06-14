@@ -82,6 +82,26 @@ object PrayerNotifier {
         .addAction(0, context.getString(R.string.notif_stop), stopIntent)
         .build()
 
+    /**
+     * Quiet prayer-time notice used when the phone is muted/on vibrate and the user hasn't opted
+     * into playing the Adhan out loud — respects silent mode (the channel has no sound; in vibrate
+     * mode it vibrates, in silent mode the system keeps it fully quiet).
+     */
+    fun postAdhanSilently(context: Context, prayer: Prayer) {
+        if (!hasNotificationPermission(context)) return
+        val notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
+            .setSmallIcon(R.drawable.ic_stat_adhan)
+            .setLargeIcon(communityLogo(context))
+            .setContentTitle(context.getString(R.string.notif_adhan_title, context.getString(prayer.labelRes)))
+            .setContentText(context.getString(R.string.notif_adhan_text))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(context))
+            .build()
+        NotificationManagerCompat.from(context).notify(ADHAN_NOTIFICATION_ID, notification)
+    }
+
     /** Pre-warning notification ("Dhuhr in 10 min"). */
     fun postPreWarning(context: Context, prayer: Prayer, minutes: Int) {
         val notification = NotificationCompat.Builder(context, CHANNEL_PREWARN)

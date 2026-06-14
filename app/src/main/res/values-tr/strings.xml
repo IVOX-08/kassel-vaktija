@@ -100,6 +100,8 @@
     <string name="news_delete_confirm">Bu duyuru silinsin mi?</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Bildirim sesi</string>
+    <string name="settings_play_when_silent">Sessiz modda ezanı çal</string>
+    <string name="settings_play_when_silent_hint">Kapalı: Telefon sessizde veya titreşimdeyken yalnızca sessiz bir bildirim gösterilir.</string>
     <string name="sound_short_adhan">Kısa ezan</string>
     <string name="sound_chime">Uyarı sesi</string>
     <!-- Community announcements (news) notifications -->

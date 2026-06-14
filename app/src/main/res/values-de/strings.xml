@@ -110,6 +110,8 @@
     <string name="admin_saved">Gespeichert</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Benachrichtigungston</string>
+    <string name="settings_play_when_silent">Adhan auch im Lautlos-Modus abspielen</string>
+    <string name="settings_play_when_silent_hint">Aus: Ist das Handy stumm oder auf Vibration, kommt nur eine stille Benachrichtigung.</string>
     <string name="sound_short_adhan">Kurzer Adhan</string>
     <string name="sound_chime">Signalton</string>
     <!-- Community announcements (news) notifications -->

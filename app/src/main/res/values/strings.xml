@@ -93,6 +93,8 @@
     <string name="settings_test_adhan">Testiraj ezan</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Zvuk obavijesti</string>
+    <string name="settings_play_when_silent">Pusti ezan i kad je telefon utišan</string>
+    <string name="settings_play_when_silent_hint">Isključeno: ako je telefon na nečujno ili vibraciju, stiže samo tiha obavijest.</string>
     <string name="sound_short_adhan">Kratki ezan</string>
     <string name="sound_chime">Zvono</string>
     <string name="settings_permissions_header">Dozvole</string>

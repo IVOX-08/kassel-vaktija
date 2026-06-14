@@ -160,6 +160,31 @@ fun SettingsScreen(
                 selected = settings.sound,
                 onSelect = viewModel::setSound,
             )
+            // Respect-silent-mode toggle: off (default) = a muted phone shows only a quiet notice.
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(R.string.settings_play_when_silent),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Text(
+                            text = stringResource(R.string.settings_play_when_silent_hint),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(
+                        checked = settings.playWhenSilent,
+                        onCheckedChange = viewModel::setPlayWhenSilent,
+                    )
+                }
+            }
             Prayer.OBLIGATORY.forEach { prayer ->
                 PrayerSettingCard(
                     prayer = prayer,

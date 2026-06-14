@@ -110,6 +110,8 @@
     <string name="admin_saved">Saved</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Notification sound</string>
+    <string name="settings_play_when_silent">Play Adhan in silent mode</string>
+    <string name="settings_play_when_silent_hint">Off: when the phone is muted or on vibrate, only a quiet notification is shown.</string>
     <string name="sound_short_adhan">Short Adhan</string>
     <string name="sound_chime">Chime</string>
     <!-- Community announcements (news) notifications -->

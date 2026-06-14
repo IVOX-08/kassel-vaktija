@@ -78,6 +78,11 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.setSound(sound)
     }
 
+    /** Whether the Adhan should play out loud even when the phone is on silent/vibrate. */
+    fun setPlayWhenSilent(enabled: Boolean) = applyThenReschedule {
+        settingsRepository.setPlayWhenSilent(enabled)
+    }
+
     fun setNewsNotificationsEnabled(enabled: Boolean) {
         viewModelScope.launch { settingsRepository.setNewsNotificationsEnabled(enabled) }
     }

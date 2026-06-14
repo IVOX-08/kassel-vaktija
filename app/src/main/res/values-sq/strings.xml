@@ -100,6 +100,8 @@
     <string name="news_delete_confirm">Të fshihet ky njoftim?</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Tingulli i njoftimit</string>
+    <string name="settings_play_when_silent">Luaje ezanin edhe në modalitetin pa zë</string>
+    <string name="settings_play_when_silent_hint">Çaktivizuar: kur telefoni është pa zë ose me dridhje, shfaqet vetëm një njoftim i heshtur.</string>
     <string name="sound_short_adhan">Ezan i shkurtër</string>
     <string name="sound_chime">Tingull sinjali</string>
     <!-- Community announcements (news) notifications -->

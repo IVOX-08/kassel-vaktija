@@ -100,6 +100,8 @@
     <string name="news_delete_confirm">Удалить это объявление?</string>
     <!-- Notification sound options -->
     <string name="settings_notification_sound">Звук уведомления</string>
+    <string name="settings_play_when_silent">Воспроизводить азан в беззвучном режиме</string>
+    <string name="settings_play_when_silent_hint">Выкл.: если телефон в беззвучном режиме или на вибрации, приходит только тихое уведомление.</string>
     <string name="sound_short_adhan">Короткий азан</string>
     <string name="sound_chime">Сигнал</string>
     <!-- Community announcements (news) notifications -->

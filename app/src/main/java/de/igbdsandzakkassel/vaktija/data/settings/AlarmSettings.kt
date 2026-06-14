@@ -36,6 +36,12 @@ data class PrayerAlarmPrefs(
 data class AlarmSettings(
     val masterEnabled: Boolean = true,
     val sound: AdhanSound = AdhanSound.DEFAULT,
+    /**
+     * Whether to play the Adhan out loud even when the phone's ringer is on silent/vibrate. Off by
+     * default, so muting the phone (e.g. at work) also silences the Adhan — only a quiet notification
+     * is shown. Turn on to make the Adhan behave like an alarm that overrides silent mode.
+     */
+    val playWhenSilent: Boolean = false,
     /** Auto-silence (Do Not Disturb) the phone around each prayer time. */
     val autoSilenceEnabled: Boolean = false,
     /** How long the phone is silenced BEFORE each prayer's Adhan time. */
