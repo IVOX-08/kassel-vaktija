@@ -19,11 +19,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +36,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
+import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
+import de.igbdsandzakkassel.vaktija.data.hadith.HadithItem
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardUiState
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardViewModel
 import de.igbdsandzakkassel.vaktija.ui.dashboard.PrayerRowUi
@@ -62,6 +66,12 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
     val viewModel: DashboardViewModel = hiltViewModel()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val hadithViewModel: TvHadithViewModel = hiltViewModel()
+    val dailyHadith by hadithViewModel.daily.collectAsStateWithLifecycle()
+    val locales = LocalConfiguration.current.locales
+    val lang = if (locales.isEmpty) LocaleController.current().tag else locales[0].language
+    LaunchedEffect(lang) { hadithViewModel.load(lang) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -77,7 +87,8 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
             return@Box
         }
 
-        Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+        Column(modifier = Modifier.fillMaxSize()) {
+        Row(modifier = Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(32.dp)) {
             // ---- Left column: emblem + green hero (clock, dates, countdown) ----
             Column(
                 modifier = Modifier.fillMaxHeight().weight(0.29f),
@@ -121,12 +132,17 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(14.dp),
                         ) {
-                            pair.forEach { row -> TvPrayerCard(row, Modifier.weight(1f).heightIn(min = 104.dp)) }
+                            pair.forEach { row -> TvPrayerCard(row, Modifier.weight(1f).heightIn(min = 96.dp)) }
                             if (pair.size == 1) Spacer(Modifier.weight(1f))
                         }
                     }
                     state.jumua?.let { JumuaCard(it, Modifier.fillMaxWidth()) }
                 }
+            }
+        }
+            dailyHadith?.let {
+                Spacer(Modifier.height(14.dp))
+                DailyHadithBand(it, isArabic = lang == "ar", modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -241,5 +257,39 @@ private fun JumuaCard(jumua: LocalTime, modifier: Modifier) {
     ) {
         Text(stringResource(R.string.prayer_jumua), color = BrandGreen, fontSize = 23.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         Text(jumua.format(HM), color = BrandGreen, fontSize = 30.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+    }
+}
+
+/**
+ * "Hadith of the day" band across the bottom of the TV board. Shows the translation in the chosen
+ * language (or the Arabic matn when the UI is Arabic). Capped to a few lines so it never crowds the
+ * prayer grid; the full text lives in the in-app Hadith section.
+ */
+@Composable
+private fun DailyHadithBand(item: HadithItem, isArabic: Boolean, modifier: Modifier) {
+    val text = if (isArabic) item.arabic else item.translation.ifBlank { item.arabic }
+    if (text.isBlank()) return
+    Column(
+        modifier = modifier
+            .clip(CARD_SHAPE)
+            .background(Color.White)
+            .padding(horizontal = 24.dp, vertical = 12.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.hadith_of_the_day),
+            color = BrandGold,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.Bold,
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            text = text,
+            color = BrandGreenDark,
+            fontSize = 19.sp,
+            fontWeight = FontWeight.Medium,
+            lineHeight = 26.sp,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }

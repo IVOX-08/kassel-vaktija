@@ -12,6 +12,7 @@
     <string name="library_dhikr">Зикр</string>
     <string name="hadith_nawawi">40 хадисов имама ан-Навави</string>
     <string name="hadith_riyad">Сады праведных</string>
+    <string name="hadith_of_the_day">Хадис дня</string>
     <string name="quran_verses">%1$d аятов</string>
     <string name="onb_welcome_title">Добро пожаловать</string>
     <string name="onb_welcome_body">Приложение общины IGBD Санджак-Кассель — время намаза, Коран, хадисы и многое другое на вашем языке.</string>

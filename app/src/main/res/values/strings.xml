@@ -18,6 +18,7 @@
     <string name="library_dhikr">Zikr</string>
     <string name="hadith_nawawi">40 hadisa imama Nevevija</string>
     <string name="hadith_riyad">Rijadus-salihin</string>
+    <string name="hadith_of_the_day">Hadis dana</string>
     <string name="quran_verses">%1$d ajeta</string>
 
     <!-- Onboarding -->
