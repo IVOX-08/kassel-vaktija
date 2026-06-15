@@ -52,11 +52,12 @@ import java.time.format.DateTimeFormatter
 /**
  * Android TV / Google TV variant — a big landscape prayer-times board for a wall display (Sony
  * Bravia etc.). Reuses [DashboardViewModel] (same times, Iqamah, Friday-Jumu'ah rule, next-prayer
- * highlight, live clock + countdown). Always uses the light board palette so it matches the
- * community design regardless of the TV's theme.
+ * highlight, live clock + countdown) and adds a daily "Hadith of the day" band along the bottom.
+ * Always uses the light board palette so it matches the community design regardless of the TV theme.
  *
- * Layout note: cards are sized to their content (equal heights via IntrinsicSize.Min) and the group
- * is centered, so the large text is never clipped — important since TVs vary in usable height.
+ * Sizing note: a 1080p TV is ~540dp tall, which is tight for emblem + hero + 6 prayer cards + Džuma
+ * + the Hadith band. Fonts/cards are deliberately compact so nothing clips at that height; on roomier
+ * (4K) panels the weight(1f) main area simply gets more breathing room. Verified at 540dp.
  */
 private val HM: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 private val CARD_SHAPE = RoundedCornerShape(20.dp)
@@ -76,72 +77,76 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxSize()
             .background(PageBackgroundLight)
-            .padding(horizontal = 40.dp, vertical = 28.dp), // overscan-safe margin
+            .padding(horizontal = 36.dp, vertical = 22.dp), // overscan-safe margin
     ) {
         if (state.loading) {
             Image(
                 painter = painterResource(R.drawable.logo_emblem),
                 contentDescription = stringResource(R.string.cd_app_logo),
-                modifier = Modifier.align(Alignment.Center).size(220.dp),
+                modifier = Modifier.align(Alignment.Center).size(200.dp),
             )
             return@Box
         }
 
         Column(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(32.dp)) {
-            // ---- Left column: emblem + green hero (clock, dates, countdown) ----
-            Column(
-                modifier = Modifier.fillMaxHeight().weight(0.29f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+            Row(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(28.dp),
             ) {
-                Image(
-                    painter = painterResource(R.drawable.logo_emblem),
-                    contentDescription = stringResource(R.string.cd_app_logo),
-                    modifier = Modifier.height(130.dp),
-                )
-                Spacer(Modifier.height(18.dp))
-                HeroCard(state, Modifier.fillMaxWidth())
-            }
-
-            // ---- Right column: header + 2-column prayer grid + Džuma ----
-            Column(modifier = Modifier.fillMaxHeight().weight(0.71f)) {
-                Text(
-                    text = "IGBD",
-                    color = BrandGreenDark,
-                    fontSize = 42.sp,
-                    fontWeight = FontWeight.Black,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                Text(
-                    text = stringResource(R.string.header_subtitle),
-                    color = BrandGreen,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-
+                // ---- Left column: emblem + green hero (clock, dates, countdown) ----
                 Column(
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+                    modifier = Modifier.fillMaxHeight().weight(0.29f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                 ) {
-                    state.rows.chunked(2).forEach { pair ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(14.dp),
-                        ) {
-                            pair.forEach { row -> TvPrayerCard(row, Modifier.weight(1f).heightIn(min = 96.dp)) }
-                            if (pair.size == 1) Spacer(Modifier.weight(1f))
+                    Image(
+                        painter = painterResource(R.drawable.logo_emblem),
+                        contentDescription = stringResource(R.string.cd_app_logo),
+                        modifier = Modifier.height(104.dp),
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    HeroCard(state, Modifier.fillMaxWidth())
+                }
+
+                // ---- Right column: header + 2-column prayer grid + Džuma ----
+                Column(modifier = Modifier.fillMaxHeight().weight(0.71f)) {
+                    Text(
+                        text = "IGBD",
+                        color = BrandGreenDark,
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Black,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Text(
+                        text = stringResource(R.string.header_subtitle),
+                        color = BrandGreen,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Spacer(Modifier.height(8.dp))
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+                    ) {
+                        state.rows.chunked(2).forEach { pair ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            ) {
+                                pair.forEach { row -> TvPrayerCard(row, Modifier.weight(1f).heightIn(min = 78.dp)) }
+                                if (pair.size == 1) Spacer(Modifier.weight(1f))
+                            }
                         }
+                        state.jumua?.let { JumuaCard(it, Modifier.fillMaxWidth()) }
                     }
-                    state.jumua?.let { JumuaCard(it, Modifier.fillMaxWidth()) }
                 }
             }
-        }
             dailyHadith?.let {
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(10.dp))
                 DailyHadithBand(it, isArabic = lang == "ar", modifier = Modifier.fillMaxWidth())
             }
         }
@@ -156,41 +161,41 @@ private fun HeroCard(state: DashboardUiState, modifier: Modifier) {
         modifier = modifier
             .clip(CARD_SHAPE)
             .background(BrandGreen)
-            .padding(horizontal = 18.dp, vertical = 22.dp),
+            .padding(horizontal = 16.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             state.clock,
             color = Color.White,
-            fontSize = 40.sp,
+            fontSize = 34.sp,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
             softWrap = false,
         )
-        Spacer(Modifier.height(6.dp))
-        Text(weekday, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+        Spacer(Modifier.height(4.dp))
+        Text(weekday, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         if (dateOnly.isNotEmpty()) {
-            Text(dateOnly, color = BrandGoldLight, fontSize = 16.sp, textAlign = TextAlign.Center)
+            Text(dateOnly, color = BrandGoldLight, fontSize = 14.sp, textAlign = TextAlign.Center)
         }
-        Text(state.hijriDate, color = BrandGoldLight, fontSize = 15.sp, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(16.dp))
+        Text(state.hijriDate, color = BrandGoldLight, fontSize = 13.sp, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(10.dp))
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(14.dp))
                 .background(BrandGreenDark)
-                .padding(vertical = 14.dp, horizontal = 10.dp),
+                .padding(vertical = 10.dp, horizontal = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = stringResource(R.string.dashboard_next_prayer_in),
                 color = Color.White,
-                fontSize = 15.sp,
+                fontSize = 13.sp,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(4.dp))
-            Text(state.countdown, color = Color.White, fontSize = 40.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+            Text(state.countdown, color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         }
     }
 }
@@ -204,7 +209,7 @@ private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
         modifier = modifier
             .clip(CARD_SHAPE)
             .background(if (on) BrandGreen else Color.White)
-            .padding(horizontal = 20.dp, vertical = 11.dp),
+            .padding(horizontal = 18.dp, vertical = 7.dp),
         verticalArrangement = Arrangement.Center,
     ) {
         Row(
@@ -214,19 +219,19 @@ private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
             Text(
                 stringResource(row.labelRes),
                 color = nameColor,
-                fontSize = 23.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f),
             )
-            Spacer(Modifier.width(10.dp))
-            Text(row.adhan.format(HM), color = nameColor, fontSize = 30.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+            Spacer(Modifier.width(8.dp))
+            Text(row.adhan.format(HM), color = nameColor, fontSize = 26.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         }
         if (row.iqamah != null) {
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(4.dp))
             HorizontalDivider(color = if (on) Color.White.copy(alpha = 0.35f) else BrandGreen.copy(alpha = 0.15f))
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(4.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -235,11 +240,11 @@ private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
                 Text(
                     stringResource(R.string.label_iqamah),
                     color = if (on) Color.White.copy(alpha = 0.9f) else BrandGreen,
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                 )
-                Text(row.iqamah.format(HM), color = iqamahColor, fontSize = 22.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                Text(row.iqamah.format(HM), color = iqamahColor, fontSize = 18.sp, fontWeight = FontWeight.Bold, maxLines = 1)
             }
         }
     }
@@ -251,18 +256,18 @@ private fun JumuaCard(jumua: LocalTime, modifier: Modifier) {
         modifier = modifier
             .clip(CARD_SHAPE)
             .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 14.dp),
+            .padding(horizontal = 20.dp, vertical = 9.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(stringResource(R.string.prayer_jumua), color = BrandGreen, fontSize = 23.sp, fontWeight = FontWeight.Bold, maxLines = 1)
-        Text(jumua.format(HM), color = BrandGreen, fontSize = 30.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(stringResource(R.string.prayer_jumua), color = BrandGreen, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(jumua.format(HM), color = BrandGreen, fontSize = 26.sp, fontWeight = FontWeight.Bold, maxLines = 1)
     }
 }
 
 /**
  * "Hadith of the day" band across the bottom of the TV board. Shows the translation in the chosen
- * language (or the Arabic matn when the UI is Arabic). Capped to a few lines so it never crowds the
+ * language (or the Arabic matn when the UI is Arabic), capped to two lines so it never crowds the
  * prayer grid; the full text lives in the in-app Hadith section.
  */
 @Composable
@@ -273,22 +278,22 @@ private fun DailyHadithBand(item: HadithItem, isArabic: Boolean, modifier: Modif
         modifier = modifier
             .clip(CARD_SHAPE)
             .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 12.dp),
+            .padding(horizontal = 20.dp, vertical = 8.dp),
     ) {
         Text(
             text = stringResource(R.string.hadith_of_the_day),
             color = BrandGold,
-            fontSize = 15.sp,
+            fontSize = 13.sp,
             fontWeight = FontWeight.Bold,
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(2.dp))
         Text(
             text = text,
             color = BrandGreenDark,
-            fontSize = 19.sp,
+            fontSize = 17.sp,
             fontWeight = FontWeight.Medium,
-            lineHeight = 26.sp,
-            maxLines = 3,
+            lineHeight = 22.sp,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
     }
