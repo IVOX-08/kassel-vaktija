@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,8 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
-import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
-import de.igbdsandzakkassel.vaktija.data.hadith.HadithItem
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardUiState
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardViewModel
 import de.igbdsandzakkassel.vaktija.ui.dashboard.PrayerRowUi
@@ -69,9 +66,8 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
 
     val hadithViewModel: TvHadithViewModel = hiltViewModel()
     val dailyHadith by hadithViewModel.daily.collectAsStateWithLifecycle()
-    val locales = LocalConfiguration.current.locales
-    val lang = if (locales.isEmpty) LocaleController.current().tag else locales[0].language
-    LaunchedEffect(lang) { hadithViewModel.load(lang) }
+    val showGerman by hadithViewModel.german.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) { hadithViewModel.start() }
 
     Box(
         modifier = modifier
@@ -147,7 +143,7 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
             }
             dailyHadith?.let {
                 Spacer(Modifier.height(10.dp))
-                DailyHadithBand(it, isArabic = lang == "ar", modifier = Modifier.fillMaxWidth())
+                DailyHadithBand(it, german = showGerman, modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -266,13 +262,13 @@ private fun JumuaCard(jumua: LocalTime, modifier: Modifier) {
 }
 
 /**
- * "Hadith of the day" band across the bottom of the TV board. Shows the translation in the chosen
- * language (or the Arabic matn when the UI is Arabic), capped to two lines so it never crowds the
- * prayer grid; the full text lives in the in-app Hadith section.
+ * "Hadith of the day" band across the bottom of the TV board. The chosen daily hadith alternates
+ * between Bosnian and German every minute (label + text together). Capped to two lines so it never
+ * crowds the prayer grid; the full text lives in the in-app Hadith section.
  */
 @Composable
-private fun DailyHadithBand(item: HadithItem, isArabic: Boolean, modifier: Modifier) {
-    val text = if (isArabic) item.arabic else item.translation.ifBlank { item.arabic }
+private fun DailyHadithBand(daily: TvHadithViewModel.DailyHadith, german: Boolean, modifier: Modifier) {
+    val text = if (german) daily.de else daily.bs
     if (text.isBlank()) return
     Column(
         modifier = modifier
@@ -281,7 +277,7 @@ private fun DailyHadithBand(item: HadithItem, isArabic: Boolean, modifier: Modif
             .padding(horizontal = 20.dp, vertical = 8.dp),
     ) {
         Text(
-            text = stringResource(R.string.hadith_of_the_day),
+            text = if (german) "Hadith des Tages" else "Hadis dana",
             color = BrandGold,
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold,
