@@ -11,6 +11,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.HiltAndroidApp
 import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
@@ -37,6 +38,9 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         super.onCreate()
         PrayerNotifier.ensureChannels(this)
         NewsNotifier.ensureChannel(this)
+        // Subscribe for instant announcement pushes. No-op until a Cloud Function publishes to the
+        // "announcements" topic (needs the Firebase Blaze plan); the poll-on-wake check is the fallback.
+        runCatching { FirebaseMessaging.getInstance().subscribeToTopic("announcements") }
         schedulePrayerTimesRefresh()
     }
 

@@ -154,6 +154,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.messaging) // instant announcement push (activated once a Cloud Function is deployed)
     implementation(libs.kotlinx.coroutines.play.services)
 
     // --- On-device translation (auto-translate announcements; models download on demand) ---

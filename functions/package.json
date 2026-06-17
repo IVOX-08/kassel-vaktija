@@ -1,0 +1,13 @@
+{
+  "name": "kassel-vaktija-functions",
+  "description": "Instant announcement/event push for Kassel Vaktija",
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^5.1.0"
+  },
+  "private": true
+}

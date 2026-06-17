@@ -89,6 +89,19 @@
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
 
+        <!-- Receives instant announcement pushes (Firebase Cloud Messaging). -->
+        <service
+            android:name=".service.notification.PushMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- Channel used for FCM notifications shown by the system while the app is backgrounded. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="news_announcements_v2" />
+
         <!-- Fired by AlarmManager at each scheduled prayer/pre-warning. -->
         <receiver
             android:name=".service.alarm.PrayerAlarmReceiver"

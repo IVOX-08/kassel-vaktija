@@ -76,6 +76,24 @@ object NewsNotifier {
         NotificationManagerCompat.from(context).notify(NEWS_NOTIFICATION_ID, notification)
     }
 
+    /** Post a raw announcement notification from plain strings (used by instant FCM pushes). */
+    fun postRaw(context: Context, title: String, body: String) {
+        ensureChannel(context)
+        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
+        val notification = NotificationCompat.Builder(context, CHANNEL_NEWS)
+            .setSmallIcon(R.drawable.ic_stat_adhan)
+            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.logo_notification))
+            .setContentTitle(title.ifBlank { context.getString(R.string.news_add) })
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_SOCIAL)
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(context))
+            .build()
+        NotificationManagerCompat.from(context).notify(NEWS_NOTIFICATION_ID, notification)
+    }
+
     private fun openAppIntent(context: Context): PendingIntent {
         val intent = Intent(context, MainActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
