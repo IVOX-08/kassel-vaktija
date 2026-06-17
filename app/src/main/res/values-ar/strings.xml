@@ -13,6 +13,11 @@
     <string name="library_tasbih">المسبحة</string>
     <string name="library_tracker">متابعة الصلوات</string>
     <string name="library_ramadan">رمضان</string>
+    <string name="library_events">الفعاليات</string>
+    <string name="events_add">فعالية جديدة</string>
+    <string name="events_empty">لا توجد فعاليات قادمة.</string>
+    <string name="events_date">التاريخ</string>
+    <string name="events_time">الوقت</string>
     <string name="ramadan_until_iftar">حتى الإفطار</string>
     <string name="ramadan_until_sehur">حتى نهاية السحور</string>
     <string name="ramadan_iftar">الإفطار</string>

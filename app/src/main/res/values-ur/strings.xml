@@ -13,6 +13,11 @@
     <string name="library_tasbih">تسبیح</string>
     <string name="library_tracker">نماز ٹریکر</string>
     <string name="library_ramadan">رمضان</string>
+    <string name="library_events">تقریبات</string>
+    <string name="events_add">نئی تقریب</string>
+    <string name="events_empty">کوئی آنے والی تقریب نہیں۔</string>
+    <string name="events_date">تاریخ</string>
+    <string name="events_time">وقت</string>
     <string name="ramadan_until_iftar">افطار میں باقی</string>
     <string name="ramadan_until_sehur">سحری کے اختتام تک</string>
     <string name="ramadan_iftar">افطار</string>

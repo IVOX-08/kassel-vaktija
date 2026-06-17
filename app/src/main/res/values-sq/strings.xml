@@ -13,6 +13,11 @@
     <string name="library_tasbih">Tesbih</string>
     <string name="library_tracker">Ndjekja e namazit</string>
     <string name="library_ramadan">Ramazan</string>
+    <string name="library_events">Ngjarjet</string>
+    <string name="events_add">Ngjarje e re</string>
+    <string name="events_empty">Asnjë ngjarje e ardhshme.</string>
+    <string name="events_date">Data</string>
+    <string name="events_time">Ora</string>
     <string name="ramadan_until_iftar">Deri në iftar</string>
     <string name="ramadan_until_sehur">Deri në fund të syfyrit</string>
     <string name="ramadan_iftar">Iftar</string>
