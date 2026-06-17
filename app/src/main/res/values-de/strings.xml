@@ -12,6 +12,13 @@
     <string name="library_dhikr">Dhikr</string>
     <string name="library_tasbih">Tasbih</string>
     <string name="library_tracker">Gebets-Tracker</string>
+    <string name="library_ramadan">Ramadan</string>
+    <string name="ramadan_until_iftar">Bis zum Iftar</string>
+    <string name="ramadan_until_sehur">Bis Sehur-Ende</string>
+    <string name="ramadan_iftar">Iftar</string>
+    <string name="ramadan_sehur">Sehur</string>
+    <string name="ramadan_teravija">Tarawih</string>
+    <string name="ramadan_fasted_today">Heute gefastet</string>
     <string name="tracker_streak">Tage in Folge</string>
     <string name="tracker_today">Heute</string>
     <string name="tasbih_reset">Zurücksetzen</string>

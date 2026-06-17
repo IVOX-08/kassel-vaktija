@@ -18,6 +18,13 @@
     <string name="library_dhikr">Zikr</string>
     <string name="library_tasbih">Tespih</string>
     <string name="library_tracker">Praćenje namaza</string>
+    <string name="library_ramadan">Ramazan</string>
+    <string name="ramadan_until_iftar">Do iftara</string>
+    <string name="ramadan_until_sehur">Do kraja sehura</string>
+    <string name="ramadan_iftar">Iftar</string>
+    <string name="ramadan_sehur">Sehur</string>
+    <string name="ramadan_teravija">Teravija</string>
+    <string name="ramadan_fasted_today">Danas postih</string>
     <string name="tracker_streak">dana zaredom</string>
     <string name="tracker_today">Danas</string>
     <string name="tasbih_reset">Poništi</string>

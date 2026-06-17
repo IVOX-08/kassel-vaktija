@@ -12,6 +12,13 @@
     <string name="library_dhikr">Зикр</string>
     <string name="library_tasbih">Тасбих</string>
     <string name="library_tracker">Трекер намаза</string>
+    <string name="library_ramadan">Рамадан</string>
+    <string name="ramadan_until_iftar">До ифтара</string>
+    <string name="ramadan_until_sehur">До конца сухура</string>
+    <string name="ramadan_iftar">Ифтар</string>
+    <string name="ramadan_sehur">Сухур</string>
+    <string name="ramadan_teravija">Таравих</string>
+    <string name="ramadan_fasted_today">Постился сегодня</string>
     <string name="tracker_streak">дней подряд</string>
     <string name="tracker_today">Сегодня</string>
     <string name="tasbih_reset">Сбросить</string>

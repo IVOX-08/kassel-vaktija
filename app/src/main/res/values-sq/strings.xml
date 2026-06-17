@@ -12,6 +12,13 @@
     <string name="library_dhikr">Dhikr</string>
     <string name="library_tasbih">Tesbih</string>
     <string name="library_tracker">Ndjekja e namazit</string>
+    <string name="library_ramadan">Ramazan</string>
+    <string name="ramadan_until_iftar">Deri në iftar</string>
+    <string name="ramadan_until_sehur">Deri në fund të syfyrit</string>
+    <string name="ramadan_iftar">Iftar</string>
+    <string name="ramadan_sehur">Syfyr</string>
+    <string name="ramadan_teravija">Teravia</string>
+    <string name="ramadan_fasted_today">Sot agjërova</string>
     <string name="tracker_streak">ditë rresht</string>
     <string name="tracker_today">Sot</string>
     <string name="tasbih_reset">Rivendos</string>

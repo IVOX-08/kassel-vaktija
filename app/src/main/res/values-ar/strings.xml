@@ -12,6 +12,13 @@
     <string name="library_dhikr">الأذكار</string>
     <string name="library_tasbih">المسبحة</string>
     <string name="library_tracker">متابعة الصلوات</string>
+    <string name="library_ramadan">رمضان</string>
+    <string name="ramadan_until_iftar">حتى الإفطار</string>
+    <string name="ramadan_until_sehur">حتى نهاية السحور</string>
+    <string name="ramadan_iftar">الإفطار</string>
+    <string name="ramadan_sehur">السحور</string>
+    <string name="ramadan_teravija">التراويح</string>
+    <string name="ramadan_fasted_today">صمت اليوم</string>
     <string name="tracker_streak">أيام متتالية</string>
     <string name="tracker_today">اليوم</string>
     <string name="tasbih_reset">إعادة تعيين</string>

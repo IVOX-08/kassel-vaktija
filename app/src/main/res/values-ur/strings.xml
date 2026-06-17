@@ -12,6 +12,13 @@
     <string name="library_dhikr">اذکار</string>
     <string name="library_tasbih">تسبیح</string>
     <string name="library_tracker">نماز ٹریکر</string>
+    <string name="library_ramadan">رمضان</string>
+    <string name="ramadan_until_iftar">افطار میں باقی</string>
+    <string name="ramadan_until_sehur">سحری کے اختتام تک</string>
+    <string name="ramadan_iftar">افطار</string>
+    <string name="ramadan_sehur">سحری</string>
+    <string name="ramadan_teravija">تراویح</string>
+    <string name="ramadan_fasted_today">آج روزہ رکھا</string>
     <string name="tracker_streak">دن لگاتار</string>
     <string name="tracker_today">آج</string>
     <string name="tasbih_reset">ری سیٹ</string>
