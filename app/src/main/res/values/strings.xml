@@ -16,6 +16,10 @@
     <string name="library_quran">Kur\'an</string>
     <string name="library_hadith">Hadis</string>
     <string name="library_dhikr">Zikr</string>
+    <string name="library_tasbih">Tespih</string>
+    <string name="tasbih_reset">Poništi</string>
+    <string name="tasbih_rounds">Krugovi: %1$d</string>
+    <string name="tasbih_hint">Dodirnite za brojanje</string>
     <string name="hadith_nawawi">40 hadisa imama Nevevija</string>
     <string name="hadith_riyad">Rijadus-salihin</string>
     <string name="hadith_of_the_day">Hadis dana</string>

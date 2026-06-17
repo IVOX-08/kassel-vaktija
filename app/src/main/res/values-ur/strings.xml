@@ -10,6 +10,10 @@
     <string name="library_quran">قرآن</string>
     <string name="library_hadith">حدیث</string>
     <string name="library_dhikr">اذکار</string>
+    <string name="library_tasbih">تسبیح</string>
+    <string name="tasbih_reset">ری سیٹ</string>
+    <string name="tasbih_rounds">راؤنڈز: %1$d</string>
+    <string name="tasbih_hint">گننے کے لیے ٹیپ کریں</string>
     <string name="hadith_nawawi">امام نووی کی 40 احادیث</string>
     <string name="hadith_riyad">ریاض الصالحین</string>
     <string name="hadith_of_the_day">آج کی حدیث</string>

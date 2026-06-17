@@ -10,6 +10,10 @@
     <string name="library_quran">Коран</string>
     <string name="library_hadith">Хадисы</string>
     <string name="library_dhikr">Зикр</string>
+    <string name="library_tasbih">Тасбих</string>
+    <string name="tasbih_reset">Сбросить</string>
+    <string name="tasbih_rounds">Круги: %1$d</string>
+    <string name="tasbih_hint">Нажмите, чтобы считать</string>
     <string name="hadith_nawawi">40 хадисов имама ан-Навави</string>
     <string name="hadith_riyad">Сады праведных</string>
     <string name="hadith_of_the_day">Хадис дня</string>

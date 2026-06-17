@@ -10,6 +10,10 @@
     <string name="library_quran">Kur\'an</string>
     <string name="library_hadith">Hadis</string>
     <string name="library_dhikr">Zikir</string>
+    <string name="library_tasbih">Tesbih</string>
+    <string name="tasbih_reset">Sıfırla</string>
+    <string name="tasbih_rounds">Turlar: %1$d</string>
+    <string name="tasbih_hint">Saymak için dokunun</string>
     <string name="hadith_nawawi">İmam Nevevî\'nin 40 Hadisi</string>
     <string name="hadith_riyad">Riyâzü\'s-Sâlihîn</string>
     <string name="hadith_of_the_day">Günün hadisi</string>

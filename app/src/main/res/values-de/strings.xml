@@ -10,6 +10,10 @@
     <string name="library_quran">Koran</string>
     <string name="library_hadith">Hadith</string>
     <string name="library_dhikr">Dhikr</string>
+    <string name="library_tasbih">Tasbih</string>
+    <string name="tasbih_reset">Zurücksetzen</string>
+    <string name="tasbih_rounds">Runden: %1$d</string>
+    <string name="tasbih_hint">Tippen zum Zählen</string>
     <string name="hadith_nawawi">An-Nawawis 40 Hadithe</string>
     <string name="hadith_riyad">Riyad as-Salihin</string>
     <string name="hadith_of_the_day">Hadith des Tages</string>

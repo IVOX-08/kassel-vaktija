@@ -48,6 +48,7 @@ import de.igbdsandzakkassel.vaktija.ui.library.LibraryScreen
 import de.igbdsandzakkassel.vaktija.ui.library.LibrarySection
 import de.igbdsandzakkassel.vaktija.ui.quran.QuranListScreen
 import de.igbdsandzakkassel.vaktija.ui.quran.QuranSurahScreen
+import de.igbdsandzakkassel.vaktija.ui.tasbih.TasbihScreen
 
 /**
  * Single-Activity phone/tablet scaffold: a bottom navigation bar over a Navigation-Compose host.
@@ -149,6 +150,9 @@ fun KasselApp() {
             }
             composable(LibrarySection.DHIKR.route) {
                 LibraryDetail(R.string.library_dhikr, onBack = { navController.popBackStack() }) { DhikrScreen() }
+            }
+            composable(LibrarySection.TASBIH.route) {
+                LibraryDetail(R.string.library_tasbih, onBack = { navController.popBackStack() }) { TasbihScreen() }
             }
             composable(LibrarySection.QURAN.route) {
                 LibraryDetail(R.string.library_quran, onBack = { navController.popBackStack() }) {

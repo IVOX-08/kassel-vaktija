@@ -10,6 +10,10 @@
     <string name="library_quran">Kur\'ani</string>
     <string name="library_hadith">Hadithe</string>
     <string name="library_dhikr">Dhikr</string>
+    <string name="library_tasbih">Tesbih</string>
+    <string name="tasbih_reset">Rivendos</string>
+    <string name="tasbih_rounds">Raunde: %1$d</string>
+    <string name="tasbih_hint">Prekni për të numëruar</string>
     <string name="hadith_nawawi">40 Hadithet e Imam Neveviut</string>
     <string name="hadith_riyad">Rijadus-salihin</string>
     <string name="hadith_of_the_day">Hadithi i ditës</string>
