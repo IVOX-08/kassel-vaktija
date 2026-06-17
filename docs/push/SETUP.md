@@ -22,9 +22,9 @@ announcements), but Blaze requires a **billing account with a payment method** â
 5. Test: post a community announcement in the app â†’ every device with the app should get an instant
    notification.
 
-The function code is in **`functions/index.js`** (triggers on new `news` and `events` documents,
-sends an FCM push to the `announcements` topic with the source-language title/body; the app opens to
-the translated content).
+The function code is in **`functions/index.js`** (triggers on new `news` documents, sends an FCM push
+to the `announcements` topic with the source-language title/body; the app opens to the translated
+content).
 
 ## Possible later refinement
 For the **tray text itself** to be in each user's language (not just the in-app content), switch to

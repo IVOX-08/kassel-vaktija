@@ -19,11 +19,6 @@
     <string name="library_tasbih">Tespih</string>
     <string name="library_tracker">Praćenje namaza</string>
     <string name="library_ramadan">Ramazan</string>
-    <string name="library_events">Događaji</string>
-    <string name="events_add">Novi događaj</string>
-    <string name="events_empty">Nema nadolazećih događaja.</string>
-    <string name="events_date">Datum</string>
-    <string name="events_time">Vrijeme</string>
     <string name="ramadan_until_iftar">Do iftara</string>
     <string name="ramadan_until_sehur">Do kraja sehura</string>
     <string name="ramadan_iftar">Iftar</string>

@@ -19,7 +19,6 @@ import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Adjust
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.FormatQuote
 import androidx.compose.material.icons.outlined.SelfImprovement
@@ -49,7 +48,6 @@ enum class LibrarySection(
     TASBIH("tasbih", R.string.library_tasbih, Icons.Outlined.Adjust),
     TRACKER("tracker", R.string.library_tracker, Icons.Outlined.CheckCircle),
     RAMADAN("ramadan", R.string.library_ramadan, Icons.Outlined.DarkMode),
-    EVENTS("events", R.string.library_events, Icons.Outlined.Event),
     QIBLA("qibla", R.string.nav_qibla, Icons.Outlined.Explore);
 
     companion object {

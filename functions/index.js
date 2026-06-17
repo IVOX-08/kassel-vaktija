@@ -1,10 +1,10 @@
 /**
- * Cloud Functions for Kassel Vaktija — instant announcement / event push.
+ * Cloud Functions for Kassel Vaktija — instant announcement push.
  *
- * When the admin posts a document to the Firestore `news` or `events` collection, these triggers
- * send a Firebase Cloud Messaging push to the "announcements" topic, which every installed app is
- * subscribed to. The push carries the source-language title/body; the app opens to the fully
- * translated content. (Future: send per-language to "news_<lang>" topics for translated tray text.)
+ * When the admin posts a document to the Firestore `news` collection, this trigger sends a Firebase
+ * Cloud Messaging push to the "announcements" topic, which every installed app is subscribed to. The
+ * push carries the source-language title/body; the app opens to the fully translated content.
+ * (Future: send per-language to "news_<lang>" topics for translated tray text.)
  *
  * Requires the Firebase Blaze (pay-as-you-go) plan. Deploy with: firebase deploy --only functions
  * See docs/push/SETUP.md.
@@ -40,9 +40,4 @@ async function notify(snap, fallbackTitle) {
 exports.onNewsCreated = onDocumentCreated("news/{id}", (event) => {
   if (!event.data) return null;
   return notify(event.data, "Neue Mitteilung");
-});
-
-exports.onEventCreated = onDocumentCreated("events/{id}", (event) => {
-  if (!event.data) return null;
-  return notify(event.data, "Neue Veranstaltung");
 });

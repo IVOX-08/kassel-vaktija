@@ -7,9 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import de.igbdsandzakkassel.vaktija.data.remote.RemoteVaktijaSource
 import de.igbdsandzakkassel.vaktija.data.remote.VaktijaEuSource
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
-import de.igbdsandzakkassel.vaktija.data.repository.EventsRepository
 import de.igbdsandzakkassel.vaktija.data.repository.FirestoreCommunityRuleProvider
-import de.igbdsandzakkassel.vaktija.data.repository.FirestoreEventsRepository
 import de.igbdsandzakkassel.vaktija.data.repository.FirestoreNewsRepository
 import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
 import de.igbdsandzakkassel.vaktija.data.repository.OfflinePrayerTimesRepository
@@ -40,8 +38,4 @@ abstract class DataModule {
     @Binds
     @Singleton
     abstract fun bindNewsRepository(impl: FirestoreNewsRepository): NewsRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindEventsRepository(impl: FirestoreEventsRepository): EventsRepository
 }

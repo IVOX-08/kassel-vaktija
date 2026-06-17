@@ -1,6 +1,6 @@
 {
   "name": "kassel-vaktija-functions",
-  "description": "Instant announcement/event push for Kassel Vaktija",
+  "description": "Instant announcement push for Kassel Vaktija",
   "engines": {
     "node": "20"
   },

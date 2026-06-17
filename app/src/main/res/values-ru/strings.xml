@@ -13,11 +13,6 @@
     <string name="library_tasbih">Тасбих</string>
     <string name="library_tracker">Трекер намаза</string>
     <string name="library_ramadan">Рамадан</string>
-    <string name="library_events">События</string>
-    <string name="events_add">Новое событие</string>
-    <string name="events_empty">Нет предстоящих событий.</string>
-    <string name="events_date">Дата</string>
-    <string name="events_time">Время</string>
     <string name="ramadan_until_iftar">До ифтара</string>
     <string name="ramadan_until_sehur">До конца сухура</string>
     <string name="ramadan_iftar">Ифтар</string>

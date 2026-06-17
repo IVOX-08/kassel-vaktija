@@ -13,11 +13,6 @@
     <string name="library_tasbih">Tasbih</string>
     <string name="library_tracker">Prayer tracker</string>
     <string name="library_ramadan">Ramadan</string>
-    <string name="library_events">Events</string>
-    <string name="events_add">New event</string>
-    <string name="events_empty">No upcoming events.</string>
-    <string name="events_date">Date</string>
-    <string name="events_time">Time</string>
     <string name="ramadan_until_iftar">Until Iftar</string>
     <string name="ramadan_until_sehur">Until end of Suhoor</string>
     <string name="ramadan_iftar">Iftar</string>

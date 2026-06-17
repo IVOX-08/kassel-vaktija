@@ -41,7 +41,6 @@ import de.igbdsandzakkassel.vaktija.ui.qibla.QiblaScreen
 import de.igbdsandzakkassel.vaktija.ui.settings.SettingsScreen
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.ui.dhikr.DhikrScreen
-import de.igbdsandzakkassel.vaktija.ui.events.EventsScreen
 import de.igbdsandzakkassel.vaktija.ui.hadith.HadithCollectionsScreen
 import de.igbdsandzakkassel.vaktija.ui.hadith.HadithListScreen
 import de.igbdsandzakkassel.vaktija.ui.library.LibraryDetail
@@ -162,9 +161,6 @@ fun KasselApp() {
             }
             composable(LibrarySection.RAMADAN.route) {
                 LibraryDetail(R.string.library_ramadan, onBack = { navController.popBackStack() }) { RamadanScreen() }
-            }
-            composable(LibrarySection.EVENTS.route) {
-                LibraryDetail(R.string.library_events, onBack = { navController.popBackStack() }) { EventsScreen() }
             }
             composable(LibrarySection.QURAN.route) {
                 LibraryDetail(R.string.library_quran, onBack = { navController.popBackStack() }) {
