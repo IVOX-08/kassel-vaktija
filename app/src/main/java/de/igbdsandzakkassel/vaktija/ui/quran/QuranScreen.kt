@@ -2,10 +2,9 @@ package de.igbdsandzakkassel.vaktija.ui.quran
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,8 +16,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -37,13 +38,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,9 +65,11 @@ import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 
 private const val BISMILLAH = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
 
-// Fixed, readable Arabic size. A very full Mushaf page scrolls vertically rather than shrinking the
-// text until it clips — so no word of the Qur'an is ever cut off.
-private val QURAN_FONT_SP = 20.sp
+// Large, easy-to-read Arabic so the harakat/tajweed marks are clearly visible (the community asked
+// for bigger marks). Pages are built to fit this size with NO scrolling — see [paginate].
+private val QURAN_FONT_SP = 25.sp
+private const val QURAN_LINE_MULT = 1.95f
+private val QURAN_H_PADDING = 18.dp
 
 /** Chapter list: all 114 surahs. */
 @Composable
@@ -124,9 +133,11 @@ private fun SurahRow(surah: SurahMeta, onClick: () -> Unit) {
 }
 
 /**
- * Surah reader: turn pages like a printed Mushaf. Ayahs are grouped by their official Mushaf page
- * (604-page Madani layout) and laid out as continuous justified Arabic; swipe right-to-left to turn
- * the page. No translations — Arabic only, by design.
+ * Surah reader: turn pages like a Mushaf. Ayahs are split into pages so that each page fills exactly
+ * one screen at a large, readable size and ALWAYS ends on a complete ayah (with its number) — no
+ * scrolling needed. (A single ayah that is by itself longer than a whole screen — e.g. al-Baqara 282
+ * — is the only case that can still scroll, since no phone screen can hold it at a readable size.)
+ * Arabic only, by design.
  */
 @Composable
 fun QuranSurahScreen(
@@ -163,19 +174,37 @@ fun QuranSurahScreen(
             Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
             return
         }
-        val pages = remember(list) { groupByPage(list) }
-        val pagerState = rememberPagerState(pageCount = { pages.size })
-        // RTL pager: swiping right-to-left advances the page, like a real Mushaf.
-        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-            HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { index ->
-                val (pageNumber, pageAyahs) = pages[index]
-                QuranPage(
-                    surahId = surahId,
-                    meta = meta,
-                    isFirstPage = index == 0,
-                    pageNumber = pageNumber,
-                    ayahs = pageAyahs,
-                )
+
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+            val density = LocalDensity.current
+            val measurer = rememberTextMeasurer()
+            val measureStyle = TextStyle(
+                fontSize = QURAN_FONT_SP,
+                lineHeight = QURAN_FONT_SP * QURAN_LINE_MULT,
+                textAlign = TextAlign.Justify,
+            )
+            // Width of the text column (page padding subtracted) and the height available for ayahs
+            // (page number + paddings subtracted); the first page also hosts the title + Bismillah.
+            val contentWidthPx = with(density) { (maxWidth - QURAN_H_PADDING * 2).toPx().toInt() }
+            val availHeightPx = with(density) { maxHeight.toPx() - 64.dp.toPx() }
+            val firstPageReservePx = with(density) { 150.dp.toPx() }
+
+            val pages = remember(list, contentWidthPx, availHeightPx) {
+                paginate(list, measurer, measureStyle, contentWidthPx, availHeightPx, firstPageReservePx)
+            }
+            val pagerState = rememberPagerState(pageCount = { pages.size })
+            // RTL pager: swiping like a real Mushaf turns to the next page.
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+                HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { index ->
+                    val pageAyahs = pages[index]
+                    QuranPage(
+                        surahId = surahId,
+                        meta = meta,
+                        isFirstPage = index == 0,
+                        pageNumber = pageAyahs.firstOrNull()?.page ?: 1,
+                        ayahs = pageAyahs,
+                    )
+                }
             }
         }
     }
@@ -189,22 +218,13 @@ private fun QuranPage(
     pageNumber: Int,
     ayahs: List<Ayah>,
 ) {
-    val styled = buildAnnotatedString {
-        ayahs.forEachIndexed { i, ayah ->
-            append(ayah.text)
-            append(" ")
-            withStyle(SpanStyle(color = BrandGold, fontWeight = FontWeight.Bold)) {
-                append("﴿${toArabicIndic(ayah.number)}﴾")
-            }
-            if (i != ayahs.lastIndex) append("  ")
-        }
-    }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 18.dp, vertical = 10.dp),
+            .padding(horizontal = QURAN_H_PADDING, vertical = 10.dp),
     ) {
-        // Scrolls vertically when a Mushaf page is very full, so no ayah is ever cut off.
+        // Pages are sized to fit, so this normally does not scroll; it's only a safety net for a
+        // single ayah that is itself taller than the screen.
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -216,9 +236,9 @@ private fun QuranPage(
                 if (surahId != 1 && surahId != 9) BismillahHeader()
             }
             Text(
-                text = styled,
+                text = pageText(ayahs),
                 fontSize = QURAN_FONT_SP,
-                lineHeight = QURAN_FONT_SP * 1.9f,
+                lineHeight = QURAN_FONT_SP * QURAN_LINE_MULT,
                 textAlign = TextAlign.Justify,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.fillMaxWidth(),
@@ -282,17 +302,51 @@ private fun BismillahHeader() {
     )
 }
 
-/** Groups a surah's ayahs into consecutive Mushaf pages, preserving order. */
-private fun groupByPage(ayahs: List<Ayah>): List<Pair<Int, List<Ayah>>> {
-    val pages = mutableListOf<Pair<Int, MutableList<Ayah>>>()
+/** Continuous justified Arabic for a page: each ayah followed by its gold ﴿number﴾ marker. */
+private fun pageText(ayahs: List<Ayah>): AnnotatedString = buildAnnotatedString {
+    ayahs.forEachIndexed { i, ayah ->
+        append(ayah.text)
+        append(" ")
+        withStyle(SpanStyle(color = BrandGold, fontWeight = FontWeight.Bold)) {
+            append("﴿${toArabicIndic(ayah.number)}﴾")
+        }
+        if (i != ayahs.lastIndex) append("  ")
+    }
+}
+
+/**
+ * Splits a surah's ayahs into pages that each fit one screen at [style], ending every page on a
+ * complete ayah. The first page reserves [firstPageReservePx] for the title block + Bismillah. A
+ * 0.96 safety margin keeps pages comfortably within the screen so they don't need to scroll.
+ */
+private fun paginate(
+    ayahs: List<Ayah>,
+    measurer: TextMeasurer,
+    style: TextStyle,
+    widthPx: Int,
+    availHeightPx: Float,
+    firstPageReservePx: Float,
+): List<List<Ayah>> {
+    if (widthPx <= 0 || availHeightPx <= 0f) return listOf(ayahs)
+    val pages = mutableListOf<List<Ayah>>()
+    var current = mutableListOf<Ayah>()
     for (ayah in ayahs) {
-        val last = pages.lastOrNull()
-        if (last == null || last.first != ayah.page) {
-            pages.add(ayah.page to mutableListOf(ayah))
-        } else {
-            last.second.add(ayah)
+        current.add(ayah)
+        val reserve = if (pages.isEmpty()) firstPageReservePx else 0f
+        val limit = (availHeightPx - reserve) * 0.96f
+        val height = measurer.measure(
+            text = pageText(current),
+            style = style,
+            constraints = Constraints(maxWidth = widthPx),
+            layoutDirection = LayoutDirection.Rtl,
+        ).size.height
+        if (height > limit && current.size > 1) {
+            current.removeAt(current.lastIndex)   // the ayah that overflowed starts the next page
+            pages.add(current.toList())
+            current = mutableListOf(ayah)
         }
     }
+    if (current.isNotEmpty()) pages.add(current.toList())
     return pages
 }
 
