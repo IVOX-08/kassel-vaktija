@@ -11,6 +11,9 @@
     <string name="library_hadith">Hadith</string>
     <string name="library_dhikr">Dhikr</string>
     <string name="library_tasbih">Tasbih</string>
+    <string name="library_tracker">Gebets-Tracker</string>
+    <string name="tracker_streak">Tage in Folge</string>
+    <string name="tracker_today">Heute</string>
     <string name="tasbih_reset">Zurücksetzen</string>
     <string name="tasbih_rounds">Runden: %1$d</string>
     <string name="tasbih_hint">Tippen zum Zählen</string>

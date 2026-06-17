@@ -11,6 +11,9 @@
     <string name="library_hadith">Хадисы</string>
     <string name="library_dhikr">Зикр</string>
     <string name="library_tasbih">Тасбих</string>
+    <string name="library_tracker">Трекер намаза</string>
+    <string name="tracker_streak">дней подряд</string>
+    <string name="tracker_today">Сегодня</string>
     <string name="tasbih_reset">Сбросить</string>
     <string name="tasbih_rounds">Круги: %1$d</string>
     <string name="tasbih_hint">Нажмите, чтобы считать</string>

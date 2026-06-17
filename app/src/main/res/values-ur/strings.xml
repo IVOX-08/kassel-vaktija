@@ -11,6 +11,9 @@
     <string name="library_hadith">حدیث</string>
     <string name="library_dhikr">اذکار</string>
     <string name="library_tasbih">تسبیح</string>
+    <string name="library_tracker">نماز ٹریکر</string>
+    <string name="tracker_streak">دن لگاتار</string>
+    <string name="tracker_today">آج</string>
     <string name="tasbih_reset">ری سیٹ</string>
     <string name="tasbih_rounds">راؤنڈز: %1$d</string>
     <string name="tasbih_hint">گننے کے لیے ٹیپ کریں</string>

@@ -11,6 +11,9 @@
     <string name="library_hadith">Hadithe</string>
     <string name="library_dhikr">Dhikr</string>
     <string name="library_tasbih">Tesbih</string>
+    <string name="library_tracker">Ndjekja e namazit</string>
+    <string name="tracker_streak">ditë rresht</string>
+    <string name="tracker_today">Sot</string>
     <string name="tasbih_reset">Rivendos</string>
     <string name="tasbih_rounds">Raunde: %1$d</string>
     <string name="tasbih_hint">Prekni për të numëruar</string>

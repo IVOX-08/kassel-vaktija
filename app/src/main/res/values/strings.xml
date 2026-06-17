@@ -17,6 +17,9 @@
     <string name="library_hadith">Hadis</string>
     <string name="library_dhikr">Zikr</string>
     <string name="library_tasbih">Tespih</string>
+    <string name="library_tracker">Praćenje namaza</string>
+    <string name="tracker_streak">dana zaredom</string>
+    <string name="tracker_today">Danas</string>
     <string name="tasbih_reset">Poništi</string>
     <string name="tasbih_rounds">Krugovi: %1$d</string>
     <string name="tasbih_hint">Dodirnite za brojanje</string>

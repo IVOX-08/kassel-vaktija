@@ -17,6 +17,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Adjust
+import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.FormatQuote
 import androidx.compose.material.icons.outlined.SelfImprovement
@@ -44,6 +45,7 @@ enum class LibrarySection(
     HADITH("hadith", R.string.library_hadith, Icons.Outlined.FormatQuote),
     DHIKR("dhikr", R.string.library_dhikr, Icons.Outlined.SelfImprovement),
     TASBIH("tasbih", R.string.library_tasbih, Icons.Outlined.Adjust),
+    TRACKER("tracker", R.string.library_tracker, Icons.Outlined.CheckCircle),
     QIBLA("qibla", R.string.nav_qibla, Icons.Outlined.Explore);
 
     companion object {

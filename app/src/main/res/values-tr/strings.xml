@@ -11,6 +11,9 @@
     <string name="library_hadith">Hadis</string>
     <string name="library_dhikr">Zikir</string>
     <string name="library_tasbih">Tesbih</string>
+    <string name="library_tracker">Namaz takibi</string>
+    <string name="tracker_streak">gün üst üste</string>
+    <string name="tracker_today">Bugün</string>
     <string name="tasbih_reset">Sıfırla</string>
     <string name="tasbih_rounds">Turlar: %1$d</string>
     <string name="tasbih_hint">Saymak için dokunun</string>

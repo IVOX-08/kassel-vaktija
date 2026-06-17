@@ -11,6 +11,9 @@
     <string name="library_hadith">الحديث</string>
     <string name="library_dhikr">الأذكار</string>
     <string name="library_tasbih">المسبحة</string>
+    <string name="library_tracker">متابعة الصلوات</string>
+    <string name="tracker_streak">أيام متتالية</string>
+    <string name="tracker_today">اليوم</string>
     <string name="tasbih_reset">إعادة تعيين</string>
     <string name="tasbih_rounds">الجولات: %1$d</string>
     <string name="tasbih_hint">انقر للعدّ</string>
