@@ -2,9 +2,10 @@ package de.igbdsandzakkassel.vaktija.ui.quran
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -36,18 +37,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,6 +57,10 @@ import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 
 private const val BISMILLAH = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+
+// Fixed, readable Arabic size. A very full Mushaf page scrolls vertically rather than shrinking the
+// text until it clips — so no word of the Qur'an is ever cut off.
+private val QURAN_FONT_SP = 20.sp
 
 /** Chapter list: all 114 surahs. */
 @Composable
@@ -204,17 +204,26 @@ private fun QuranPage(
             .fillMaxSize()
             .padding(horizontal = 18.dp, vertical = 10.dp),
     ) {
-        if (isFirstPage) {
-            SurahTitleBlock(meta)
-            if (surahId != 1 && surahId != 9) BismillahHeader()
-        }
-        // The ayah text auto-shrinks to fill the remaining height — the whole page fits, no scroll.
-        AutoFitArabicText(
-            text = styled,
+        // Scrolls vertically when a Mushaf page is very full, so no ayah is ever cut off.
+        Column(
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth(),
-        )
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
+        ) {
+            if (isFirstPage) {
+                SurahTitleBlock(meta)
+                if (surahId != 1 && surahId != 9) BismillahHeader()
+            }
+            Text(
+                text = styled,
+                fontSize = QURAN_FONT_SP,
+                lineHeight = QURAN_FONT_SP * 1.9f,
+                textAlign = TextAlign.Justify,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
         Text(
             text = toArabicIndic(pageNumber),
             style = MaterialTheme.typography.labelMedium,
@@ -223,46 +232,6 @@ private fun QuranPage(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, bottom = 8.dp),
-        )
-    }
-}
-
-/** Renders Arabic text at the largest font size that still fits the available height (no scroll). */
-@Composable
-private fun AutoFitArabicText(text: AnnotatedString, modifier: Modifier = Modifier) {
-    BoxWithConstraints(modifier = modifier, contentAlignment = Alignment.Center) {
-        val measurer = rememberTextMeasurer()
-        val density = LocalDensity.current
-        val widthPx = with(density) { maxWidth.toPx().toInt() }
-        val heightPx = with(density) { maxHeight.toPx() }
-        val fontSp = remember(text, widthPx, heightPx) {
-            var lo = 12f
-            var hi = 30f
-            var best = 12f
-            repeat(11) {
-                val mid = (lo + hi) / 2f
-                val measured = measurer.measure(
-                    text = text,
-                    style = TextStyle(fontSize = mid.sp, lineHeight = (mid * 1.95f).sp, textAlign = TextAlign.Justify),
-                    constraints = Constraints(maxWidth = widthPx),
-                    layoutDirection = LayoutDirection.Rtl,
-                )
-                if (measured.size.height <= heightPx) {
-                    best = mid
-                    lo = mid
-                } else {
-                    hi = mid
-                }
-            }
-            best
-        }
-        Text(
-            text = text,
-            fontSize = fontSp.sp,
-            lineHeight = (fontSp * 1.95f).sp,
-            textAlign = TextAlign.Justify,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

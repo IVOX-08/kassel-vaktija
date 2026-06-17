@@ -373,7 +373,7 @@ fun SettingsScreen(
     }
 }
 
-private const val COMMUNITY_EMAIL = "ikzsandzakkassel@gmail.com"
+private const val COMMUNITY_EMAIL = "vorstand@igbdsandzakkassel.de"
 private const val PAYPAL_URL =
     "https://www.paypal.com/donate/?business=ikzsandzakkassel@gmail.com&currency_code=EUR"
 private const val MAPS_URL =
@@ -391,6 +391,7 @@ private const val IMAM_PHONE_DISPLAY = "0176 3037 2402"
 private const val IMAM_PHONE_DIAL = "017630372402"
 private const val DEV_PHONE_DISPLAY = "0176 6188 7123"
 private const val DEV_PHONE_DIAL = "017661887123"
+private const val DEV_EMAIL = "muhamedgolac311@gmail.com"
 
 /** "About the community" card: name, address (→Maps), e-mail (→mail app), donate (→PayPal), version. */
 @Composable
@@ -430,6 +431,9 @@ private fun AboutCard(onVersionClick: () -> Unit) {
                 "${stringResource(R.string.about_dev_promo)}\n${ltr(DEV_PHONE_DISPLAY)}",
             ) {
                 context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$DEV_PHONE_DIAL")))
+            }
+            AboutRow(Icons.Filled.Email, DEV_EMAIL) {
+                context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$DEV_EMAIL")))
             }
             Spacer(Modifier.height(8.dp))
             // Tapping the version 7× reveals the hidden admin login.
