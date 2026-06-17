@@ -90,6 +90,7 @@
     <string name="settings_about_header">Hakkında</string>
     <string name="about_imam">İmam</string>
     <string name="about_dev_promo">Uygulama veya web sitesi mi istiyorsunuz? Arayın:</string>
+    <string name="about_dev_email">veya e-posta yazın:</string>
 
     <!-- News / announcements -->
     <string name="news_empty">Henüz duyuru yok.</string>

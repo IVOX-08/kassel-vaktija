@@ -134,6 +134,7 @@
     <string name="settings_about_header">O nama</string>
     <string name="about_imam">Imam</string>
     <string name="about_dev_promo">Želite aplikaciju ili web stranicu? Nazovite:</string>
+    <string name="about_dev_email">ili pišite e-mail:</string>
 
     <!-- News / announcements -->
     <string name="news_empty">Trenutno nema obavijesti.</string>

@@ -90,6 +90,7 @@
     <string name="settings_about_header">About</string>
     <string name="about_imam">Imam</string>
     <string name="about_dev_promo">Want an app or website? Call:</string>
+    <string name="about_dev_email">or write an email:</string>
     <string name="news_empty">No announcements yet.</string>
     <string name="news_add">New announcement</string>
     <string name="news_title_label">Title</string>

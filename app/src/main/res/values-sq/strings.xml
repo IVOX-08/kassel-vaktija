@@ -90,6 +90,7 @@
     <string name="settings_about_header">Rreth nesh</string>
     <string name="about_imam">Imami</string>
     <string name="about_dev_promo">Doni një aplikacion ose faqe interneti? Telefononi:</string>
+    <string name="about_dev_email">ose shkruani një email:</string>
 
     <!-- News / announcements -->
     <string name="news_empty">Ende nuk ka njoftime.</string>

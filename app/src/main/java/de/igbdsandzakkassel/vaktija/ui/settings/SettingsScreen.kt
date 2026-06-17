@@ -432,7 +432,10 @@ private fun AboutCard(onVersionClick: () -> Unit) {
             ) {
                 context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$DEV_PHONE_DIAL")))
             }
-            AboutRow(Icons.Filled.Email, DEV_EMAIL) {
+            AboutRow(
+                Icons.Filled.Email,
+                "${stringResource(R.string.about_dev_email)}\n$DEV_EMAIL",
+            ) {
                 context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$DEV_EMAIL")))
             }
             Spacer(Modifier.height(8.dp))

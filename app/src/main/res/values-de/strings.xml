@@ -90,6 +90,7 @@
     <string name="settings_about_header">Über uns</string>
     <string name="about_imam">Imam</string>
     <string name="about_dev_promo">App oder Website gewünscht? Anrufen:</string>
+    <string name="about_dev_email">oder E-Mail schreiben:</string>
     <string name="news_empty">Noch keine Mitteilungen.</string>
     <string name="news_add">Neue Mitteilung</string>
     <string name="news_title_label">Titel</string>
