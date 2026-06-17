@@ -48,7 +48,7 @@ enum class LibrarySection(
 
     companion object {
         /** Routes (hub + sub-pages) that should keep the "More" tab highlighted. */
-        val ROUTES: Set<String> = setOf("library", "hadith_nawawi", "hadith_riyad", "quran_surah/{id}") + entries.map { it.route }
+        val ROUTES: Set<String> = setOf("library", "hadith_nawawi", "hadith_riyad", "quran_surah/{id}?ayah={ayah}") + entries.map { it.route }
     }
 }
 

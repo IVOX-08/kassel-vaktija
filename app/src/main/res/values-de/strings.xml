@@ -18,6 +18,8 @@
     <string name="hadith_riyad">Riyad as-Salihin</string>
     <string name="hadith_of_the_day">Hadith des Tages</string>
     <string name="quran_verses">%1$d Verse</string>
+    <string name="quran_continue">Weiterlesen</string>
+    <string name="quran_bookmarks">Lesezeichen</string>
     <string name="onb_welcome_title">Willkommen</string>
     <string name="onb_welcome_body">Die App der IGBD-Gemeinde Sandžak-Kassel — Gebetszeiten, Koran, Hadithe und mehr, in Ihrer Sprache.</string>
     <string name="onb_notif_title">Gebet &amp; Adhan</string>

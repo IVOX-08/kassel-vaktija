@@ -156,15 +156,19 @@ fun KasselApp() {
             }
             composable(LibrarySection.QURAN.route) {
                 LibraryDetail(R.string.library_quran, onBack = { navController.popBackStack() }) {
-                    QuranListScreen(onOpen = { id -> navController.navigate("quran_surah/$id") })
+                    QuranListScreen(onOpen = { id, ayah -> navController.navigate("quran_surah/$id?ayah=$ayah") })
                 }
             }
             composable(
-                route = "quran_surah/{id}",
-                arguments = listOf(navArgument("id") { type = NavType.IntType }),
+                route = "quran_surah/{id}?ayah={ayah}",
+                arguments = listOf(
+                    navArgument("id") { type = NavType.IntType },
+                    navArgument("ayah") { type = NavType.IntType; defaultValue = 1 },
+                ),
             ) { entry ->
                 QuranSurahScreen(
                     surahId = entry.arguments?.getInt("id") ?: 1,
+                    initialAyah = entry.arguments?.getInt("ayah") ?: 1,
                     onBack = { navController.popBackStack() },
                 )
             }

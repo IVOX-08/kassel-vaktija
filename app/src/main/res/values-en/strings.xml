@@ -18,6 +18,8 @@
     <string name="hadith_riyad">Riyad as-Salihin</string>
     <string name="hadith_of_the_day">Hadith of the day</string>
     <string name="quran_verses">%1$d verses</string>
+    <string name="quran_continue">Continue reading</string>
+    <string name="quran_bookmarks">Bookmarks</string>
     <string name="onb_welcome_title">Welcome</string>
     <string name="onb_welcome_body">The app of the IGBD Sandžak-Kassel community — prayer times, Qur\'an, hadith and more, in your language.</string>
     <string name="onb_notif_title">Prayer &amp; Adhan</string>

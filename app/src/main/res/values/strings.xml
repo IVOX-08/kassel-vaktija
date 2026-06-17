@@ -24,6 +24,8 @@
     <string name="hadith_riyad">Rijadus-salihin</string>
     <string name="hadith_of_the_day">Hadis dana</string>
     <string name="quran_verses">%1$d ajeta</string>
+    <string name="quran_continue">Nastavi čitanje</string>
+    <string name="quran_bookmarks">Oznake</string>
 
     <!-- Onboarding -->
     <string name="onb_welcome_title">Dobro došli</string>

@@ -22,7 +22,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -38,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
@@ -58,6 +62,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.quran.Ayah
+import de.igbdsandzakkassel.vaktija.data.quran.QuranProgress
 import de.igbdsandzakkassel.vaktija.data.quran.SurahMeta
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
@@ -74,16 +79,27 @@ private val QURAN_H_PADDING = 18.dp
 /** Chapter list: all 114 surahs. */
 @Composable
 fun QuranListScreen(
-    onOpen: (Int) -> Unit,
+    onOpen: (Int, Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: QuranViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) { QuranProgress.load(context) }
     val surahs by viewModel.surahs.collectAsStateWithLifecycle()
     val list = surahs
     if (list == null) {
         Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
         return
     }
+    val resumeMeta = if (QuranProgress.lastSurah != 0) list.find { it.id == QuranProgress.lastSurah } else null
+    val bookmarks = QuranProgress.bookmarks
+        .mapNotNull { bm ->
+            val s = bm.substringBefore(":").toIntOrNull() ?: return@mapNotNull null
+            val a = bm.substringAfter(":").toIntOrNull() ?: return@mapNotNull null
+            val m = list.find { it.id == s } ?: return@mapNotNull null
+            Triple(s, a, m)
+        }
+        .sortedWith(compareBy({ it.first }, { it.second }))
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -91,7 +107,78 @@ fun QuranListScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(vertical = 10.dp),
     ) {
-        items(list, key = { it.id }) { surah -> SurahRow(surah) { onOpen(surah.id) } }
+        if (resumeMeta != null) {
+            item {
+                ResumeCard(resumeMeta, QuranProgress.lastAyah) { onOpen(resumeMeta.id, QuranProgress.lastAyah) }
+            }
+        }
+        if (bookmarks.isNotEmpty()) {
+            item { SectionLabel(stringResource(R.string.quran_bookmarks)) }
+            items(bookmarks, key = { "bm_${it.first}_${it.second}" }) { (s, a, m) ->
+                BookmarkCard(m, a) { onOpen(s, a) }
+            }
+            item { SectionLabel(stringResource(R.string.library_quran)) }
+        }
+        items(list, key = { it.id }) { surah -> SurahRow(surah) { onOpen(surah.id, 1) } }
+    }
+}
+
+@Composable
+private fun SectionLabel(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleSmall,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(top = 8.dp, start = 4.dp),
+    )
+}
+
+@Composable
+private fun ResumeCard(surah: SurahMeta, ayah: Int, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = BrandGreen.copy(alpha = 0.12f)),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick)
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.quran_continue),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = BrandGreen,
+            )
+            Text(
+                text = "${surah.transliteration} · ﴿${toArabicIndic(ayah)}﴾",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+@Composable
+private fun BookmarkCard(surah: SurahMeta, ayah: Int, onClick: () -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Icon(Icons.Filled.Bookmark, contentDescription = null, tint = BrandGold)
+            Text(
+                text = "${surah.transliteration} · ﴿${toArabicIndic(ayah)}﴾",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
+            )
+        }
     }
 }
 
@@ -143,8 +230,11 @@ private fun SurahRow(surah: SurahMeta, onClick: () -> Unit) {
 fun QuranSurahScreen(
     surahId: Int,
     onBack: () -> Unit,
+    initialAyah: Int = 1,
     viewModel: QuranViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) { QuranProgress.load(context) }
     LaunchedEffect(surahId) { viewModel.loadSurah(surahId) }
     val meta by viewModel.meta.collectAsStateWithLifecycle()
     val ayahs by viewModel.ayahs.collectAsStateWithLifecycle()
@@ -165,7 +255,17 @@ fun QuranSurahScreen(
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.weight(1f),
             )
+            val starAyah = if (QuranProgress.lastSurah == surahId) QuranProgress.lastAyah else initialAyah
+            val bookmarked = QuranProgress.isBookmarked(surahId, starAyah)
+            IconButton(onClick = { QuranProgress.toggleBookmark(context, surahId, starAyah) }) {
+                Icon(
+                    imageVector = if (bookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                    contentDescription = stringResource(R.string.quran_bookmarks),
+                    tint = if (bookmarked) BrandGold else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
@@ -192,7 +292,15 @@ fun QuranSurahScreen(
             val pages = remember(list, contentWidthPx, availHeightPx) {
                 paginate(list, measurer, measureStyle, contentWidthPx, availHeightPx, firstPageReservePx)
             }
-            val pagerState = rememberPagerState(pageCount = { pages.size })
+            val initialPage = remember(pages, initialAyah) {
+                pages.indexOfFirst { page -> page.any { it.number >= initialAyah } }.coerceAtLeast(0)
+            }
+            val pagerState = rememberPagerState(initialPage = initialPage, pageCount = { pages.size })
+            // Remember the reading position for "continue reading".
+            LaunchedEffect(pagerState.currentPage, pages) {
+                pages.getOrNull(pagerState.currentPage)?.firstOrNull()?.number
+                    ?.let { QuranProgress.saveLast(context, surahId, it) }
+            }
             // RTL pager: swiping like a real Mushaf turns to the next page.
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { index ->

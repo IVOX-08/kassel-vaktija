@@ -18,6 +18,8 @@
     <string name="hadith_riyad">رياض الصالحين</string>
     <string name="hadith_of_the_day">حديث اليوم</string>
     <string name="quran_verses">%1$d آية</string>
+    <string name="quran_continue">متابعة القراءة</string>
+    <string name="quran_bookmarks">العلامات المرجعية</string>
     <string name="onb_welcome_title">أهلاً وسهلاً</string>
     <string name="onb_welcome_body">تطبيق جماعة سنجق-كاسل (IGBD): مواقيت الصلاة، والقرآن الكريم، والحديث، والمزيد، بلغتك.</string>
     <string name="onb_notif_title">الصلاة والأذان</string>

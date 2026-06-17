@@ -18,6 +18,8 @@
     <string name="hadith_riyad">Сады праведных</string>
     <string name="hadith_of_the_day">Хадис дня</string>
     <string name="quran_verses">%1$d аятов</string>
+    <string name="quran_continue">Продолжить чтение</string>
+    <string name="quran_bookmarks">Закладки</string>
     <string name="onb_welcome_title">Добро пожаловать</string>
     <string name="onb_welcome_body">Приложение общины IGBD Санджак-Кассель — время намаза, Коран, хадисы и многое другое на вашем языке.</string>
     <string name="onb_notif_title">Намаз и азан</string>
