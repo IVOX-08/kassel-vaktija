@@ -151,7 +151,10 @@ private fun SlideContent(slide: Slide) {
     ) {
         if (slide.emblem) {
             Image(
-                painter = painterResource(R.drawable.logo_emblem),
+                // logo_community has both a light and a dark (drawable-night) variant, so it adapts
+                // to the onboarding background — the plain logo_emblem only ships the light version
+                // and looked wrong (washed-out/white lettering) on the dark onboarding screen.
+                painter = painterResource(R.drawable.logo_community),
                 contentDescription = null,
                 modifier = Modifier.size(150.dp),
             )
