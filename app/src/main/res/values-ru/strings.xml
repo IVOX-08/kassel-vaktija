@@ -44,6 +44,9 @@
     <string name="onb_more_title">И не только</string>
     <string name="onb_more_body">Кибла, календарь, новости общины и виджет на главном экране. Да примет это Аллах.</string>
     <string name="onb_start">Начать</string>
+    <string name="onb_perms_title">Разрешения</string>
+    <string name="onb_perms_body">Чтобы приложение вовремя напоминало о намазе и сообщениях, разрешите следующее.</string>
+    <string name="onb_allow">Разрешить</string>
     <string name="onb_next">Далее</string>
     <string name="onb_skip">Пропустить</string>
 

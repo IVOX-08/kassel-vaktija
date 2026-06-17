@@ -61,13 +61,15 @@ fun OnboardingScreen(onFinished: () -> Unit) {
     var languageChosen by rememberSaveable {
         mutableStateOf(!AppCompatDelegate.getApplicationLocales().isEmpty)
     }
-    if (!languageChosen) {
-        LanguagePickerScreen(onSelected = {
+    var introDone by rememberSaveable { mutableStateOf(false) }
+    when {
+        !languageChosen -> LanguagePickerScreen(onSelected = {
             languageChosen = true
             LocaleController.set(it)
         })
-    } else {
-        OnboardingIntro(onFinished = onFinished)
+        // Language → short intro → permissions (notifications, exact alarm, battery, Do-Not-Disturb).
+        !introDone -> OnboardingIntro(onFinished = { introDone = true })
+        else -> OnboardingPermissions(onFinished = onFinished)
     }
 }
 

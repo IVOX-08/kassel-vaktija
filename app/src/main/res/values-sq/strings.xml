@@ -44,6 +44,9 @@
     <string name="onb_more_title">Dhe më shumë</string>
     <string name="onb_more_body">Kibla, kalendari, lajmet e bashkësisë dhe një vegël për ekranin kryesor. Allahu e pranoftë.</string>
     <string name="onb_start">Fillo</string>
+    <string name="onb_perms_title">Lejet</string>
+    <string name="onb_perms_body">Që aplikacioni t\'ju kujtojë namazin dhe njoftimet në kohë, ju lutemi lejoni sa vijon.</string>
+    <string name="onb_allow">Lejo</string>
     <string name="onb_next">Vazhdo</string>
     <string name="onb_skip">Anashkalo</string>
 

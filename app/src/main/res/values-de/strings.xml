@@ -44,6 +44,9 @@
     <string name="onb_more_title">Und mehr</string>
     <string name="onb_more_body">Qibla, Kalender, Gemeinde-Nachrichten und ein Startbildschirm-Widget. Möge Allah es annehmen.</string>
     <string name="onb_start">Los geht\'s</string>
+    <string name="onb_perms_title">Berechtigungen</string>
+    <string name="onb_perms_body">Damit dich die App pünktlich an Gebet und Nachrichten erinnern kann, erlaube bitte die folgenden Berechtigungen.</string>
+    <string name="onb_allow">Erlauben</string>
     <string name="onb_next">Weiter</string>
     <string name="onb_skip">Überspringen</string>
 

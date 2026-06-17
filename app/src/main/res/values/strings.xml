@@ -52,6 +52,9 @@
     <string name="onb_more_title">I još više</string>
     <string name="onb_more_body">Kibla, kalendar, vijesti zajednice i widget za početni ekran. Neka vam Allah primi.</string>
     <string name="onb_start">Započni</string>
+    <string name="onb_perms_title">Dozvole</string>
+    <string name="onb_perms_body">Da bi vas aplikacija na vrijeme obavijestila o namazu i vijestima, omogućite sljedeće dozvole.</string>
+    <string name="onb_allow">Dozvoli</string>
     <string name="onb_next">Dalje</string>
     <string name="onb_skip">Preskoči</string>
 

@@ -44,6 +44,9 @@
     <string name="onb_more_title">والمزيد</string>
     <string name="onb_more_body">القبلة، والتقويم، وأخبار الجماعة، وأداة على الشاشة الرئيسية. تقبّل الله منا ومنكم.</string>
     <string name="onb_start">ابدأ الآن</string>
+    <string name="onb_perms_title">الأذونات</string>
+    <string name="onb_perms_body">حتى يتمكن التطبيق من تذكيرك بالصلاة والإشعارات في وقتها، يرجى السماح بالأذونات التالية.</string>
+    <string name="onb_allow">السماح</string>
     <string name="onb_next">التالي</string>
     <string name="onb_skip">تخطّي</string>
 

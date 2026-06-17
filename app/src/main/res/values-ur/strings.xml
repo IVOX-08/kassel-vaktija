@@ -44,6 +44,9 @@
     <string name="onb_more_title">اور بہت کچھ</string>
     <string name="onb_more_body">قبلہ، کیلنڈر، کمیونٹی کی خبریں اور ہوم اسکرین ویجٹ۔ اللہ تعالیٰ اسے قبول فرمائے۔</string>
     <string name="onb_start">شروع کریں</string>
+    <string name="onb_perms_title">اجازتیں</string>
+    <string name="onb_perms_body">تاکہ ایپ آپ کو نماز اور اطلاعات کی بروقت یاد دہانی کرا سکے، براہِ کرم درج ذیل اجازتیں دیں۔</string>
+    <string name="onb_allow">اجازت دیں</string>
     <string name="onb_next">اگلا</string>
     <string name="onb_skip">چھوڑ دیں</string>
 

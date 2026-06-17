@@ -44,6 +44,9 @@
     <string name="onb_more_title">Ve dahası</string>
     <string name="onb_more_body">Kıble, takvim, cemaat haberleri ve bir ana ekran widget\'ı. Allah kabul etsin.</string>
     <string name="onb_start">Başla</string>
+    <string name="onb_perms_title">İzinler</string>
+    <string name="onb_perms_body">Uygulamanın namaz ve duyuruları zamanında hatırlatabilmesi için lütfen aşağıdaki izinleri verin.</string>
+    <string name="onb_allow">İzin ver</string>
     <string name="onb_next">İleri</string>
     <string name="onb_skip">Atla</string>
 

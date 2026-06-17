@@ -44,6 +44,9 @@
     <string name="onb_more_title">And more</string>
     <string name="onb_more_body">Qibla, calendar, community news and a home-screen widget. May Allah accept it.</string>
     <string name="onb_start">Get started</string>
+    <string name="onb_perms_title">Permissions</string>
+    <string name="onb_perms_body">So the app can remind you of prayers and announcements on time, please allow the following.</string>
+    <string name="onb_allow">Allow</string>
     <string name="onb_next">Next</string>
     <string name="onb_skip">Skip</string>
 
