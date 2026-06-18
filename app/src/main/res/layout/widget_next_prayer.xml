@@ -14,7 +14,8 @@
         android:layout_height="96dp"
         android:background="@drawable/widget_logo_circle"
         android:scaleType="fitCenter"
-        android:src="@mipmap/ic_launcher_foreground"
+        android:padding="4dp"
+        android:src="@drawable/widget_crest"
         android:contentDescription="@string/cd_app_logo" />
 
     <LinearLayout
