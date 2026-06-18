@@ -12,8 +12,9 @@
         android:id="@+id/widget_logo"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:background="@drawable/widget_logo_circle"
         android:scaleType="fitCenter"
-        android:src="@drawable/logo_emblem"
+        android:src="@mipmap/ic_launcher_foreground"
         android:contentDescription="@string/cd_app_logo" />
 
     <LinearLayout

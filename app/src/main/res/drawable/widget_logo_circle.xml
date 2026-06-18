@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- White circle behind the app-icon crest in the widget, matching the launcher icon
+     (adaptive-icon background is #FFFFFF, foreground is ic_launcher_foreground). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="#FFFFFFFF" />
+</shape>
