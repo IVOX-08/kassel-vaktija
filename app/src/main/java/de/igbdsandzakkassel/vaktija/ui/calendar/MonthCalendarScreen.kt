@@ -1,6 +1,11 @@
 package de.igbdsandzakkassel.vaktija.ui.calendar
 
+import android.provider.Settings
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -21,10 +27,16 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +67,41 @@ fun MonthCalendarScreen(
     val locale = Locale.getDefault()
     val today = LocalDate.now()
 
+    val listState = rememberLazyListState()
+    val context = LocalContext.current
+    // "Remove animations" accessibility setting → jump to today instead of animate-scroll + pulse.
+    val reduceMotion = remember {
+        Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f
+    }
+
+    val todayIndex = state.days.indexOfFirst { it.date == today }
+    // Guard so we scroll/pulse once per visit to today's month (not on every recomposition). Uses
+    // `remember` (not Saveable) so re-opening the Calendar tab scrolls to today and pulses again.
+    var pulsedForMonth by remember { mutableStateOf<String?>(null) }
+    var pulseToken by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(state.loading, state.month, todayIndex) {
+        if (state.loading || todayIndex < 0) return@LaunchedEffect // today not in the shown month
+        val monthKey = state.month.toString()
+        if (pulsedForMonth == monthKey) return@LaunchedEffect
+        pulsedForMonth = monthKey
+
+        if (reduceMotion) {
+            listState.scrollToItem(todayIndex)
+            return@LaunchedEffect
+        }
+        // Gentle scroll, then center today's row in the viewport, then a one-shot illumination pulse.
+        listState.animateScrollToItem(todayIndex)
+        val layout = listState.layoutInfo
+        val item = layout.visibleItemsInfo.firstOrNull { it.index == todayIndex }
+        if (item != null) {
+            val viewportCenter = (layout.viewportStartOffset + layout.viewportEndOffset) / 2f
+            val itemCenter = item.offset + item.size / 2f
+            listState.animateScrollBy(itemCenter - viewportCenter)
+        }
+        pulseToken++
+    }
+
     Column(modifier = modifier.fillMaxSize().padding(horizontal = 8.dp)) {
         MonthNavHeader(
             title = monthTitle(state.month, locale),
@@ -69,9 +116,15 @@ fun MonthCalendarScreen(
                 CircularProgressIndicator()
             }
         } else {
-            LazyColumn(Modifier.fillMaxSize()) {
+            LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                 items(state.days, key = { it.date.toString() }) { day ->
-                    DayRow(day = day, isToday = day.date == today, locale = locale)
+                    val isToday = day.date == today
+                    DayRow(
+                        day = day,
+                        isToday = isToday,
+                        locale = locale,
+                        pulseToken = if (isToday) pulseToken else 0,
+                    )
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
                 }
             }
@@ -132,8 +185,24 @@ private fun RowScope.HeaderCell(text: String, weight: Float) {
 }
 
 @Composable
-private fun DayRow(day: DailyTimes, isToday: Boolean, locale: Locale) {
-    val background = if (isToday) MaterialTheme.colorScheme.primary.copy(alpha = 0.14f) else Color.Transparent
+private fun DayRow(day: DailyTimes, isToday: Boolean, locale: Locale, pulseToken: Int = 0) {
+    // One-shot illumination when today is auto-scrolled into view: the green briefly brightens, then
+    // settles back to the persistent today highlight.
+    val glow = remember { Animatable(0f) }
+    LaunchedEffect(pulseToken) {
+        if (pulseToken > 0) {
+            glow.snapTo(0f)
+            glow.animateTo(1f, tween(350, easing = FastOutSlowInEasing))
+            glow.animateTo(0f, tween(550, easing = FastOutSlowInEasing))
+        }
+    }
+    val baseAlpha = if (isToday) 0.14f else 0f
+    val background =
+        if (isToday || glow.value > 0f) {
+            MaterialTheme.colorScheme.primary.copy(alpha = baseAlpha + glow.value * 0.34f)
+        } else {
+            Color.Transparent
+        }
     val timeColor = if (isToday) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
     val timeWeight = if (isToday) FontWeight.Bold else FontWeight.Normal
 
