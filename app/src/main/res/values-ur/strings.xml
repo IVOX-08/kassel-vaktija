@@ -141,6 +141,8 @@
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">اعلانات</string>
     <string name="notif_channel_news_desc">جب کمیونٹی نیا اعلان شائع کرے تو اطلاع۔</string>
+    <string name="notif_config_title">نماز کے اوقات اپ ڈیٹ ہو گئے ہیں</string>
+    <string name="notif_config_body">جماعت کی نماز اور اقامت کے اوقات اپ ڈیٹ کر دیے گئے ہیں۔ دیکھنے کے لیے ٹیپ کریں۔</string>
     <string name="settings_news_header">اعلانات</string>
     <string name="settings_news_notifications">اعلانات کی اطلاعات</string>
     <!-- Weekly dhikr/hadith reminder -->

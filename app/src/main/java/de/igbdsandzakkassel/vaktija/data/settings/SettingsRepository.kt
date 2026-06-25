@@ -117,6 +117,13 @@ class SettingsRepository @Inject constructor(
         store.edit { it[LAST_NEWS_MILLIS] = millis }
     }
 
+    /** `updatedAt` (epoch millis) of the community rules we've already notified about a change for. */
+    suspend fun getLastSeenConfigMillis(): Long? = store.data.first()[LAST_CONFIG_MILLIS]
+
+    suspend fun setLastSeenConfigMillis(millis: Long) {
+        store.edit { it[LAST_CONFIG_MILLIS] = millis }
+    }
+
     /**
      * The user's selected app-language tag, persisted so background workers/receivers can localize
      * notifications without relying on AppCompatDelegate (which can read empty on a cold wake-up).
@@ -168,6 +175,7 @@ class SettingsRepository @Inject constructor(
         val CALIBRATION = stringPreferencesKey("month_calibration")
         val NEWS_NOTIFS = booleanPreferencesKey("news_notifs_enabled")
         val LAST_NEWS_MILLIS = longPreferencesKey("last_notified_news_millis")
+        val LAST_CONFIG_MILLIS = longPreferencesKey("last_seen_config_millis")
         val LANGUAGE_TAG = stringPreferencesKey("app_language_tag")
         fun enabledKey(p: Prayer) = booleanPreferencesKey("enabled_${p.name}")
         fun preWarnKey(p: Prayer) = intPreferencesKey("prewarn_${p.name}")

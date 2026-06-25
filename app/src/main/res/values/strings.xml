@@ -193,6 +193,8 @@
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Obavijesti zajednice</string>
     <string name="notif_channel_news_desc">Obavijest kada zajednica objavi novu poruku.</string>
+    <string name="notif_config_title">Namaska vremena ažurirana</string>
+    <string name="notif_config_body">Namaska i ikametska vremena zajednice su ažurirana. Dodirni da ih pogledaš.</string>
     <string name="settings_news_header">Obavijesti</string>
     <string name="settings_news_notifications">Obavijesti o novim porukama</string>
     <!-- Weekly dhikr/hadith reminder -->

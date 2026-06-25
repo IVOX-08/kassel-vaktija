@@ -3,9 +3,11 @@ package de.igbdsandzakkassel.vaktija.data.repository
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
+import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -19,6 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class FirestoreCommunityRuleProvider @Inject constructor(
     private val firestore: FirebaseFirestore,
+    private val settingsRepository: SettingsRepository,
 ) : CommunityRuleProvider {
 
     private val docRef get() = firestore.collection(COLLECTION).document(DOCUMENT)
@@ -32,10 +35,17 @@ class FirestoreCommunityRuleProvider @Inject constructor(
     }
 
     override suspend fun saveRules(rules: CommunityRules) {
+        // Stamp the edit time so other devices can detect the change and notify their users.
+        val now = System.currentTimeMillis()
         // Fire-and-forget: Firestore commits to the local cache immediately and syncs to the server
         // when online (awaiting the Task would block indefinitely while offline).
-        docRef.set(rules.toFirestoreMap())
+        docRef.set(rules.toFirestoreMap() + ("updatedAt" to now))
+        // Advance OUR own watermark so the admin device doesn't notify itself about its own change.
+        settingsRepository.setLastSeenConfigMillis(now)
     }
+
+    override suspend fun getUpdatedAt(): Long? =
+        runCatching { docRef.get().await().getLong("updatedAt") }.getOrNull()
 
     private companion object {
         const val COLLECTION = "config"

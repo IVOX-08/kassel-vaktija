@@ -141,6 +141,8 @@
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Duyurular</string>
     <string name="notif_channel_news_desc">Cemaat yeni bir duyuru paylaştığında bildirim.</string>
+    <string name="notif_config_title">Namaz vakitleri güncellendi</string>
+    <string name="notif_config_body">Cemaatin namaz ve ikamet vakitleri güncellendi. Görüntülemek için dokun.</string>
     <string name="settings_news_header">Duyurular</string>
     <string name="settings_news_notifications">Duyuru bildirimleri</string>
     <!-- Weekly dhikr/hadith reminder -->

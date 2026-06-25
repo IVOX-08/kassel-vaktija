@@ -141,6 +141,8 @@
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Njoftime</string>
     <string name="notif_channel_news_desc">Njoftim kur bashkësia publikon një lajmërim të ri.</string>
+    <string name="notif_config_title">Kohët e namazit u përditësuan</string>
+    <string name="notif_config_body">Kohët e namazit dhe të ikametit të xhematit u përditësuan. Trokit për t\'i parë.</string>
     <string name="settings_news_header">Njoftime</string>
     <string name="settings_news_notifications">Njoftimet për lajmërime</string>
     <!-- Weekly dhikr/hadith reminder -->

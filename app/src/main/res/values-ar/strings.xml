@@ -141,6 +141,8 @@
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">إعلانات الجماعة</string>
     <string name="notif_channel_news_desc">تنبيه عند نشر الجماعة إعلانًا جديدًا.</string>
+    <string name="notif_config_title">تم تحديث مواقيت الصلاة</string>
+    <string name="notif_config_body">تم تحديث مواقيت الصلاة والإقامة الخاصة بالجماعة. انقر لعرضها.</string>
     <string name="settings_news_header">الإعلانات</string>
     <string name="settings_news_notifications">إشعارات الإعلانات</string>
     <!-- Weekly dhikr/hadith reminder -->

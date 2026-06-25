@@ -151,6 +151,8 @@
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Announcements</string>
     <string name="notif_channel_news_desc">Notification when the community posts a new announcement.</string>
+    <string name="notif_config_title">Prayer times updated</string>
+    <string name="notif_config_body">The community\'s prayer and Iqamah times have been updated. Tap to view them.</string>
     <string name="settings_news_header">Announcements</string>
     <string name="settings_news_notifications">Announcement notifications</string>
     <!-- Weekly dhikr/hadith reminder -->

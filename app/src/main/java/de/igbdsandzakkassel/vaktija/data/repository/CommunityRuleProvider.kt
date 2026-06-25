@@ -12,4 +12,10 @@ interface CommunityRuleProvider {
 
     /** Admin-only: persist new rules to the backend (no-op without write permission). */
     suspend fun saveRules(rules: CommunityRules)
+
+    /**
+     * Epoch-millis of the last admin edit to the rules (a `updatedAt` field written on save), or null
+     * if absent/unreadable. Used by the background check to notify users when prayer times change.
+     */
+    suspend fun getUpdatedAt(): Long?
 }

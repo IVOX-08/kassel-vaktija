@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.media.AudioAttributes
 import android.net.Uri
@@ -14,6 +15,7 @@ import androidx.core.content.getSystemService
 import de.igbdsandzakkassel.vaktija.MainActivity
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
+import java.util.Locale
 
 /**
  * Notifications for community announcements (the Firestore `news` collection). Uses its OWN channel
@@ -27,6 +29,10 @@ object NewsNotifier {
     const val CHANNEL_NEWS = "news_announcements_v2"
     private const val CHANNEL_NEWS_OLD = "news_announcements"
     const val NEWS_NOTIFICATION_ID = 3001
+
+    // Distinct id so a "prayer times updated" notification never replaces an announcement (and a
+    // later poll/push for the same change just updates this one in place, never stacking duplicates).
+    const val CONFIG_NOTIFICATION_ID = 3002
 
     /** Short, light double-buzz — distinct from the Adhan channel's firmer pattern. */
     private val NEWS_VIBRATION = longArrayOf(0, 180, 120, 180)
@@ -92,6 +98,35 @@ object NewsNotifier {
             .setContentIntent(openAppIntent(context))
             .build()
         NotificationManagerCompat.from(context).notify(NEWS_NOTIFICATION_ID, notification)
+    }
+
+    /** Post a "prayer/Iqamah times were updated" notification, localized to [lang]. */
+    fun postConfigUpdate(context: Context, lang: String) {
+        ensureChannel(context)
+        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
+
+        val loc = localized(context, lang)
+        val title = loc.getString(R.string.notif_config_title)
+        val body = loc.getString(R.string.notif_config_body)
+        val notification = NotificationCompat.Builder(context, CHANNEL_NEWS)
+            .setSmallIcon(R.drawable.ic_stat_adhan)
+            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.logo_notification))
+            .setContentTitle(title)
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_SOCIAL)
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(context))
+            .build()
+        NotificationManagerCompat.from(context).notify(CONFIG_NOTIFICATION_ID, notification)
+    }
+
+    /** A context whose resources resolve strings in [lang] (background wakes can't rely on the UI locale). */
+    private fun localized(context: Context, lang: String): Context {
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(Locale.forLanguageTag(lang))
+        return context.createConfigurationContext(config)
     }
 
     private fun openAppIntent(context: Context): PendingIntent {

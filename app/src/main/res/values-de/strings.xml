@@ -151,6 +151,8 @@
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Mitteilungen</string>
     <string name="notif_channel_news_desc">Benachrichtigung, wenn die Gemeinde eine neue Mitteilung veröffentlicht.</string>
+    <string name="notif_config_title">Gebetszeiten aktualisiert</string>
+    <string name="notif_config_body">Die Gebets- und Iqamah-Zeiten der Gemeinde wurden aktualisiert. Tippe, um sie anzusehen.</string>
     <string name="settings_news_header">Mitteilungen</string>
     <string name="settings_news_notifications">Mitteilungs-Benachrichtigungen</string>
     <!-- Weekly dhikr/hadith reminder -->

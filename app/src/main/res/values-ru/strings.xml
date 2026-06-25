@@ -141,6 +141,8 @@
     <!-- Community announcements (news) notifications -->
     <string name="notif_channel_news">Объявления</string>
     <string name="notif_channel_news_desc">Уведомление, когда сообщество публикует новое объявление.</string>
+    <string name="notif_config_title">Расписание намаза обновлено</string>
+    <string name="notif_config_body">Время намаза и икамета в общине было обновлено. Нажми, чтобы посмотреть.</string>
     <string name="settings_news_header">Объявления</string>
     <string name="settings_news_notifications">Уведомления об объявлениях</string>
     <!-- Weekly dhikr/hadith reminder -->
