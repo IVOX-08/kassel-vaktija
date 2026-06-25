@@ -11,20 +11,37 @@ the in-app admin check is only there to show/hide buttons.
 | `news_images`  | **flyer/image attached to an announcement** (Base64 JPEG, same document id as the announcement) | anyone | admin |
 | `config`       | admin-edited community settings                 | anyone | admin |
 
-## ⚠️ Required for the flyer/image feature
+## Most likely NOTHING to do — the deployed catch-all already covers it
 
-`news_images` is the collection added for **attaching pictures to a Mitteilung**. Until the rule
-below is published, a posted flyer can't be saved or shown — the announcement text still works, the
-picture just won't appear (the card quietly shows no image). So this rule must be added **once**.
+The rule currently published for this project is the recursive **catch-all** form:
 
-## How to publish (one-time, ~2 minutes)
+```firestore
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.uid == '1a7xqRgIYDR0RZqa3KghBlz98PK2';
+    }
+  }
+}
+```
 
-1. Open the [Firebase console](https://console.firebase.google.com) → the **kassel-vaktija** project.
-2. Left menu → **Build → Firestore Database** → top tab **Rules**.
-3. Make sure the rules include a block for **`news_images`** identical to the `news` block. The full
-   correct ruleset is below — if your current rules already match, just confirm `news_images` is
-   present; otherwise paste this over what's there.
-4. Click **Publish**.
+`match /{document=**}` matches **every** collection — including `news_images`. So if this is still the
+deployed rule, the flyer feature works with **no change at all** (public read, admin-only write already
+apply to `news_images`).
+
+**To be 100 % sure (≈1 minute):** Firebase console → **kassel-vaktija** → **Build → Firestore Database**
+→ **Rules** tab. If you see `match /{document=**}` with `read: if true` and the admin-UID write check,
+you're done — close it. Only if the rules instead list collections **one by one** (a `match /news/...`
+block, a `match /config/...` block, but **no** `news_images` block) do you need the step below.
+
+## If (and only if) the rules list collections individually
+
+Add a `news_images` block identical to the `news` one, then **Publish**. Until then a posted flyer is
+rejected server-side: the announcement text still works, the picture just won't appear (the card quietly
+shows no image). The full per-collection ruleset:
 
 ```firestore
 rules_version = '2';
