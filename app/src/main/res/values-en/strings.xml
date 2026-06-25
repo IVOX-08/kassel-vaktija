@@ -44,6 +44,15 @@
     <string name="onb_allow">Allow</string>
     <string name="onb_next">Next</string>
     <string name="onb_skip">Skip</string>
+    <string name="onb_finish">Done</string>
+    <string name="onb_perm_notif_title">Notifications</string>
+    <string name="onb_perm_notif_body">Want to be reminded of prayer times (Adhan) and community announcements? The app needs permission to send notifications.</string>
+    <string name="onb_perm_dnd_title">Do Not Disturb</string>
+    <string name="onb_perm_dnd_body">So the Adhan can still be heard when your phone is on silent, allow Do-Not-Disturb access.</string>
+    <string name="onb_perm_widget_title">Widget</string>
+    <string name="onb_perm_widget_body">Want to see the next prayer time right on your home screen? Add the widget with one tap.</string>
+    <string name="onb_perm_widget_action">Add to home screen</string>
+    <string name="onb_perm_widget_unsupported">Your home screen doesn\'t support adding it automatically. You can add the widget manually: long-press the home screen → Widgets → \"Kassel Vaktija\".</string>
 
     <string name="prayer_fajr">Fajr</string>
     <string name="prayer_sunrise">Sunrise</string>

@@ -44,6 +44,15 @@
     <string name="onb_allow">اجازت دیں</string>
     <string name="onb_next">اگلا</string>
     <string name="onb_skip">چھوڑ دیں</string>
+    <string name="onb_finish">ہو گیا</string>
+    <string name="onb_perm_notif_title">اطلاعات</string>
+    <string name="onb_perm_notif_body">کیا آپ نماز کے اوقات (اذان) اور جماعت کے اعلانات کی یاد دہانی چاہتے ہیں؟ اس کے لیے ایپ کو اطلاعات بھیجنے کی اجازت درکار ہے۔</string>
+    <string name="onb_perm_dnd_title">”خلل نہ ڈالیں“</string>
+    <string name="onb_perm_dnd_body">تاکہ آپ کا فون خاموش (سائلنٹ) پر ہونے کے باوجود اذان سنائی دے، ”خلل نہ ڈالیں“ تک رسائی کی اجازت دیں۔</string>
+    <string name="onb_perm_widget_title">وجٹ</string>
+    <string name="onb_perm_widget_body">کیا آپ اگلی نماز کا وقت براہِ راست اپنی ہوم اسکرین پر دیکھنا چاہتے ہیں؟ ایک ٹیپ سے وجٹ شامل کریں۔</string>
+    <string name="onb_perm_widget_action">ہوم اسکرین پر شامل کریں</string>
+    <string name="onb_perm_widget_unsupported">آپ کی ہوم اسکرین خودکار طور پر شامل کرنے کی سہولت نہیں دیتی۔ آپ وجٹ خود سے شامل کر سکتے ہیں: ہوم اسکرین کو دبائے رکھیں ← وجٹس ← ”Kassel Vaktija“۔</string>
 
     <string name="prayer_fajr">فجر</string>
     <string name="prayer_sunrise">طلوعِ آفتاب</string>

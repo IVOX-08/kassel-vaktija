@@ -52,6 +52,15 @@
     <string name="onb_allow">Dozvoli</string>
     <string name="onb_next">Dalje</string>
     <string name="onb_skip">Preskoči</string>
+    <string name="onb_finish">Gotovo</string>
+    <string name="onb_perm_notif_title">Obavijesti</string>
+    <string name="onb_perm_notif_body">Želiš li podsjetnike na namaska vremena (ezan) i obavijesti zajednice? Aplikaciji je potrebna dozvola za slanje obavijesti.</string>
+    <string name="onb_perm_dnd_title">„Ne uznemiravaj“</string>
+    <string name="onb_perm_dnd_body">Da bi se ezan čuo i kada je telefon na nečujnom, dozvoli pristup opciji „Ne uznemiravaj“.</string>
+    <string name="onb_perm_widget_title">Widget</string>
+    <string name="onb_perm_widget_body">Želiš li vidjeti sljedeće namasko vrijeme direktno na početnom ekranu? Dodaj widget jednim dodirom.</string>
+    <string name="onb_perm_widget_action">Dodaj na početni ekran</string>
+    <string name="onb_perm_widget_unsupported">Tvoj početni ekran ne podržava automatsko dodavanje. Widget možeš dodati ručno: dugo pritisni početni ekran → Widgeti → „Kassel Vaktija“.</string>
 
     <!-- Prayer names -->
     <string name="prayer_fajr">Sabah</string>

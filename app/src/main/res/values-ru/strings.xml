@@ -44,6 +44,15 @@
     <string name="onb_allow">Разрешить</string>
     <string name="onb_next">Далее</string>
     <string name="onb_skip">Пропустить</string>
+    <string name="onb_finish">Готово</string>
+    <string name="onb_perm_notif_title">Уведомления</string>
+    <string name="onb_perm_notif_body">Хочешь получать напоминания о времени намаза (азан) и сообщения от общины? Для этого приложению нужно разрешение на отправку уведомлений.</string>
+    <string name="onb_perm_dnd_title">«Не беспокоить»</string>
+    <string name="onb_perm_dnd_body">Чтобы азан звучал даже тогда, когда телефон в беззвучном режиме, разреши доступ к режиму «Не беспокоить».</string>
+    <string name="onb_perm_widget_title">Виджет</string>
+    <string name="onb_perm_widget_body">Хочешь видеть время следующего намаза прямо на главном экране? Добавь виджет одним касанием.</string>
+    <string name="onb_perm_widget_action">Добавить на главный экран</string>
+    <string name="onb_perm_widget_unsupported">Твой главный экран не поддерживает автоматическое добавление. Виджет можно добавить вручную: нажми и удерживай главный экран → Виджеты → «Kassel Vaktija».</string>
 
     <string name="prayer_fajr">Фаджр</string>
     <string name="prayer_sunrise">Восход солнца</string>

@@ -44,6 +44,15 @@
     <string name="onb_allow">İzin ver</string>
     <string name="onb_next">İleri</string>
     <string name="onb_skip">Atla</string>
+    <string name="onb_finish">Bitti</string>
+    <string name="onb_perm_notif_title">Bildirimler</string>
+    <string name="onb_perm_notif_body">Namaz vakitleri (ezan) ve cemaatten gelen duyurular için hatırlatma almak ister misin? Bunun için uygulamanın bildirim gönderme iznine ihtiyacı var.</string>
+    <string name="onb_perm_dnd_title">\"Rahatsız etmeyin\"</string>
+    <string name="onb_perm_dnd_body">Telefonun sessizdeyken bile ezanın duyulabilmesi için \"Rahatsız etmeyin\" erişimine izin ver.</string>
+    <string name="onb_perm_widget_title">Widget</string>
+    <string name="onb_perm_widget_body">Bir sonraki namaz vaktini doğrudan ana ekranında görmek ister misin? Widget\'ı tek dokunuşla ekle.</string>
+    <string name="onb_perm_widget_action">Ana ekrana ekle</string>
+    <string name="onb_perm_widget_unsupported">Ana ekranın otomatik eklemeyi desteklemiyor. Widget\'ı elle ekleyebilirsin: Ana ekrana basılı tut → Widget\'lar → \"Kassel Vaktija\".</string>
 
     <string name="prayer_fajr">Sabah</string>
     <string name="prayer_sunrise">Güneş</string>
