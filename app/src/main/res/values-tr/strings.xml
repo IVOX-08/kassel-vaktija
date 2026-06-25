@@ -114,6 +114,10 @@
     <!-- News / announcements -->
     <string name="news_empty">Henüz duyuru yok.</string>
     <string name="news_add">Yeni duyuru</string>
+    <string name="news_add_image">Görsel ekle</string>
+    <string name="news_remove_image">Görseli kaldır</string>
+    <string name="news_image_failed">Görsel eklenemedi.</string>
+    <string name="cd_news_image">Duyuru görseli</string>
     <string name="news_title_label">Başlık</string>
     <string name="news_body_label">Mesaj</string>
     <string name="news_post">Yayınla</string>

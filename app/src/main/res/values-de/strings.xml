@@ -112,6 +112,10 @@
     <string name="about_dev_email">oder E-Mail schreiben:</string>
     <string name="news_empty">Noch keine Mitteilungen.</string>
     <string name="news_add">Neue Mitteilung</string>
+    <string name="news_add_image">Bild hinzufügen</string>
+    <string name="news_remove_image">Bild entfernen</string>
+    <string name="news_image_failed">Bild konnte nicht angehängt werden.</string>
+    <string name="cd_news_image">Mitteilungsbild</string>
     <string name="news_title_label">Titel</string>
     <string name="news_body_label">Nachricht</string>
     <string name="news_post">Veröffentlichen</string>

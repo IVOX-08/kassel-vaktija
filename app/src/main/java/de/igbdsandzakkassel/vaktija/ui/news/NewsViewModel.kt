@@ -1,9 +1,11 @@
 package de.igbdsandzakkassel.vaktija.ui.news
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
+import de.igbdsandzakkassel.vaktija.data.media.NewsImageCompressor
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
@@ -13,6 +15,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,8 +24,14 @@ class NewsViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
     private val geminiTranslator: GeminiTranslator,
     private val translator: NewsTranslator,
+    private val imageCompressor: NewsImageCompressor,
     adminController: AdminController,
 ) : ViewModel() {
+
+    // Session cache of already-fetched flyer bytes, so scrolling a card back into view doesn't
+    // refetch. Only successful loads are cached (a transient failure stays retryable).
+    private val imageCache = mutableMapOf<String, ByteArray>()
+    private val imageMutex = Mutex()
 
     /** Newest-first announcements; null while the first snapshot is still loading. */
     val news: StateFlow<List<NewsItem>?> = newsRepository.observeNews()
@@ -31,20 +41,31 @@ class NewsViewModel @Inject constructor(
     val isAdmin: StateFlow<Boolean> = adminController.observeIsAdmin()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
-    /** Outcome of a post: whether it was saved, and any languages that couldn't be translated. */
-    data class PostOutcome(val ok: Boolean, val failedLangs: List<String>)
+    /**
+     * Outcome of a post: whether it was saved, any languages that couldn't be translated, and
+     * whether an attached image had to be dropped (couldn't be read/compressed).
+     */
+    data class PostOutcome(
+        val ok: Boolean,
+        val failedLangs: List<String>,
+        val imageDropped: Boolean = false,
+    )
 
     /**
-     * Translates the announcement into every app language, then publishes it. The admin writes once
-     * (in any language); auto-detection picks the source, falling back to the current UI language.
-     * Reports any languages that failed to translate so the admin can be warned (e.g. posted offline).
+     * Translates the announcement into every app language, optionally compresses an attached flyer,
+     * then publishes it. The admin writes once (in any language); auto-detection picks the source,
+     * falling back to the current UI language. Reports any languages that failed to translate, and
+     * whether the picked image couldn't be attached, so the admin can be warned (e.g. posted offline).
      */
-    fun postNews(title: String, body: String, onResult: (PostOutcome) -> Unit) {
+    fun postNews(title: String, body: String, imageUri: Uri?, onResult: (PostOutcome) -> Unit) {
         val fallbackLang = LocaleController.current().tag
         viewModelScope.launch {
             val result = runCatching {
                 val t = title.trim()
                 val b = body.trim()
+                // Compress the flyer (if any) up front; a null result means it couldn't be read.
+                val imageJpeg = imageUri?.let { imageCompressor.compress(it) }
+                val imageDropped = imageUri != null && imageJpeg == null
                 // Prefer the high-quality Gemini translation; fall back to on-device ML Kit if it's
                 // not configured or fails (e.g. offline) so a post is never blocked.
                 val translated = geminiTranslator.translateToAll(t, b, fallbackLang)
@@ -53,11 +74,21 @@ class NewsViewModel @Inject constructor(
                     titleByLang = translated.titleByLang,
                     bodyByLang = translated.bodyByLang,
                     sourceLang = translated.sourceLang,
+                    imageJpeg = imageJpeg,
                 )
-                translated.failedLangs
+                translated.failedLangs to imageDropped
             }
-            onResult(PostOutcome(result.isSuccess, result.getOrDefault(emptyList())))
+            val (failedLangs, imageDropped) = result.getOrDefault(emptyList<String>() to false)
+            onResult(PostOutcome(result.isSuccess, failedLangs, imageDropped))
         }
+    }
+
+    /** Lazily fetches the flyer bytes for [id] (cache-first), caching successes for the session. */
+    suspend fun loadImage(id: String): ByteArray? {
+        imageMutex.withLock { imageCache[id] }?.let { return it }
+        val bytes = newsRepository.getNewsImage(id)
+        if (bytes != null) imageMutex.withLock { imageCache[id] = bytes }
+        return bytes
     }
 
     fun deleteNews(id: String) {

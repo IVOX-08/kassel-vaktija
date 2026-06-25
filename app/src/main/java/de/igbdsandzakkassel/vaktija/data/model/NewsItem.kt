@@ -8,6 +8,10 @@ package de.igbdsandzakkassel.vaktija.data.model
  * [createdAt] is a client-set epoch-millis timestamp so the list orders correctly even before a
  * server round-trip. [sourceLang] is the language the admin actually wrote in (used as the display
  * fallback when a particular translation is missing).
+ *
+ * [hasImage] is true when the admin attached a flyer/picture. The image bytes are NOT carried here —
+ * they live in a separate `news_images/{id}` document and are fetched lazily (only when a card is
+ * actually shown), so the list stays light. This flag just tells the UI to render an image slot.
  */
 data class NewsItem(
     val id: String,
@@ -15,6 +19,7 @@ data class NewsItem(
     val bodyByLang: Map<String, String>,
     val sourceLang: String,
     val createdAt: Long,
+    val hasImage: Boolean = false,
 ) {
     /** Title in [lang], falling back to the source language, then any available text. */
     fun title(lang: String): String = pick(titleByLang, lang)

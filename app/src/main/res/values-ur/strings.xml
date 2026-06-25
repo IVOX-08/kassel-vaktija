@@ -114,6 +114,10 @@
     <!-- News / announcements -->
     <string name="news_empty">ابھی کوئی اعلان نہیں۔</string>
     <string name="news_add">نیا اعلان</string>
+    <string name="news_add_image">تصویر شامل کریں</string>
+    <string name="news_remove_image">تصویر ہٹائیں</string>
+    <string name="news_image_failed">تصویر منسلک نہیں ہو سکی۔</string>
+    <string name="cd_news_image">اعلان کی تصویر</string>
     <string name="news_title_label">عنوان</string>
     <string name="news_body_label">پیغام</string>
     <string name="news_post">شائع کریں</string>

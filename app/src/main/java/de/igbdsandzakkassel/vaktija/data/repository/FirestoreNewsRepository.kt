@@ -1,7 +1,10 @@
 package de.igbdsandzakkassel.vaktija.data.repository
 
+import android.util.Base64
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import de.igbdsandzakkassel.vaktija.core.locale.AppLanguage
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import kotlinx.coroutines.channels.awaitClose
@@ -19,6 +22,13 @@ import javax.inject.Singleton
  * Each document stores `title` and `body` as per-language maps ({"bs":"…","de":"…",…}) plus the
  * `sourceLang` the admin wrote in. Legacy documents that stored a plain string are still read
  * (treated as a single source-language entry).
+ *
+ * An attached flyer/image is stored as a Base64 JPEG in a SEPARATE `news_images/{id}` document
+ * (same id as the announcement). Keeping it out of the announcement doc keeps the feed listener
+ * light: the list query never downloads image bytes, only the `hasImage` flag, and each picture is
+ * fetched lazily and cache-first when its card is shown. This needs no Cloud Storage (works on the
+ * free Firestore plan); the per-image doc just has to stay under Firestore's 1 MB document limit,
+ * which the admin-side compressor enforces.
  */
 @Singleton
 class FirestoreNewsRepository @Inject constructor(
@@ -26,6 +36,7 @@ class FirestoreNewsRepository @Inject constructor(
 ) : NewsRepository {
 
     private val collection get() = firestore.collection(COLLECTION)
+    private val imagesCollection get() = firestore.collection(IMAGES_COLLECTION)
 
     override fun observeNews(): Flow<List<NewsItem>?> = callbackFlow {
         val registration = collection.addSnapshotListener { snapshot, _ ->
@@ -49,22 +60,50 @@ class FirestoreNewsRepository @Inject constructor(
         titleByLang: Map<String, String>,
         bodyByLang: Map<String, String>,
         sourceLang: String,
+        imageJpeg: ByteArray?,
     ) {
+        // Pre-allocate the id so the image can be written to the matching news_images doc.
+        val doc = collection.document()
         // Fire-and-forget: Firestore commits to the local cache immediately and syncs when online
         // (awaiting the Task would block indefinitely while offline).
-        collection.document().set(
+        if (imageJpeg != null) {
+            // Write the image FIRST (best-effort) so it is on the device before the announcement
+            // appears; readers tolerate a missing image regardless of ordering. Fire-and-forget, but
+            // log a server rejection (the most likely cause is the news_images security rule not yet
+            // being published — see docs/firestore/RULES.md) so a silent no-image is at least traceable.
+            imagesCollection.document(doc.id).set(
+                mapOf("data" to Base64.encodeToString(imageJpeg, Base64.NO_WRAP)),
+            ).addOnFailureListener { e ->
+                Log.w(TAG, "Announcement image upload failed for ${doc.id}; the flyer won't appear", e)
+            }
+        }
+        doc.set(
             mapOf(
                 "title" to titleByLang,
                 "body" to bodyByLang,
                 "sourceLang" to sourceLang,
                 "createdAt" to System.currentTimeMillis(),
+                "hasImage" to (imageJpeg != null),
             ),
         )
     }
 
     override suspend fun deleteNews(id: String) {
         collection.document(id).delete()
+        // Remove the attached image too (no-op if there wasn't one).
+        imagesCollection.document(id).delete()
     }
+
+    override suspend fun getNewsImage(id: String): ByteArray? = runCatching {
+        // Cache-first: a picture already seen on this device is read from local cache and never
+        // re-downloaded; only the first view of a given image hits the network.
+        val snapshot = runCatching { imagesCollection.document(id).get(Source.CACHE).await() }
+            .getOrNull()
+            ?.takeIf { it.exists() }
+            ?: imagesCollection.document(id).get(Source.SERVER).await()
+        val data = snapshot.getString("data")?.takeIf { it.isNotBlank() } ?: return null
+        Base64.decode(data, Base64.NO_WRAP)
+    }.getOrNull()
 
     private fun DocumentSnapshot.toNewsItem(): NewsItem? {
         val sourceLang = getString("sourceLang") ?: AppLanguage.DEFAULT.tag
@@ -75,6 +114,7 @@ class FirestoreNewsRepository @Inject constructor(
             bodyByLang = readLangMap("body", sourceLang) ?: emptyMap(),
             sourceLang = sourceLang,
             createdAt = getLong("createdAt") ?: 0L,
+            hasImage = getBoolean("hasImage") ?: false,
         )
     }
 
@@ -91,5 +131,7 @@ class FirestoreNewsRepository @Inject constructor(
 
     private companion object {
         const val COLLECTION = "news"
+        const val IMAGES_COLLECTION = "news_images"
+        const val TAG = "FirestoreNews"
     }
 }

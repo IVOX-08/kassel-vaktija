@@ -114,6 +114,10 @@
     <!-- News / announcements -->
     <string name="news_empty">Объявлений пока нет.</string>
     <string name="news_add">Новое объявление</string>
+    <string name="news_add_image">Добавить изображение</string>
+    <string name="news_remove_image">Удалить изображение</string>
+    <string name="news_image_failed">Не удалось прикрепить изображение.</string>
+    <string name="cd_news_image">Изображение объявления</string>
     <string name="news_title_label">Заголовок</string>
     <string name="news_body_label">Сообщение</string>
     <string name="news_post">Опубликовать</string>

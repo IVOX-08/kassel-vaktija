@@ -114,6 +114,10 @@
     <!-- News / announcements -->
     <string name="news_empty">Ende nuk ka njoftime.</string>
     <string name="news_add">Njoftim i ri</string>
+    <string name="news_add_image">Shto fotografi</string>
+    <string name="news_remove_image">Hiq fotografinë</string>
+    <string name="news_image_failed">Fotografia nuk mund të bashkëngjitej.</string>
+    <string name="cd_news_image">Fotografia e njoftimit</string>
     <string name="news_title_label">Titulli</string>
     <string name="news_body_label">Mesazhi</string>
     <string name="news_post">Publiko</string>

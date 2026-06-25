@@ -158,6 +158,10 @@
     <!-- News / announcements -->
     <string name="news_empty">Trenutno nema obavijesti.</string>
     <string name="news_add">Nova obavijest</string>
+    <string name="news_add_image">Dodaj sliku</string>
+    <string name="news_remove_image">Ukloni sliku</string>
+    <string name="news_image_failed">Slika nije mogla biti dodana.</string>
+    <string name="cd_news_image">Slika obavijesti</string>
     <string name="news_title_label">Naslov</string>
     <string name="news_body_label">Poruka</string>
     <string name="news_post">Objavi</string>

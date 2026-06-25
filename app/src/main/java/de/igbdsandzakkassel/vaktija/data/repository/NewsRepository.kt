@@ -19,13 +19,25 @@ interface NewsRepository {
      */
     suspend fun getLatestNews(): List<NewsItem>?
 
-    /** Admin-only: publish a new announcement (already translated into every app language). */
+    /**
+     * Admin-only: publish a new announcement (already translated into every app language).
+     * [imageJpeg], when non-null, is an already-compressed JPEG that is stored alongside the
+     * announcement (in a separate `news_images` document) and shown to every reader.
+     */
     suspend fun postNews(
         titleByLang: Map<String, String>,
         bodyByLang: Map<String, String>,
         sourceLang: String,
+        imageJpeg: ByteArray? = null,
     )
 
-    /** Admin-only: remove an announcement by its document id. */
+    /** Admin-only: remove an announcement (and its attached image, if any) by its document id. */
     suspend fun deleteNews(id: String)
+
+    /**
+     * Fetches the attached flyer/image bytes for [id], or null if the announcement has none or the
+     * fetch fails. Cache-first (an image already seen on this device never re-downloads), so it is
+     * cheap to call lazily when a card scrolls into view.
+     */
+    suspend fun getNewsImage(id: String): ByteArray?
 }

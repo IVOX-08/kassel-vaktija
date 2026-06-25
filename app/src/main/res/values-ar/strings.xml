@@ -114,6 +114,10 @@
     <!-- News / announcements -->
     <string name="news_empty">لا توجد إعلانات بعد.</string>
     <string name="news_add">إعلان جديد</string>
+    <string name="news_add_image">إضافة صورة</string>
+    <string name="news_remove_image">إزالة الصورة</string>
+    <string name="news_image_failed">تعذّر إرفاق الصورة.</string>
+    <string name="cd_news_image">صورة الإعلان</string>
     <string name="news_title_label">العنوان</string>
     <string name="news_body_label">الرسالة</string>
     <string name="news_post">نشر</string>

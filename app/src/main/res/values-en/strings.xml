@@ -112,6 +112,10 @@
     <string name="about_dev_email">or write an email:</string>
     <string name="news_empty">No announcements yet.</string>
     <string name="news_add">New announcement</string>
+    <string name="news_add_image">Add image</string>
+    <string name="news_remove_image">Remove image</string>
+    <string name="news_image_failed">Couldn\'t attach the image.</string>
+    <string name="cd_news_image">Announcement image</string>
     <string name="news_title_label">Title</string>
     <string name="news_body_label">Message</string>
     <string name="news_post">Post</string>
