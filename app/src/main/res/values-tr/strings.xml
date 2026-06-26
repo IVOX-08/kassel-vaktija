@@ -154,4 +154,13 @@
     <!-- Auto-silence before/after the Adhan -->
     <string name="settings_silence_before">Ezandan önce</string>
     <string name="settings_silence_after">Ezandan sonra</string>
+
+    <!-- In-app update prompt (Google Play in-app updates) -->
+    <string name="update_available_title">Güncelleme mevcut</string>
+    <string name="update_available_body">Uygulamanın yeni bir sürümü mevcut. En son özellikler ve doğru vakitler için lütfen uygulamayı güncelleyin.</string>
+    <string name="update_action">Şimdi güncelle</string>
+    <string name="update_later">Daha sonra</string>
+    <string name="update_ready_title">Güncelleme hazır</string>
+    <string name="update_ready_body">Güncelleme indirildi. Yüklemek için uygulamayı yeniden başlatın.</string>
+    <string name="update_restart">Yeniden başlat</string>
 </resources>

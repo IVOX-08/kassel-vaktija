@@ -154,4 +154,13 @@
     <!-- Auto-silence before/after the Adhan -->
     <string name="settings_silence_before">قبل الأذان</string>
     <string name="settings_silence_after">بعد الأذان</string>
+
+    <!-- In-app update prompt (Google Play in-app updates) -->
+    <string name="update_available_title">يتوفّر تحديث</string>
+    <string name="update_available_body">تتوفّر نسخة جديدة من التطبيق. يُرجى تحديث التطبيق للحصول على أحدث الميزات والأوقات الصحيحة.</string>
+    <string name="update_action">حدّث الآن</string>
+    <string name="update_later">لاحقًا</string>
+    <string name="update_ready_title">التحديث جاهز</string>
+    <string name="update_ready_body">تم تنزيل التحديث. أعِد تشغيل التطبيق لتثبيته.</string>
+    <string name="update_restart">إعادة التشغيل</string>
 </resources>

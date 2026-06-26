@@ -33,8 +33,8 @@ android {
         applicationId = "de.igbdsandzakkassel.vaktija"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.0.4"
+        versionCode = 6
+        versionName = "1.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -156,6 +156,9 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.messaging) // instant announcement push (activated once a Cloud Function is deployed)
     implementation(libs.kotlinx.coroutines.play.services)
+
+    // --- Google Play in-app updates (prompt users to update when a newer version is published) ---
+    implementation(libs.play.app.update)
 
     // --- On-device translation (auto-translate announcements; models download on demand) ---
     implementation(libs.mlkit.translate)

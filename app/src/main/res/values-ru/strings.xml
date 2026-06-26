@@ -154,4 +154,13 @@
     <!-- Auto-silence before/after the Adhan -->
     <string name="settings_silence_before">До азана</string>
     <string name="settings_silence_after">После азана</string>
+
+    <!-- In-app update prompt (Google Play in-app updates) -->
+    <string name="update_available_title">Доступно обновление</string>
+    <string name="update_available_body">Доступна новая версия приложения. Пожалуйста, обновите приложение, чтобы получить последние функции и правильное время.</string>
+    <string name="update_action">Обновить сейчас</string>
+    <string name="update_later">Позже</string>
+    <string name="update_ready_title">Обновление готово</string>
+    <string name="update_ready_body">Обновление загружено. Перезапустите приложение, чтобы установить его.</string>
+    <string name="update_restart">Перезапустить</string>
 </resources>

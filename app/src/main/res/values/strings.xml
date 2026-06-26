@@ -216,4 +216,13 @@
     <!-- Auto-silence before/after the Adhan -->
     <string name="settings_silence_before">Prije ezana</string>
     <string name="settings_silence_after">Poslije ezana</string>
+
+    <!-- In-app update prompt (Google Play in-app updates) -->
+    <string name="update_available_title">Dostupno ažuriranje</string>
+    <string name="update_available_body">Dostupna je nova verzija aplikacije. Molimo ažurirajte aplikaciju da biste imali najnovije funkcije i tačno vrijeme.</string>
+    <string name="update_action">Ažuriraj sada</string>
+    <string name="update_later">Kasnije</string>
+    <string name="update_ready_title">Ažuriranje spremno</string>
+    <string name="update_ready_body">Ažuriranje je preuzeto. Ponovo pokrenite aplikaciju da biste ga instalirali.</string>
+    <string name="update_restart">Ponovo pokreni</string>
 </resources>
