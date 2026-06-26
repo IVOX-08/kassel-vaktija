@@ -55,17 +55,26 @@ class TvHadithViewModel @Inject constructor(
 
     private fun loadDaily(): DailyHadith? {
         // Both lists are built from the same Arabic source order, so the index maps to the same
-        // hadith in either language.
+        // hadith (in bs and de). Pair them up.
         val bs = COLLECTIONS.flatMap { repository.load(it, "bs") }
         if (bs.isEmpty()) return null
         val de = COLLECTIONS.flatMap { repository.load(it, "de") }
-        val index = LocalDate.now().toEpochDay().mod(bs.size)
-        val bsText = bs[index].translation.ifBlank { bs[index].arabic }
-        val deText = de.getOrNull(index)?.translation?.ifBlank { null } ?: bsText
-        return DailyHadith(bs = bsText, de = deText)
+        val all = bs.indices.map { i ->
+            val b = bs[i].translation.ifBlank { bs[i].arabic }.trim()
+            val d = (de.getOrNull(i)?.translation?.ifBlank { null } ?: b).trim()
+            DailyHadith(bs = b, de = d)
+        }.filter { it.bs.isNotEmpty() }
+        if (all.isEmpty()) return null
+        // The wall board has limited room: prefer SHORT hadiths (in BOTH languages) so they show in
+        // full instead of being cut off with "…". Fall back to the full set only if none are short.
+        val pool = all.filter { it.bs.length <= MAX_CHARS && it.de.length <= MAX_CHARS }.ifEmpty { all }
+        val index = LocalDate.now().toEpochDay().mod(pool.size)
+        return pool[index]
     }
 
     private companion object {
         val COLLECTIONS = listOf("riyadussalihin", "nawawi40")
+        // ~3 lines on the full-width TV band → short, glanceable, never truncated.
+        const val MAX_CHARS = 300
     }
 }

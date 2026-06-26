@@ -168,16 +168,16 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
             Text(
                 text = "IGBD",
                 color = BrandGreenDark,
-                fontSize = 32.sp,
+                fontSize = 46.sp,
                 fontWeight = FontWeight.Black,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
             Text(
                 text = ctx.getString(R.string.header_subtitle),
-                color = BrandGreen,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
+                color = BrandGold,
+                fontSize = 21.sp,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -214,10 +214,11 @@ private fun HeroCard(state: DashboardUiState, german: Boolean, ctx: Context, mod
         modifier = modifier
             .clip(CARD_SHAPE)
             .background(BrandGreen)
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(horizontal = 12.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(state.clock, color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
+        // The live clock is the most-glanced element on the wall board → make it the biggest.
+        Text(state.clock, color = Color.White, fontSize = 52.sp, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
         Spacer(Modifier.height(4.dp))
         Text(weekday, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         Text(dateLine, color = BrandGoldLight, fontSize = 14.sp, textAlign = TextAlign.Center)
@@ -250,7 +251,9 @@ private fun HeroCard(state: DashboardUiState, german: Boolean, ctx: Context, mod
 private fun TvPrayerCard(row: PrayerRowUi, german: Boolean, ctx: Context, modifier: Modifier) {
     // Filled green look while it's the next prayer OR currently in its Adhan→Iqamah window.
     val on = row.isHighlighted || row.inIqamahWindow
-    val nameColor = if (on) Color.White else BrandGreen
+    // Prayer NAME is gold (owner's reference design); the TIME stays green / white-on-green.
+    val nameColor = if (on) BrandGoldLight else BrandGold
+    val timeColor = if (on) Color.White else BrandGreen
     val iqamahColor = if (on) BrandGoldLight else BrandGold
     val label = prayerLabel(row, german, ctx)
     val nameSize = if (label.length >= 14) 16.sp else 20.sp
@@ -295,7 +298,7 @@ private fun TvPrayerCard(row: PrayerRowUi, german: Boolean, ctx: Context, modifi
                 modifier = Modifier.weight(1f),
             )
             Spacer(Modifier.width(8.dp))
-            Text(row.adhan.format(HM), color = nameColor, fontSize = 26.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+            Text(row.adhan.format(HM), color = timeColor, fontSize = 26.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         }
         if (row.iqamah != null) {
             Spacer(Modifier.height(4.dp))
@@ -351,7 +354,7 @@ private fun JumuaCard(jumua: java.time.LocalTime, german: Boolean, ctx: Context,
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, color = BrandGreen, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(label, color = BrandGold, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         Text(jumua.format(HM), color = BrandGreen, fontSize = 26.sp, fontWeight = FontWeight.Bold, maxLines = 1)
     }
 }
@@ -381,10 +384,12 @@ private fun DailyHadithBand(daily: TvHadithViewModel.DailyHadith, german: Boolea
         Text(
             text = text,
             color = BrandGreenDark,
-            fontSize = 17.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            lineHeight = 22.sp,
-            maxLines = 2,
+            lineHeight = 24.sp,
+            // Short hadiths are picked (see TvHadithViewModel) so they fit; allow up to 4 lines for
+            // the occasional longer one so it's never cut off with "…".
+            maxLines = 4,
             overflow = TextOverflow.Ellipsis,
         )
     }
