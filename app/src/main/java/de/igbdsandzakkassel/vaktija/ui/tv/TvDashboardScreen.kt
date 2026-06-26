@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
+import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardUiState
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardViewModel
 import de.igbdsandzakkassel.vaktija.ui.dashboard.PrayerRowUi
@@ -208,15 +209,21 @@ private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
             .padding(horizontal = 18.dp, vertical = 7.dp),
         verticalArrangement = Arrangement.Center,
     ) {
-        val label = stringResource(row.labelRes)
-        // Long compound names in some locales (German "Nachmittagsgebet", "Sonnenaufgang") don't fit
-        // one line next to the time on a half-width TV card, so step the name font down by length —
-        // short names (most locales, incl. Bosnian) keep the larger size.
-        val nameSize = when {
-            label.length >= 15 -> 15.sp
-            label.length >= 13 -> 17.sp
-            else -> 20.sp
+        // The TV board uses the universal transliterated names (Fajr/Dhuhr/Asr/Maghrib/Isha, Jumu'ah
+        // on Friday) for the prayers; only Sunrise keeps its localized word. This matches mosque-board
+        // convention and keeps every name short so nothing truncates next to the time.
+        val label = when {
+            row.labelRes == R.string.prayer_jumua -> stringResource(R.string.tv_prayer_jumua)
+            row.prayer == Prayer.FAJR -> stringResource(R.string.tv_prayer_fajr)
+            row.prayer == Prayer.SUNRISE -> stringResource(R.string.prayer_sunrise)
+            row.prayer == Prayer.DHUHR -> stringResource(R.string.tv_prayer_dhuhr)
+            row.prayer == Prayer.ASR -> stringResource(R.string.tv_prayer_asr)
+            row.prayer == Prayer.MAGHRIB -> stringResource(R.string.tv_prayer_maghrib)
+            row.prayer == Prayer.ISHA -> stringResource(R.string.tv_prayer_isha)
+            else -> stringResource(row.labelRes)
         }
+        // Safety net: only the localized Sunrise word can get long; step it down if a locale is wordy.
+        val nameSize = if (label.length >= 14) 16.sp else 20.sp
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -265,7 +272,7 @@ private fun JumuaCard(jumua: LocalTime, modifier: Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(stringResource(R.string.prayer_jumua), color = BrandGreen, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(stringResource(R.string.tv_prayer_jumua), color = BrandGreen, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         Text(jumua.format(HM), color = BrandGreen, fontSize = 26.sp, fontWeight = FontWeight.Bold, maxLines = 1)
     }
 }

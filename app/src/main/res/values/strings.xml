@@ -71,6 +71,16 @@
     <string name="prayer_isha">Jacija</string>
     <string name="prayer_jumua">Džuma namaz</string>
 
+    <!-- TV board: the universal transliterated prayer names (defined once here; same in every locale,
+         so the big wall-display board reads Fajr/Dhuhr/Asr/Maghrib/Isha regardless of TV language).
+         Sunrise keeps its localized word (prayer_sunrise) — it isn't a prayer. -->
+    <string name="tv_prayer_fajr">Fajr</string>
+    <string name="tv_prayer_dhuhr">Dhuhr</string>
+    <string name="tv_prayer_asr">Asr</string>
+    <string name="tv_prayer_maghrib">Maghrib</string>
+    <string name="tv_prayer_isha">Isha</string>
+    <string name="tv_prayer_jumua">Jumu\'ah</string>
+
     <!-- Language switching -->
     <string name="action_change_language">Promijeni jezik</string>
     <string name="language_picker_title">Jezik</string>
