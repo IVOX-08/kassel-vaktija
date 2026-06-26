@@ -33,6 +33,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.first
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -84,6 +86,11 @@ fun MonthCalendarScreen(
         if (state.loading || todayIndex < 0) return@LaunchedEffect // today not in the shown month
         val monthKey = state.month.toString()
         if (pulsedForMonth == monthKey) return@LaunchedEffect
+
+        // Wait until the LazyColumn is actually laid out. The effect fires the instant `loading`
+        // flips to false — before the list has been measured — so scrolling here was a no-op and
+        // today stayed off-screen. Suspend until the list reports its items, THEN scroll.
+        snapshotFlow { listState.layoutInfo.totalItemsCount }.first { it > 0 }
         pulsedForMonth = monthKey
 
         if (reduceMotion) {
