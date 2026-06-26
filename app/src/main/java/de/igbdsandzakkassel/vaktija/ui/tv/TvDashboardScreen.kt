@@ -208,14 +208,23 @@ private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
             .padding(horizontal = 18.dp, vertical = 7.dp),
         verticalArrangement = Arrangement.Center,
     ) {
+        val label = stringResource(row.labelRes)
+        // Long compound names in some locales (German "Nachmittagsgebet", "Sonnenaufgang") don't fit
+        // one line next to the time on a half-width TV card, so step the name font down by length —
+        // short names (most locales, incl. Bosnian) keep the larger size.
+        val nameSize = when {
+            label.length >= 15 -> 15.sp
+            label.length >= 13 -> 17.sp
+            else -> 20.sp
+        }
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                stringResource(row.labelRes),
+                label,
                 color = nameColor,
-                fontSize = 20.sp,
+                fontSize = nameSize,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
