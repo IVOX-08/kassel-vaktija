@@ -3,7 +3,9 @@ package de.igbdsandzakkassel.vaktija.data.translate
 import de.igbdsandzakkassel.vaktija.BuildConfig
 import de.igbdsandzakkassel.vaktija.core.locale.AppLanguage
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.addJsonObject
 import kotlinx.serialization.json.buildJsonObject
@@ -37,14 +39,33 @@ class GeminiTranslator @Inject constructor(
 ) {
     fun isConfigured(): Boolean = BuildConfig.GEMINI_API_KEY.isNotBlank()
 
+    // Gemini can be slow to start streaming; give the call more room than the shared 20s client so a
+    // working-but-busy model isn't killed prematurely (which would force the slow ML Kit fallback).
+    private val callClient: OkHttpClient by lazy {
+        client.newBuilder()
+            .callTimeout(45, TimeUnit.SECONDS)
+            .readTimeout(40, TimeUnit.SECONDS)
+            .build()
+    }
+
     suspend fun translateToAll(title: String, body: String, fallbackLang: String): NewsTranslator.Result? {
         if (!isConfigured() || (title.isBlank() && body.isBlank())) return null
         return withContext(Dispatchers.IO) {
-            runCatching { request(title, body, fallbackLang) }.getOrNull()
+            // Try each model in order; retry a model briefly on transient overload (HTTP 503). The
+            // first model that answers wins; null only if EVERY attempt fails → caller uses ML Kit.
+            for (model in MODELS) {
+                repeat(ATTEMPTS_PER_MODEL) { attempt ->
+                    runCatching { request(model, title, body, fallbackLang) }
+                        .getOrNull()
+                        ?.let { return@withContext it }
+                    if (attempt < ATTEMPTS_PER_MODEL - 1) delay(RETRY_DELAY_MS)
+                }
+            }
+            null
         }
     }
 
-    private fun request(title: String, body: String, fallbackLang: String): NewsTranslator.Result {
+    private fun request(model: String, title: String, body: String, fallbackLang: String): NewsTranslator.Result {
         val requestBody = buildJsonObject {
             putJsonArray("contents") {
                 addJsonObject {
@@ -60,11 +81,11 @@ class GeminiTranslator @Inject constructor(
         }.toString()
 
         val httpRequest = Request.Builder()
-            .url("$ENDPOINT?key=${BuildConfig.GEMINI_API_KEY}")
+            .url("$BASE/$model:generateContent?key=${BuildConfig.GEMINI_API_KEY}")
             .post(requestBody.toRequestBody(JSON_MEDIA))
             .build()
 
-        client.newCall(httpRequest).execute().use { response ->
+        callClient.newCall(httpRequest).execute().use { response ->
             val payload = response.body?.string().orEmpty()
             check(response.isSuccessful) { "Gemini HTTP ${response.code}" }
 
@@ -145,12 +166,15 @@ class GeminiTranslator @Inject constructor(
     """.trimIndent()
 
     private companion object {
-        // Gemini 3.5 Flash (GA): a generation newer than 2.5-flash → noticeably better, especially
-        // for Arabic + Islamic terminology, and still on the free tier (no billing). Pro models went
-        // paid-only in April 2026, so Flash is the best free choice. Verified working on the free key.
-        const val MODEL = "gemini-3.5-flash"
-        const val ENDPOINT =
-            "https://generativelanguage.googleapis.com/v1beta/models/$MODEL:generateContent"
+        // Free-tier models, tried in order. gemini-2.5-flash answers in ~4s and rarely overloads;
+        // gemini-flash-latest is the backup (tracks the newest stable Flash). 3.5-flash was dropped
+        // as primary: it frequently returned HTTP 503 (overloaded) and, when it did answer, was slow
+        // (~18s, near the timeout) — both forced the slow on-device ML Kit fallback. If every model
+        // fails, NewsViewModel still falls back to ML Kit so a post is never blocked.
+        val MODELS = listOf("gemini-2.5-flash", "gemini-flash-latest")
+        const val ATTEMPTS_PER_MODEL = 2
+        const val RETRY_DELAY_MS = 800L
+        const val BASE = "https://generativelanguage.googleapis.com/v1beta/models"
         val JSON_MEDIA = "application/json; charset=utf-8".toMediaType()
     }
 }
