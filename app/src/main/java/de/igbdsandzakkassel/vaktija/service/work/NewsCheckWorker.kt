@@ -2,16 +2,20 @@ package de.igbdsandzakkassel.vaktija.service.work
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
+import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import de.igbdsandzakkassel.vaktija.service.notification.NewsNotificationChecker
+import java.util.concurrent.TimeUnit
 
 /**
  * Checks Firestore for a newly-posted announcement and notifies if there is one. Run as a proper
@@ -33,15 +37,35 @@ class NewsCheckWorker @AssistedInject constructor(
 
     companion object {
         private const val UNIQUE = "news_check_now"
+        private const val UNIQUE_PERIODIC = "news_check_periodic"
 
+        private val networkOnly =
+            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+
+        /** Run the check once, right now (e.g. on app open or when a prayer alarm fires). */
         fun enqueue(context: Context) {
             WorkManager.getInstance(context).enqueueUniqueWork(
                 UNIQUE,
                 ExistingWorkPolicy.REPLACE,
                 OneTimeWorkRequestBuilder<NewsCheckWorker>()
-                    .setConstraints(
-                        Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build(),
-                    )
+                    .setConstraints(networkOnly)
+                    .build(),
+            )
+        }
+
+        /**
+         * Background safety net (no Firebase Blaze / FCM push needed): poll for new announcements and
+         * Iqamah changes every 15 minutes (WorkManager's minimum). The watermark inside
+         * [NewsNotificationChecker] dedupes, so this never double-notifies alongside the on-wake check
+         * or a future FCM push. The OS may defer this in Doze, so it's "within ~15 min", not exact.
+         */
+        fun schedulePeriodic(context: Context) {
+            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                UNIQUE_PERIODIC,
+                ExistingPeriodicWorkPolicy.KEEP,
+                PeriodicWorkRequestBuilder<NewsCheckWorker>(15, TimeUnit.MINUTES)
+                    .setConstraints(networkOnly)
+                    .setBackoffCriteria(BackoffPolicy.LINEAR, 1, TimeUnit.MINUTES)
                     .build(),
             )
         }

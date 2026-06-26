@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.HiltAndroidApp
 import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
+import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
 import de.igbdsandzakkassel.vaktija.service.work.VaktijaRefreshWorker
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -39,9 +40,13 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         PrayerNotifier.ensureChannels(this)
         NewsNotifier.ensureChannel(this)
         // Subscribe for instant announcement pushes. No-op until a Cloud Function publishes to the
-        // "announcements" topic (needs the Firebase Blaze plan); the poll-on-wake check is the fallback.
+        // "announcements" topic (needs the Firebase Blaze plan); until then the polling check below
+        // is the fallback.
         runCatching { FirebaseMessaging.getInstance().subscribeToTopic("announcements") }
         schedulePrayerTimesRefresh()
+        // No-billing fallback for announcement/Iqamah notifications: poll every ~15 min (plus the
+        // on-wake check at each prayer alarm). Replaced by instant FCM push once Blaze is enabled.
+        NewsCheckWorker.schedulePeriodic(this)
     }
 
     private fun schedulePrayerTimesRefresh() {
