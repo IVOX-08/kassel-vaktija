@@ -31,9 +31,13 @@ class TvHadithViewModel @Inject constructor(
     private val _daily = MutableStateFlow<DailyHadith?>(null)
     val daily: StateFlow<DailyHadith?> = _daily.asStateFlow()
 
-    /** Which language to show right now; flips on every minute boundary. */
+    /** Which language to show right now; flips every [SWITCH_SECONDS] seconds. */
     private val _german = MutableStateFlow(false)
     val german: StateFlow<Boolean> = _german.asStateFlow()
+
+    /** Seconds until the next language switch ([SWITCH_SECONDS] → 1) — for the small on-board hint. */
+    private val _secondsLeft = MutableStateFlow(SWITCH_SECONDS)
+    val secondsLeft: StateFlow<Int> = _secondsLeft.asStateFlow()
 
     private var started = false
 
@@ -45,10 +49,12 @@ class TvHadithViewModel @Inject constructor(
         }
         viewModelScope.launch {
             while (true) {
-                val now = LocalTime.now()
-                _german.value = now.minute % 2 == 1
-                // Re-evaluate exactly on the next minute boundary.
-                delay((60 - now.second).coerceAtLeast(1) * 1000L)
+                val sec = LocalTime.now().toSecondOfDay()
+                // 30-second blocks: even block = Bosnian, odd = German. Deterministic and resets
+                // cleanly at midnight (86400 is a whole number of blocks).
+                _german.value = (sec / SWITCH_SECONDS) % 2 == 1
+                _secondsLeft.value = SWITCH_SECONDS - (sec % SWITCH_SECONDS)
+                delay(1000)
             }
         }
     }
@@ -60,8 +66,9 @@ class TvHadithViewModel @Inject constructor(
         if (bs.isEmpty()) return null
         val de = COLLECTIONS.flatMap { repository.load(it, "de") }
         val all = bs.indices.map { i ->
-            val b = bs[i].translation.ifBlank { bs[i].arabic }.trim()
-            val d = (de.getOrNull(i)?.translation?.ifBlank { null } ?: b).trim()
+            val b = stripAttribution(bs[i].translation.ifBlank { bs[i].arabic })
+            val dRaw = de.getOrNull(i)?.translation?.ifBlank { null }
+            val d = if (dRaw != null) stripAttribution(dRaw) else b
             DailyHadith(bs = b, de = d)
         }.filter { it.bs.isNotEmpty() }
         if (all.isEmpty()) return null
@@ -72,9 +79,23 @@ class TvHadithViewModel @Inject constructor(
         return pool[index]
     }
 
+    /**
+     * Strip a trailing source/narrator note like "(überliefert von …; al-Bukhari)" or "[Buhari]" so
+     * the board shows only the hadith itself. (All our hadiths are from the authentic collections —
+     * Bukhari/Muslim/Tirmidhi … via the 40 Nawawi + Riyad as-Salihin assets.)
+     */
+    private fun stripAttribution(text: String): String {
+        var t = text.trim()
+        val tail = Regex("\\s*[(\\[][^)\\]]*[)\\]]\\s*$")
+        while (tail.containsMatchIn(t)) t = t.replace(tail, "").trim()
+        return t
+    }
+
     private companion object {
         val COLLECTIONS = listOf("riyadussalihin", "nawawi40")
         // ~3 lines on the full-width TV band → short, glanceable, never truncated.
         const val MAX_CHARS = 300
+        // The hadith band swaps language every 30s (slower than the 5s prayer board) with a hint.
+        const val SWITCH_SECONDS = 30
     }
 }

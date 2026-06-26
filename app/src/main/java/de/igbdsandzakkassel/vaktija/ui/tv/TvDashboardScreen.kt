@@ -88,6 +88,7 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
     val hadithViewModel: TvHadithViewModel = hiltViewModel()
     val dailyHadith by hadithViewModel.daily.collectAsStateWithLifecycle()
     val hadithGerman by hadithViewModel.german.collectAsStateWithLifecycle()
+    val hadithSecondsLeft by hadithViewModel.secondsLeft.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { hadithViewModel.start() }
 
     val context = LocalContext.current
@@ -135,7 +136,7 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
                     animationSpec = tween(CROSSFADE_MS),
                     label = "hadithLanguage",
                 ) { german ->
-                    DailyHadithBand(hadith, german, Modifier.fillMaxWidth())
+                    DailyHadithBand(hadith, german, hadithSecondsLeft, Modifier.fillMaxWidth())
                 }
             }
         }
@@ -174,7 +175,9 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                 modifier = Modifier.fillMaxWidth(),
             )
             Text(
-                text = ctx.getString(R.string.header_subtitle),
+                // The big "IGBD" is already above; the subtitle is just the community name — no
+                // repeated "IGBD-", and "Sandžak Kassel" with a space (not a hyphen).
+                text = "Gemeinde Sandžak Kassel",
                 color = BrandGold,
                 fontSize = 21.sp,
                 fontWeight = FontWeight.Bold,
@@ -365,7 +368,12 @@ private fun JumuaCard(jumua: java.time.LocalTime, german: Boolean, ctx: Context,
  * full text lives in the in-app Hadith section.
  */
 @Composable
-private fun DailyHadithBand(daily: TvHadithViewModel.DailyHadith, german: Boolean, modifier: Modifier) {
+private fun DailyHadithBand(
+    daily: TvHadithViewModel.DailyHadith,
+    german: Boolean,
+    secondsLeft: Int,
+    modifier: Modifier,
+) {
     val text = if (german) daily.de else daily.bs
     if (text.isBlank()) return
     Column(
@@ -374,12 +382,22 @@ private fun DailyHadithBand(daily: TvHadithViewModel.DailyHadith, german: Boolea
             .background(Color.White)
             .padding(horizontal = 20.dp, vertical = 8.dp),
     ) {
-        Text(
-            text = if (german) "Hadith des Tages" else "Hadis dana",
-            color = BrandGold,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Bold,
-        )
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = if (german) "Hadith des Tages" else "Hadis dana",
+                color = BrandGold,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f),
+            )
+            // Small hint on the right: which language comes next + seconds until it switches.
+            Text(
+                text = if (german) "Bosanski za: ${secondsLeft}s" else "Deutsch in: ${secondsLeft}s",
+                color = BrandGold.copy(alpha = 0.75f),
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
         Spacer(Modifier.height(2.dp))
         Text(
             text = text,
