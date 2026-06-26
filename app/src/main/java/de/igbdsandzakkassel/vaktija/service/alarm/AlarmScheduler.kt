@@ -11,6 +11,8 @@ import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
+import de.igbdsandzakkassel.vaktija.core.device.isLeanbackTv
+import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
 import kotlinx.coroutines.flow.first
@@ -45,6 +47,12 @@ class AlarmScheduler @Inject constructor(
 
     suspend fun rescheduleAll() {
         cancelAll()
+        // Android TV is a passive wall-display board — never schedule Adhan / pre-warn / auto-silence
+        // / weekly alarms (it must stay silent). Prayer-time DATA is refreshed separately by
+        // VaktijaRefreshWorker before this call, so the board still updates. (FEATURE_LEANBACK is
+        // reliable from this app context, unlike a UiModeManager reading.) Check both TV signals so a
+        // device that shows the TV board can never still be scheduling alarms.
+        if (context.isLeanbackTv() || context.isTelevision()) return
         recoverStrandedDnd()
         val settings = settingsRepository.observe().first()
 

@@ -1,5 +1,9 @@
 package de.igbdsandzakkassel.vaktija.ui.tv
 
+import android.content.Context
+import android.content.res.Configuration
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,10 +25,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,21 +52,30 @@ import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreenDark
 import de.igbdsandzakkassel.vaktija.ui.theme.PageBackgroundLight
-import java.time.LocalTime
+import kotlinx.coroutines.delay
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
- * Android TV / Google TV variant — a big landscape prayer-times board for a wall display (Sony
- * Bravia etc.). Reuses [DashboardViewModel] (same times, Iqamah, Friday-Jumu'ah rule, next-prayer
- * highlight, live clock + countdown) and adds a daily "Hadith of the day" band along the bottom.
- * Always uses the light board palette so it matches the community design regardless of the TV theme.
+ * Android TV / Google TV variant — a big landscape prayer-times board for a wall display in the
+ * mosque entrance: people glance at it to see when the Adhan is and read a hadith. It is purely
+ * passive (no remote interaction, and no Adhan sound — alarms are skipped on TV).
  *
- * Sizing note: a 1080p TV is ~540dp tall, which is tight for emblem + hero + 6 prayer cards + Džuma
- * + the Hadith band. Fonts/cards are deliberately compact so nothing clips at that height; on roomier
- * (4K) panels the weight(1f) main area simply gets more breathing room. Verified at 540dp.
+ * The whole board automatically alternates between the community's two languages, **German and
+ * Bosnian**, with a gentle crossfade so it's clearly noticeable that it switched:
+ *  - the prayer board (names, labels, weekday/date, countdown caption) flips every [BOARD_SWITCH_MS];
+ *  - the "Hadith of the day" band flips on its own ~1-minute rhythm (a hadith needs longer to read).
+ * In German the prayers use the transliterated names (Fajr/Dhuhr/Asr/Maghrib/Isha, Jumu'ah) with the
+ * German "Sonnenaufgang"; in Bosnian everything is Bosnian (Sabah/Podne/Ikindija/Akšam/Jacija,
+ * Izlazak sunca, IKAMET, petak…). The system locale is ignored — only these two languages show.
  */
 private val HM: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 private val CARD_SHAPE = RoundedCornerShape(20.dp)
+private val GERMAN: Locale = Locale.GERMAN
+private val BOSNIAN: Locale = Locale.forLanguageTag("bs")
+private const val BOARD_SWITCH_MS = 5_000L
+private const val CROSSFADE_MS = 700
 
 @Composable
 fun TvDashboardScreen(modifier: Modifier = Modifier) {
@@ -67,8 +84,22 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
 
     val hadithViewModel: TvHadithViewModel = hiltViewModel()
     val dailyHadith by hadithViewModel.daily.collectAsStateWithLifecycle()
-    val showGerman by hadithViewModel.german.collectAsStateWithLifecycle()
+    val hadithGerman by hadithViewModel.german.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { hadithViewModel.start() }
+
+    val context = LocalContext.current
+    // Keyed on context so a config change (density/font scale) rebuilds them instead of going stale.
+    val deCtx = remember(context) { context.localized(GERMAN) }
+    val bsCtx = remember(context) { context.localized(BOSNIAN) }
+
+    // Flip the board language every few seconds (the hadith band has its own slower rhythm).
+    var boardGerman by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(BOARD_SWITCH_MS)
+            boardGerman = !boardGerman
+        }
+    }
 
     Box(
         modifier = modifier
@@ -86,74 +117,96 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
         }
 
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(
-                modifier = Modifier.fillMaxWidth().weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(28.dp),
-            ) {
-                // ---- Left column: emblem + green hero (clock, dates, countdown) ----
-                Column(
-                    modifier = Modifier.fillMaxHeight().weight(0.29f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.logo_emblem),
-                        contentDescription = stringResource(R.string.cd_app_logo),
-                        modifier = Modifier.height(104.dp),
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    HeroCard(state, Modifier.fillMaxWidth())
-                }
-
-                // ---- Right column: header + 2-column prayer grid + Džuma ----
-                Column(modifier = Modifier.fillMaxHeight().weight(0.71f)) {
-                    Text(
-                        text = "IGBD",
-                        color = BrandGreenDark,
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Black,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                    Text(
-                        text = stringResource(R.string.header_subtitle),
-                        color = BrandGreen,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                    Spacer(Modifier.height(8.dp))
-
-                    Column(
-                        modifier = Modifier.fillMaxWidth().weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-                    ) {
-                        state.rows.chunked(2).forEach { pair ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            ) {
-                                pair.forEach { row -> TvPrayerCard(row, Modifier.weight(1f).heightIn(min = 78.dp)) }
-                                if (pair.size == 1) Spacer(Modifier.weight(1f))
-                            }
-                        }
-                        state.jumua?.let { JumuaCard(it, Modifier.fillMaxWidth()) }
-                    }
-                }
+            Crossfade(
+                targetState = boardGerman,
+                animationSpec = tween(CROSSFADE_MS),
+                modifier = Modifier.weight(1f),
+                label = "boardLanguage",
+            ) { german ->
+                BoardBody(state, german, if (german) deCtx else bsCtx)
             }
-            dailyHadith?.let {
+            dailyHadith?.let { hadith ->
                 Spacer(Modifier.height(10.dp))
-                DailyHadithBand(it, german = showGerman, modifier = Modifier.fillMaxWidth())
+                Crossfade(
+                    targetState = hadithGerman,
+                    animationSpec = tween(CROSSFADE_MS),
+                    label = "hadithLanguage",
+                ) { german ->
+                    DailyHadithBand(hadith, german, Modifier.fillMaxWidth())
+                }
             }
         }
     }
 }
 
 @Composable
-private fun HeroCard(state: DashboardUiState, modifier: Modifier) {
-    val weekday = state.gregorianDate.substringBefore(", ", state.gregorianDate)
-    val dateOnly = state.gregorianDate.substringAfter(", ", "")
+private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.spacedBy(28.dp),
+    ) {
+        // ---- Left column: emblem + green hero (clock, dates, countdown) ----
+        Column(
+            modifier = Modifier.fillMaxHeight().weight(0.29f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Image(
+                painter = painterResource(R.drawable.logo_emblem),
+                contentDescription = stringResource(R.string.cd_app_logo),
+                modifier = Modifier.height(104.dp),
+            )
+            Spacer(Modifier.height(12.dp))
+            HeroCard(state, german, ctx, Modifier.fillMaxWidth())
+        }
+
+        // ---- Right column: header + 2-column prayer grid + Džuma ----
+        Column(modifier = Modifier.fillMaxHeight().weight(0.71f)) {
+            Text(
+                text = "IGBD",
+                color = BrandGreenDark,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Black,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Text(
+                text = ctx.getString(R.string.header_subtitle),
+                color = BrandGreen,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(Modifier.height(8.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+            ) {
+                state.rows.chunked(2).forEach { pair ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        pair.forEach { row ->
+                            TvPrayerCard(row, german, ctx, Modifier.weight(1f).heightIn(min = 78.dp))
+                        }
+                        if (pair.size == 1) Spacer(Modifier.weight(1f))
+                    }
+                }
+                state.jumua?.let { JumuaCard(it, german, ctx, Modifier.fillMaxWidth()) }
+            }
+        }
+    }
+}
+
+@Composable
+private fun HeroCard(state: DashboardUiState, german: Boolean, ctx: Context, modifier: Modifier) {
+    val locale = if (german) GERMAN else BOSNIAN
+    val today = LocalDate.now()
+    val weekday = today.format(DateTimeFormatter.ofPattern("EEEE", locale))
+    val dateLine = today.format(DateTimeFormatter.ofPattern("d. MMMM yyyy", locale))
     Column(
         modifier = modifier
             .clip(CARD_SHAPE)
@@ -161,20 +214,13 @@ private fun HeroCard(state: DashboardUiState, modifier: Modifier) {
             .padding(horizontal = 16.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            state.clock,
-            color = Color.White,
-            fontSize = 34.sp,
-            fontWeight = FontWeight.Bold,
-            maxLines = 1,
-            softWrap = false,
-        )
+        Text(state.clock, color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
         Spacer(Modifier.height(4.dp))
         Text(weekday, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        if (dateOnly.isNotEmpty()) {
-            Text(dateOnly, color = BrandGoldLight, fontSize = 14.sp, textAlign = TextAlign.Center)
+        Text(dateLine, color = BrandGoldLight, fontSize = 14.sp, textAlign = TextAlign.Center)
+        if (state.hijriDate.isNotEmpty()) {
+            Text(state.hijriDate, color = BrandGoldLight, fontSize = 13.sp, textAlign = TextAlign.Center)
         }
-        Text(state.hijriDate, color = BrandGoldLight, fontSize = 13.sp, textAlign = TextAlign.Center)
         Spacer(Modifier.height(10.dp))
         Column(
             modifier = Modifier
@@ -185,7 +231,7 @@ private fun HeroCard(state: DashboardUiState, modifier: Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = stringResource(R.string.dashboard_next_prayer_in),
+                text = ctx.getString(R.string.dashboard_next_prayer_in),
                 color = Color.White,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -198,10 +244,12 @@ private fun HeroCard(state: DashboardUiState, modifier: Modifier) {
 }
 
 @Composable
-private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
+private fun TvPrayerCard(row: PrayerRowUi, german: Boolean, ctx: Context, modifier: Modifier) {
     val on = row.isHighlighted
     val nameColor = if (on) Color.White else BrandGreen
     val iqamahColor = if (on) BrandGoldLight else BrandGold
+    val label = prayerLabel(row, german, ctx)
+    val nameSize = if (label.length >= 14) 16.sp else 20.sp
     Column(
         modifier = modifier
             .clip(CARD_SHAPE)
@@ -209,25 +257,7 @@ private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
             .padding(horizontal = 18.dp, vertical = 7.dp),
         verticalArrangement = Arrangement.Center,
     ) {
-        // The TV board uses the universal transliterated names (Fajr/Dhuhr/Asr/Maghrib/Isha, Jumu'ah
-        // on Friday) for the prayers; only Sunrise keeps its localized word. This matches mosque-board
-        // convention and keeps every name short so nothing truncates next to the time.
-        val label = when {
-            row.labelRes == R.string.prayer_jumua -> stringResource(R.string.tv_prayer_jumua)
-            row.prayer == Prayer.FAJR -> stringResource(R.string.tv_prayer_fajr)
-            row.prayer == Prayer.SUNRISE -> stringResource(R.string.prayer_sunrise)
-            row.prayer == Prayer.DHUHR -> stringResource(R.string.tv_prayer_dhuhr)
-            row.prayer == Prayer.ASR -> stringResource(R.string.tv_prayer_asr)
-            row.prayer == Prayer.MAGHRIB -> stringResource(R.string.tv_prayer_maghrib)
-            row.prayer == Prayer.ISHA -> stringResource(R.string.tv_prayer_isha)
-            else -> stringResource(row.labelRes)
-        }
-        // Safety net: only the localized Sunrise word can get long; step it down if a locale is wordy.
-        val nameSize = if (label.length >= 14) 16.sp else 20.sp
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 label,
                 color = nameColor,
@@ -250,7 +280,7 @@ private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    stringResource(R.string.label_iqamah),
+                    ctx.getString(R.string.label_iqamah),
                     color = if (on) Color.White.copy(alpha = 0.9f) else BrandGreen,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -262,8 +292,30 @@ private fun TvPrayerCard(row: PrayerRowUi, modifier: Modifier) {
     }
 }
 
+/**
+ * The prayer's name for the board. In German: the transliterated name (Fajr/Dhuhr/Asr/Maghrib/Isha,
+ * Jumu'ah on Friday) with the German word for Sunrise. In Bosnian: the Bosnian name straight from the
+ * (Bosnian-context) resources — Sabah/Podne/Ikindija/Akšam/Jacija, Izlazak sunca, Džuma namaz.
+ */
+private fun prayerLabel(row: PrayerRowUi, german: Boolean, ctx: Context): String =
+    if (german) {
+        when {
+            row.labelRes == R.string.prayer_jumua -> ctx.getString(R.string.tv_prayer_jumua)
+            row.prayer == Prayer.SUNRISE -> ctx.getString(R.string.prayer_sunrise)
+            row.prayer == Prayer.FAJR -> ctx.getString(R.string.tv_prayer_fajr)
+            row.prayer == Prayer.DHUHR -> ctx.getString(R.string.tv_prayer_dhuhr)
+            row.prayer == Prayer.ASR -> ctx.getString(R.string.tv_prayer_asr)
+            row.prayer == Prayer.MAGHRIB -> ctx.getString(R.string.tv_prayer_maghrib)
+            row.prayer == Prayer.ISHA -> ctx.getString(R.string.tv_prayer_isha)
+            else -> ctx.getString(row.labelRes)
+        }
+    } else {
+        ctx.getString(row.labelRes)
+    }
+
 @Composable
-private fun JumuaCard(jumua: LocalTime, modifier: Modifier) {
+private fun JumuaCard(jumua: java.time.LocalTime, german: Boolean, ctx: Context, modifier: Modifier) {
+    val label = if (german) ctx.getString(R.string.tv_prayer_jumua) else ctx.getString(R.string.prayer_jumua)
     Row(
         modifier = modifier
             .clip(CARD_SHAPE)
@@ -272,15 +324,15 @@ private fun JumuaCard(jumua: LocalTime, modifier: Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(stringResource(R.string.tv_prayer_jumua), color = BrandGreen, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(label, color = BrandGreen, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         Text(jumua.format(HM), color = BrandGreen, fontSize = 26.sp, fontWeight = FontWeight.Bold, maxLines = 1)
     }
 }
 
 /**
- * "Hadith of the day" band across the bottom of the TV board. The chosen daily hadith alternates
- * between Bosnian and German every minute (label + text together). Capped to two lines so it never
- * crowds the prayer grid; the full text lives in the in-app Hadith section.
+ * "Hadith of the day" band across the bottom. [german] true → the German text + "Hadith des Tages",
+ * else the Bosnian text + "Hadis dana". Capped to two lines so it never crowds the prayer grid; the
+ * full text lives in the in-app Hadith section.
  */
 @Composable
 private fun DailyHadithBand(daily: TvHadithViewModel.DailyHadith, german: Boolean, modifier: Modifier) {
@@ -309,4 +361,11 @@ private fun DailyHadithBand(daily: TvHadithViewModel.DailyHadith, german: Boolea
             overflow = TextOverflow.Ellipsis,
         )
     }
+}
+
+/** A context whose resources resolve strings/formatters in [locale], regardless of the system locale. */
+private fun Context.localized(locale: Locale): Context {
+    val config = Configuration(resources.configuration)
+    config.setLocale(locale)
+    return createConfigurationContext(config)
 }
