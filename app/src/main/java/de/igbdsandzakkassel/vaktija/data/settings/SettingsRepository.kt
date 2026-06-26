@@ -125,6 +125,18 @@ class SettingsRepository @Inject constructor(
     }
 
     /**
+     * Epoch-millis until which WE have an auto-silence (DND) window active, or 0/absent if none.
+     * Set when a silence window starts, cleared when it ends. Lets app-open/boot recover a DND that
+     * was turned on but whose "restore" alarm was lost (reboot/force-stop) — without ever touching a
+     * Do-Not-Disturb the user set themselves (which never writes this key).
+     */
+    suspend fun getDndActiveUntil(): Long = store.data.first()[DND_ACTIVE_UNTIL] ?: 0L
+
+    suspend fun setDndActiveUntil(millis: Long) {
+        store.edit { it[DND_ACTIVE_UNTIL] = millis }
+    }
+
+    /**
      * The user's selected app-language tag, persisted so background workers/receivers can localize
      * notifications without relying on AppCompatDelegate (which can read empty on a cold wake-up).
      * Synced from the UI (which reads it reliably with an Activity present).
@@ -176,6 +188,7 @@ class SettingsRepository @Inject constructor(
         val NEWS_NOTIFS = booleanPreferencesKey("news_notifs_enabled")
         val LAST_NEWS_MILLIS = longPreferencesKey("last_notified_news_millis")
         val LAST_CONFIG_MILLIS = longPreferencesKey("last_seen_config_millis")
+        val DND_ACTIVE_UNTIL = longPreferencesKey("dnd_active_until")
         val LANGUAGE_TAG = stringPreferencesKey("app_language_tag")
         fun enabledKey(p: Prayer) = booleanPreferencesKey("enabled_${p.name}")
         fun preWarnKey(p: Prayer) = intPreferencesKey("prewarn_${p.name}")

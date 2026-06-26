@@ -13,4 +13,5 @@ class StubCommunityRuleProvider @Inject constructor() : CommunityRuleProvider {
     override fun observeRules(): Flow<CommunityRules> = flowOf(CommunityRules.DEFAULT)
     override suspend fun saveRules(rules: CommunityRules) = Unit
     override suspend fun getUpdatedAt(): Long? = null
+    override suspend fun getRules(): CommunityRules = CommunityRules.DEFAULT
 }

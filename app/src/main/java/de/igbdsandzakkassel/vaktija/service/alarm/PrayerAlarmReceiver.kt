@@ -7,6 +7,7 @@ import android.media.AudioManager
 import dagger.hilt.android.AndroidEntryPoint
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
+import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
@@ -31,6 +32,9 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
     @Inject
     lateinit var dndController: DndController
 
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
 
@@ -40,21 +44,25 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 val prayer = prayerFrom(intent) ?: return
                 val sound = AdhanSound.fromName(intent.getStringExtra(EXTRA_SOUND))
                 val playWhenSilent = intent.getBooleanExtra(EXTRA_PLAY_WHEN_SILENT, false)
+                val isJumua = intent.getBooleanExtra(EXTRA_IS_JUMUA, false)
                 if (playWhenSilent || !isPhoneSilenced(context)) {
                     // Play via the foreground service (won't be truncated); it also vibrates via the channel.
-                    AdhanForegroundService.start(context, prayer, sound.name)
+                    AdhanForegroundService.start(context, prayer, sound.name, isJumua)
                 } else {
                     // Phone is on silent/vibrate and the user hasn't opted into overriding it: show a
                     // quiet prayer-time notice instead of playing the Adhan out loud (e.g. at work).
                     PrayerNotifier.ensureChannels(context)
-                    PrayerNotifier.postAdhanSilently(context, prayer)
+                    PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
                 }
             }
 
             ACTION_PREWARN -> {
                 val prayer = prayerFrom(intent) ?: return
                 PrayerNotifier.ensureChannels(context)
-                PrayerNotifier.postPreWarning(context, prayer, intent.getIntExtra(EXTRA_MINUTES, 0))
+                PrayerNotifier.postPreWarning(
+                    context, prayer, intent.getIntExtra(EXTRA_MINUTES, 0),
+                    intent.getBooleanExtra(EXTRA_IS_JUMUA, false),
+                )
             }
 
             ACTION_WEEKLY_REMINDER -> PrayerNotifier.postWeeklyReminder(context)
@@ -74,8 +82,15 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                         NewsCheckWorker.enqueue(context)
                     }
                     ACTION_PREWARN -> alarmScheduler.rescheduleAll()
-                    ACTION_SILENCE_START -> dndController.silence()
-                    ACTION_SILENCE_END -> dndController.restore()
+                    ACTION_SILENCE_START -> {
+                        dndController.silence()
+                        // Record how long OUR DND lasts, so a lost END alarm can be recovered later.
+                        settingsRepository.setDndActiveUntil(intent.getLongExtra(EXTRA_SILENCE_UNTIL, 0L))
+                    }
+                    ACTION_SILENCE_END -> {
+                        dndController.restore()
+                        settingsRepository.setDndActiveUntil(0L)
+                    }
                     // Re-arm next week's reminder.
                     ACTION_WEEKLY_REMINDER -> alarmScheduler.rescheduleAll()
                 }
@@ -104,5 +119,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         const val EXTRA_MINUTES = "extra_minutes"
         const val EXTRA_SOUND = "extra_sound"
         const val EXTRA_PLAY_WHEN_SILENT = "extra_play_when_silent"
+        const val EXTRA_IS_JUMUA = "extra_is_jumua"
+        const val EXTRA_SILENCE_UNTIL = "extra_silence_until"
     }
 }

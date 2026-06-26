@@ -33,14 +33,15 @@ class AdhanForegroundService : Service() {
         PrayerNotifier.ensureChannels(this)
         val prayer = Prayer.entries.getOrElse(intent?.getIntExtra(EXTRA_PRAYER, -1) ?: -1) { Prayer.FAJR }
         val sound = AdhanSound.fromName(intent?.getStringExtra(EXTRA_SOUND))
+        val isJumua = intent?.getBooleanExtra(EXTRA_IS_JUMUA, false) ?: false
 
-        startForegroundCompat(prayer)
+        startForegroundCompat(prayer, isJumua)
         playSound(sound.rawResName)
         return START_NOT_STICKY
     }
 
-    private fun startForegroundCompat(prayer: Prayer) {
-        val notification = PrayerNotifier.buildAdhanNotification(this, prayer, stopPendingIntent())
+    private fun startForegroundCompat(prayer: Prayer, isJumua: Boolean) {
+        val notification = PrayerNotifier.buildAdhanNotification(this, prayer, stopPendingIntent(), isJumua)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ServiceCompat.startForeground(
                 this,
@@ -115,15 +116,17 @@ class AdhanForegroundService : Service() {
         const val ACTION_STOP = "de.igbdsandzakkassel.vaktija.STOP_ADHAN"
         const val EXTRA_PRAYER = "extra_prayer"
         const val EXTRA_SOUND = "extra_sound"
+        const val EXTRA_IS_JUMUA = "extra_is_jumua"
 
         /** Bundled chime used when the selected Adhan audio isn't present yet. */
         private const val FALLBACK_SOUND = "adhan_placeholder"
 
         /** [soundName] is an [AdhanSound] enum name (resolved on the service side). */
-        fun start(context: Context, prayer: Prayer, soundName: String) {
+        fun start(context: Context, prayer: Prayer, soundName: String, isJumua: Boolean = false) {
             val intent = Intent(context, AdhanForegroundService::class.java)
                 .putExtra(EXTRA_PRAYER, prayer.ordinal)
                 .putExtra(EXTRA_SOUND, soundName)
+                .putExtra(EXTRA_IS_JUMUA, isJumua)
             androidx.core.content.ContextCompat.startForegroundService(context, intent)
         }
     }

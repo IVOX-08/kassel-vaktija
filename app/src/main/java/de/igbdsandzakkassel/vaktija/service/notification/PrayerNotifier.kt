@@ -70,10 +70,11 @@ object PrayerNotifier {
         context: Context,
         prayer: Prayer,
         stopIntent: PendingIntent,
+        isJumua: Boolean = false,
     ): Notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
         .setSmallIcon(R.drawable.ic_stat_adhan)
         .setLargeIcon(communityLogo(context))
-        .setContentTitle(context.getString(R.string.notif_adhan_title, context.getString(prayer.labelRes)))
+        .setContentTitle(context.getString(R.string.notif_adhan_title, prayerLabel(context, prayer, isJumua)))
         .setContentText(context.getString(R.string.notif_adhan_text))
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -87,12 +88,12 @@ object PrayerNotifier {
      * into playing the Adhan out loud — respects silent mode (the channel has no sound; in vibrate
      * mode it vibrates, in silent mode the system keeps it fully quiet).
      */
-    fun postAdhanSilently(context: Context, prayer: Prayer) {
+    fun postAdhanSilently(context: Context, prayer: Prayer, isJumua: Boolean = false) {
         if (!hasNotificationPermission(context)) return
         val notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(communityLogo(context))
-            .setContentTitle(context.getString(R.string.notif_adhan_title, context.getString(prayer.labelRes)))
+            .setContentTitle(context.getString(R.string.notif_adhan_title, prayerLabel(context, prayer, isJumua)))
             .setContentText(context.getString(R.string.notif_adhan_text))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -102,13 +103,13 @@ object PrayerNotifier {
         NotificationManagerCompat.from(context).notify(ADHAN_NOTIFICATION_ID, notification)
     }
 
-    /** Pre-warning notification ("Dhuhr in 10 min"). */
-    fun postPreWarning(context: Context, prayer: Prayer, minutes: Int) {
+    /** Pre-warning notification ("Dhuhr in 10 min" / "Jumu'ah in 30 min"). */
+    fun postPreWarning(context: Context, prayer: Prayer, minutes: Int, isJumua: Boolean = false) {
         val notification = NotificationCompat.Builder(context, CHANNEL_PREWARN)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(communityLogo(context))
             .setContentTitle(
-                context.getString(R.string.notif_prewarn_title, context.getString(prayer.labelRes), minutes),
+                context.getString(R.string.notif_prewarn_title, prayerLabel(context, prayer, isJumua), minutes),
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
@@ -147,6 +148,10 @@ object PrayerNotifier {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
     }
+
+    /** The prayer's display name — "Jumu'ah" for the Friday Dhuhr slot, otherwise the normal label. */
+    private fun prayerLabel(context: Context, prayer: Prayer, isJumua: Boolean): String =
+        context.getString(if (isJumua) R.string.prayer_jumua else prayer.labelRes)
 
     private fun hasNotificationPermission(context: Context): Boolean =
         NotificationManagerCompat.from(context).areNotificationsEnabled()

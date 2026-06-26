@@ -10,6 +10,14 @@ import kotlinx.coroutines.flow.Flow
 interface CommunityRuleProvider {
     fun observeRules(): Flow<CommunityRules>
 
+    /**
+     * One-shot read of the current rules (cache-first), falling back to [CommunityRules.DEFAULT].
+     * Unlike [observeRules] — whose first emission is the DEFAULT seed — this returns the actual
+     * configured values, so background work (e.g. scheduling the Friday Jumu'ah alarm) uses the real
+     * jumua time, not the default.
+     */
+    suspend fun getRules(): CommunityRules
+
     /** Admin-only: persist new rules to the backend (no-op without write permission). */
     suspend fun saveRules(rules: CommunityRules)
 

@@ -2,6 +2,7 @@ package de.igbdsandzakkassel.vaktija.data.repository
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import kotlinx.coroutines.channels.awaitClose
@@ -46,6 +47,15 @@ class FirestoreCommunityRuleProvider @Inject constructor(
 
     override suspend fun getUpdatedAt(): Long? =
         runCatching { docRef.get().await().getLong("updatedAt") }.getOrNull()
+
+    override suspend fun getRules(): CommunityRules =
+        runCatching {
+            // Cache-first so a background reschedule doesn't block on the network; the snapshot
+            // listener keeps the cache fresh while the app is used.
+            val snapshot = runCatching { docRef.get(Source.CACHE).await() }.getOrNull()?.takeIf { it.exists() }
+                ?: docRef.get().await()
+            snapshot.takeIf { it.exists() }?.toCommunityRules()
+        }.getOrNull() ?: CommunityRules.DEFAULT
 
     private companion object {
         const val COLLECTION = "config"
