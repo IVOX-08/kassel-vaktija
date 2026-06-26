@@ -68,12 +68,15 @@ class GeminiTranslator @Inject constructor(
             val payload = response.body?.string().orEmpty()
             check(response.isSuccessful) { "Gemini HTTP ${response.code}" }
 
-            // candidates[0].content.parts[0].text holds the model's JSON answer.
+            // The model's JSON answer is in candidates[0].content.parts. Pick the first part that
+            // actually has non-blank text — newer "thinking" models can prepend a thought part.
             val answer = json.parseToJsonElement(payload).jsonObject["candidates"]
                 ?.jsonArray?.firstOrNull()?.jsonObject
                 ?.get("content")?.jsonObject
-                ?.get("parts")?.jsonArray?.firstOrNull()?.jsonObject
-                ?.get("text")?.jsonPrimitive?.contentOrNull
+                ?.get("parts")?.jsonArray
+                ?.firstNotNullOfOrNull {
+                    it.jsonObject["text"]?.jsonPrimitive?.contentOrNull?.takeIf { t -> t.isNotBlank() }
+                }
                 ?: error("Gemini: empty response")
 
             val parsed = json.parseToJsonElement(stripFences(answer)).jsonObject
@@ -142,7 +145,10 @@ class GeminiTranslator @Inject constructor(
     """.trimIndent()
 
     private companion object {
-        const val MODEL = "gemini-2.5-flash"
+        // Gemini 3.5 Flash (GA): a generation newer than 2.5-flash → noticeably better, especially
+        // for Arabic + Islamic terminology, and still on the free tier (no billing). Pro models went
+        // paid-only in April 2026, so Flash is the best free choice. Verified working on the free key.
+        const val MODEL = "gemini-3.5-flash"
         const val ENDPOINT =
             "https://generativelanguage.googleapis.com/v1beta/models/$MODEL:generateContent"
         val JSON_MEDIA = "application/json; charset=utf-8".toMediaType()
