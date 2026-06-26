@@ -10,6 +10,9 @@ app/google-services.json
 keystore.properties
 .kotlin/
 
+# Convenience copy of the release bundle for uploading (built artifact, not source)
+/Kassel-Vaktija.aab
+
 # Local debug screenshots
 _news_*.png
 _o.png
