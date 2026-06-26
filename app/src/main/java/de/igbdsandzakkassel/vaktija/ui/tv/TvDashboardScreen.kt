@@ -3,9 +3,12 @@ package de.igbdsandzakkassel.vaktija.ui.tv
 import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -245,15 +248,39 @@ private fun HeroCard(state: DashboardUiState, german: Boolean, ctx: Context, mod
 
 @Composable
 private fun TvPrayerCard(row: PrayerRowUi, german: Boolean, ctx: Context, modifier: Modifier) {
-    val on = row.isHighlighted
+    // Filled green look while it's the next prayer OR currently in its Adhan→Iqamah window.
+    val on = row.isHighlighted || row.inIqamahWindow
     val nameColor = if (on) Color.White else BrandGreen
     val iqamahColor = if (on) BrandGoldLight else BrandGold
     val label = prayerLabel(row, german, ctx)
     val nameSize = if (label.length >= 14) 16.sp else 20.sp
+    // Continuous green-white "breathing" glow for the whole Adhan→Iqamah window.
+    val breath = remember { Animatable(0f) }
+    LaunchedEffect(row.inIqamahWindow) {
+        if (row.inIqamahWindow) {
+            while (true) {
+                breath.animateTo(1f, tween(950, easing = FastOutSlowInEasing))
+                breath.animateTo(0f, tween(950, easing = FastOutSlowInEasing))
+            }
+        } else {
+            breath.snapTo(0f)
+        }
+    }
     Column(
         modifier = modifier
             .clip(CARD_SHAPE)
             .background(if (on) BrandGreen else Color.White)
+            .then(
+                if (row.inIqamahWindow) {
+                    Modifier.border(
+                        (2f + breath.value * 3f).dp,
+                        Color.White.copy(alpha = 0.55f + breath.value * 0.45f),
+                        CARD_SHAPE,
+                    )
+                } else {
+                    Modifier
+                },
+            )
             .padding(horizontal = 18.dp, vertical = 7.dp),
         verticalArrangement = Arrangement.Center,
     ) {

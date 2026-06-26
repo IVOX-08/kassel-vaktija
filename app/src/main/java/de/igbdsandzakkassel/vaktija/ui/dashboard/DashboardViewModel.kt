@@ -71,16 +71,20 @@ class DashboardViewModel @Inject constructor(
         val effectiveTimes = if (isFriday) times.copy(dhuhr = rules.jumua) else times
         val schedule = PrayerScheduleCalculator.compute(effectiveTimes, now)
 
+        val nowTime = now.toLocalTime()
         val rows = Prayer.entries.map { prayer ->
             val adhan = effectiveTimes.adhan(prayer)
             val jumuaRow = isFriday && prayer == Prayer.DHUHR
+            val iqamah = if (jumuaRow) null else rules.iqamah(prayer, adhan)
             PrayerRowUi(
                 prayer = prayer,
                 labelRes = if (jumuaRow) R.string.prayer_jumua else prayer.labelRes,
                 adhan = adhan,
-                iqamah = if (jumuaRow) null else rules.iqamah(prayer, adhan),
+                iqamah = iqamah,
                 // Highlight the NEXT upcoming prayer (matches the countdown above).
                 isHighlighted = prayer == schedule.nextPrayer,
+                // Glow now if we're in this prayer's Adhan→Iqamah window (congregation gathering).
+                inIqamahWindow = iqamah != null && !nowTime.isBefore(adhan) && nowTime.isBefore(iqamah),
             )
         }
 

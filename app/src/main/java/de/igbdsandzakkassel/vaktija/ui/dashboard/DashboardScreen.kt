@@ -345,19 +345,21 @@ private fun CountdownCard(state: DashboardUiState, modifier: Modifier = Modifier
 
 @Composable
 private fun PrayerCard(row: PrayerRowUi, pulseToken: Int = 0) {
+    // Filled green look while it's the next prayer OR currently in its Adhan→Iqamah window.
+    val active = row.isHighlighted || row.inIqamahWindow
     val container by animateColorAsState(
-        targetValue = if (row.isHighlighted) BrandGreen else MaterialTheme.colorScheme.surface,
+        targetValue = if (active) BrandGreen else MaterialTheme.colorScheme.surface,
         animationSpec = tween(400),
         label = "prayerCardContainer",
     )
-    val accent = if (row.isHighlighted) Color.Transparent else MaterialTheme.colorScheme.primary
-    val nameColor = if (row.isHighlighted) BrandGoldLight else MaterialTheme.colorScheme.secondary
-    val adhanColor = if (row.isHighlighted) Color.White else MaterialTheme.colorScheme.primary
+    val accent = if (active) Color.Transparent else MaterialTheme.colorScheme.primary
+    val nameColor = if (active) BrandGoldLight else MaterialTheme.colorScheme.secondary
+    val adhanColor = if (active) Color.White else MaterialTheme.colorScheme.primary
     val iqamahLabelColor =
-        if (row.isHighlighted) Color.White.copy(alpha = 0.85f) else MaterialTheme.colorScheme.primary
-    val iqamahColor = if (row.isHighlighted) BrandGoldLight else MaterialTheme.colorScheme.secondary
+        if (active) Color.White.copy(alpha = 0.85f) else MaterialTheme.colorScheme.primary
+    val iqamahColor = if (active) BrandGoldLight else MaterialTheme.colorScheme.secondary
     val dividerColor =
-        if (row.isHighlighted) Color.White.copy(alpha = 0.35f) else MaterialTheme.colorScheme.outlineVariant
+        if (active) Color.White.copy(alpha = 0.35f) else MaterialTheme.colorScheme.outlineVariant
 
     // One-shot illumination pulse when this becomes the active card (token increments once).
     val glow = remember { Animatable(0f) }
@@ -368,17 +370,32 @@ private fun PrayerCard(row: PrayerRowUi, pulseToken: Int = 0) {
             glow.animateTo(0f, tween(450, easing = FastOutSlowInEasing))
         }
     }
+    // Continuous green-white "breathing" glow for the whole Adhan→Iqamah window.
+    val breath = remember { Animatable(0f) }
+    LaunchedEffect(row.inIqamahWindow) {
+        if (row.inIqamahWindow) {
+            while (true) {
+                breath.animateTo(1f, tween(950, easing = FastOutSlowInEasing))
+                breath.animateTo(0f, tween(950, easing = FastOutSlowInEasing))
+            }
+        } else {
+            breath.snapTo(0f)
+        }
+    }
     val glowValue = glow.value
+    val breathValue = breath.value
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
         color = container,
-        shadowElevation = 2.dp + (glowValue * 12f).dp,
-        border = if (glowValue > 0.01f) {
-            BorderStroke((2.5f * glowValue).dp, BrandGoldLight.copy(alpha = glowValue))
-        } else {
-            null
+        shadowElevation = 2.dp + (maxOf(glowValue, breathValue) * 12f).dp,
+        border = when {
+            row.inIqamahWindow ->
+                BorderStroke((2f + breathValue * 3f).dp, Color.White.copy(alpha = 0.55f + breathValue * 0.45f))
+            glowValue > 0.01f ->
+                BorderStroke((2.5f * glowValue).dp, BrandGoldLight.copy(alpha = glowValue))
+            else -> null
         },
     ) {
         Row(

@@ -14,6 +14,9 @@ data class PrayerRowUi(
     val adhan: LocalTime,
     val iqamah: LocalTime?,
     val isHighlighted: Boolean,
+    /** True right now during this prayer's Adhan→Iqamah window (congregation gathering) — the card
+     *  glows green-white while it's active. False outside the window / when there's no Iqamah. */
+    val inIqamahWindow: Boolean = false,
 )
 
 /** Everything the dashboard renders, recomputed once per second by the ViewModel. */
