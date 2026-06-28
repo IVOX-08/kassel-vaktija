@@ -2,5 +2,5 @@ package de.igbdsandzakkassel.vaktija.shared
 
 import platform.UIKit.UIDevice
 
-actual fun platformName(): String =
+internal actual fun platformNameImpl(): String =
     UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
