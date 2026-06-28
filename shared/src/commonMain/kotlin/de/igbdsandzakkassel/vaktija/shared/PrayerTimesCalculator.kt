@@ -5,23 +5,21 @@ import com.batoulapps.adhan2.Coordinates
 import com.batoulapps.adhan2.Madhab
 import com.batoulapps.adhan2.PrayerTimes
 import com.batoulapps.adhan2.data.DateComponents
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 
 /**
- * Computes the daily prayer times for Kassel with the adhan2 library, using the EXACT same
- * parameters as the Android app: base method Muslim World League, Hanafi madhab (the Bosniak
- * community; the madhab affects the Asr time).
+ * Computes Kassel prayer times with the adhan2 library, using the EXACT same parameters as the
+ * Android app: base method Muslim World League, Hanafi madhab (Bosniak community; affects Asr).
  *
- * This is the first piece of real business logic shared between Android and iOS. Both adhan2 and
- * kotlinx-datetime are Kotlin Multiplatform, so this file compiles unchanged for the JVM (tests),
- * Android, and iOS.
- *
- * Note: this mirrors `data/calendar/PrayerTimeCalculator.kt` from the Android app, but ported off
- * java.time (Android/JVM-only) onto kotlinx-datetime so it runs on iOS too.
+ * Pure Kotlin + multiplatform (adhan2 + kotlinx-datetime), so it compiles unchanged for the JVM
+ * (tests), Android and iOS.
  */
 class PrayerTimesCalculator(
     private val coordinates: Coordinates = Coordinates(KASSEL_LAT, KASSEL_LNG),
@@ -45,6 +43,17 @@ class PrayerTimesCalculator(
             maghrib = times.maghrib.toLocalTime(timeZone),
             isha = times.isha.toLocalTime(timeZone),
         )
+    }
+
+    /** Every day of [month] (1–12) in [year], each with its prayer times — for the month calendar. */
+    fun month(
+        year: Int,
+        month: Int,
+        timeZone: TimeZone = TimeZone.currentSystemDefault(),
+    ): List<DailyPrayerTimes> {
+        val first = LocalDate(year, month, 1)
+        val dayCount = first.daysUntil(first.plus(1, DateTimeUnit.MONTH))
+        return (0 until dayCount).map { compute(first.plus(it, DateTimeUnit.DAY), timeZone) }
     }
 
     private fun Instant.toLocalTime(timeZone: TimeZone): LocalTime =
