@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -90,6 +92,13 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
     val hadithGerman by hadithViewModel.german.collectAsStateWithLifecycle()
     val hadithSecondsLeft by hadithViewModel.secondsLeft.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { hadithViewModel.start() }
+
+    // Wall board: keep the TV screen awake the whole time the app is shown (no screensaver/sleep).
+    val keepAwakeView = LocalView.current
+    DisposableEffect(Unit) {
+        keepAwakeView.keepScreenOn = true
+        onDispose { keepAwakeView.keepScreenOn = false }
+    }
 
     val context = LocalContext.current
     // Keyed on context so a config change (density/font scale) rebuilds them instead of going stale.
@@ -402,12 +411,12 @@ private fun DailyHadithBand(
         Text(
             text = text,
             color = BrandGreenDark,
-            fontSize = 18.sp,
+            fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
-            lineHeight = 24.sp,
-            // Short hadiths are picked (see TvHadithViewModel) so they fit; allow up to 4 lines for
-            // the occasional longer one so it's never cut off with "…".
-            maxLines = 4,
+            lineHeight = 19.sp,
+            // Capped at 2 lines + smaller font so the band stays short and never pushes the Jumu'ah
+            // card or the countdown off-screen. Short hadiths are picked in TvHadithViewModel.
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
     }

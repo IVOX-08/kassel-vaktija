@@ -66,9 +66,9 @@ class TvHadithViewModel @Inject constructor(
         if (bs.isEmpty()) return null
         val de = COLLECTIONS.flatMap { repository.load(it, "de") }
         val all = bs.indices.map { i ->
-            val b = stripAttribution(bs[i].translation.ifBlank { bs[i].arabic })
+            val b = clean(bs[i].translation.ifBlank { bs[i].arabic })
             val dRaw = de.getOrNull(i)?.translation?.ifBlank { null }
-            val d = if (dRaw != null) stripAttribution(dRaw) else b
+            val d = if (dRaw != null) clean(dRaw) else b
             DailyHadith(bs = b, de = d)
         }.filter { it.bs.isNotEmpty() }
         if (all.isEmpty()) return null
@@ -84,6 +84,20 @@ class TvHadithViewModel @Inject constructor(
      * the board shows only the hadith itself. (All our hadiths are from the authentic collections —
      * Bukhari/Muslim/Tirmidhi … via the 40 Nawawi + Riyad as-Salihin assets.)
      */
+    /** Trim a hadith down to just the saying for the wall board: drop the leading narrator chain
+     *  ("Od Ebu-Hurejre, r.a., … rekao:" / "X berichtete … sagte:") and any trailing source note. */
+    private fun clean(text: String): String = stripAttribution(stripIsnad(text))
+
+    private fun stripIsnad(text: String): String {
+        val t = text.trim()
+        // If it opens with a narrator chain that ends in a colon early on, drop up to that colon.
+        val m = Regex(
+            "^.{0,170}?(rekao|kazao|rekla|veli|prenosi|kaže|berichte|sagte|sprach|überliefert)[^:]{0,45}:\\s+",
+            RegexOption.IGNORE_CASE,
+        ).find(t)
+        return (if (m != null) t.removeRange(m.range) else t).trim()
+    }
+
     private fun stripAttribution(text: String): String {
         var t = text.trim()
         val tail = Regex("\\s*[(\\[][^)\\]]*[)\\]]\\s*$")
@@ -93,8 +107,8 @@ class TvHadithViewModel @Inject constructor(
 
     private companion object {
         val COLLECTIONS = listOf("riyadussalihin", "nawawi40")
-        // ~3 lines on the full-width TV band → short, glanceable, never truncated.
-        const val MAX_CHARS = 300
+        // Short enough for ~2 small lines on the TV band so it never pushes the board off-screen.
+        const val MAX_CHARS = 190
         // The hadith band swaps language every 30s (slower than the 5s prayer board) with a hint.
         const val SWITCH_SECONDS = 30
     }
