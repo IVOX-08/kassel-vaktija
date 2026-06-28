@@ -1,0 +1,40 @@
+# XcodeGen spec — generates iosApp.xcodeproj from this file (run `xcodegen generate`).
+# Lets us version-control the iOS project as plain text instead of a fragile .pbxproj.
+name: iosApp
+options:
+  bundleIdPrefix: de.igbdsandzakkassel.vaktija
+  deploymentTarget:
+    iOS: "15.0"
+targets:
+  iosApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: iosApp
+    info:
+      path: iosApp/Info.plist
+      properties:
+        CFBundleDisplayName: Vaktija
+        UILaunchScreen: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.igbdsandzakkassel.vaktija.ios
+        GENERATE_INFOPLIST_FILE: "YES"
+        # Allow the Gradle build-script phase below to run (Xcode 15+ sandboxing would block it).
+        ENABLE_USER_SCRIPT_SANDBOXING: "NO"
+        # Where Kotlin's embedAndSignAppleFrameworkForXcode places the built "Shared" framework.
+        # (Path confirmed/adjusted on the first real build once Xcode is installed.)
+        FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          - $(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)
+        OTHER_LDFLAGS:
+          - $(inherited)
+          - -framework
+          - Shared
+    # Build (and embed) the Kotlin shared framework before compiling the Swift app.
+    preBuildScripts:
+      - name: Build Kotlin Shared framework
+        basedOnDependencyAnalysis: false
+        script: |
+          cd "$SRCROOT/.."
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode
