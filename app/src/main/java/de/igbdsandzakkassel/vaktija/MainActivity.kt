@@ -35,8 +35,11 @@ import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
 import de.igbdsandzakkassel.vaktija.ui.KasselApp
 import de.igbdsandzakkassel.vaktija.ui.onboarding.OnboardingScreen
+import androidx.lifecycle.lifecycleScope
+import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
 import de.igbdsandzakkassel.vaktija.ui.theme.KasselVaktijaTheme
 import de.igbdsandzakkassel.vaktija.ui.tv.TvDashboardScreen
+import kotlinx.coroutines.launch
 
 /**
  * The app's single Activity. Extends AppCompatActivity so per-app language selection
@@ -148,11 +151,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // If a flexible update finished downloading while the app was in the background, prompt now.
         if (!isTelevision()) {
+            // If a flexible update finished downloading while the app was in the background, prompt now.
             appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
                 if (info.installStatus() == InstallStatus.DOWNLOADED) updateDownloaded.value = true
             }
+            // Snap the home-screen widget to the current next prayer right away. If an OEM battery
+            // saver killed the widget's scheduled rollover while the app was closed (leaving it stuck
+            // on a past prayer counting into the negative), opening the app instantly fixes it.
+            lifecycleScope.launch { PrayerTimesWidgetReceiver.refresh(applicationContext) }
         }
     }
 

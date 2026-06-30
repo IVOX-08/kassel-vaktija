@@ -16,10 +16,12 @@ import java.time.LocalTime
 import javax.inject.Inject
 
 /**
- * "Hadith of the day" for the TV board. One hadith is chosen per calendar day (deterministic by
- * epoch-day, so it's the same on every device and changes at midnight), loaded in BOTH Bosnian and
- * German. The displayed language then alternates every minute (even minute = Bosnian, odd = German)
- * so the wall display shows the community's two main languages in turn.
+ * "Hadith of the day" for the TV board. One hadith is chosen per calendar day from a hand-curated
+ * list of SHORT, in-themselves-COMPLETE hadiths (assets/hadith/board.json) — picked so the wall
+ * display shows a full, readable saying instead of a cut-off fragment. The choice is deterministic by
+ * epoch-day (the same on every device, changes at midnight). Each hadith is stored in both Bosnian
+ * and German; the shown language then alternates every [SWITCH_SECONDS] seconds so the board cycles
+ * through the community's two main languages.
  */
 @HiltViewModel
 class TvHadithViewModel @Inject constructor(
@@ -60,55 +62,15 @@ class TvHadithViewModel @Inject constructor(
     }
 
     private fun loadDaily(): DailyHadith? {
-        // Both lists are built from the same Arabic source order, so the index maps to the same
-        // hadith (in bs and de). Pair them up.
-        val bs = COLLECTIONS.flatMap { repository.load(it, "bs") }
-        if (bs.isEmpty()) return null
-        val de = COLLECTIONS.flatMap { repository.load(it, "de") }
-        val all = bs.indices.map { i ->
-            val b = clean(bs[i].translation.ifBlank { bs[i].arabic })
-            val dRaw = de.getOrNull(i)?.translation?.ifBlank { null }
-            val d = if (dRaw != null) clean(dRaw) else b
-            DailyHadith(bs = b, de = d)
-        }.filter { it.bs.isNotEmpty() }
-        if (all.isEmpty()) return null
-        // The wall board has limited room: prefer SHORT hadiths (in BOTH languages) so they show in
-        // full instead of being cut off with "…". Fall back to the full set only if none are short.
-        val pool = all.filter { it.bs.length <= MAX_CHARS && it.de.length <= MAX_CHARS }.ifEmpty { all }
-        val index = LocalDate.now().toEpochDay().mod(pool.size)
-        return pool[index]
-    }
-
-    /**
-     * Strip a trailing source/narrator note like "(überliefert von …; al-Bukhari)" or "[Buhari]" so
-     * the board shows only the hadith itself. (All our hadiths are from the authentic collections —
-     * Bukhari/Muslim/Tirmidhi … via the 40 Nawawi + Riyad as-Salihin assets.)
-     */
-    /** Trim a hadith down to just the saying for the wall board: drop the leading narrator chain
-     *  ("Od Ebu-Hurejre, r.a., … rekao:" / "X berichtete … sagte:") and any trailing source note. */
-    private fun clean(text: String): String = stripAttribution(stripIsnad(text))
-
-    private fun stripIsnad(text: String): String {
-        val t = text.trim()
-        // If it opens with a narrator chain that ends in a colon early on, drop up to that colon.
-        val m = Regex(
-            "^.{0,170}?(rekao|kazao|rekla|veli|prenosi|kaže|berichte|sagte|sprach|überliefert)[^:]{0,45}:\\s+",
-            RegexOption.IGNORE_CASE,
-        ).find(t)
-        return (if (m != null) t.removeRange(m.range) else t).trim()
-    }
-
-    private fun stripAttribution(text: String): String {
-        var t = text.trim()
-        val tail = Regex("\\s*[(\\[][^)\\]]*[)\\]]\\s*$")
-        while (tail.containsMatchIn(t)) t = t.replace(tail, "").trim()
-        return t
+        val board = repository.loadBoard()
+        if (board.isEmpty()) return null
+        // Same hadith for the whole day on every device; advances at midnight.
+        val index = LocalDate.now().toEpochDay().mod(board.size)
+        val h = board[index]
+        return DailyHadith(bs = h.bs, de = h.de)
     }
 
     private companion object {
-        val COLLECTIONS = listOf("riyadussalihin", "nawawi40")
-        // Short enough for ~2 small lines on the TV band so it never pushes the board off-screen.
-        const val MAX_CHARS = 190
         // The hadith band swaps language every 30s (slower than the 5s prayer board) with a hint.
         const val SWITCH_SECONDS = 30
     }

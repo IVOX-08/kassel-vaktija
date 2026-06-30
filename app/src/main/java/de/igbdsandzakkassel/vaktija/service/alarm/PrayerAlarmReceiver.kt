@@ -45,14 +45,27 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 val sound = AdhanSound.fromName(intent.getStringExtra(EXTRA_SOUND))
                 val playWhenSilent = intent.getBooleanExtra(EXTRA_PLAY_WHEN_SILENT, false)
                 val isJumua = intent.getBooleanExtra(EXTRA_IS_JUMUA, false)
-                if (playWhenSilent || !isPhoneSilenced(context)) {
-                    // Play via the foreground service (won't be truncated); it also vibrates via the channel.
-                    AdhanForegroundService.start(context, prayer, sound.name, isJumua)
-                } else {
-                    // Phone is on silent/vibrate and the user hasn't opted into overriding it: show a
-                    // quiet prayer-time notice instead of playing the Adhan out loud (e.g. at work).
-                    PrayerNotifier.ensureChannels(context)
-                    PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
+                // How late this alarm is being delivered. A background-restricting OEM (e.g. Honor/
+                // Huawei) can hold an exact alarm and only release it much later — typically when the
+                // app is next opened — which would otherwise blast a long-overdue Adhan out loud. If
+                // it's badly overdue we post a SILENT notice instead of playing the Adhan sound.
+                val scheduledAt = intent.getLongExtra(EXTRA_TRIGGER_AT, 0L)
+                val stale = scheduledAt > 0L && System.currentTimeMillis() - scheduledAt > STALE_ADHAN_MS
+                when {
+                    stale -> {
+                        PrayerNotifier.ensureChannels(context)
+                        PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
+                    }
+                    playWhenSilent || !isPhoneSilenced(context) -> {
+                        // Play via the foreground service (won't be truncated); it also vibrates via the channel.
+                        AdhanForegroundService.start(context, prayer, sound.name, isJumua)
+                    }
+                    else -> {
+                        // Phone is on silent/vibrate and the user hasn't opted into overriding it: show a
+                        // quiet prayer-time notice instead of playing the Adhan out loud (e.g. at work).
+                        PrayerNotifier.ensureChannels(context)
+                        PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
+                    }
                 }
             }
 
@@ -121,5 +134,11 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         const val EXTRA_PLAY_WHEN_SILENT = "extra_play_when_silent"
         const val EXTRA_IS_JUMUA = "extra_is_jumua"
         const val EXTRA_SILENCE_UNTIL = "extra_silence_until"
+        const val EXTRA_TRIGGER_AT = "extra_trigger_at"
+
+        /** An Adhan delivered more than this many ms after its scheduled time is treated as a missed/
+         *  overdue alarm: post a silent notice instead of playing the Adhan out loud. 90 s covers
+         *  normal Doze delivery jitter while catching the "fires on app-open, hours late" case. */
+        private const val STALE_ADHAN_MS = 90_000L
     }
 }

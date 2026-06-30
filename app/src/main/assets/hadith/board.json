@@ -1,0 +1,59 @@
+{
+ "metadata": {
+  "name": "Hadith des Tages — Auswahl für die Wandanzeige / Hadis dana — odabir za zidni ekran",
+  "note": "Kurze, in sich vollständige Hadithe für die TV-Tafel im Moschee-Eingang — bewusst ausgewählt, weil ihre echte, gedruckte Übersetzung in EINFACHER, klarer Sprache ist (für eine Gemeinde, die nicht perfekt Deutsch versteht). Jeder ist hier OHNE Überliefererkette und Quellenangabe gespeichert (nur der eigentliche Spruch). Texte wortgetreu aus den im Projekt gebündelten Übersetzungen.",
+  "sources": "bs/de überwiegend: Enciklopedija prevedenih vjerovjesničkih hadisa / Enzyklopädie der übersetzten prophetischen Hadithe (hadeethenc.com, bosnische & deutsche Ausgabe) — moderne, einfache Sprache. Zwei Hadithe (Nevevi 13 & 15) aus den 40 Nevevijevih hadisa / An-Nawawi 40 (bs: Bilal Dervišić; de: Ahmad von Denffer)."
+ },
+ "hadiths": [
+  {
+   "ref": "Riyad 7",
+   "bs": "Nije jak onaj koji pobjeđuje ljude svojom snagom, već je jak onaj koji kontroliše sebe u ljutnji.",
+   "de": "Der Starke ist nicht derjenige, der (andere) im Ringen besiegt; der Starke ist vielmehr derjenige, der sich im Zorn beherrschen kann."
+  },
+  {
+   "ref": "Riyad 11",
+   "bs": "Nemoj potcjenjivati nijedno dobro djelo, pa makar da vedrog lica sretneš svoga brata.",
+   "de": "Schätze keine gute Tat gering, und sei es auch nur, dass du deinem Bruder mit einem freundlichen Gesicht begegnest."
+  },
+  {
+   "ref": "Riyad 6",
+   "bs": "Milostivi će se smilovati onima koji imaju milosti. Smilujte se onima koji su na Zemlji, smilovat će vam se Onaj Koji je na nebesima.",
+   "de": "Die Barmherzigen werden vom Allerbarmer Barmherzigkeit erfahren. Seid barmherzig mit den Bewohnern der Erde, so ist Derjenige im Himmel barmherzig mit euch."
+  },
+  {
+   "ref": "Riyad 8",
+   "bs": "Kada biste se vi oslanjali na Allaha istinski, On bi vam davao opskrbu kao što pticama daje. One osvanu gladne, a omrknu site.",
+   "de": "Würdet ihr euch auf Allah verlassen, wie es Ihm wahrhaftig gebührt, so würde Er euch versorgen, wie Er die Vögel versorgt: Sie fliegen morgens mit leerem Magen hinaus und kehren abends mit vollem zurück."
+  },
+  {
+   "ref": "Riyad 4",
+   "bs": "Ništa teže na vagi na Sudnjem danu neće biti od lijepog ahlaka, a Allah doista prezire razvratnika i prostaka.",
+   "de": "Nichts wiegt schwerer auf der Waage des Gläubigen am Tag der Auferstehung als ein guter Charakter. Und wahrlich, Allah verabscheut denjenigen, der unzüchtig und obszön ist."
+  },
+  {
+   "ref": "Riyad 1",
+   "bs": "Allah se više obraduje pokajanju Njegova roba, nego što bi se neko od vas obradovao pronalasku svoje izgubljene deve u pustinji.",
+   "de": "Allah ist mehr erfreut über die Reue Seines Dieners als einer von euch es wäre, wenn er sein in einer gewaltigen Wüste verlorenes Reitkamel plötzlich wiederfindet."
+  },
+  {
+   "ref": "Riyad 10",
+   "bs": "Zaista je Allah blag i On voli blagost (ljubaznost), i daje na osnovu blagosti (na dunjaluku lijep spomen i ostvarivanje želja, a na ahiretu lijepu nagradu) ono što ne daje na temelju grubosti niti bilo čega drugog.",
+   "de": "O 'Aischa, wahrlich, Allah ist gütig und Er liebt die Güte; und Er gewährt für die Güte, was Er für die Härte nicht gewährt, und was Er für nichts anderes gewährt."
+  },
+  {
+   "ref": "Riyad 2",
+   "bs": "Čudan li je primjer vjernika! Svako stanje u kojem se nađe je dobro za njega, a to nije slučaj ni sa kim drugim osim sa vjernikom. Ako ga zadesi kakva radost on se na njoj zahvali, pa mu bude dobro, a ako ga zadesi kakva nedaća on se strpi pa mu opet bude dobro.",
+   "de": "Verwunderlich ist die Angelegenheit des Gläubigen! Wahrlich, seine gesamte Angelegenheit ist gut, und dies gilt für niemanden außer für den Gläubigen: Wenn ihm etwas Gutes widerfährt, ist er dankbar, und das ist gut für ihn; und wenn ihm etwas Schlechtes widerfährt, ist er geduldig, und das ist gut für ihn."
+  },
+  {
+   "ref": "Nawawi 13",
+   "bs": "Niko od vas neće biti vjernik sve dok ne bude želio svome bratu ono što želi i sebi.",
+   "de": "Keiner von euch ist gläubig, bis er für seinen Bruder wünscht, was er für sich selbst wünscht."
+  },
+  {
+   "ref": "Nawawi 15",
+   "bs": "Ko vjeruje u Allaha i Sudnji dan, neka govori dobro ili neka šuti; ko vjeruje u Allaha i Sudnji dan, neka bude pažljiv prema svom komšiji; ko vjeruje u Allaha i Sudnji dan, neka počasti svoga gosta.",
+   "de": "Wer an Allah und den Jüngsten Tag glaubt, der soll Gutes sprechen, oder er soll schweigen. Wer an Allah und den Jüngsten Tag glaubt, der soll seinen Nachbarn ehren. Wer an Allah und den Jüngsten Tag glaubt, der soll seinen Gast ehren."
+  }
+ ]
+}

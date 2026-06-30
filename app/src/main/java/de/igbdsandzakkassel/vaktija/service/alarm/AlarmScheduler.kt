@@ -145,8 +145,8 @@ class AlarmScheduler @Inject constructor(
         isJumua: Boolean = false,
         silenceUntilMillis: Long = 0L,
     ) {
-        val pendingIntent = pendingIntent(prayer, type, minutes, sound, playWhenSilent, isJumua, silenceUntilMillis)
         val triggerAtMillis = at.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val pendingIntent = pendingIntent(prayer, type, minutes, sound, playWhenSilent, isJumua, silenceUntilMillis, triggerAtMillis)
         try {
             if (canScheduleExact()) {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
@@ -210,6 +210,7 @@ class AlarmScheduler @Inject constructor(
         playWhenSilent: Boolean,
         isJumua: Boolean,
         silenceUntilMillis: Long,
+        triggerAtMillis: Long = 0L,
     ): PendingIntent {
         val intent = Intent(context, PrayerAlarmReceiver::class.java).apply {
             action = type.action
@@ -219,6 +220,7 @@ class AlarmScheduler @Inject constructor(
             putExtra(PrayerAlarmReceiver.EXTRA_PLAY_WHEN_SILENT, playWhenSilent)
             putExtra(PrayerAlarmReceiver.EXTRA_IS_JUMUA, isJumua)
             putExtra(PrayerAlarmReceiver.EXTRA_SILENCE_UNTIL, silenceUntilMillis)
+            putExtra(PrayerAlarmReceiver.EXTRA_TRIGGER_AT, triggerAtMillis)
         }
         val requestCode = prayer.ordinal * AlarmType.entries.size + type.ordinal
         return PendingIntent.getBroadcast(

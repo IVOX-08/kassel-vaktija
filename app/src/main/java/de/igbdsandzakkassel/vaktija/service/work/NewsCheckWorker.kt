@@ -15,6 +15,7 @@ import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import de.igbdsandzakkassel.vaktija.service.notification.NewsNotificationChecker
+import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
 import java.util.concurrent.TimeUnit
 
 /**
@@ -32,6 +33,11 @@ class NewsCheckWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         runCatching { newsChecker.checkAndNotify(applicationContext) }
+        // Safety net for the home-screen widget: roll it to the current next prayer. The widget's own
+        // exact "rollover" alarm can be killed by aggressive OEM battery savers (e.g. Honor/Huawei
+        // power saving), which would otherwise leave it stuck on a past prayer counting into the
+        // negative. This periodic refresh self-heals that within ~15 minutes even then.
+        runCatching { PrayerTimesWidgetReceiver.refresh(applicationContext) }
         return Result.success()
     }
 

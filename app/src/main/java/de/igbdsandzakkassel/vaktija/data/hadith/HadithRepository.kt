@@ -20,6 +20,15 @@ private data class HadithEdition(val hadiths: List<HadithEntry> = emptyList())
 @Serializable
 private data class HadithEntry(val hadithnumber: Int = 0, val text: String = "")
 
+/** A curated bilingual hadith for the TV wall board (already cleaned: matn only, no isnad/source). */
+data class BoardHadith(val bs: String, val de: String)
+
+@Serializable
+private data class BoardEdition(val hadiths: List<BoardEntry> = emptyList())
+
+@Serializable
+private data class BoardEntry(val bs: String = "", val de: String = "")
+
 /**
  * Loads hadith collections bundled as JSON assets (assets/hadith/<collection>/<lang>.json). The
  * Arabic file (ar.json) is the source of truth for numbering; the translation file for the chosen
@@ -52,4 +61,18 @@ class HadithRepository @Inject constructor(
             json.decodeFromString<HadithEdition>(stream.readBytes().decodeToString()).hadiths
         }
     }.getOrNull()
+
+    /**
+     * The hand-curated short hadiths for the Android-TV wall board (assets/hadith/board.json). Each is
+     * stored ready-to-show in Bosnian and German (no narrator chain, no source note), so the board
+     * displays a complete, readable saying — not a stripped fragment. Returns empty if the file is
+     * missing (the board then simply shows no hadith).
+     */
+    fun loadBoard(): List<BoardHadith> = runCatching {
+        context.assets.open("hadith/board.json").use { stream ->
+            json.decodeFromString<BoardEdition>(stream.readBytes().decodeToString()).hadiths
+        }
+    }.getOrNull().orEmpty()
+        .map { BoardHadith(it.bs.trim(), it.de.trim()) }
+        .filter { it.bs.isNotBlank() && it.de.isNotBlank() }
 }

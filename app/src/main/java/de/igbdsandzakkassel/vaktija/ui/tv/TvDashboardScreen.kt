@@ -178,9 +178,10 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
             Text(
                 text = "IGBD",
                 color = BrandGreenDark,
-                fontSize = 46.sp,
+                fontSize = 38.sp,
                 fontWeight = FontWeight.Black,
                 textAlign = TextAlign.Center,
+                maxLines = 1,
                 modifier = Modifier.fillMaxWidth(),
             )
             Text(
@@ -188,16 +189,16 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                 // repeated "IGBD-", and "Sandžak Kassel" with a space (not a hyphen).
                 text = "Gemeinde Sandžak Kassel",
                 color = BrandGold,
-                fontSize = 21.sp,
+                fontSize = 17.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(6.dp))
 
             Column(
                 modifier = Modifier.fillMaxWidth().weight(1f),
-                verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
             ) {
                 state.rows.chunked(2).forEach { pair ->
                     Row(
@@ -205,7 +206,7 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
                         pair.forEach { row ->
-                            TvPrayerCard(row, german, ctx, Modifier.weight(1f).heightIn(min = 78.dp))
+                            TvPrayerCard(row, german, ctx, Modifier.weight(1f).heightIn(min = 70.dp))
                         }
                         if (pair.size == 1) Spacer(Modifier.weight(1f))
                     }
@@ -230,31 +231,38 @@ private fun HeroCard(state: DashboardUiState, german: Boolean, ctx: Context, mod
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // The live clock is the most-glanced element on the wall board → make it the biggest.
-        Text(state.clock, color = Color.White, fontSize = 52.sp, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
-        Spacer(Modifier.height(4.dp))
-        Text(weekday, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        Text(dateLine, color = BrandGoldLight, fontSize = 14.sp, textAlign = TextAlign.Center)
+        Text(state.clock, color = Color.White, fontSize = 50.sp, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
+        Spacer(Modifier.height(3.dp))
+        // Weekday + date on ONE line; the Hijri date sits just below it.
+        Text(
+            text = "$weekday, $dateLine",
+            color = Color.White,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+        )
         if (state.hijriDate.isNotEmpty()) {
             Text(state.hijriDate, color = BrandGoldLight, fontSize = 13.sp, textAlign = TextAlign.Center)
         }
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(8.dp))
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(14.dp))
                 .background(BrandGreenDark)
-                .padding(vertical = 10.dp, horizontal = 10.dp),
+                .padding(vertical = 8.dp, horizontal = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = ctx.getString(R.string.dashboard_next_prayer_in),
                 color = Color.White,
-                fontSize = 13.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
             )
-            Spacer(Modifier.height(4.dp))
-            Text(state.countdown, color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+            Spacer(Modifier.height(3.dp))
+            Text(state.countdown, color = Color.White, fontSize = 33.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         }
     }
 }
@@ -389,7 +397,7 @@ private fun DailyHadithBand(
         modifier = modifier
             .clip(CARD_SHAPE)
             .background(Color.White)
-            .padding(horizontal = 20.dp, vertical = 8.dp),
+            .padding(horizontal = 20.dp, vertical = 6.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -407,16 +415,17 @@ private fun DailyHadithBand(
                 fontWeight = FontWeight.SemiBold,
             )
         }
-        Spacer(Modifier.height(2.dp))
+        Spacer(Modifier.height(3.dp))
         Text(
             text = text,
             color = BrandGreenDark,
-            fontSize = 15.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            lineHeight = 19.sp,
-            // Capped at 2 lines + smaller font so the band stays short and never pushes the Jumu'ah
-            // card or the countdown off-screen. Short hadiths are picked in TvHadithViewModel.
-            maxLines = 2,
+            lineHeight = 21.sp,
+            // Bigger, well-readable text (the board's top area was compacted to free this room) with up
+            // to 4 lines so a complete short/medium hadith shows in FULL (no "…"). The curated board
+            // hadiths (board.json) are kept short enough that this never pushes Jumu'ah off-screen.
+            maxLines = 4,
             overflow = TextOverflow.Ellipsis,
         )
     }
