@@ -1,31 +1,62 @@
 import SwiftUI
 
-// "Koran" (spec 5.1): the surah list + an Arabic-only Mushaf-style reader, from the bundled Uthmani
-// JSON (quran/index.json + quran/<id>.json). Arabic only — no translation, by design.
-// (This first version scrolls; the true page-fitting RTL pager is a later refinement.)
+// "Koran" (spec 5.1): surah list + a PAGINATED Mushaf reader — each page fills the screen with as
+// many complete ayahs as fit, page-turning right-to-left (no scrolling), a bookmark in the top-right
+// corner, and a saved resume point per surah. Arabic only, justified, from the bundled Uthmani JSON.
 
 private struct Surah: Decodable, Identifiable {
-    let id: Int
-    let name: String
-    let transliteration: String
-    let total_verses: Int
+    let id: Int; let name: String; let transliteration: String; let total_verses: Int
 }
-
 private struct Ayah: Decodable { let n: Int; let t: String }
 private struct SurahContent: Decodable { let ayahs: [Ayah] }
 
 private enum QuranLoader {
-    static func index() -> [Surah] {
-        guard let url = Bundle.main.url(forResource: "index", withExtension: "json", subdirectory: "quran"),
-              let d = try? Data(contentsOf: url),
-              let s = try? JSONDecoder().decode([Surah].self, from: d) else { return [] }
-        return s
+    static func index() -> [Surah] { load("index", [Surah].self) ?? [] }
+    static func ayahs(_ id: Int) -> [Ayah] { load("\(id)", SurahContent.self)?.ayahs ?? [] }
+    private static func load<T: Decodable>(_ name: String, _ type: T.Type) -> T? {
+        guard let url = Bundle.main.url(forResource: name, withExtension: "json", subdirectory: "quran"),
+              let d = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(T.self, from: d)
     }
-    static func ayahs(_ id: Int) -> [Ayah] {
-        guard let url = Bundle.main.url(forResource: "\(id)", withExtension: "json", subdirectory: "quran"),
-              let d = try? Data(contentsOf: url),
-              let s = try? JSONDecoder().decode(SurahContent.self, from: d) else { return [] }
-        return s.ayahs
+}
+
+private enum QuranStore {
+    static func resume(_ s: Int) -> Int { UserDefaults.standard.integer(forKey: "q_resume_\(s)") }
+    static func setResume(_ s: Int, _ p: Int) { UserDefaults.standard.set(p, forKey: "q_resume_\(s)") }
+    static func marks() -> Set<String> { Set(UserDefaults.standard.stringArray(forKey: "q_bm") ?? []) }
+    static func isMarked(_ k: String) -> Bool { marks().contains(k) }
+    static func toggle(_ k: String) {
+        var b = marks(); if b.contains(k) { b.remove(k) } else { b.insert(k) }
+        UserDefaults.standard.set(Array(b), forKey: "q_bm")
+    }
+}
+
+private let readerFontSize: CGFloat = 25
+private func arabicParagraph() -> NSMutableParagraphStyle {
+    let p = NSMutableParagraphStyle()
+    p.alignment = .justified; p.baseWritingDirection = .rightToLeft; p.lineSpacing = 8
+    return p
+}
+private func arabicDigits(_ n: Int) -> String {
+    let m: [Character: Character] = ["0": "٠", "1": "١", "2": "٢", "3": "٣", "4": "٤", "5": "٥", "6": "٦", "7": "٧", "8": "٨", "9": "٩"]
+    return String(String(n).map { m[$0] ?? $0 })
+}
+
+// Justified, non-scrolling Arabic text (a real Mushaf renders justified RTL).
+struct ArabicText: UIViewRepresentable {
+    let text: String
+    func makeUIView(context: Context) -> UITextView {
+        let tv = UITextView()
+        tv.isEditable = false; tv.isScrollEnabled = false; tv.backgroundColor = .clear
+        tv.textContainerInset = .zero; tv.textContainer.lineFragmentPadding = 0
+        return tv
+    }
+    func updateUIView(_ tv: UITextView, context: Context) {
+        tv.attributedText = NSAttributedString(string: text, attributes: [
+            .font: UIFont.systemFont(ofSize: readerFontSize),
+            .paragraphStyle: arabicParagraph(),
+            .foregroundColor: UIColor.label,
+        ])
     }
 }
 
@@ -35,10 +66,8 @@ struct QuranView: View {
         List(surahs) { s in
             NavigationLink(destination: SurahReader(id: s.id, name: s.name, transliteration: s.transliteration)) {
                 HStack(spacing: 12) {
-                    Text("\(s.id)")
-                        .font(.inter(14, .semibold)).foregroundColor(.brandGreen)
-                        .frame(width: 40, height: 40)
-                        .background(Color.brandGreen.opacity(0.14)).clipShape(Circle())
+                    Text("\(s.id)").font(.inter(14, .semibold)).foregroundColor(.brandGreen)
+                        .frame(width: 40, height: 40).background(Color.brandGreen.opacity(0.14)).clipShape(Circle())
                     VStack(alignment: .leading, spacing: 2) {
                         Text(s.transliteration).font(.inter(16, .semibold)).foregroundColor(.appOnSurface)
                         Text("\(s.total_verses) Verse").font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
@@ -48,51 +77,102 @@ struct QuranView: View {
                 }
             }
         }
-        .listStyle(.plain)
-        .navigationTitle("Koran").navigationBarTitleDisplayMode(.inline)
+        .listStyle(.plain).navigationTitle("Koran").navigationBarTitleDisplayMode(.inline)
     }
 }
 
 private struct SurahReader: View {
-    let id: Int
-    let name: String
-    let transliteration: String
+    let id: Int; let name: String; let transliteration: String
+    private let ayahs: [Ayah]
+    @State private var pages: [[Ayah]] = []
+    @State private var current: Int
+    @State private var marked = false
 
-    private var ayahs: [Ayah] { QuranLoader.ayahs(id) }
+    init(id: Int, name: String, transliteration: String) {
+        self.id = id; self.name = name; self.transliteration = transliteration
+        self.ayahs = QuranLoader.ayahs(id)
+        _current = State(initialValue: QuranStore.resume(id))
+    }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 18) {
-                Text(name)
-                    .font(.system(size: 30, weight: .bold)).foregroundColor(.brandGoldLight)
-                    .frame(maxWidth: .infinity).padding(.vertical, 16)
-                    .background(Color.brandGreen).clipShape(RoundedRectangle(cornerRadius: Radius.languageCard))
+        GeometryReader { geo in
+            ZStack {
+                Color.appBackground.ignoresSafeArea()
+                if pages.isEmpty {
+                    ProgressView().onAppear {
+                        pages = paginate(width: geo.size.width - 36, height: geo.size.height - 64,
+                                         firstExtra: (id == 1 || id == 9) ? 70 : 120)
+                        if current >= pages.count { current = max(0, pages.count - 1) }
+                        marked = QuranStore.isMarked("\(id):\(current)")
+                    }
+                } else {
+                    TabView(selection: $current) {
+                        ForEach(pages.indices, id: \.self) { i in page(i).tag(i) }
+                    }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .environment(\.layoutDirection, .rightToLeft)
+                    .onChange(of: current) { v in
+                        QuranStore.setResume(id, v); marked = QuranStore.isMarked("\(id):\(v)")
+                    }
+                }
+            }
+        }
+        .navigationTitle(transliteration).navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    QuranStore.toggle("\(id):\(current)"); marked.toggle()
+                } label: {
+                    Image(systemName: marked ? "bookmark.fill" : "bookmark").foregroundColor(.brandGold)
+                }
+            }
+        }
+    }
 
+    private func page(_ i: Int) -> some View {
+        VStack(spacing: 12) {
+            if i == 0 {
+                Text(name).font(.system(size: 30, weight: .bold)).foregroundColor(.brandGoldLight)
+                    .frame(maxWidth: .infinity).padding(.vertical, 14)
+                    .background(Color.brandGreen).clipShape(RoundedRectangle(cornerRadius: 16))
                 if id != 1 && id != 9 {
                     Text("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ")
-                        .font(.system(size: 24, weight: .bold)).foregroundColor(.brandGreen)
+                        .font(.system(size: 22, weight: .bold)).foregroundColor(.brandGreen)
                 }
-
-                Text(flowingText)
-                    .font(.system(size: 25))
-                    .foregroundColor(.appOnSurface)
-                    .lineSpacing(16)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .multilineTextAlignment(.trailing)
-                    .environment(\.layoutDirection, .rightToLeft)
             }
-            .padding(18)
+            ArabicText(text: flowing(pages[i])).frame(maxWidth: .infinity, maxHeight: .infinity)
+            Text(arabicDigits(i + 1)).font(.system(size: 16)).foregroundColor(.appOnSurfaceVariant)
         }
-        .background(Color.appBackground.ignoresSafeArea())
-        .navigationTitle(transliteration).navigationBarTitleDisplayMode(.inline)
+        .padding(.horizontal, 18).padding(.vertical, 6)
     }
 
-    // The surah as one flowing block, each ayah followed by its number in a ﴿ ﴾ ornament.
-    private var flowingText: String {
-        ayahs.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
+    private func flowing(_ a: [Ayah]) -> String {
+        a.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
     }
-    private func arabicDigits(_ n: Int) -> String {
-        let map: [Character: Character] = ["0": "٠", "1": "١", "2": "٢", "3": "٣", "4": "٤", "5": "٥", "6": "٦", "7": "٧", "8": "٨", "9": "٩"]
-        return String(String(n).map { map[$0] ?? $0 })
+
+    // Greedily pack complete ayahs onto each page until the next one would overflow.
+    private func paginate(width: CGFloat, height: CGFloat, firstExtra: CGFloat) -> [[Ayah]] {
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: readerFontSize), .paragraphStyle: arabicParagraph(),
+        ]
+        func textHeight(_ t: String) -> CGFloat {
+            (t as NSString).boundingRect(
+                with: CGSize(width: width, height: .greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: attrs, context: nil
+            ).height
+        }
+        var result: [[Ayah]] = []; var cur: [Ayah] = []
+        var limit = height - firstExtra
+        for a in ayahs {
+            let candidate = cur + [a]
+            let text = candidate.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
+            if !cur.isEmpty && textHeight(text) > limit {
+                result.append(cur); cur = [a]; limit = height
+            } else {
+                cur = candidate
+            }
+        }
+        if !cur.isEmpty { result.append(cur) }
+        return result
     }
 }

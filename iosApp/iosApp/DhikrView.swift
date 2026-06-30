@@ -2,7 +2,7 @@ import SwiftUI
 import Shared
 
 // "Dhikr" (spec 5.3): the 25 remembrances (Arabic + transliteration + meaning), reused verbatim from
-// the shared Kotlin data. Rotating order — the start point advances each visit.
+// the shared Kotlin data. Everything centered. Rotating order — start point advances each visit.
 struct DhikrView: View {
     @AppStorage("dhikr_ptr") private var ptr = 0
 
@@ -17,18 +17,20 @@ struct DhikrView: View {
         ScrollView {
             LazyVStack(spacing: 12) {
                 ForEach(Array(items.enumerated()), id: \.offset) { _, d in
-                    VStack(alignment: .leading, spacing: 6) {
+                    VStack(spacing: 8) {
                         Text(d.arabic)
                             .font(.system(size: 26, weight: .bold)).foregroundColor(.appOnSurface)
                             .lineSpacing(12)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .multilineTextAlignment(.trailing)
-                            .environment(\.layoutDirection, .rightToLeft)
-                        Text(d.transliteration).font(.inter(15)).italic().foregroundColor(.appPrimary)
-                        Text(d.meaning).font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
+                            .multilineTextAlignment(.center)
+                        Text(d.transliteration)
+                            .font(.inter(15)).italic().foregroundColor(.appPrimary)
+                            .multilineTextAlignment(.center)
+                        Text(d.meaning)
+                            .font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
+                            .multilineTextAlignment(.center)
                     }
+                    .frame(maxWidth: .infinity)
                     .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color.appSurface)
                     .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
                 }
