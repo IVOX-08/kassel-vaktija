@@ -1,23 +1,18 @@
 import SwiftUI
 
-// Community announcements. On Android these come from Firebase; the iOS wiring is a later step,
-// so this is a styled placeholder for now.
+// "Nachrichten" (spec section 4). Firebase wiring is a later step; for now the empty state per spec.
 struct NewsView: View {
     var body: some View {
         NavigationStack {
-            VStack(spacing: 16) {
-                Image(systemName: "bell.badge.fill")
-                    .font(.system(size: 52))
-                    .foregroundColor(.brandGreen)
-                Text("Gemeinde-Nachrichten")
-                    .font(.title2).bold()
-                Text("Hier erscheinen die Mitteilungen der Gemeinde.\nDie Verbindung zu Firebase folgt als nächster Schritt.")
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal, 32)
+            VStack {
+                Spacer()
+                Text("Noch keine Mitteilungen.")
+                    .font(.inter(17))
+                    .foregroundColor(.appOnSurfaceVariant)
+                Spacer()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.pageBackground.ignoresSafeArea())
+            .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle("Nachrichten")
         }
     }

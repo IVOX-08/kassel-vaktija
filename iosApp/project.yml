@@ -18,6 +18,7 @@ targets:
         UILaunchScreen: {}
         UIAppFonts:
           - Inter.ttf
+        NSLocationWhenInUseUsageDescription: "Für die Qibla-Anzeige wird die Kompassrichtung verwendet."
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.igbdsandzakkassel.vaktija.ios
