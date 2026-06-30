@@ -11,7 +11,7 @@ struct MoreView: View {
         [
             Item(title: "Koran", icon: "book.fill", dest: AnyView(QuranView())),
             Item(title: "Hadith", icon: "text.book.closed.fill", dest: AnyView(HadithView())),
-            Item(title: "Dhikr", icon: "heart.text.square.fill", dest: AnyView(PlaceholderView(title: "Dhikr", icon: "heart.text.square.fill", note: "24 Adhkar (Arabisch + Transliteration + Bedeutung) — werden aus dem Code portiert."))),
+            Item(title: "Dhikr", icon: "heart.text.square.fill", dest: AnyView(DhikrView())),
             Item(title: "Tasbih", icon: "circle.circle.fill", dest: AnyView(TasbihView())),
             Item(title: "Gebets-Tracker", icon: "checkmark.circle.fill", dest: AnyView(TrackerView())),
             Item(title: "Ramadan", icon: "moon.stars.fill", dest: AnyView(RamadanView())),
