@@ -3,7 +3,12 @@ package de.igbdsandzakkassel.vaktija.service.alarm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
 import android.media.AudioManager
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import dagger.hilt.android.AndroidEntryPoint
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
@@ -51,18 +56,25 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 // it's badly overdue we post a SILENT notice instead of playing the Adhan sound.
                 val scheduledAt = intent.getLongExtra(EXTRA_TRIGGER_AT, 0L)
                 val stale = scheduledAt > 0L && System.currentTimeMillis() - scheduledAt > STALE_ADHAN_MS
+                val ringerMode = ringerMode(context)
                 when {
                     stale -> {
                         PrayerNotifier.ensureChannels(context)
                         PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
                     }
-                    playWhenSilent || !isPhoneSilenced(context) -> {
-                        // Play via the foreground service (won't be truncated); it also vibrates via the channel.
+                    playWhenSilent || ringerMode == AudioManager.RINGER_MODE_NORMAL -> {
+                        // Play via the foreground service (won't be truncated).
                         AdhanForegroundService.start(context, prayer, sound.name, isJumua)
                     }
+                    ringerMode == AudioManager.RINGER_MODE_VIBRATE -> {
+                        // Phone on vibrate → no sound, but it MUST buzz. Channel vibration can't be
+                        // relied on (locked once created; some OEMs drop it), so buzz explicitly.
+                        PrayerNotifier.ensureChannels(context)
+                        PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
+                        vibrateAdhan(context)
+                    }
                     else -> {
-                        // Phone is on silent/vibrate and the user hasn't opted into overriding it: show a
-                        // quiet prayer-time notice instead of playing the Adhan out loud (e.g. at work).
+                        // Phone fully on silent (no vibrate): a quiet prayer-time notice only.
                         PrayerNotifier.ensureChannels(context)
                         PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
                     }
@@ -116,10 +128,27 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
     private fun prayerFrom(intent: Intent): Prayer? =
         Prayer.entries.getOrNull(intent.getIntExtra(EXTRA_PRAYER, -1))
 
-    /** True if the phone's ringer is on silent or vibrate — then the Adhan should not play out loud. */
-    private fun isPhoneSilenced(context: Context): Boolean {
-        val audio = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return false
-        return audio.ringerMode != AudioManager.RINGER_MODE_NORMAL
+    private fun ringerMode(context: Context): Int =
+        (context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager)?.ringerMode
+            ?: AudioManager.RINGER_MODE_NORMAL
+
+    /**
+     * Fire the Adhan buzz directly. Uses ALARM usage so it is delivered even on vibrate mode and
+     * through Do-Not-Disturb, and so it works regardless of the (locked, OEM-flaky) channel vibration.
+     */
+    private fun vibrateAdhan(context: Context) {
+        val pattern = longArrayOf(0, 400, 200, 400) // wait, buzz, gap, buzz
+        val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager)?.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+        } ?: return
+        val attrs = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ALARM)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+        runCatching { vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1), attrs) }
     }
 
     companion object {

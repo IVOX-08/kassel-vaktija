@@ -21,18 +21,20 @@ import de.igbdsandzakkassel.vaktija.data.model.Prayer
  */
 object PrayerNotifier {
 
-    const val CHANNEL_ADHAN = "prayer_adhan"
+    // v2: channel-level vibration proved unreliable — a channel's vibration is LOCKED once created
+    // (so an app update can't add it) and some OEMs (e.g. Honor) silently drop it. The buzz is now
+    // fired explicitly from PrayerAlarmReceiver (alarm usage), so this channel stays fully silent.
+    const val CHANNEL_ADHAN = "prayer_adhan_v2"
     const val CHANNEL_PREWARN = "prayer_prewarn"
     const val CHANNEL_REMINDER = "weekly_reminder"
     const val ADHAN_NOTIFICATION_ID = 1001
     private const val PREWARN_BASE_ID = 2000
     private const val REMINDER_NOTIFICATION_ID = 4001
 
-    /** Two firm pulses, so the vibrate-only mode feels deliberate (wait, buzz, gap, buzz). */
-    private val ADHAN_VIBRATION = longArrayOf(0, 400, 200, 400)
-
     fun ensureChannels(context: Context) {
         val manager = context.getSystemService<NotificationManager>() ?: return
+        // Remove the old v1 Adhan channel whose (locked) vibration setting some devices ignored.
+        manager.deleteNotificationChannel("prayer_adhan")
         val adhan = NotificationChannel(
             CHANNEL_ADHAN,
             context.getString(R.string.notif_channel_adhan),
@@ -40,8 +42,7 @@ object PrayerNotifier {
         ).apply {
             description = context.getString(R.string.notif_channel_adhan_desc)
             setSound(null, null) // audio handled by the foreground service
-            enableVibration(true)
-            vibrationPattern = ADHAN_VIBRATION
+            enableVibration(false) // vibration is fired explicitly (alarm usage) from the receiver
         }
         val preWarn = NotificationChannel(
             CHANNEL_PREWARN,
@@ -84,9 +85,9 @@ object PrayerNotifier {
         .build()
 
     /**
-     * Quiet prayer-time notice used when the phone is muted/on vibrate and the user hasn't opted
-     * into playing the Adhan out loud — respects silent mode (the channel has no sound; in vibrate
-     * mode it vibrates, in silent mode the system keeps it fully quiet).
+     * Quiet prayer-time notice used when the phone is muted/on vibrate and the user hasn't opted into
+     * playing the Adhan out loud. The channel is silent; on vibrate mode the caller
+     * ([de.igbdsandzakkassel.vaktija.service.alarm.PrayerAlarmReceiver]) also fires an explicit buzz.
      */
     fun postAdhanSilently(context: Context, prayer: Prayer, isJumua: Boolean = false) {
         if (!hasNotificationPermission(context)) return
