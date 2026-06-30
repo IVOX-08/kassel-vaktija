@@ -8,8 +8,13 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
-/** The upcoming prayer and how many minutes remain until it — ready for the UI. */
-data class NextPrayerInfo(val name: String, val time: String, val inMinutes: Int)
+/** The upcoming prayer plus minutes and seconds remaining — ready for the UI (incl. a live countdown). */
+data class NextPrayerInfo(
+    val name: String,
+    val time: String,
+    val inMinutes: Int,
+    val inSeconds: Int,
+)
 
 /**
  * The next of the five daily prayers (Fajr, Dhuhr, Asr, Maghrib, Isha) from now, in Kassel.
@@ -39,7 +44,11 @@ fun nextPrayerNow(): NextPrayerInfo {
     val next = candidates.first { (_, date, time) ->
         LocalDateTime(date, time).toInstant(tz) > now
     }
-    val instant = LocalDateTime(next.second, next.third).toInstant(tz)
-    val minutes = (instant - now).inWholeMinutes.toInt()
-    return NextPrayerInfo(next.first, next.third.toHhMm(), minutes)
+    val remaining = LocalDateTime(next.second, next.third).toInstant(tz) - now
+    return NextPrayerInfo(
+        name = next.first,
+        time = next.third.toHhMm(),
+        inMinutes = remaining.inWholeMinutes.toInt(),
+        inSeconds = remaining.inWholeSeconds.toInt(),
+    )
 }
