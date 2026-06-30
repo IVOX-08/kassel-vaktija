@@ -1,8 +1,8 @@
 import SwiftUI
 
-// "Koran" (spec 5.1): surah list + a PAGINATED Mushaf reader — each page fills the screen with as
-// many complete ayahs as fit, page-turning right-to-left (no scrolling), a bookmark in the top-right
-// corner, and a saved resume point per surah. Arabic only, justified, from the bundled Uthmani JSON.
+// "Koran" (spec 5.1): surah list + a PAGINATED Mushaf reader — each page fills with as many complete
+// ayahs as fit, page-turning right-to-left (no scrolling), bookmark top-right, saved resume point.
+// Arabic only, justified, wrapped, from the bundled Uthmani JSON.
 
 private struct Surah: Decodable, Identifiable {
     let id: Int; let name: String; let transliteration: String; let total_verses: Int
@@ -31,20 +31,24 @@ private enum QuranStore {
     }
 }
 
-private let readerFontSize: CGFloat = 25
+private let readerFontSize: CGFloat = 26
 private func arabicParagraph() -> NSMutableParagraphStyle {
     let p = NSMutableParagraphStyle()
-    p.alignment = .justified; p.baseWritingDirection = .rightToLeft; p.lineSpacing = 8
+    p.alignment = .justified; p.baseWritingDirection = .rightToLeft; p.lineSpacing = 12
     return p
+}
+private func arabicAttributes() -> [NSAttributedString.Key: Any] {
+    [.font: UIFont.systemFont(ofSize: readerFontSize), .paragraphStyle: arabicParagraph()]
 }
 private func arabicDigits(_ n: Int) -> String {
     let m: [Character: Character] = ["0": "٠", "1": "١", "2": "٢", "3": "٣", "4": "٤", "5": "٥", "6": "٦", "7": "٧", "8": "٨", "9": "٩"]
     return String(String(n).map { m[$0] ?? $0 })
 }
 
-// Justified, non-scrolling Arabic text (a real Mushaf renders justified RTL).
+// Justified, wrapping, non-scrolling Arabic — width is fixed so the text container actually wraps.
 struct ArabicText: UIViewRepresentable {
     let text: String
+    let width: CGFloat
     func makeUIView(context: Context) -> UITextView {
         let tv = UITextView()
         tv.isEditable = false; tv.isScrollEnabled = false; tv.backgroundColor = .clear
@@ -52,11 +56,9 @@ struct ArabicText: UIViewRepresentable {
         return tv
     }
     func updateUIView(_ tv: UITextView, context: Context) {
-        tv.attributedText = NSAttributedString(string: text, attributes: [
-            .font: UIFont.systemFont(ofSize: readerFontSize),
-            .paragraphStyle: arabicParagraph(),
-            .foregroundColor: UIColor.label,
-        ])
+        tv.textContainer.size = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let attrs = arabicAttributes().merging([.foregroundColor: UIColor.label]) { a, _ in a }
+        tv.attributedText = NSAttributedString(string: text, attributes: attrs)
     }
 }
 
@@ -96,18 +98,19 @@ private struct SurahReader: View {
 
     var body: some View {
         GeometryReader { geo in
+            let contentWidth = geo.size.width - 36
             ZStack {
                 Color.appBackground.ignoresSafeArea()
                 if pages.isEmpty {
                     ProgressView().onAppear {
-                        pages = paginate(width: geo.size.width - 36, height: geo.size.height - 64,
+                        pages = paginate(width: contentWidth, height: geo.size.height - 80,
                                          firstExtra: (id == 1 || id == 9) ? 70 : 120)
                         if current >= pages.count { current = max(0, pages.count - 1) }
                         marked = QuranStore.isMarked("\(id):\(current)")
                     }
                 } else {
                     TabView(selection: $current) {
-                        ForEach(pages.indices, id: \.self) { i in page(i).tag(i) }
+                        ForEach(pages.indices, id: \.self) { i in page(i, width: contentWidth).tag(i) }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .environment(\.layoutDirection, .rightToLeft)
@@ -120,16 +123,14 @@ private struct SurahReader: View {
         .navigationTitle(transliteration).navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    QuranStore.toggle("\(id):\(current)"); marked.toggle()
-                } label: {
+                Button { QuranStore.toggle("\(id):\(current)"); marked.toggle() } label: {
                     Image(systemName: marked ? "bookmark.fill" : "bookmark").foregroundColor(.brandGold)
                 }
             }
         }
     }
 
-    private func page(_ i: Int) -> some View {
+    private func page(_ i: Int, width: CGFloat) -> some View {
         VStack(spacing: 12) {
             if i == 0 {
                 Text(name).font(.system(size: 30, weight: .bold)).foregroundColor(.brandGoldLight)
@@ -140,7 +141,8 @@ private struct SurahReader: View {
                         .font(.system(size: 22, weight: .bold)).foregroundColor(.brandGreen)
                 }
             }
-            ArabicText(text: flowing(pages[i])).frame(maxWidth: .infinity, maxHeight: .infinity)
+            ArabicText(text: flowing(pages[i]), width: width)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             Text(arabicDigits(i + 1)).font(.system(size: 16)).foregroundColor(.appOnSurfaceVariant)
         }
         .padding(.horizontal, 18).padding(.vertical, 6)
@@ -150,11 +152,9 @@ private struct SurahReader: View {
         a.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
     }
 
-    // Greedily pack complete ayahs onto each page until the next one would overflow.
+    // Greedily pack complete ayahs onto each page until the next one would overflow the page height.
     private func paginate(width: CGFloat, height: CGFloat, firstExtra: CGFloat) -> [[Ayah]] {
-        let attrs: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: readerFontSize), .paragraphStyle: arabicParagraph(),
-        ]
+        let attrs = arabicAttributes()
         func textHeight(_ t: String) -> CGFloat {
             (t as NSString).boundingRect(
                 with: CGSize(width: width, height: .greatestFiniteMagnitude),
