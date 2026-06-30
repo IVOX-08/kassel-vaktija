@@ -19,6 +19,13 @@
     <string name="ramadan_sehur">Suhoor</string>
     <string name="ramadan_teravija">Tarawih</string>
     <string name="ramadan_fasted_today">Fasted today</string>
+    <string name="ramadan_day_badge">%1$d Ramadan %2$d</string>
+    <string name="ramadan_starts_in_days">Ramadan starts in %1$d days</string>
+    <string name="ramadan_mubarak">Ramadan Mubarak!</string>
+    <string name="ramadan_imsak">Imsak</string>
+    <string name="ramadan_fasted_count">Fasted %1$d of %2$d days</string>
+    <string name="ramadan_dua_title">Supplication for breaking the fast</string>
+    <string name="ramadan_dua_meaning">O Allah, for You I have fasted and with Your provision I have broken my fast.</string>
     <string name="tracker_streak">day streak</string>
     <string name="tracker_today">Today</string>
     <string name="tasbih_reset">Reset</string>

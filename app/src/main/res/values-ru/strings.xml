@@ -19,6 +19,13 @@
     <string name="ramadan_sehur">Сухур</string>
     <string name="ramadan_teravija">Таравих</string>
     <string name="ramadan_fasted_today">Постился сегодня</string>
+    <string name="ramadan_day_badge">%1$d рамадан %2$d г.х.</string>
+    <string name="ramadan_starts_in_days">Рамадан начнётся через %1$d дн.</string>
+    <string name="ramadan_mubarak">Рамадан мубарак!</string>
+    <string name="ramadan_imsak">Имсак</string>
+    <string name="ramadan_fasted_count">Постился %1$d из %2$d дней</string>
+    <string name="ramadan_dua_title">Дуа при разговении</string>
+    <string name="ramadan_dua_meaning">О Аллах, ради Тебя я постился и Твоим уделом разговелся.</string>
     <string name="tracker_streak">дней подряд</string>
     <string name="tracker_today">Сегодня</string>
     <string name="tasbih_reset">Сбросить</string>

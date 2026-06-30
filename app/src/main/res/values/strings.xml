@@ -24,7 +24,16 @@
     <string name="ramadan_iftar">Iftar</string>
     <string name="ramadan_sehur">Sehur</string>
     <string name="ramadan_teravija">Teravija</string>
-    <string name="ramadan_fasted_today">Danas postih</string>
+    <string name="ramadan_fasted_today">Danas sam postio</string>
+    <string name="ramadan_day_badge">%1$d. ramazan %2$d.</string>
+    <string name="ramadan_starts_in_days">Ramazan počinje za %1$d dana</string>
+    <string name="ramadan_mubarak">Ramazan mubarek!</string>
+    <string name="ramadan_imsak">imsak</string>
+    <string name="ramadan_fasted_count">Postio %1$d od %2$d dana</string>
+    <string name="ramadan_dua_title">Dova pri iftaru</string>
+    <string name="ramadan_dua_ar" translatable="false">اللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ</string>
+    <string name="ramadan_dua_translit" translatable="false">Allāhumma laka ṣumtu wa ʿalā rizqika afṭartu</string>
+    <string name="ramadan_dua_meaning">Allahu moj, Tebi sam postio i Tvojom opskrbom se iftario.</string>
     <string name="tracker_streak">dana zaredom</string>
     <string name="tracker_today">Danas</string>
     <string name="tasbih_reset">Poništi</string>

@@ -19,6 +19,13 @@
     <string name="ramadan_sehur">Sahur</string>
     <string name="ramadan_teravija">Teravih</string>
     <string name="ramadan_fasted_today">Bugün oruç tuttum</string>
+    <string name="ramadan_day_badge">%1$d. Ramazan %2$d</string>
+    <string name="ramadan_starts_in_days">Ramazan başlamasına %1$d gün kaldı</string>
+    <string name="ramadan_mubarak">Ramazan Mübarek olsun!</string>
+    <string name="ramadan_imsak">İmsak</string>
+    <string name="ramadan_fasted_count">%2$d günün %1$d günü oruç tutuldu</string>
+    <string name="ramadan_dua_title">İftar duası</string>
+    <string name="ramadan_dua_meaning">Ey Allahım! Senin için oruç tuttum ve Senin rızkınla orucumu açtım.</string>
     <string name="tracker_streak">gün üst üste</string>
     <string name="tracker_today">Bugün</string>
     <string name="tasbih_reset">Sıfırla</string>

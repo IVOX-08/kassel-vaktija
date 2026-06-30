@@ -19,6 +19,13 @@
     <string name="ramadan_sehur">سحری</string>
     <string name="ramadan_teravija">تراویح</string>
     <string name="ramadan_fasted_today">آج روزہ رکھا</string>
+    <string name="ramadan_day_badge">%1$d رمضان %2$d ھ</string>
+    <string name="ramadan_starts_in_days">رمضان %1$d دن میں شروع ہوگا</string>
+    <string name="ramadan_mubarak">رمضان مبارک!</string>
+    <string name="ramadan_imsak">امساک</string>
+    <string name="ramadan_fasted_count">%2$d میں سے %1$d دن روزے رکھے</string>
+    <string name="ramadan_dua_title">افطار کی دعا</string>
+    <string name="ramadan_dua_meaning">اے اللہ! میں نے تیرے لیے روزہ رکھا اور تیرے رزق سے افطار کیا۔</string>
     <string name="tracker_streak">دن لگاتار</string>
     <string name="tracker_today">آج</string>
     <string name="tasbih_reset">ری سیٹ</string>
