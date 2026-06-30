@@ -4,7 +4,7 @@ name: iosApp
 options:
   bundleIdPrefix: de.igbdsandzakkassel.vaktija
   deploymentTarget:
-    iOS: "15.0"
+    iOS: "16.0"
 targets:
   iosApp:
     type: application

@@ -1,18 +1,9 @@
 import SwiftUI
 import Shared
 
-// Brand palette mirrored 1:1 from the Android app's ui/theme/Color.kt.
-private extension Color {
-    static let brandGreen = Color(red: 46 / 255, green: 125 / 255, blue: 50 / 255)        // #2E7D32
-    static let brandGold = Color(red: 184 / 255, green: 134 / 255, blue: 11 / 255)        // #B8860B
-    static let brandGoldLight = Color(red: 212 / 255, green: 175 / 255, blue: 55 / 255)   // #D4AF37
-    static let pageBackground = Color(red: 244 / 255, green: 244 / 255, blue: 244 / 255)  // #F4F4F4
-    static let cardText = Color(red: 26 / 255, green: 26 / 255, blue: 26 / 255)           // #1A1A1A
-}
-
-// The iOS dashboard, styled to match the Android DashboardScreen: address / logo / donate header,
+// The "Gebetszeiten" tab — matches the Android DashboardScreen: address / logo / donate header,
 // Gregorian + Hijri date, a green hero with a live HH:MM:SS countdown, and white prayer cards showing
-// Adhan + Iqamah (the next prayer filled green/gold). Times/Iqamah come from the shared Kotlin module.
+// Adhan + Iqamah (the active prayer filled green/gold). Times come from the shared Kotlin module.
 struct ContentView: View {
     private let rows: [DashboardRow] = DashboardDataKt.dashboardRowsForToday()
     private let next: NextPrayerInfo = NextPrayerKt.nextPrayerNow()
@@ -105,7 +96,7 @@ struct ContentView: View {
     private func prayerCard(_ row: DashboardRow) -> some View {
         let active = row.name == next.name
         let nameColor = active ? Color.brandGoldLight : Color.brandGreen
-        let timeColor = active ? Color.white : Color.cardText
+        let timeColor = active ? Color.white : Color.primaryText
         let subColor = active ? Color.white.opacity(0.85) : Color.brandGreen
         return HStack(spacing: 0) {
             RoundedRectangle(cornerRadius: 3)
@@ -133,7 +124,7 @@ struct ContentView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
         }
-        .background(active ? Color.brandGreen : Color.white)
+        .background(active ? Color.brandGreen : Color.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         .shadow(color: .black.opacity(0.06), radius: 3, y: 1)
     }
