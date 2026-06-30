@@ -2,7 +2,7 @@ import SwiftUI
 
 // "Koran" (spec 5.1): surah list + a PAGINATED Mushaf reader — each page fills with as many complete
 // ayahs as fit, page-turning right-to-left (no scrolling), bookmark top-right, saved resume point.
-// Arabic only, justified, wrapped, from the bundled Uthmani JSON.
+// Arabic only, wrapped (native SwiftUI Text), from the bundled Uthmani JSON.
 
 private struct Surah: Decodable, Identifiable {
     let id: Int; let name: String; let transliteration: String; let total_verses: Int
@@ -31,35 +31,12 @@ private enum QuranStore {
     }
 }
 
-private let readerFontSize: CGFloat = 26
-private func arabicParagraph() -> NSMutableParagraphStyle {
-    let p = NSMutableParagraphStyle()
-    p.alignment = .justified; p.baseWritingDirection = .rightToLeft; p.lineSpacing = 12
-    return p
-}
-private func arabicAttributes() -> [NSAttributedString.Key: Any] {
-    [.font: UIFont.systemFont(ofSize: readerFontSize), .paragraphStyle: arabicParagraph()]
-}
+private let readerFontSize: CGFloat = 25
+private let readerLineSpacing: CGFloat = 12
+
 private func arabicDigits(_ n: Int) -> String {
     let m: [Character: Character] = ["0": "٠", "1": "١", "2": "٢", "3": "٣", "4": "٤", "5": "٥", "6": "٦", "7": "٧", "8": "٨", "9": "٩"]
     return String(String(n).map { m[$0] ?? $0 })
-}
-
-// Justified, wrapping, non-scrolling Arabic — width is fixed so the text container actually wraps.
-struct ArabicText: UIViewRepresentable {
-    let text: String
-    let width: CGFloat
-    func makeUIView(context: Context) -> UITextView {
-        let tv = UITextView()
-        tv.isEditable = false; tv.isScrollEnabled = false; tv.backgroundColor = .clear
-        tv.textContainerInset = .zero; tv.textContainer.lineFragmentPadding = 0
-        return tv
-    }
-    func updateUIView(_ tv: UITextView, context: Context) {
-        tv.textContainer.size = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let attrs = arabicAttributes().merging([.foregroundColor: UIColor.label]) { a, _ in a }
-        tv.attributedText = NSAttributedString(string: text, attributes: attrs)
-    }
 }
 
 struct QuranView: View {
@@ -103,14 +80,14 @@ private struct SurahReader: View {
                 Color.appBackground.ignoresSafeArea()
                 if pages.isEmpty {
                     ProgressView().onAppear {
-                        pages = paginate(width: contentWidth, height: geo.size.height - 80,
-                                         firstExtra: (id == 1 || id == 9) ? 70 : 120)
+                        pages = paginate(width: contentWidth, height: geo.size.height * 0.82,
+                                         firstExtra: (id == 1 || id == 9) ? 90 : 150)
                         if current >= pages.count { current = max(0, pages.count - 1) }
                         marked = QuranStore.isMarked("\(id):\(current)")
                     }
                 } else {
                     TabView(selection: $current) {
-                        ForEach(pages.indices, id: \.self) { i in page(i, width: contentWidth).tag(i) }
+                        ForEach(pages.indices, id: \.self) { i in page(i).tag(i) }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .environment(\.layoutDirection, .rightToLeft)
@@ -130,7 +107,7 @@ private struct SurahReader: View {
         }
     }
 
-    private func page(_ i: Int, width: CGFloat) -> some View {
+    private func page(_ i: Int) -> some View {
         VStack(spacing: 12) {
             if i == 0 {
                 Text(name).font(.system(size: 30, weight: .bold)).foregroundColor(.brandGoldLight)
@@ -141,32 +118,43 @@ private struct SurahReader: View {
                         .font(.system(size: 22, weight: .bold)).foregroundColor(.brandGreen)
                 }
             }
-            ArabicText(text: flowing(pages[i]), width: width)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            Text(flowing(pages[i]))
+                .font(.system(size: readerFontSize))
+                .lineSpacing(readerLineSpacing)
+                .foregroundColor(.appOnSurface)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .topTrailing)
+                .multilineTextAlignment(.trailing)
+                .environment(\.layoutDirection, .rightToLeft)
+            Spacer(minLength: 0)
             Text(arabicDigits(i + 1)).font(.system(size: 16)).foregroundColor(.appOnSurfaceVariant)
         }
-        .padding(.horizontal, 18).padding(.vertical, 6)
+        .padding(.horizontal, 18).padding(.vertical, 8)
     }
 
     private func flowing(_ a: [Ayah]) -> String {
         a.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
     }
 
-    // Greedily pack complete ayahs onto each page until the next one would overflow the page height.
+    // Greedily pack complete ayahs onto each page until the next one would overflow.
     private func paginate(width: CGFloat, height: CGFloat, firstExtra: CGFloat) -> [[Ayah]] {
-        let attrs = arabicAttributes()
+        let para = NSMutableParagraphStyle()
+        para.baseWritingDirection = .rightToLeft
+        para.lineSpacing = readerLineSpacing
+        let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: readerFontSize), .paragraphStyle: para]
+        let sizer = UILabel()
+        sizer.numberOfLines = 0
         func textHeight(_ t: String) -> CGFloat {
-            (t as NSString).boundingRect(
-                with: CGSize(width: width, height: .greatestFiniteMagnitude),
-                options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: attrs, context: nil
-            ).height
+            sizer.attributedText = NSAttributedString(string: t, attributes: attrs)
+            return sizer.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude)).height
         }
         var result: [[Ayah]] = []; var cur: [Ayah] = []
         var limit = height - firstExtra
         for a in ayahs {
             let candidate = cur + [a]
             let text = candidate.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
-            if !cur.isEmpty && textHeight(text) > limit {
+            // Small safety margin so we under-fill slightly rather than truncate the last ayah.
+            if !cur.isEmpty && textHeight(text) * 1.06 > limit {
                 result.append(cur); cur = [a]; limit = height
             } else {
                 cur = candidate
