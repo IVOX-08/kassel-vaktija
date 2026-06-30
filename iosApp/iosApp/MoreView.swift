@@ -10,7 +10,7 @@ struct MoreView: View {
     private var items: [Item] {
         [
             Item(title: "Koran", icon: "book.fill", dest: AnyView(PlaceholderView(title: "Koran", icon: "book.fill", note: "Der arabische Koran (Uthmani) wird hier eingebunden — die 115 JSON-Dateien liegen schon im Projekt."))),
-            Item(title: "Hadith", icon: "text.book.closed.fill", dest: AnyView(PlaceholderView(title: "Hadith", icon: "text.book.closed.fill", note: "40 Hadithe an-Nawawi + Riyad us-Salihin (echte Übersetzungen, 8 Sprachen) — Assets liegen bereit."))),
+            Item(title: "Hadith", icon: "text.book.closed.fill", dest: AnyView(HadithView())),
             Item(title: "Dhikr", icon: "heart.text.square.fill", dest: AnyView(PlaceholderView(title: "Dhikr", icon: "heart.text.square.fill", note: "24 Adhkar (Arabisch + Transliteration + Bedeutung) — werden aus dem Code portiert."))),
             Item(title: "Tasbih", icon: "circle.circle.fill", dest: AnyView(TasbihView())),
             Item(title: "Gebets-Tracker", icon: "checkmark.circle.fill", dest: AnyView(TrackerView())),
