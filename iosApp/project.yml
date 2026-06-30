@@ -14,8 +14,10 @@ targets:
     info:
       path: iosApp/Info.plist
       properties:
-        CFBundleDisplayName: Vaktija
+        CFBundleDisplayName: Kassel Vaktija
         UILaunchScreen: {}
+        UIAppFonts:
+          - Inter.ttf
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.igbdsandzakkassel.vaktija.ios

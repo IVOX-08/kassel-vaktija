@@ -17,9 +17,9 @@ fun dashboardRowsForToday(): List<DashboardRow> {
     val tz = TimeZone.currentSystemDefault()
     val t = PrayerTimesCalculator().compute(Clock.System.todayIn(tz), tz)
     return listOf(
-        // Fajr Iqamah intentionally null until the community confirms its real rule
-        // (the Android default of 04:30 was a placeholder, flagged as wrong).
-        DashboardRow("Fajr", t.fajr.toHhMm(), null),
+        // Fajr Iqamah: fixed community time. Spec default 04:30 — the real value comes from
+        // Firestore config/community.fajrIqamah once Firebase is wired (then it overrides this).
+        DashboardRow("Fajr", t.fajr.toHhMm(), LocalTime(4, 30).toHhMm()),
         DashboardRow("Sunrise", t.sunrise.toHhMm(), null),
         DashboardRow("Dhuhr", t.dhuhr.toHhMm(), t.dhuhr.plusMinutes(10).toHhMm()),
         DashboardRow("Asr", t.asr.toHhMm(), t.asr.plusMinutes(10).toHhMm()),
