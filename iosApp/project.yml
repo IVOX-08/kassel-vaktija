@@ -42,7 +42,46 @@ targets:
           - $(inherited)
           - -framework
           - Shared
+    # Embed the home-screen widget extension in the app.
+    dependencies:
+      - target: iosWidget
     # Build (and embed) the Kotlin shared framework before compiling the Swift app.
+    preBuildScripts:
+      - name: Build Kotlin Shared framework
+        basedOnDependencyAnalysis: false
+        script: |
+          cd "$SRCROOT/.."
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+
+  # Home-screen widget (spec 7) — a WidgetKit extension that reuses the shared Kotlin next-prayer logic.
+  iosWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: iosWidget
+    info:
+      path: iosWidget/Info.plist
+      properties:
+        CFBundleDisplayName: Kassel Vaktija
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.igbdsandzakkassel.vaktija.ios.widget
+        GENERATE_INFOPLIST_FILE: "NO"
+        SKIP_INSTALL: "YES"
+        ENABLE_USER_SCRIPT_SANDBOXING: "NO"
+        FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          - $(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)
+        OTHER_LDFLAGS:
+          - $(inherited)
+          - -framework
+          - Shared
+        LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - "@executable_path/../../Frameworks"
+    # The widget links the shared framework too, so make sure it's built first.
     preBuildScripts:
       - name: Build Kotlin Shared framework
         basedOnDependencyAnalysis: false

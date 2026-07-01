@@ -3,11 +3,18 @@ import SwiftUI
 @main
 struct iOSApp: App {
     @AppStorage("appColorScheme") private var appColorScheme = "system"
+    @AppStorage("onboarding_done") private var onboardingDone = false
 
     var body: some Scene {
         WindowGroup {
             MainTabView()
                 .preferredColorScheme(resolvedScheme)
+                .fullScreenCover(isPresented: .init(
+                    get: { !onboardingDone },
+                    set: { shown in if !shown { onboardingDone = true } }
+                )) {
+                    OnboardingView(onDone: { onboardingDone = true })
+                }
         }
     }
 
