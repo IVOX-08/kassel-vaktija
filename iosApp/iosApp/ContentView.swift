@@ -39,11 +39,12 @@ struct ContentView: View {
             HStack(alignment: .top, spacing: 6) {
                 linkBlock(url: mapsURL) {
                     VStack(spacing: 3) {
-                        Image(systemName: "mappin.and.ellipse").font(.system(size: 22)).foregroundColor(.appOnSurfaceVariant)
-                        Text("Schwanenweg 13\n34123 Kassel").font(.inter(11, .medium)).foregroundColor(.appOnSurfaceVariant).multilineTextAlignment(.center)
+                        Image(systemName: "mappin.and.ellipse").font(.system(size: 22)).foregroundColor(.appPrimary)
+                        Text("Schwanenweg 13\n34123 Kassel").font(.inter(11, .medium)).foregroundColor(.appPrimary).multilineTextAlignment(.center)
                     }.frame(maxWidth: .infinity)
                 }
                 Image(uiImage: logoImage).resizable().scaledToFit().frame(height: 96)
+                    .blendMode(scheme == .dark ? .normal : .multiply) // white emblem box blends into #F4F4F4
                 linkBlock(url: donateURL) {
                     VStack(spacing: 3) {
                         Image(systemName: "heart.fill").font(.system(size: 30)).foregroundColor(.appPrimary)

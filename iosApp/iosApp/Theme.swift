@@ -39,6 +39,7 @@ extension Color {
     static let appSurfaceVariant = adaptive(light: 0xF1F4F1, dark: 0x2A2F2A)
     static let appOnSurface = adaptive(light: 0x1A1A1A, dark: 0xECECEC)
     static let appOnSurfaceVariant = adaptive(light: 0x5C615C, dark: 0xB6BBB6)
+    static let moreCard = adaptive(light: 0xE7E0EC, dark: 0x49454F)              // lavender "Mehr" cards (matches Android)
 
     // Back-compat aliases used by the existing screens
     static let pageBackground = appBackground

@@ -99,6 +99,7 @@ private struct IntroSlides: View {
             Spacer()
             if s.emblem {
                 Image(uiImage: logo).resizable().scaledToFit().frame(height: 150)
+                    .blendMode(scheme == .dark ? .normal : .multiply)
             } else {
                 Image(systemName: s.icon).font(.system(size: 96)).foregroundColor(.brandGreen)
             }

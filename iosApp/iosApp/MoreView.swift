@@ -10,26 +10,37 @@ struct MoreView: View {
     private var items: [Item] {
         [
             Item(title: "Koran", icon: "book.fill", dest: AnyView(QuranView())),
-            Item(title: "Hadith", icon: "text.book.closed.fill", dest: AnyView(HadithView())),
-            Item(title: "Dhikr", icon: "heart.text.square.fill", dest: AnyView(DhikrView())),
-            Item(title: "Tasbih", icon: "circle.circle.fill", dest: AnyView(TasbihView())),
-            Item(title: "Gebets-Tracker", icon: "checkmark.circle.fill", dest: AnyView(TrackerView())),
-            Item(title: "Ramadan", icon: "moon.stars.fill", dest: AnyView(RamadanView())),
-            Item(title: "Qibla", icon: "location.north.line.fill", dest: AnyView(QiblaView())),
+            Item(title: "Hadith", icon: "text.quote", dest: AnyView(HadithView())),
+            Item(title: "Dhikr", icon: "figure.mind.and.body", dest: AnyView(DhikrView())),
+            Item(title: "Tasbih", icon: "target", dest: AnyView(TasbihView())),
+            Item(title: "Gebets-Tracker", icon: "checkmark.circle", dest: AnyView(TrackerView())),
+            Item(title: "Ramadan", icon: "moon.fill", dest: AnyView(RamadanView())),
+            Item(title: "Qibla", icon: "safari", dest: AnyView(QiblaView())),
         ]
     }
 
+    // Lavender cards mirroring the Android "Mehr" hub (icon · title · chevron).
     var body: some View {
         NavigationStack {
-            List(items) { item in
-                NavigationLink(destination: item.dest) {
-                    Label {
-                        Text(item.title).font(.inter(17)).foregroundColor(.appOnSurface)
-                    } icon: {
-                        Image(systemName: item.icon).foregroundColor(.appPrimary)
-                    }.padding(.vertical, 4)
+            ScrollView {
+                VStack(spacing: 12) {
+                    ForEach(items) { item in
+                        NavigationLink(destination: item.dest) {
+                            HStack(spacing: 16) {
+                                Image(systemName: item.icon).font(.system(size: 22)).foregroundColor(.appPrimary).frame(width: 28)
+                                Text(item.title).font(.inter(17, .medium)).foregroundColor(.appOnSurface)
+                                Spacer()
+                                Image(systemName: "chevron.right").font(.system(size: 14, weight: .semibold)).foregroundColor(.appOnSurfaceVariant)
+                            }
+                            .padding(.horizontal, 18).padding(.vertical, 18)
+                            .background(Color.moreCard)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                        }
+                    }
                 }
+                .padding(16)
             }
+            .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle("Mehr")
         }
     }
