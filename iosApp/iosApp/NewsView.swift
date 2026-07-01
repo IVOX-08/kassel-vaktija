@@ -6,14 +6,14 @@ struct NewsView: View {
         NavigationStack {
             VStack {
                 Spacer()
-                Text("Noch keine Mitteilungen.")
+                Text(L("news_empty"))
                     .font(.inter(17))
                     .foregroundColor(.appOnSurfaceVariant)
                 Spacer()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle("Nachrichten")
+            .navigationTitle(L("nav_news"))
         }
     }
 }

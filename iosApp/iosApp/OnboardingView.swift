@@ -2,24 +2,24 @@ import SwiftUI
 import UserNotifications
 
 // First-launch onboarding (spec 8): Language → 4 intro slides → 3-step permission assistant.
-// Only completing (or running through) the assistant sets `onboarding_done`.
+// Only completing (or running through) the assistant sets `onboarding_done`. The phase is persisted
+// so selecting a language (which rebuilds the whole tree for the new language + RTL) doesn't reset it.
 struct OnboardingView: View {
     let onDone: () -> Void
-    @AppStorage("app_lang") private var lang = "bs"
-    @State private var phase = 0 // 0 = language, 1 = intro, 2 = permissions
+    @AppStorage("ob_phase") private var phase = 0 // 0 = language, 1 = intro, 2 = permissions
 
     var body: some View {
         switch phase {
         case 0:
             LanguagePickerView(
                 showClose: false,
-                onSelect: { lang = $0.tag; phase = 1 },
+                onSelect: { phase = 1; Localization.shared.set($0.tag) },
                 onClose: {}
             )
         case 1:
             IntroSlides(onFinish: { phase = 2 })
         default:
-            PermissionAssistant(onDone: onDone)
+            PermissionAssistant(onDone: { phase = 0; onDone() })
         }
     }
 }
@@ -29,19 +29,15 @@ struct OnboardingView: View {
 private struct IntroSlide {
     let emblem: Bool          // slide 1 shows the community emblem; the rest show an SF Symbol
     let icon: String
-    let title: String
-    let text: String
+    let titleKey: String
+    let textKey: String
 }
 
 private let introSlides: [IntroSlide] = [
-    .init(emblem: true, icon: "", title: "Willkommen",
-          text: "Die App der IGBD-Gemeinde Sandžak-Kassel — Gebetszeiten, Koran, Hadithe und mehr, in Ihrer Sprache."),
-    .init(emblem: false, icon: "bell.fill", title: "Gebet & Adhan",
-          text: "Genaue Gebetszeiten mit Benachrichtigungen. Wählen Sie pro Gebet den Adhan oder einen kurzen Ton und passen Sie die Benachrichtigungen an — in den Einstellungen."),
-    .init(emblem: false, icon: "book.fill", title: "Koran, Hadith & Dhikr",
-          text: "Der vollständige Koran auf Arabisch, die 40 Hadithe von an-Nawawi und eine Auswahl aus Riyad as-Salihin sowie Dhikr — auf Arabisch und in Ihrer Sprache."),
-    .init(emblem: false, icon: "safari.fill", title: "Und mehr",
-          text: "Qibla, Kalender, Gemeinde-Nachrichten und ein Startbildschirm-Widget. Möge Allah es annehmen."),
+    .init(emblem: true, icon: "", titleKey: "onb_welcome_title", textKey: "onb_welcome_body"),
+    .init(emblem: false, icon: "bell.fill", titleKey: "onb_notif_title", textKey: "onb_notif_body"),
+    .init(emblem: false, icon: "book.fill", titleKey: "onb_content_title", textKey: "onb_content_body"),
+    .init(emblem: false, icon: "safari.fill", titleKey: "onb_more_title", textKey: "onb_more_body"),
 ]
 
 private struct IntroSlides: View {
@@ -60,7 +56,7 @@ private struct IntroSlides: View {
             VStack(spacing: 0) {
                 HStack {
                     Spacer()
-                    Button("Überspringen") { onFinish() }
+                    Button(L("onb_skip")) { onFinish() }
                         .font(.inter(15, .medium)).foregroundColor(.appOnSurfaceVariant)
                         .padding(16)
                 }
@@ -84,7 +80,7 @@ private struct IntroSlides: View {
                 Button {
                     if page == introSlides.count - 1 { onFinish() } else { withAnimation { page += 1 } }
                 } label: {
-                    Text(page == introSlides.count - 1 ? "Los geht's" : "Weiter")
+                    Text(page == introSlides.count - 1 ? L("onb_start") : L("onb_next"))
                         .font(.inter(16, .semibold)).foregroundColor(.white)
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
                         .background(Color.brandGreen).clipShape(RoundedRectangle(cornerRadius: 14))
@@ -103,8 +99,8 @@ private struct IntroSlides: View {
             } else {
                 Image(systemName: s.icon).font(.system(size: 96)).foregroundColor(.brandGreen)
             }
-            Text(s.title).font(.inter(24, .bold)).foregroundColor(.appPrimary)
-            Text(s.text).font(.inter(17)).foregroundColor(.appOnSurfaceVariant)
+            Text(L(s.titleKey)).font(.inter(24, .bold)).foregroundColor(.appPrimary)
+            Text(L(s.textKey)).font(.inter(17)).foregroundColor(.appOnSurfaceVariant)
                 .multilineTextAlignment(.center).padding(.horizontal, 32)
             Spacer()
         }
@@ -115,21 +111,15 @@ private struct IntroSlides: View {
 
 private struct PermissionStep {
     let icon: String
-    let title: String
-    let text: String
-    let action: String
+    let titleKey: String
+    let textKey: String
+    let actionKey: String
 }
 
 private let permissionSteps: [PermissionStep] = [
-    .init(icon: "bell.badge.fill", title: "Benachrichtigungen",
-          text: "Möchtest du an die Gebetszeiten (Adhan) und an Mitteilungen der Gemeinde erinnert werden? Dafür braucht die App die Erlaubnis für Benachrichtigungen.",
-          action: "Benachrichtigungen erlauben"),
-    .init(icon: "moon.fill", title: "„Nicht stören\"",
-          text: "Damit der Adhan auch dann erklingt, wenn dein Handy auf lautlos steht, erlaube den Zugriff auf „Nicht stören\". Auf dem iPhone wird das über eine geplante stille Benachrichtigung gelöst.",
-          action: "In den iOS-Einstellungen öffnen"),
-    .init(icon: "rectangle.stack.badge.plus", title: "Widget",
-          text: "Möchtest du die nächste Gebetszeit direkt auf dem Startbildschirm sehen? Halte den Startbildschirm gedrückt und füge „Kassel Vaktija\" über das +-Symbol hinzu.",
-          action: "Verstanden"),
+    .init(icon: "bell.badge.fill", titleKey: "onb_perm_notif_title", textKey: "onb_perm_notif_body", actionKey: "settings_perm_notifications"),
+    .init(icon: "moon.fill", titleKey: "onb_perm_dnd_title", textKey: "onb_perm_dnd_body", actionKey: "settings_perm_dnd"),
+    .init(icon: "rectangle.stack.badge.plus", titleKey: "onb_perm_widget_title", textKey: "onb_perm_widget_body", actionKey: "onb_perm_widget_action"),
 ]
 
 private struct PermissionAssistant: View {
@@ -153,16 +143,16 @@ private struct PermissionAssistant: View {
                 Spacer()
                 let s = permissionSteps[step]
                 Image(systemName: s.icon).font(.system(size: 88)).foregroundColor(.brandGreen)
-                Text(s.title).font(.inter(24, .bold)).foregroundColor(.appPrimary).padding(.top, 24)
-                Text(s.text).font(.inter(17)).foregroundColor(.appOnSurface)
+                Text(L(s.titleKey)).font(.inter(24, .bold)).foregroundColor(.appPrimary).padding(.top, 24)
+                Text(L(s.textKey)).font(.inter(17)).foregroundColor(.appOnSurface)
                     .multilineTextAlignment(.center).padding(.horizontal, 32).padding(.top, 12)
 
                 if step == 0 && notifGranted {
-                    Label("Erlaubt", systemImage: "checkmark.circle.fill")
+                    Label(L("settings_perm_granted"), systemImage: "checkmark.circle.fill")
                         .font(.inter(16, .semibold)).foregroundColor(.brandGreen).padding(.top, 20)
                 } else {
                     Button(action: primaryAction) {
-                        Text(s.action).font(.inter(15, .semibold)).foregroundColor(.white)
+                        Text(L(s.actionKey)).font(.inter(15, .semibold)).foregroundColor(.white)
                             .frame(maxWidth: .infinity).padding(.vertical, 12)
                             .background(Color.brandGreen).clipShape(RoundedRectangle(cornerRadius: 12))
                     }
@@ -171,13 +161,13 @@ private struct PermissionAssistant: View {
                 Spacer()
 
                 HStack {
-                    Button("Überspringen") { onDone() }
+                    Button(L("onb_skip")) { onDone() }
                         .font(.inter(15, .medium)).foregroundColor(.appOnSurfaceVariant)
                     Spacer()
                     Button {
                         if step == permissionSteps.count - 1 { onDone() } else { step += 1 }
                     } label: {
-                        Text(step == permissionSteps.count - 1 ? "Fertig" : "Weiter")
+                        Text(step == permissionSteps.count - 1 ? L("onb_finish") : L("onb_next"))
                             .font(.inter(16, .semibold)).foregroundColor(.brandGreen)
                     }
                 }

@@ -4,6 +4,7 @@ import SwiftUI
 struct iOSApp: App {
     @AppStorage("appColorScheme") private var appColorScheme = "system"
     @AppStorage("onboarding_done") private var onboardingDone = false
+    @StateObject private var loc = Localization.shared
 
     init() {
         // Green navigation-bar titles throughout (matches the Android branded headers).
@@ -30,6 +31,9 @@ struct iOSApp: App {
                     OnboardingView(onDone: { onboardingDone = true })
                 }
             }
+            .environmentObject(loc)
+            .environment(\.layoutDirection, loc.layoutDirection)
+            .id(loc.lang) // rebuild the whole tree when the language switches (incl. RTL)
             .preferredColorScheme(resolvedScheme)
         }
     }

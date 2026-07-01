@@ -48,7 +48,7 @@ struct ContentView: View {
                 linkBlock(url: donateURL) {
                     VStack(spacing: 3) {
                         Image(systemName: "heart.fill").font(.system(size: 30)).foregroundColor(.appPrimary)
-                        Text("Spenden").font(.inter(16, .bold)).foregroundColor(.appPrimary)
+                        Text(L("action_donate")).font(.inter(16, .bold)).foregroundColor(.appPrimary)
                     }.frame(maxWidth: .infinity)
                 }
             }
@@ -71,7 +71,7 @@ struct ContentView: View {
 
     private var countdownCard: some View {
         VStack(spacing: 6) {
-            Text("NÄCHSTES GEBET IN:").font(.inter(16, .semibold)).foregroundColor(.brandGoldLight)
+            Text(L("dashboard_next_prayer_in") + ":").font(.inter(16, .semibold)).foregroundColor(.brandGoldLight)
             Text(countdown).font(.inter(48, .bold)).monospacedDigit().foregroundColor(.white)
         }
         .frame(maxWidth: .infinity)
@@ -105,7 +105,7 @@ struct ContentView: View {
                 if let iqamah = row.iqamah {
                     Rectangle().fill(dividerColor).frame(height: 1)
                     HStack {
-                        Text("IQAMAH").font(.inter(13, .medium)).foregroundColor(iqamahLabelColor)
+                        Text(L("label_iqamah")).font(.inter(13, .medium)).foregroundColor(iqamahLabelColor)
                         Spacer()
                         Text(iqamah).font(.inter(22, .bold)).foregroundColor(iqamahTimeColor)
                     }
@@ -119,15 +119,15 @@ struct ContentView: View {
         .shadow(color: .black.opacity(0.06), radius: 3, y: 1)
     }
 
-    // German prayer names (spec section 2 table)
+    // Localized prayer names (spec section 2 table) — from the selected app language.
     private func germanName(_ n: String) -> String {
         switch n {
-        case "Fajr": return "Morgengebet"
-        case "Sunrise": return "Sonnenaufgang"
-        case "Dhuhr": return "Mittagsgebet"
-        case "Asr": return "Nachmittagsgebet"
-        case "Maghrib": return "Abendgebet"
-        case "Isha": return "Nachtgebet"
+        case "Fajr": return L("prayer_fajr")
+        case "Sunrise": return L("prayer_sunrise")
+        case "Dhuhr": return L("prayer_dhuhr")
+        case "Asr": return L("prayer_asr")
+        case "Maghrib": return L("prayer_maghrib")
+        case "Isha": return L("prayer_isha")
         default: return n
         }
     }
@@ -140,12 +140,12 @@ struct ContentView: View {
         return String(format: "%02d:%02d:%02d", r / 3600, (r % 3600) / 60, r % 60)
     }
     private var gregorian: String {
-        let f = DateFormatter(); f.locale = Locale(identifier: "de_DE"); f.dateFormat = "EEEE, d. MMMM yyyy"
+        let f = DateFormatter(); f.locale = Locale(identifier: Localization.shared.lang); f.dateFormat = "EEEE, d. MMMM yyyy"
         return f.string(from: Date())
     }
     private var hijri: String {
         let f = DateFormatter(); f.calendar = Calendar(identifier: .islamicUmmAlQura)
-        f.locale = Locale(identifier: "de_DE"); f.dateFormat = "d. MMMM yyyy G"
+        f.locale = Locale(identifier: Localization.shared.lang); f.dateFormat = "d. MMMM yyyy G"
         return f.string(from: Date())
     }
 }

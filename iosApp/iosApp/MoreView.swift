@@ -9,13 +9,13 @@ struct MoreView: View {
     }
     private var items: [Item] {
         [
-            Item(title: "Koran", icon: "book.fill", dest: AnyView(QuranView())),
-            Item(title: "Hadith", icon: "text.quote", dest: AnyView(HadithView())),
-            Item(title: "Dhikr", icon: "figure.mind.and.body", dest: AnyView(DhikrView())),
-            Item(title: "Tasbih", icon: "target", dest: AnyView(TasbihView())),
-            Item(title: "Gebets-Tracker", icon: "checkmark.circle", dest: AnyView(TrackerView())),
-            Item(title: "Ramadan", icon: "moon.fill", dest: AnyView(RamadanView())),
-            Item(title: "Qibla", icon: "safari", dest: AnyView(QiblaView())),
+            Item(title: L("library_quran"), icon: "book.fill", dest: AnyView(QuranView())),
+            Item(title: L("library_hadith"), icon: "text.quote", dest: AnyView(HadithView())),
+            Item(title: L("library_dhikr"), icon: "figure.mind.and.body", dest: AnyView(DhikrView())),
+            Item(title: L("library_tasbih"), icon: "target", dest: AnyView(TasbihView())),
+            Item(title: L("library_tracker"), icon: "checkmark.circle", dest: AnyView(TrackerView())),
+            Item(title: L("library_ramadan"), icon: "moon.fill", dest: AnyView(RamadanView())),
+            Item(title: L("nav_qibla"), icon: "safari", dest: AnyView(QiblaView())),
         ]
     }
 
@@ -41,7 +41,7 @@ struct MoreView: View {
                 .padding(16)
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle("Mehr")
+            .navigationTitle(L("nav_more"))
         }
     }
 }

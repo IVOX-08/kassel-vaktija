@@ -19,6 +19,8 @@ targets:
         type: folder
       - path: Resources/audio
         type: folder
+      - path: Resources/lang
+        type: folder
     info:
       path: iosApp/Info.plist
       properties:

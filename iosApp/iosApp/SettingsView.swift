@@ -2,8 +2,7 @@ import SwiftUI
 import UserNotifications
 
 // Einstellungen (spec 6): a vertically scrolling column, padding 16, spacing 12. Section headings in
-// primary/bold, each option group a card. Order: Design → Gebetsbenachrichtigungen →
-// Auto-Stummschaltung → Mitteilungen → Berechtigungen (bedingt) → Sprache → Über uns.
+// primary/bold, each option group a card. All labels come from the selected app language.
 struct SettingsView: View {
     @AppStorage("appColorScheme") private var theme = "system"
     // 6.2 prayer notifications
@@ -17,8 +16,6 @@ struct SettingsView: View {
     // 6.4 announcements
     @AppStorage("msg_notif") private var msgNotif = true
     @AppStorage("weekly_reminder") private var weekly = true
-    // 6.6 language
-    @AppStorage("app_lang") private var lang = "bs"
 
     @State private var showLangPicker = false
     @State private var notifGranted = true
@@ -40,7 +37,7 @@ struct SettingsView: View {
                 .padding(16)
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle("Einstellungen")
+            .navigationTitle(L("nav_settings"))
             .navigationBarTitleDisplayMode(.inline)
         }
         .tint(.brandGreen)
@@ -48,7 +45,7 @@ struct SettingsView: View {
         .fullScreenCover(isPresented: $showLangPicker) {
             LanguagePickerView(
                 showClose: true,
-                onSelect: { lang = $0.tag; showLangPicker = false },
+                onSelect: { Localization.shared.set($0.tag); showLangPicker = false },
                 onClose: { showLangPicker = false }
             )
         }
@@ -57,9 +54,9 @@ struct SettingsView: View {
     // 6.1 Design
     private var designSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SettingHeader("Design")
+            SettingHeader(L("settings_theme_header"))
             SettingCard {
-                ChipRow(options: [("system", "System"), ("light", "Hell"), ("dark", "Dunkel")],
+                ChipRow(options: [("system", L("theme_system")), ("light", L("theme_light")), ("dark", L("theme_dark"))],
                         selection: $theme)
             }
         }
@@ -68,14 +65,14 @@ struct SettingsView: View {
     // 6.2 Gebetsbenachrichtigungen
     private var prayerNotifSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SettingHeader("Gebetsbenachrichtigungen")
+            SettingHeader(L("settings_notifications_header"))
             SettingCard {
-                Toggle("Benachrichtigungen aktivieren", isOn: $master)
+                Toggle(L("settings_master_toggle"), isOn: $master)
                     .tint(.brandGreen).font(.inter(15, .medium))
                 if master {
                     Divider()
                     HStack {
-                        Text("Benachrichtigungston").font(.inter(15))
+                        Text(L("settings_notification_sound")).font(.inter(15))
                         Spacer()
                         Menu {
                             ForEach(NotifSound.allCases, id: \.self) { s in
@@ -85,21 +82,21 @@ struct SettingsView: View {
                     }
                     Divider()
                     VStack(alignment: .leading, spacing: 4) {
-                        Toggle("Adhan auch im Lautlos-Modus abspielen", isOn: $playInSilent)
+                        Toggle(L("settings_play_when_silent"), isOn: $playInSilent)
                             .tint(.brandGreen).font(.inter(15, .medium))
-                        Text("Aus: Ist das Handy stumm oder auf Vibration, kommt nur eine stille Benachrichtigung.")
+                        Text(L("settings_play_when_silent_hint"))
                             .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
                     }
                 }
             }
             if master {
-                ForEach(SettingsView.prayers, id: \.0) { key, name in
-                    PrayerNotifCard(title: name, key: key)
+                ForEach(SettingsView.prayers, id: \.0) { key, nameKey in
+                    PrayerNotifCard(title: L(nameKey), key: key)
                 }
                 Button {
                     SoundPlayer.shared.play(sound.file, ext: sound.ext)
                 } label: {
-                    Text("Adhan testen").font(.inter(15, .semibold)).foregroundColor(.white)
+                    Text(L("settings_test_adhan")).font(.inter(15, .semibold)).foregroundColor(.white)
                         .frame(maxWidth: .infinity).padding(.vertical, 12)
                         .background(Color.brandGreen).clipShape(RoundedRectangle(cornerRadius: 12))
                 }
@@ -110,15 +107,15 @@ struct SettingsView: View {
     // 6.3 Auto-Stummschaltung
     private var autoMuteSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SettingHeader("Auto-Stummschaltung")
+            SettingHeader(L("settings_autosilence"))
             SettingCard {
-                Toggle("Während des Gebets stummschalten", isOn: $autoMute)
+                Toggle(L("settings_autosilence"), isOn: $autoMute)
                     .tint(.brandGreen).font(.inter(15, .medium))
                 if autoMute {
                     Divider()
-                    Text("Vor dem Adhan").font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+                    Text(L("settings_silence_before")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
                     ChipRow(options: SettingsView.muteMins, intSelection: $muteBefore)
-                    Text("Nach dem Adhan").font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+                    Text(L("settings_silence_after")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
                     ChipRow(options: SettingsView.muteMins, intSelection: $muteAfter)
                 }
             }
@@ -128,12 +125,12 @@ struct SettingsView: View {
     // 6.4 Mitteilungen
     private var announcementsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SettingHeader("Mitteilungen")
+            SettingHeader(L("settings_news_header"))
             SettingCard {
-                Toggle("Mitteilungs-Benachrichtigungen", isOn: $msgNotif)
+                Toggle(L("settings_news_notifications"), isOn: $msgNotif)
                     .tint(.brandGreen).font(.inter(15, .medium))
                 Divider()
-                Toggle("Wöchentliche Erinnerung (Dhikr & Hadith)", isOn: $weekly)
+                Toggle(L("settings_weekly_reminder"), isOn: $weekly)
                     .tint(.brandGreen).font(.inter(15, .medium))
             }
         }
@@ -142,9 +139,9 @@ struct SettingsView: View {
     // 6.5 Berechtigungen (only while notifications aren't granted)
     private var permissionsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SettingHeader("Berechtigungen")
+            SettingHeader(L("settings_permissions_header"))
             Button(action: requestNotif) {
-                Text("Benachrichtigungen erlauben").font(.inter(15, .semibold)).foregroundColor(.white)
+                Text(L("settings_perm_notifications")).font(.inter(15, .semibold)).foregroundColor(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
                     .background(Color.brandGreen).clipShape(RoundedRectangle(cornerRadius: 12))
             }
@@ -154,12 +151,12 @@ struct SettingsView: View {
     // 6.6 Sprache
     private var languageSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SettingHeader("Sprache")
+            SettingHeader(L("language_picker_title"))
             SettingCard {
                 Button { showLangPicker = true } label: {
                     HStack(spacing: 8) {
-                        FlagThumb(pngName: langForTag(lang).flagPng)
-                        Text("Sprache ändern").font(.inter(15, .medium)).foregroundColor(.appPrimary)
+                        FlagThumb(pngName: langForTag(Localization.shared.lang).flagPng)
+                        Text(L("action_change_language")).font(.inter(15, .medium)).foregroundColor(.appPrimary)
                         Spacer()
                         Image(systemName: "chevron.right").font(.system(size: 13)).foregroundColor(.appOnSurfaceVariant)
                     }
@@ -180,12 +177,15 @@ struct SettingsView: View {
         }
     }
 
+    // prayer key (for @AppStorage) + localization key for the name
     static let prayers: [(String, String)] = [
-        ("fajr", "Morgengebet"), ("dhuhr", "Mittagsgebet"), ("asr", "Nachmittagsgebet"),
-        ("maghrib", "Abendgebet"), ("isha", "Nachtgebet"),
+        ("fajr", "prayer_fajr"), ("dhuhr", "prayer_dhuhr"), ("asr", "prayer_asr"),
+        ("maghrib", "prayer_maghrib"), ("isha", "prayer_isha"),
     ]
     static let muteMins: [(String, String)] = [("5", "5"), ("10", "10"), ("15", "15"), ("20", "20"), ("30", "30")]
 }
+
+private func minutesLabel(_ v: Int) -> String { String(format: L("settings_minutes"), v) }
 
 // One prayer's notification card: a switch (default on) and — when on — a pre-warning pill (0/5/10/15/30).
 private struct PrayerNotifCard: View {
@@ -207,13 +207,13 @@ private struct PrayerNotifCard: View {
             if enabled {
                 Divider()
                 HStack {
-                    Text("Vorwarnung").font(.inter(15))
+                    Text(L("settings_prewarn")).font(.inter(15))
                     Spacer()
                     Menu {
                         ForEach(warnValues, id: \.self) { v in
-                            Button("\(v) Min.") { warn = v }
+                            Button(minutesLabel(v)) { warn = v }
                         }
-                    } label: { PillLabel("\(warn) Min.") }
+                    } label: { PillLabel(minutesLabel(warn)) }
                 }
             }
         }
@@ -235,17 +235,17 @@ private struct AboutCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SettingHeader("Über uns")
+            SettingHeader(L("settings_about_header"))
             SettingCard {
                 Text("IGBD-Gemeinde Sandžak-Kassel")
                     .font(.inter(16, .bold)).foregroundColor(.appPrimary)
                 Divider()
                 row("mappin.and.ellipse", "Schwanenweg 13\n34123 Kassel") { open(maps) }
                 row("envelope.fill", "vorstand@igbdsandzakkassel.de") { open("mailto:vorstand@igbdsandzakkassel.de") }
-                row("heart.fill", "Spenden") { open(donate) }
-                row("person.fill", "Imam: Alen Golac\n0176 3037 2402") { open("tel:017630372402") }
-                row("phone.fill", "App oder Website gewünscht? Anrufen:\n0176 6188 7123") { open("tel:017661887123") }
-                row("envelope", "oder E-Mail schreiben:\nmuhamedgolac311@gmail.com") { open("mailto:muhamedgolac311@gmail.com") }
+                row("heart.fill", L("action_donate")) { open(donate) }
+                row("person.fill", "\(L("about_imam")): Alen Golac\n0176 3037 2402") { open("tel:017630372402") }
+                row("phone.fill", "\(L("about_dev_promo"))\n0176 6188 7123") { open("tel:017661887123") }
+                row("envelope", "\(L("about_dev_email"))\nmuhamedgolac311@gmail.com") { open("mailto:muhamedgolac311@gmail.com") }
                 Divider()
                 Text("v\(version)")
                     .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)

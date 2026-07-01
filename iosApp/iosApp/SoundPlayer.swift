@@ -19,7 +19,7 @@ final class SoundPlayer {
 // The two selectable notification tones (spec 6.2). Value stored in @AppStorage.
 enum NotifSound: String, CaseIterable {
     case adhan, chime
-    var label: String { self == .adhan ? "Kurzer Adhan" : "Signalton" }
+    var label: String { self == .adhan ? L("sound_short_adhan") : L("sound_chime") }
     var file: String { self == .adhan ? "adhan_short" : "chime" }
     var ext: String { self == .adhan ? "mp3" : "wav" }
 }
