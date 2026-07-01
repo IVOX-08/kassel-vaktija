@@ -35,7 +35,9 @@ import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
 import de.igbdsandzakkassel.vaktija.ui.KasselApp
 import de.igbdsandzakkassel.vaktija.ui.onboarding.OnboardingScreen
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
+import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
 import de.igbdsandzakkassel.vaktija.ui.theme.KasselVaktijaTheme
 import de.igbdsandzakkassel.vaktija.ui.tv.TvDashboardScreen
@@ -151,6 +153,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        // Back-fill the persisted app-language tag so background workers localize notifications
+        // correctly. Reading here (a normal resume) is reliable, unlike the transient empty read
+        // right after a locale-change Activity recreate.
+        val locales = AppCompatDelegate.getApplicationLocales()
+        if (!locales.isEmpty) locales[0]?.language?.let { LocaleController.persist(this, it) }
         if (!isTelevision()) {
             // If a flexible update finished downloading while the app was in the background, prompt now.
             appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->

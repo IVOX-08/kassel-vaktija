@@ -32,7 +32,8 @@ class PushMessagingService : FirebaseMessagingService() {
                 val lastSeen = settingsRepository.getLastSeenConfigMillis()
                 val alreadyHandled = updatedAt != null && lastSeen != null && updatedAt <= lastSeen
                 if (!alreadyHandled) {
-                    val lang = settingsRepository.getLanguageTag() ?: LocaleController.current().tag
+                    val lang = LocaleController.persistedTag(this@PushMessagingService)
+                        ?: settingsRepository.getLanguageTag() ?: LocaleController.current().tag
                     NewsNotifier.postConfigUpdate(this@PushMessagingService, lang)
                     // Clamp to our own clock so a future-dated edit can't suppress later changes.
                     if (updatedAt != null) {

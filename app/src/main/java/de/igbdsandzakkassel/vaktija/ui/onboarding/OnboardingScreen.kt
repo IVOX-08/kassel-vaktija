@@ -55,6 +55,7 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun OnboardingScreen(onFinished: () -> Unit) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     // Survives the Activity recreate that LocaleController.set triggers. We don't rely on
     // AppCompatDelegate.getApplicationLocales() here because it can read empty right after the
     // recreate (out of sync with the framework). Existing users (locale already set) skip step 1.
@@ -65,7 +66,7 @@ fun OnboardingScreen(onFinished: () -> Unit) {
     when {
         !languageChosen -> LanguagePickerScreen(onSelected = {
             languageChosen = true
-            LocaleController.set(it)
+            LocaleController.set(context, it) // persist the tag + apply (recreates the Activity)
         })
         // Language → short intro → permissions (notifications, exact alarm, battery, Do-Not-Disturb).
         !introDone -> OnboardingIntro(onFinished = { introDone = true })

@@ -17,12 +17,14 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -107,7 +109,9 @@ fun LanguagePickerDialog(onDismiss: () -> Unit) {
 /** Small pill button (current flag + label) that opens the [LanguagePickerDialog]. */
 @Composable
 fun ChangeLanguagePill(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     var show by remember { mutableStateOf(false) }
+    var chosen by remember { mutableStateOf<AppLanguage?>(null) }
     TextButton(onClick = { show = true }, modifier = modifier) {
         LanguageFlag(LocaleController.current(), width = 24.dp, height = 18.dp)
         Text(
@@ -120,7 +124,15 @@ fun ChangeLanguagePill(modifier: Modifier = Modifier) {
             onDismissRequest = { show = false },
             properties = DialogProperties(usePlatformDefaultWidth = false),
         ) {
-            InAppLanguagePicker(onClose = { show = false })
+            InAppLanguagePicker(
+                onSelected = { chosen = it; show = false },
+                onClose = { show = false },
+            )
         }
+    }
+    // Apply the choice only AFTER the Dialog is gone. Calling setApplicationLocales from inside the
+    // Dialog window failed to take effect on Android < 13; here it persists the tag + recreates.
+    LaunchedEffect(chosen) {
+        chosen?.let { LocaleController.set(context, it) }
     }
 }

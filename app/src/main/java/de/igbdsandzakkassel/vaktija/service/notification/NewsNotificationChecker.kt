@@ -47,7 +47,7 @@ class NewsNotificationChecker @Inject constructor(
         }
         if (newest.createdAt <= lastNotified) return // nothing new since last time
 
-        NewsNotifier.post(context, newest, currentLang())
+        NewsNotifier.post(context, newest, currentLang(context))
         settingsRepository.setLastNotifiedNewsMillis(watermark)
     }
 
@@ -62,14 +62,17 @@ class NewsNotificationChecker @Inject constructor(
         val updatedAt = ruleProvider.getUpdatedAt() ?: return
         if (updatedAt <= lastSeen) return // times haven't changed since last time
 
-        NewsNotifier.postConfigUpdate(context, currentLang())
+        NewsNotifier.postConfigUpdate(context, currentLang(context))
         // Clamp the stored watermark to our OWN clock (like checkNews) so a future-dated edit (admin
         // clock skew) can never push it past real time and permanently suppress later changes.
         settingsRepository.setLastSeenConfigMillis(minOf(updatedAt, System.currentTimeMillis()))
     }
 
-    // Prefer the persisted language tag (reliable on a cold background wake, where
-    // AppCompatDelegate.getApplicationLocales() can read empty); fall back to the live value.
-    private suspend fun currentLang(): String =
-        settingsRepository.getLanguageTag() ?: LocaleController.current().tag
+    // Prefer the tag persisted at selection time (reliable on a cold background wake, where
+    // AppCompatDelegate.getApplicationLocales() — and thus LocaleController.current() — can read
+    // empty and fall back to the default Bosnian). Then the DataStore tag, then the live value.
+    private suspend fun currentLang(context: Context): String =
+        LocaleController.persistedTag(context)
+            ?: settingsRepository.getLanguageTag()
+            ?: LocaleController.current().tag
 }

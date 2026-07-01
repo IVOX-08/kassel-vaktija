@@ -1,14 +1,23 @@
 package de.igbdsandzakkassel.vaktija.core.locale
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 
 /**
- * Thin wrapper over the AndroidX per-app language API. Selection is persisted automatically by
- * the AppLocalesMetadataHolderService declared in the manifest (autoStoreLocales=true), and
- * setting it recreates the activity so the new locale (and RTL direction) takes effect.
+ * Thin wrapper over the AndroidX per-app language API. Selecting a language recreates the Activity so
+ * the new locale (and RTL direction) takes effect, and — via [set] with a Context — the chosen tag is
+ * also written to a tiny SharedPreferences so background workers can localize notifications reliably.
+ *
+ * Why the extra persistence: on a cold background wake (a worker process with no Activity), and for a
+ * short window right after a locale-change Activity recreate, `AppCompatDelegate.getApplicationLocales()`
+ * can read EMPTY — which would otherwise make notifications fall back to the default (Bosnian). The
+ * SharedPreferences tag, written at the exact moment of selection, is the reliable source of truth.
  */
 object LocaleController {
+
+    private const val PREFS = "locale_prefs"
+    private const val KEY_TAG = "app_lang_tag"
 
     fun current(): AppLanguage {
         val locales = AppCompatDelegate.getApplicationLocales()
@@ -16,9 +25,29 @@ object LocaleController {
         return AppLanguage.fromTag(tag)
     }
 
+    /** Legacy apply (no persistence) — kept for callers without a Context. Prefer [set] with a Context. */
     fun set(language: AppLanguage) {
-        AppCompatDelegate.setApplicationLocales(
-            LocaleListCompat.forLanguageTags(language.tag),
-        )
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language.tag))
     }
+
+    /** Persist the chosen tag (reliable for background localization) and apply it (recreates the Activity). */
+    fun set(context: Context, language: AppLanguage) {
+        persist(context, language.tag)
+        set(language)
+    }
+
+    /** Persist just the language tag — e.g. from onResume, to back-fill installs updated from an older build. */
+    fun persist(context: Context, tag: String) {
+        context.applicationContext
+            .getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit()
+            .putString(KEY_TAG, tag)
+            .apply()
+    }
+
+    /** The last selected language tag, or null if none was ever persisted. */
+    fun persistedTag(context: Context): String? =
+        context.applicationContext
+            .getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .getString(KEY_TAG, null)
 }

@@ -54,7 +54,6 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import de.igbdsandzakkassel.vaktija.core.locale.AppLanguage
-import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
@@ -214,14 +213,15 @@ private fun LanguageCard(
 private fun stringResourceCompat(language: AppLanguage): String =
     androidx.compose.ui.res.stringResource(language.displayNameRes)
 
-/** Hosts the picker in-app (used by the change-language pill); applies + recreates on select. */
+/**
+ * Hosts the picker in-app (used by the change-language pill). The chosen language is reported UP via
+ * [onSelected] so the caller can apply it AFTER this dialog has been dismissed — calling
+ * setApplicationLocales from inside a Compose Dialog window failed to take effect on Android < 13.
+ */
 @Composable
-fun InAppLanguagePicker(onClose: () -> Unit) {
+fun InAppLanguagePicker(onSelected: (AppLanguage) -> Unit, onClose: () -> Unit) {
     LanguagePickerScreen(
-        onSelected = {
-            LocaleController.set(it)
-            onClose()
-        },
+        onSelected = onSelected,
         showClose = true,
         onClose = onClose,
     )
