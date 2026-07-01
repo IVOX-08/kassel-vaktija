@@ -7,14 +7,14 @@ struct iOSApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainTabView()
-                .preferredColorScheme(resolvedScheme)
-                .fullScreenCover(isPresented: .init(
-                    get: { !onboardingDone },
-                    set: { shown in if !shown { onboardingDone = true } }
-                )) {
+            Group {
+                if onboardingDone {
+                    MainTabView()
+                } else {
                     OnboardingView(onDone: { onboardingDone = true })
                 }
+            }
+            .preferredColorScheme(resolvedScheme)
         }
     }
 
