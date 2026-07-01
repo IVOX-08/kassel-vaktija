@@ -5,6 +5,7 @@ import Shared
 // one row per day, today highlighted green (alpha 0.14, bold green), auto-scrolls to today.
 struct CalendarView: View {
     @State private var monthOffset = 0
+    @StateObject private var store = PrayerStore()
 
     private var monthDate: Date {
         Calendar.current.date(byAdding: .month, value: monthOffset, to: Date()) ?? Date()
@@ -12,8 +13,16 @@ struct CalendarView: View {
     private var year: Int { Calendar.current.component(.year, from: monthDate) }
     private var month: Int { Calendar.current.component(.month, from: monthDate) }
     private var monthLabel: String {
-        let f = DateFormatter(); f.locale = Locale(identifier: "de_DE"); f.dateFormat = "LLLL yyyy"
+        let f = DateFormatter(); f.locale = Locale(identifier: Localization.shared.lang); f.dateFormat = "LLLL yyyy"
         return f.string(from: monthDate)
+    }
+    // Per-prayer calibration (official − local), applied so the month lines up with vaktija.eu.
+    private func calib(_ i: Int) -> Int { store.calibration.indices.contains(i) ? store.calibration[i] : 0 }
+    private func adj(_ hhmm: String, _ offsetMin: Int) -> String {
+        let p = hhmm.split(separator: ":")
+        guard p.count == 2, let h = Int(p[0]), let m = Int(p[1]) else { return hhmm }
+        let total = (((h * 60 + m + offsetMin) % 1440) + 1440) % 1440
+        return String(format: "%02d:%02d", total / 60, total % 60)
     }
     private var days: [CalendarDay] {
         CalendarDataKt.monthForDisplay(year: Int32(year), month: Int32(month))
@@ -60,6 +69,7 @@ struct CalendarView: View {
             }
         }
         .background(Color.appBackground.ignoresSafeArea())
+        .task { await store.refresh() }
     }
 
     private func dayRow(_ d: CalendarDay) -> some View {
@@ -72,7 +82,8 @@ struct CalendarView: View {
             }
             .frame(width: 48)
             Group {
-                Text(d.fajr); Text(d.sunrise); Text(d.dhuhr); Text(d.asr); Text(d.maghrib); Text(d.isha)
+                Text(adj(d.fajr, calib(0))); Text(adj(d.sunrise, calib(1))); Text(adj(d.dhuhr, calib(2)))
+                Text(adj(d.asr, calib(3))); Text(adj(d.maghrib, calib(4))); Text(adj(d.isha, calib(5)))
             }
             .font(.inter(13, weight)).foregroundColor(textColor).monospacedDigit().frame(maxWidth: .infinity)
         }

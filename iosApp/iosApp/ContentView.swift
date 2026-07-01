@@ -5,9 +5,7 @@ import Shared
 // address / logo / donate header, Gregorian + Hijri date, a green hero with a live HH:MM:SS
 // countdown, and prayer cards with Adhan + a divider + Iqamah. Inter font + exact brand colors.
 struct ContentView: View {
-    private let rows: [DashboardRow] = DashboardDataKt.dashboardRowsForToday()
-    private let next: NextPrayerInfo = NextPrayerKt.nextPrayerNow()
-    private let started = Date()
+    @StateObject private var store = PrayerStore()
 
     @State private var now = Date()
     @Environment(\.colorScheme) private var scheme
@@ -23,13 +21,14 @@ struct ContentView: View {
                 VStack(spacing: 14) {
                     header
                     countdownCard.padding(.horizontal, 12)
-                    VStack(spacing: 12) { ForEach(rows, id: \.name) { prayerCard($0) } }
+                    VStack(spacing: 12) { ForEach(store.rows) { prayerCard($0) } }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
             }
         }
         .onReceive(ticker) { now = $0 }
+        .task { await store.refresh() }
     }
 
     // MARK: Header
@@ -83,8 +82,8 @@ struct ContentView: View {
 
     // MARK: Prayer card (Adhan + divider + Iqamah)
 
-    private func prayerCard(_ row: DashboardRow) -> some View {
-        let active = row.name == next.name
+    private func prayerCard(_ row: PrayerRow) -> some View {
+        let active = row.name == nextInfo.name
         let nameColor = active ? Color.brandGoldLight : Color.appSecondary
         let adhanColor = active ? Color.white : Color.appPrimary
         let iqamahLabelColor = active ? Color.white.opacity(0.85) : Color.appPrimary
@@ -134,9 +133,11 @@ struct ContentView: View {
 
     // MARK: Derived strings
 
+    private var nextInfo: (name: String, time: String, inSeconds: Int) {
+        PrayerModel.next(store.today, now: now)
+    }
     private var countdown: String {
-        let target = started.addingTimeInterval(Double(next.inSeconds))
-        let r = max(0, Int(target.timeIntervalSince(now)))
+        let r = max(0, nextInfo.inSeconds)
         return String(format: "%02d:%02d:%02d", r / 3600, (r % 3600) / 60, r % 60)
     }
     private var gregorian: String {
