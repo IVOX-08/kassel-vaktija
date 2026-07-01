@@ -90,7 +90,7 @@
     <string name="notif_channel_adhan_desc">Воспроизведение азана во время намаза.</string>
     <string name="notif_channel_prewarn">Напоминание о намазе</string>
     <string name="notif_channel_prewarn_desc">Напоминание перед наступлением намаза.</string>
-    <string name="notif_adhan_title">Время %1$s</string>
+    <string name="notif_adhan_title">Время намаза: %1$s</string>
     <string name="notif_adhan_text">Наступило время намаза.</string>
     <string name="notif_prewarn_title">%1$s через %2$d мин</string>
     <string name="notif_stop">Стоп</string>

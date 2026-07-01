@@ -72,6 +72,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val isTv = isTelevision()
+        if (isTv) {
+            // Wall-board TV: force the whole window to keep the screen on for the entire session
+            // (belt-and-suspenders with the Compose keepScreenOn). NOTE: this only defeats the app's
+            // SCREEN timeout — a TV's own "idle standby" auto power-off (e.g. Sony, after hours with
+            // no remote input) is a TV firmware setting that NO app is permitted to override.
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
         // Wall-board TVs auto-update via the Play Store and have no one to tap a dialog; only
         // phones/tablets get the in-app update prompt.
         if (!isTv) checkForAppUpdate()

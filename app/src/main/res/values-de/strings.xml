@@ -14,7 +14,7 @@
     <string name="library_tracker">Gebets-Tracker</string>
     <string name="library_ramadan">Ramadan</string>
     <string name="ramadan_until_iftar">Bis zum Iftar</string>
-    <string name="ramadan_until_sehur">Bis Sehur-Ende</string>
+    <string name="ramadan_until_sehur">Bis zum Ende des Sehur</string>
     <string name="ramadan_iftar">Iftar</string>
     <string name="ramadan_sehur">Sehur</string>
     <string name="ramadan_teravija">Tarawih</string>

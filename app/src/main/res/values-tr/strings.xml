@@ -14,7 +14,7 @@
     <string name="library_tracker">Namaz takibi</string>
     <string name="library_ramadan">Ramazan</string>
     <string name="ramadan_until_iftar">İftara kalan</string>
-    <string name="ramadan_until_sehur">Sahurun sonuna</string>
+    <string name="ramadan_until_sehur">Sahurun bitişine</string>
     <string name="ramadan_iftar">İftar</string>
     <string name="ramadan_sehur">Sahur</string>
     <string name="ramadan_teravija">Teravih</string>
