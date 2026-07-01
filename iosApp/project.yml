@@ -15,6 +15,10 @@ targets:
         type: folder
       - path: Resources/quran
         type: folder
+      - path: Resources/flags
+        type: folder
+      - path: Resources/audio
+        type: folder
     info:
       path: iosApp/Info.plist
       properties:
