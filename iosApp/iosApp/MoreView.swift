@@ -190,63 +190,7 @@ enum TrackerStore {
 
 // MARK: - 5.6 Ramadan (countdown to iftar / sehur + 3 rows + fasted toggle)
 
-struct RamadanView: View {
-    private let rows = DashboardDataKt.dashboardRowsForToday()
-    @AppStorage("fasted_today") private var fasted = false
-    @State private var now = Date()
-    private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
-    private func time(_ name: String) -> String { rows.first { $0.name == name }?.adhan ?? "--:--" }
-    private func date(_ hhmm: String, addDays: Int = 0) -> Date {
-        let parts = hhmm.split(separator: ":").compactMap { Int($0) }
-        var c = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-        c.hour = parts.first ?? 0; c.minute = parts.count > 1 ? parts[1] : 0
-        let base = Calendar.current.date(from: c) ?? Date()
-        return Calendar.current.date(byAdding: .day, value: addDays, to: base) ?? base
-    }
-    private var fasting: Bool { now >= date(time("Fajr")) && now < date(time("Maghrib")) }
-    private var label: String { fasting ? "Bis zum Iftar" : "Bis Sehur-Ende" }
-    private var targetDate: Date {
-        if fasting { return date(time("Maghrib")) }
-        return now < date(time("Fajr")) ? date(time("Fajr")) : date(time("Fajr"), addDays: 1)
-    }
-    private var countdown: String {
-        let r = max(0, Int(targetDate.timeIntervalSince(now)))
-        return String(format: "%02d:%02d:%02d", r / 3600, (r % 3600) / 60, r % 60)
-    }
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                VStack(spacing: 6) {
-                    Text(label).font(.inter(16, .semibold)).foregroundColor(.brandGoldLight)
-                    Text(countdown).font(.inter(52, .bold)).monospacedDigit().foregroundColor(.white)
-                }
-                .frame(maxWidth: .infinity).padding(.vertical, 20)
-                .background(Color.brandGreen).clipShape(RoundedRectangle(cornerRadius: Radius.hero))
-
-                infoRow("Iftar", time("Maghrib"))
-                infoRow("Sehur", time("Fajr"))
-                infoRow("Tarawih", time("Isha"))
-
-                Toggle("Heute gefastet", isOn: $fasted).font(.inter(16)).tint(.brandGreen)
-                    .padding().background(Color.appSurface).clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
-            }.padding()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.appBackground.ignoresSafeArea())
-        .navigationTitle("Ramadan").navigationBarTitleDisplayMode(.inline)
-        .onReceive(ticker) { now = $0 }
-    }
-
-    private func infoRow(_ title: String, _ value: String) -> some View {
-        HStack {
-            Text(title).font(.inter(16)).foregroundColor(.appOnSurface)
-            Spacer()
-            Text(value).font(.inter(20, .bold)).foregroundColor(.brandGreen).monospacedDigit()
-        }.padding().background(Color.appSurface).clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
-    }
-}
+// RamadanView moved to its own file (RamadanView.swift) with the redesigned layout.
 
 // MARK: - 5.7 Qibla (fixed bearing from shared + live compass)
 
