@@ -79,6 +79,9 @@
     <string name="prayer_abbr_maghrib">Magh.</string>
     <string name="prayer_abbr_isha">Isha</string>
     <string name="prayer_jumua">Jumu\'ah</string>
+    <string name="bajram_prayer">Eid prayer</string>
+    <string name="admin_bajram_set">Announce Eid prayer (date &amp; time)</string>
+    <string name="admin_bajram_remove">Remove Eid announcement</string>
 
     <string name="action_change_language">Change language</string>
     <string name="language_picker_title">Language</string>

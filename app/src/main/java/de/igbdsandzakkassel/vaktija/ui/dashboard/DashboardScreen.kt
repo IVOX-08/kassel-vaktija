@@ -75,6 +75,7 @@ import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 private val TIME: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 private fun LocalTime.hhmm(): String = format(TIME)
@@ -178,6 +179,8 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             if (state.isStale) item { StaleBanner() }
+            // Admin-announced Eid prayer — the community's most-asked question, so it leads the list.
+            state.bajram?.let { (date, time) -> item { BajramCard(date, time) } }
             items(state.rows, key = { it.prayer }) { row ->
                 PrayerCard(row, pulseToken = if (row.isHighlighted) pulseToken else 0)
             }
@@ -488,6 +491,52 @@ private fun PrayerCard(row: PrayerRowUi, pulseToken: Int = 0) {
 }
 
 /** Full-width Friday prayer card, distinguished by a green border (matches the website CSS). */
+@Composable
+private fun BajramCard(date: java.time.LocalDate, time: LocalTime) {
+    // Festive gold banner for the admin-announced Eid prayer (auto-hides once the day has passed).
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.secondary),
+        shadowElevation = 2.dp,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "🌙 " + stringResource(R.string.bajram_prayer),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.secondary,
+                )
+                Text(
+                    text = date.format(
+                        DateTimeFormatter.ofPattern(
+                            android.text.format.DateFormat.getBestDateTimePattern(
+                                Locale.getDefault(), "EEEEdMMMM",
+                            ),
+                            Locale.getDefault(),
+                        ),
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(
+                text = time.hhmm(),
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+    }
+}
+
 @Composable
 private fun JumuaCard(time: LocalTime) {
     Surface(

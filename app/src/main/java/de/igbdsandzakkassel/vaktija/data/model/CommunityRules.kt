@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.data.model
 
+import java.time.LocalDate
 import java.time.LocalTime
 
 /**
@@ -16,7 +17,18 @@ data class CommunityRules(
     val asrOffsetMin: Long = 10,
     val maghribOffsetMin: Long = 5,
     val ishaOffsetMin: Long = 0,
+    /** Eid (Bajram) prayer — admin-set date + time. Null when none is announced; the banner on the
+     *  dashboard/TV shows only while [bajramDate] is today or in the future (auto-hides after). */
+    val bajramDate: LocalDate? = null,
+    val bajramTime: LocalTime? = null,
 ) {
+    /** The announced Bajram prayer if it's still upcoming (or today), else null. */
+    fun activeBajram(today: LocalDate): Pair<LocalDate, LocalTime>? {
+        val date = bajramDate ?: return null
+        val time = bajramTime ?: return null
+        return if (!date.isBefore(today)) date to time else null
+    }
+
     /** Iqamah time for a prayer given its adhan time, or null if the prayer has no Iqamah. */
     fun iqamah(prayer: Prayer, adhan: LocalTime): LocalTime? = when (prayer) {
         Prayer.FAJR -> fajrIqamah

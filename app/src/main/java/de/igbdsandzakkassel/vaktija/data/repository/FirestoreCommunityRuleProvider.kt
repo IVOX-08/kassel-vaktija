@@ -75,15 +75,23 @@ class FirestoreCommunityRuleProvider @Inject constructor(
             asrOffsetMin = offset("asrOffsetMin", d.asrOffsetMin),
             maghribOffsetMin = offset("maghribOffsetMin", d.maghribOffsetMin),
             ishaOffsetMin = offset("ishaOffsetMin", d.ishaOffsetMin),
+            bajramDate = getString("bajramDate")
+                ?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() },
+            bajramTime = getString("bajramTime")
+                ?.let { runCatching { LocalTime.parse(it) }.getOrNull() },
         )
     }
 
-    private fun CommunityRules.toFirestoreMap(): Map<String, Any> = mapOf(
-        "fajrIqamah" to fajrIqamah.format(TIME),
-        "jumua" to jumua.format(TIME),
-        "dhuhrOffsetMin" to dhuhrOffsetMin,
-        "asrOffsetMin" to asrOffsetMin,
-        "maghribOffsetMin" to maghribOffsetMin,
-        "ishaOffsetMin" to ishaOffsetMin,
-    )
+    private fun CommunityRules.toFirestoreMap(): Map<String, Any> = buildMap {
+        put("fajrIqamah", fajrIqamah.format(TIME))
+        put("jumua", jumua.format(TIME))
+        put("dhuhrOffsetMin", dhuhrOffsetMin)
+        put("asrOffsetMin", asrOffsetMin)
+        put("maghribOffsetMin", maghribOffsetMin)
+        put("ishaOffsetMin", ishaOffsetMin)
+        // saveRules uses a full (non-merge) set(), so simply OMITTING the fields removes a cleared
+        // Bajram announcement from the document — and thus from every device.
+        bajramDate?.let { put("bajramDate", it.toString()) }
+        bajramTime?.let { put("bajramTime", it.format(TIME)) }
+    }
 }

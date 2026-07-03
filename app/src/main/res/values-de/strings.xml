@@ -79,6 +79,9 @@
     <string name="prayer_abbr_maghrib">Abend</string>
     <string name="prayer_abbr_isha">Nacht</string>
     <string name="prayer_jumua">Freitagsgebet</string>
+    <string name="bajram_prayer">Bajram-Gebet</string>
+    <string name="admin_bajram_set">Bajram-Gebet ankündigen (Datum &amp; Uhrzeit)</string>
+    <string name="admin_bajram_remove">Bajram-Ankündigung entfernen</string>
 
     <string name="action_change_language">Sprache ändern</string>
     <string name="language_picker_title">Sprache</string>

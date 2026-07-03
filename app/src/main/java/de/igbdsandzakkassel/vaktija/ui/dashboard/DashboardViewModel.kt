@@ -108,6 +108,7 @@ class DashboardViewModel @Inject constructor(
             countdown = formatCountdown(remaining),
             // On Friday the Jumua time is shown in the list (no separate card).
             jumua = if (isFriday) null else rules.jumua,
+            bajram = rules.activeBajram(now.toLocalDate()),
             isStale = !fresh,
         )
     }

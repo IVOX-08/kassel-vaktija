@@ -79,6 +79,7 @@
     <string name="prayer_abbr_maghrib">مغرب</string>
     <string name="prayer_abbr_isha">عشاء</string>
     <string name="prayer_jumua">صلاة الجمعة</string>
+    <string name="bajram_prayer">صلاة العيد</string>
 
     <string name="action_change_language">تغيير اللغة</string>
     <string name="language_picker_title">اللغة</string>

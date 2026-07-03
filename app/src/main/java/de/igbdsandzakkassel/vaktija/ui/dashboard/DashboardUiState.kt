@@ -31,5 +31,7 @@ data class DashboardUiState(
     @param:StringRes val nextPrayerLabelRes: Int? = null,
     val countdown: String = "",
     val jumua: LocalTime? = null,
+    /** Admin-announced Eid (Bajram) prayer — shown as a gold banner while today or upcoming. */
+    val bajram: Pair<java.time.LocalDate, LocalTime>? = null,
     val isStale: Boolean = false,
 )

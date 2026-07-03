@@ -483,6 +483,39 @@ private fun AdminSection(
             OffsetRow(stringResource(R.string.prayer_asr), draft.asrOffsetMin) { draft = draft.copy(asrOffsetMin = it) }
             OffsetRow(stringResource(R.string.prayer_maghrib), draft.maghribOffsetMin) { draft = draft.copy(maghribOffsetMin = it) }
             OffsetRow(stringResource(R.string.prayer_isha), draft.ishaOffsetMin) { draft = draft.copy(ishaOffsetMin = it) }
+            HorizontalDivider(Modifier.padding(vertical = 4.dp))
+            // Eid (Bajram) prayer announcement: date + time steppers; saving syncs the gold banner
+            // to every phone and the TV board; "remove" clears it everywhere. Auto-hides after the day.
+            val bajramDate = draft.bajramDate
+            val bajramTime = draft.bajramTime
+            if (bajramDate == null || bajramTime == null) {
+                OutlinedButton(
+                    onClick = {
+                        draft = draft.copy(
+                            bajramDate = java.time.LocalDate.now().plusDays(1),
+                            bajramTime = java.time.LocalTime.of(7, 0),
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text("🌙 " + stringResource(R.string.admin_bajram_set)) }
+            } else {
+                StepperRow(
+                    label = stringResource(R.string.bajram_prayer),
+                    value = bajramDate.format(DateTimeFormatter.ofPattern("dd.MM.")),
+                    onMinus = { draft = draft.copy(bajramDate = bajramDate.minusDays(1)) },
+                    onPlus = { draft = draft.copy(bajramDate = bajramDate.plusDays(1)) },
+                )
+                StepperRow(
+                    label = "",
+                    value = bajramTime.format(timeFmt),
+                    onMinus = { draft = draft.copy(bajramTime = bajramTime.minusMinutes(5)) },
+                    onPlus = { draft = draft.copy(bajramTime = bajramTime.plusMinutes(5)) },
+                )
+                OutlinedButton(
+                    onClick = { draft = draft.copy(bajramDate = null, bajramTime = null) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text(stringResource(R.string.admin_bajram_remove)) }
+            }
             Spacer(Modifier.height(4.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(onClick = { onSave(draft) }, modifier = Modifier.weight(1f)) {

@@ -79,6 +79,7 @@
     <string name="prayer_abbr_maghrib">Akşam</string>
     <string name="prayer_abbr_isha">Yatsı</string>
     <string name="prayer_jumua">Cuma Namazı</string>
+    <string name="bajram_prayer">Bayram namazı</string>
 
     <string name="action_change_language">Dili değiştir</string>
     <string name="language_picker_title">Dil</string>

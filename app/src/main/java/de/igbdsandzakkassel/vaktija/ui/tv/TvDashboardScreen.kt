@@ -269,6 +269,34 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                     }
                 }
                 state.jumua?.let { JumuaCard(it, german, ctx, Modifier.fillMaxWidth()) }
+                // Admin-announced Eid prayer — gold banner on the wall board until the day passes.
+                state.bajram?.let { (date, time) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(CARD_SHAPE)
+                            .background(BrandGold)
+                            .padding(horizontal = 20.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "🌙 " + ctx.getString(R.string.bajram_prayer) + " · " +
+                                date.format(DateTimeFormatter.ofPattern("EEEE, d. MMMM", if (german) GERMAN else BOSNIAN)),
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                        )
+                        Text(
+                            text = time.format(HM),
+                            color = Color.White,
+                            fontSize = 26.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                        )
+                    }
+                }
             }
         }
     }

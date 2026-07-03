@@ -79,6 +79,7 @@
     <string name="prayer_abbr_maghrib">Aksh.</string>
     <string name="prayer_abbr_isha">Jacia</string>
     <string name="prayer_jumua">Namazi i xhumasë</string>
+    <string name="bajram_prayer">Namazi i Bajramit</string>
 
     <string name="action_change_language">Ndrysho gjuhën</string>
     <string name="language_picker_title">Gjuha</string>

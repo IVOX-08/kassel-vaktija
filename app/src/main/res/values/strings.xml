@@ -84,6 +84,9 @@
     <string name="prayer_maghrib">Akšam</string>
     <string name="prayer_isha">Jacija</string>
     <string name="prayer_jumua">Džuma namaz</string>
+    <string name="bajram_prayer">Bajram-namaz</string>
+    <string name="admin_bajram_set">Najavi Bajram-namaz (datum i vrijeme)</string>
+    <string name="admin_bajram_remove">Ukloni Bajram-najavu</string>
 
     <!-- TV board: the universal transliterated prayer names (defined once here; same in every locale,
          so the big wall-display board reads Fajr/Dhuhr/Asr/Maghrib/Isha regardless of TV language).

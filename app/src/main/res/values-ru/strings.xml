@@ -79,6 +79,7 @@
     <string name="prayer_abbr_maghrib">Магриб</string>
     <string name="prayer_abbr_isha">Иша</string>
     <string name="prayer_jumua">Джума-намаз</string>
+    <string name="bajram_prayer">Ид-намаз</string>
 
     <string name="action_change_language">Изменить язык</string>
     <string name="language_picker_title">Язык</string>

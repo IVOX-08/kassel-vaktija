@@ -79,6 +79,7 @@
     <string name="prayer_abbr_maghrib">مغرب</string>
     <string name="prayer_abbr_isha">عشاء</string>
     <string name="prayer_jumua">نمازِ جمعہ</string>
+    <string name="bajram_prayer">عید کی نماز</string>
 
     <string name="action_change_language">زبان تبدیل کریں</string>
     <string name="language_picker_title">زبان</string>
