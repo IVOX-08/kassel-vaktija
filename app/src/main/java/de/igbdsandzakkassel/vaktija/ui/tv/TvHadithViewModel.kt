@@ -50,7 +50,15 @@ class TvHadithViewModel @Inject constructor(
             _daily.value = withContext(Dispatchers.IO) { loadDaily() }
         }
         viewModelScope.launch {
+            // The wall board runs 24/7 without ever recreating this ViewModel, so the "daily"
+            // hadith must be re-picked when the calendar day changes — not just once at startup.
+            var loadedFor = LocalDate.now()
             while (true) {
+                val today = LocalDate.now()
+                if (today != loadedFor) {
+                    loadedFor = today
+                    _daily.value = withContext(Dispatchers.IO) { loadDaily() }
+                }
                 val sec = LocalTime.now().toSecondOfDay()
                 // 30-second blocks: even block = Bosnian, odd = German. Deterministic and resets
                 // cleanly at midnight (86400 is a whole number of blocks).

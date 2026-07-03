@@ -66,7 +66,9 @@ object NewsNotifier {
         ensureChannel(context)
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
 
-        val title = item.title(lang).ifBlank { context.getString(R.string.news_add) }
+        // Fallback title must be localized too — the raw context resolves the SYSTEM locale on a
+        // background wake (Android 8-12), which would mix a Bosnian title with a translated body.
+        val title = item.title(lang).ifBlank { localized(context, lang).getString(R.string.news_add) }
         val body = item.body(lang)
         val notification = NotificationCompat.Builder(context, CHANNEL_NEWS)
             .setSmallIcon(R.drawable.ic_stat_adhan)
@@ -86,10 +88,12 @@ object NewsNotifier {
     fun postRaw(context: Context, title: String, body: String) {
         ensureChannel(context)
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
+        val fallbackCtx = de.igbdsandzakkassel.vaktija.core.locale.LocaleController.persistedTag(context)
+            ?.let { localized(context, it) } ?: context
         val notification = NotificationCompat.Builder(context, CHANNEL_NEWS)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.logo_notification))
-            .setContentTitle(title.ifBlank { context.getString(R.string.news_add) })
+            .setContentTitle(title.ifBlank { fallbackCtx.getString(R.string.news_add) })
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setPriority(NotificationCompat.PRIORITY_HIGH)

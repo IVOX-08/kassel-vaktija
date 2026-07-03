@@ -111,7 +111,13 @@ class RamadanViewModel @Inject constructor(
             sehurEnd = fajr,
             teravija = isha,
             countdownLabelRes = labelRes,
-            countdown = formatCountdown(Duration.between(now, target)),
+            // Zone-aware so the countdown doesn't jump by 1 h across a DST changeover night.
+            countdown = formatCountdown(
+                Duration.between(
+                    now.atZone(java.time.ZoneId.systemDefault()),
+                    target.atZone(java.time.ZoneId.systemDefault()),
+                ),
+            ),
             progress = progress,
             isRamadan = isRamadan,
             ramadanDay = if (isRamadan) h.get(ChronoField.DAY_OF_MONTH) else 0,

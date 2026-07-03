@@ -26,6 +26,11 @@
     <string name="ramadan_fasted_count">%2$d günün %1$d günü oruç tutuldu</string>
     <string name="ramadan_dua_title">İftar duası</string>
     <string name="ramadan_dua_meaning">Ey Allahım! Senin için oruç tuttum ve Senin rızkınla orucumu açtım.</string>
+    <string name="offline_no_data">İnternet bağlantısı yok – namaz vakitleri henüz yüklenemiyor. Lütfen Wi-Fi/mobil veriyi kontrol et.</string>
+    <string name="news_offline">İnternet bağlantısı yok – duyurular yüklenemiyor.</string>
+    <string name="calendar_today">Bugün</string>
+    <string name="qibla_calibrate">Pusula hassas değil – telefonu 8 çizer gibi hareket ettir.</string>
+    <string name="tasbih_reset_confirm">Sayaç gerçekten sıfırlansın mı?</string>
     <string name="tracker_streak">gün üst üste</string>
     <string name="tracker_today">Bugün</string>
     <string name="tasbih_reset">Sıfırla</string>

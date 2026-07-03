@@ -15,7 +15,9 @@ import de.igbdsandzakkassel.vaktija.core.device.isLeanbackTv
 import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -45,22 +47,36 @@ class AlarmScheduler @Inject constructor(
     fun canScheduleExact(): Boolean =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) alarmManager.canScheduleExactAlarms() else true
 
-    suspend fun rescheduleAll() {
-        cancelAll()
+    // NonCancellable: rescheduling is a cancel-then-rearm sequence. If the caller's scope dies midway
+    // (e.g. a settings toggle followed by a quick back-press cancelling the ViewModel scope), a plain
+    // suspend body could cancel AFTER cancelAll but BEFORE re-arming — leaving ZERO alarms until the
+    // next trigger. Wrapping the whole body guarantees the re-arm always completes once started.
+    suspend fun rescheduleAll(): Unit = withContext(NonCancellable) {
         // Android TV is a passive wall-display board — never schedule Adhan / pre-warn / auto-silence
         // / weekly alarms (it must stay silent). Prayer-time DATA is refreshed separately by
         // VaktijaRefreshWorker before this call, so the board still updates. (FEATURE_LEANBACK is
         // reliable from this app context, unlike a UiModeManager reading.) Check both TV signals so a
         // device that shows the TV board can never still be scheduling alarms.
-        if (context.isLeanbackTv() || context.isTelevision()) return
-        recoverStrandedDnd()
+        if (context.isLeanbackTv() || context.isTelevision()) return@withContext
         val settings = settingsRepository.observe().first()
+        // Read the times BEFORE cancelling: with a completely empty cache (fresh install before the
+        // first fetch, cleared data) a stray TIME_SET/TIMEZONE broadcast must not wipe whatever is
+        // already armed and then re-arm nothing.
+        val times = timesRepository.observeToday().first()
+
+        cancelAll()
+        recoverStrandedDnd(settings.autoSilenceEnabled)
 
         // Weekly dhikr/hadith reminder — independent of prayer times, so arm it before the early
         // return below (which fires when today's times aren't cached yet).
         scheduleWeeklyReminder(settings.weeklyReminderEnabled)
+        // Always re-arm the day-rollover alarm (self-perpetuating chain): shortly after midnight it
+        // re-runs this method so the NEW day's alarms (above all Fajr) exist even if the user never
+        // opens the app and the daily refresh worker only runs later in the day. Armed even when
+        // times are missing, so an empty-cache night still retries once the cache fills.
+        scheduleDayRollover()
 
-        val times = timesRepository.observeToday().first() ?: return
+        if (times == null) return@withContext
         // One-shot read of the ACTUAL configured rules (observeRules' first emission is the default).
         val rules = ruleProvider.getRules()
 
@@ -125,14 +141,43 @@ class AlarmScheduler @Inject constructor(
      * If we turned Do-Not-Disturb on for an auto-silence window but its restore ("end") alarm was
      * lost — device powered off or force-stopped across the window, or the alarm dropped — turn it
      * back off now. Keyed on OUR own [SettingsRepository.getDndActiveUntil] watermark, so a DND the
-     * user set themselves (which never writes that key) is never touched.
+     * user set themselves (which never writes that key) is never touched. Also restores immediately
+     * when the user disables auto-silence MID-window (the END alarm was just cancelled by cancelAll
+     * and, with the feature off, would never be re-armed — the phone would stay stranded in DND).
      */
-    private suspend fun recoverStrandedDnd() {
+    private suspend fun recoverStrandedDnd(autoSilenceEnabled: Boolean) {
         val until = settingsRepository.getDndActiveUntil()
-        if (until > 0L && System.currentTimeMillis() > until) {
+        if (until <= 0L) return
+        val expired = System.currentTimeMillis() > until
+        if (expired || !autoSilenceEnabled) {
             dndController.restore()
             settingsRepository.setDndActiveUntil(0L)
         }
+    }
+
+    /** Arm the self-perpetuating shortly-after-midnight re-arm (see [rescheduleAll]). */
+    private fun scheduleDayRollover() {
+        val at = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 5))
+        val triggerAtMillis = at.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val pending = dayRolloverPendingIntent()
+        try {
+            if (canScheduleExact()) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pending)
+            } else {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pending)
+            }
+        } catch (e: SecurityException) {
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pending)
+        }
+    }
+
+    private fun dayRolloverPendingIntent(): PendingIntent {
+        val intent = Intent(context, PrayerAlarmReceiver::class.java)
+            .setAction(PrayerAlarmReceiver.ACTION_DAY_ROLLOVER)
+        return PendingIntent.getBroadcast(
+            context, DAY_ROLLOVER_REQUEST, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
     }
 
     private fun schedule(
@@ -166,9 +211,10 @@ class AlarmScheduler @Inject constructor(
                 alarmManager.cancel(pendingIntent(prayer, type, 0, AdhanSound.DEFAULT, playWhenSilent = false, isJumua = false, silenceUntilMillis = 0L))
             }
         }
-        // Also clear the weekly reminder here (scheduleWeeklyReminder re-arms it right after) so
+        // Also clear the weekly reminder + day-rollover here (both are re-armed right after) so
         // cancellation is centralized and no alarm can be orphaned.
         alarmManager.cancel(weeklyReminderPendingIntent())
+        alarmManager.cancel(dayRolloverPendingIntent())
     }
 
     /** Arms (or cancels) the weekly Friday dhikr/hadith reminder. Re-armed each time it fires. */
@@ -240,6 +286,7 @@ class AlarmScheduler @Inject constructor(
         // Unique request code, far above prayer alarm codes. Prayer codes = prayer.ordinal*4+type;
         // the Prayer enum includes SUNRISE so the obligatory ordinals reach ISHA=5 → max 5*4+3 = 23.
         const val WEEKLY_REMINDER_REQUEST = 9100
+        const val DAY_ROLLOVER_REQUEST = 9200
         const val WEEKLY_REMINDER_HOUR = 11
 
         // Friday Jumu'ah, relative to the community jumua time: a 30-min pre-notice, and an auto-DND

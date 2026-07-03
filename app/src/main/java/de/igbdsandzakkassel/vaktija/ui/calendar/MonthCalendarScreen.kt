@@ -114,6 +114,9 @@ fun MonthCalendarScreen(
             title = monthTitle(state.month, locale),
             onPrevious = viewModel::previousMonth,
             onNext = viewModel::nextMonth,
+            // Quick way home after paging months (arrows only move one month at a time).
+            showToday = state.month != java.time.YearMonth.now(),
+            onToday = viewModel::goToToday,
         )
         ColumnHeaderRow()
         HorizontalDivider()
@@ -140,7 +143,13 @@ fun MonthCalendarScreen(
 }
 
 @Composable
-private fun MonthNavHeader(title: String, onPrevious: () -> Unit, onNext: () -> Unit) {
+private fun MonthNavHeader(
+    title: String,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    showToday: Boolean,
+    onToday: () -> Unit,
+) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         IconButton(onClick = onPrevious) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_prev_month))
@@ -153,6 +162,11 @@ private fun MonthNavHeader(title: String, onPrevious: () -> Unit, onNext: () -> 
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f),
         )
+        if (showToday) {
+            androidx.compose.material3.TextButton(onClick = onToday) {
+                Text(stringResource(R.string.calendar_today), fontWeight = FontWeight.SemiBold)
+            }
+        }
         IconButton(onClick = onNext) {
             Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = stringResource(R.string.cd_next_month))
         }

@@ -26,6 +26,11 @@
     <string name="ramadan_fasted_count">Agjëruar %1$d nga %2$d ditë</string>
     <string name="ramadan_dua_title">Lutja e iftarit</string>
     <string name="ramadan_dua_meaning">O Allah, për Ty agjërova dhe me furnizimin Tënd e çela agjërimin.</string>
+    <string name="offline_no_data">Nuk ka lidhje interneti – kohët e namazit nuk mund të ngarkohen ende. Kontrollo Wi-Fi/të dhënat.</string>
+    <string name="news_offline">Nuk ka lidhje interneti – njoftimet nuk mund të ngarkohen.</string>
+    <string name="calendar_today">Sot</string>
+    <string name="qibla_calibrate">Busulla është e pasaktë – lëviz telefonin në formë tetëshi (8).</string>
+    <string name="tasbih_reset_confirm">Vërtet ta zerosh numëruesin?</string>
     <string name="tracker_streak">ditë rresht</string>
     <string name="tracker_today">Sot</string>
     <string name="tasbih_reset">Rivendos</string>

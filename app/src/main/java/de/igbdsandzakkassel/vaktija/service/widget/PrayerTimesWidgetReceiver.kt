@@ -17,23 +17,29 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import de.igbdsandzakkassel.vaktija.MainActivity
 import de.igbdsandzakkassel.vaktija.R
+import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.DailyTimes
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /** Hilt access into the (non-component) widget provider. */
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface WidgetEntryPoint {
     fun prayerTimesRepository(): PrayerTimesRepository
+    fun communityRuleProvider(): CommunityRuleProvider
 }
 
 /**
@@ -79,10 +85,19 @@ class PrayerTimesWidgetReceiver : AppWidgetProvider() {
             val ids = manager.getAppWidgetIds(ComponentName(appContext, PrayerTimesWidgetReceiver::class.java))
             if (ids == null || ids.isEmpty()) return
 
-            val repository = EntryPointAccessors
-                .fromApplication(appContext, WidgetEntryPoint::class.java)
-                .prayerTimesRepository()
-            val times = repository.observeToday().first()
+            val entryPoint = EntryPointAccessors.fromApplication(appContext, WidgetEntryPoint::class.java)
+            val times = entryPoint.prayerTimesRepository().observeToday().first()
+            // Friday: the Dhuhr congregation IS Jumu'ah at the community time — the widget must count
+            // to the SAME moment the dashboard and the Adhan alarm use, not the raw Dhuhr time.
+            val jumua = runCatching { entryPoint.communityRuleProvider().getRules().jumua }.getOrNull()
+
+            // Render strings in the user's CHOSEN app language: below Android 13 a bare app context
+            // resolves the SYSTEM locale, so localize it via the persisted language tag.
+            val locCtx = LocaleController.persistedTag(appContext)?.let { tag ->
+                val config = android.content.res.Configuration(appContext.resources.configuration)
+                config.setLocale(Locale.forLanguageTag(tag))
+                appContext.createConfigurationContext(config)
+            } ?: appContext
 
             val views = RemoteViews(appContext.packageName, R.layout.widget_next_prayer)
             views.setOnClickPendingIntent(R.id.widget_root, openAppIntent(appContext))
@@ -93,13 +108,22 @@ class PrayerTimesWidgetReceiver : AppWidgetProvider() {
                 views.setChronometer(R.id.widget_chrono, SystemClock.elapsedRealtime(), null, false)
             } else {
                 val now = LocalDateTime.now()
-                val (prayer, at) = nextPrayer(times, now)
-                views.setTextViewText(R.id.widget_prayer_name, appContext.getString(prayer.labelRes))
+                val isFriday = now.dayOfWeek == DayOfWeek.FRIDAY
+                val effective = if (isFriday && jumua != null) times.copy(dhuhr = jumua) else times
+                val (prayer, at) = nextPrayer(effective, now)
+                val labelRes =
+                    if (isFriday && jumua != null && prayer == Prayer.DHUHR) R.string.prayer_jumua
+                    else prayer.labelRes
+                views.setTextViewText(R.id.widget_prayer_name, locCtx.getString(labelRes))
                 views.setTextViewText(
                     R.id.widget_prayer_time,
-                    appContext.getString(R.string.widget_remaining) + "  ·  " + at.toLocalTime().format(TIME_FMT),
+                    locCtx.getString(R.string.widget_remaining) + "  ·  " + at.toLocalTime().format(TIME_FMT),
                 )
-                val millisUntil = Duration.between(now, at).toMillis().coerceAtLeast(0L)
+                // Zone-aware difference: across a DST changeover night a naive LocalDateTime
+                // difference is off by exactly 1 h (the Chronometer would count negative for an hour).
+                val zone = ZoneId.systemDefault()
+                val millisUntil =
+                    Duration.between(ZonedDateTime.now(zone), at.atZone(zone)).toMillis().coerceAtLeast(0L)
                 views.setChronometer(R.id.widget_chrono, SystemClock.elapsedRealtime() + millisUntil, null, true)
                 views.setChronometerCountDown(R.id.widget_chrono, true)
                 scheduleRollover(appContext, at)

@@ -41,16 +41,20 @@ class VaktijaEuSource @Inject constructor(
     }
 
     private fun parse(html: String): DailyTimes {
-        val ldJson = LD_JSON_REGEX.find(html)?.groupValues?.get(1)
-            ?: error("vaktija.eu: no JSON-LD block found (page structure changed?)")
+        // The page can carry SEVERAL ld+json blocks (SEO/breadcrumbs/etc.); scan them ALL for the
+        // one holding the Dataset/Schedule instead of assuming it comes first.
+        val blocks = LD_JSON_REGEX.findAll(html).map { it.groupValues[1] }.toList()
+        if (blocks.isEmpty()) error("vaktija.eu: no JSON-LD block found (page structure changed?)")
 
-        val root = json.parseToJsonElement(ldJson).jsonObject
-        val graph = root["@graph"]?.jsonArray ?: error("vaktija.eu: JSON-LD has no @graph")
-        val schedule = graph
-            .map { it.jsonObject }
-            .firstOrNull { it["@type"]?.jsonPrimitive?.contentOrNull == "Dataset" }
-            ?.get("mainEntity")?.jsonObject
-            ?: error("vaktija.eu: no Dataset/Schedule in JSON-LD")
+        val schedule = blocks.firstNotNullOfOrNull { block ->
+            runCatching {
+                val root = json.parseToJsonElement(block).jsonObject
+                root["@graph"]?.jsonArray
+                    ?.map { it.jsonObject }
+                    ?.firstOrNull { it["@type"]?.jsonPrimitive?.contentOrNull == "Dataset" }
+                    ?.get("mainEntity")?.jsonObject
+            }.getOrNull()
+        } ?: error("vaktija.eu: no Dataset/Schedule in any JSON-LD block")
 
         val date = schedule["startDate"]?.jsonPrimitive?.contentOrNull
             ?.let { LocalDate.parse(it) }
@@ -75,7 +79,7 @@ class VaktijaEuSource @Inject constructor(
             error("vaktija.eu: missing time for ${keys.joinToString("/")}")
         }
 
-        return DailyTimes(
+        val result = DailyTimes(
             date = date,
             fajr = time("sabah", "imsak", "zora", "fajr"),
             sunrise = time("izlazak", "sunrise"),
@@ -84,6 +88,22 @@ class VaktijaEuSource @Inject constructor(
             maghrib = time("akšam", "aksam", "maghrib"),
             isha = time("jacija", "isha", "jacaja"),
         )
+        // Plausibility gate: fail loudly rather than cache garbage if the site ever serves mixed-up
+        // values. (Isha is deliberately NOT checked against Maghrib — at Kassel's latitude it can
+        // cross midnight in summer, e.g. 01:21, which is smaller as a plain time-of-day.)
+        check(
+            result.fajr < result.sunrise &&
+                result.sunrise < result.dhuhr &&
+                result.dhuhr < result.asr &&
+                result.asr < result.maghrib,
+        ) { "vaktija.eu: implausible times (order fajr<sunrise<dhuhr<asr<maghrib violated)" }
+        // Staleness gate: the known edge-cache lag is ±1 day. Anything further off means the page is
+        // frozen/broken — better to fail (and show the in-app stale banner) than to re-stamp
+        // week-old times as "today's" forever.
+        check(kotlin.math.abs(java.time.temporal.ChronoUnit.DAYS.between(date, LocalDate.now())) <= 2) {
+            "vaktija.eu: startDate $date too far from today (frozen page?)"
+        }
+        return result
     }
 
     private companion object {

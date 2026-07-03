@@ -26,6 +26,11 @@
     <string name="ramadan_fasted_count">Fasted %1$d of %2$d days</string>
     <string name="ramadan_dua_title">Supplication for breaking the fast</string>
     <string name="ramadan_dua_meaning">O Allah, for You I have fasted and with Your provision I have broken my fast.</string>
+    <string name="offline_no_data">No internet connection – prayer times cannot be loaded yet. Please check Wi-Fi/mobile data.</string>
+    <string name="news_offline">No internet connection – announcements cannot be loaded.</string>
+    <string name="calendar_today">Today</string>
+    <string name="qibla_calibrate">Compass inaccurate – move your phone in a figure-8 motion.</string>
+    <string name="tasbih_reset_confirm">Really reset the counter?</string>
     <string name="tracker_streak">day streak</string>
     <string name="tracker_today">Today</string>
     <string name="tasbih_reset">Reset</string>

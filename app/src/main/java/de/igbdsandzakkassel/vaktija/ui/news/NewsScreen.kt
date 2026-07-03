@@ -129,8 +129,17 @@ fun NewsScreen(
         when {
             list == null -> CenteredBox { CircularProgressIndicator() }
             list.isEmpty() -> CenteredBox {
+                // Offline with an empty local cache is indistinguishable from "the mosque never
+                // posted" from the data alone — check connectivity so we don't confidently claim
+                // "no announcements" when the truth is "couldn't load them".
+                val ctx = LocalContext.current
+                val offline = remember {
+                    val cm = ctx.getSystemService(android.content.Context.CONNECTIVITY_SERVICE)
+                        as? android.net.ConnectivityManager
+                    cm?.activeNetwork == null
+                }
                 Text(
-                    text = stringResource(R.string.news_empty),
+                    text = stringResource(if (offline) R.string.news_offline else R.string.news_empty),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -509,4 +518,11 @@ private fun CenteredBox(content: @Composable () -> Unit) {
 private fun formatTimestamp(epochMillis: Long): String =
     Instant.ofEpochMilli(epochMillis)
         .atZone(ZoneId.systemDefault())
-        .format(DateTimeFormatter.ofPattern("d. MMMM yyyy, HH:mm", Locale.getDefault()))
+        .format(
+            // Locale-aware pattern: the fixed "d. MMMM" dot style is Bosnian/German convention only
+            // and looked wrong in en/ru/tr ("2. July 2026"). Let each locale pick its own format.
+            DateTimeFormatter.ofPattern(
+                android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "dMMMMyHHmm"),
+                Locale.getDefault(),
+            ),
+        )

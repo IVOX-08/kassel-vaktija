@@ -13,6 +13,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.HiltAndroidApp
+import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
@@ -37,6 +38,7 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        installTvCrashRecovery()
         PrayerNotifier.ensureChannels(this)
         NewsNotifier.ensureChannel(this)
         // Subscribe for instant announcement pushes. No-op until a Cloud Function publishes to the
@@ -47,6 +49,42 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         // No-billing fallback for announcement/Iqamah notifications: poll every ~15 min (plus the
         // on-wake check at each prayer alarm). Replaced by instant FCM push once Blaze is enabled.
         NewsCheckWorker.schedulePeriodic(this)
+    }
+
+    /**
+     * The mosque's TV board runs 24/7 unattended: if an uncaught exception ever kills the process,
+     * the entrance would show the Android TV home screen until someone finds the remote. Standard
+     * kiosk pattern — schedule a relaunch of [MainActivity] ~2 s out, then let the process die.
+     * Phones keep the normal crash behaviour (system dialog / silent restart by the user).
+     */
+    private fun installTvCrashRecovery() {
+        if (!isTelevision()) return
+        val previous = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            runCatching {
+                val intent = android.content.Intent(this, MainActivity::class.java)
+                    .addFlags(
+                        android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
+                            android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK,
+                    )
+                val pending = android.app.PendingIntent.getActivity(
+                    this, 4242, intent,
+                    android.app.PendingIntent.FLAG_CANCEL_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE,
+                )
+                val alarmManager = getSystemService(ALARM_SERVICE) as android.app.AlarmManager
+                alarmManager.set(
+                    android.app.AlarmManager.RTC,
+                    System.currentTimeMillis() + 2_000,
+                    pending,
+                )
+            }
+            // Still crash "properly" so the system logs it (and any previous handler runs).
+            previous?.uncaughtException(thread, throwable)
+                ?: run {
+                    android.os.Process.killProcess(android.os.Process.myPid())
+                    kotlin.system.exitProcess(2)
+                }
+        }
     }
 
     private fun schedulePrayerTimesRefresh() {

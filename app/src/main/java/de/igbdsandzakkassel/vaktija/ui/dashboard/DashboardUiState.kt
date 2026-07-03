@@ -27,6 +27,8 @@ data class DashboardUiState(
     val hijriDate: String = "",
     val rows: List<PrayerRowUi> = emptyList(),
     val nextPrayer: Prayer? = null,
+    /** Display label of the prayer the countdown targets (Jumu'ah on the Friday Dhuhr slot). */
+    @param:StringRes val nextPrayerLabelRes: Int? = null,
     val countdown: String = "",
     val jumua: LocalTime? = null,
     val isStale: Boolean = false,

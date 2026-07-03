@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -77,6 +78,7 @@ fun QiblaScreen(modifier: Modifier = Modifier) {
         }
 
         var azimuth by remember { mutableFloatStateOf(0f) }
+        var lowAccuracy by remember { mutableStateOf(false) }
         DisposableEffect(sensorManager, rotationSensor) {
             val rotationMatrix = FloatArray(9)
             val orientation = FloatArray(3)
@@ -90,7 +92,11 @@ fun QiblaScreen(modifier: Modifier = Modifier) {
                     azimuth = smoothed
                 }
 
-                override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+                override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+                    // Indoors/near metal the magnetometer often degrades — a prayer-DIRECTION
+                    // feature must say so instead of showing a confidently wrong dial.
+                    lowAccuracy = accuracy < android.hardware.SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM
+                }
             }
             sensorManager.registerListener(listener, rotationSensor, SensorManager.SENSOR_DELAY_UI)
             onDispose { sensorManager.unregisterListener(listener) }
@@ -121,6 +127,16 @@ fun QiblaScreen(modifier: Modifier = Modifier) {
             color = if (aligned) BrandGreen else MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = if (aligned) FontWeight.Bold else FontWeight.Normal,
         )
+        if (lowAccuracy) {
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = stringResource(R.string.qibla_calibrate),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.secondary,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
     }
 }
 

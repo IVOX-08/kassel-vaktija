@@ -23,11 +23,14 @@ class NewsNotificationChecker @Inject constructor(
     private val newsRepository: NewsRepository,
     private val ruleProvider: CommunityRuleProvider,
     private val settingsRepository: SettingsRepository,
+    private val alarmScheduler: dagger.Lazy<de.igbdsandzakkassel.vaktija.service.alarm.AlarmScheduler>,
 ) {
     suspend fun checkAndNotify(context: Context) {
-        if (!settingsRepository.getNewsNotificationsEnabled()) return
-        checkNews(context)
-        checkConfig(context)
+        val notifyEnabled = settingsRepository.getNewsNotificationsEnabled()
+        if (notifyEnabled) checkNews(context)
+        // The CONFIG check must run even with notifications off: an admin Iqamah/Jumu'ah edit has to
+        // reach ALARM SCHEDULING on every device (only the user-facing notification is optional).
+        checkConfig(context, notifyEnabled)
     }
 
     private suspend fun checkNews(context: Context) {
@@ -51,7 +54,7 @@ class NewsNotificationChecker @Inject constructor(
         settingsRepository.setLastNotifiedNewsMillis(watermark)
     }
 
-    private suspend fun checkConfig(context: Context) {
+    private suspend fun checkConfig(context: Context, notifyEnabled: Boolean) {
         val lastSeen = settingsRepository.getLastSeenConfigMillis()
         if (lastSeen == null) {
             // First check ever: baseline to NOW, so the NEXT real change (an admin save after this)
@@ -62,7 +65,12 @@ class NewsNotificationChecker @Inject constructor(
         val updatedAt = ruleProvider.getUpdatedAt() ?: return
         if (updatedAt <= lastSeen) return // times haven't changed since last time
 
-        NewsNotifier.postConfigUpdate(context, currentLang(context))
+        if (notifyEnabled) NewsNotifier.postConfigUpdate(context, currentLang(context))
+        // Re-arm the Adhan/Jumu'ah alarms with the NEW rules right away. (The getUpdatedAt server
+        // read above also refreshed Firestore's local cache, so getRules() inside the scheduler now
+        // sees the updated values — without this, a changed Iqamah/Jumu'ah time would only reach the
+        // alarms at the next natural reschedule.)
+        runCatching { alarmScheduler.get().rescheduleAll() }
         // Clamp the stored watermark to our OWN clock (like checkNews) so a future-dated edit (admin
         // clock skew) can never push it past real time and permanently suppress later changes.
         settingsRepository.setLastSeenConfigMillis(minOf(updatedAt, System.currentTimeMillis()))

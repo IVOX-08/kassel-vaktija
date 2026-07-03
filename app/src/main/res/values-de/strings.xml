@@ -26,6 +26,11 @@
     <string name="ramadan_fasted_count">%1$d von %2$d Tagen gefastet</string>
     <string name="ramadan_dua_title">Bittgebet beim Fastenbrechen</string>
     <string name="ramadan_dua_meaning">O Allah, für Dich habe ich gefastet und mit Deiner Versorgung habe ich das Fasten gebrochen.</string>
+    <string name="offline_no_data">Keine Internetverbindung – Gebetszeiten können noch nicht geladen werden. Bitte WLAN/Daten prüfen.</string>
+    <string name="news_offline">Keine Internetverbindung – Mitteilungen können nicht geladen werden.</string>
+    <string name="calendar_today">Heute</string>
+    <string name="qibla_calibrate">Kompass ungenau – bewege das Handy in einer 8-Form.</string>
+    <string name="tasbih_reset_confirm">Zähler wirklich zurücksetzen?</string>
     <string name="tracker_streak">Tage in Folge</string>
     <string name="tracker_today">Heute</string>
     <string name="tasbih_reset">Zurücksetzen</string>

@@ -56,15 +56,29 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 // it's badly overdue we post a SILENT notice instead of playing the Adhan sound.
                 val scheduledAt = intent.getLongExtra(EXTRA_TRIGGER_AT, 0L)
                 val stale = scheduledAt > 0L && System.currentTimeMillis() - scheduledAt > STALE_ADHAN_MS
+                // If OUR OWN auto-silence / Jumu'ah DND window is active right now, the phones in the
+                // mosque were silenced BY THIS APP for the khutbah/prayer — blasting the Adhan out
+                // loud through it (USAGE_ALARM pierces DND) would defeat the whole feature at the
+                // worst possible moment. Show the quiet notice instead.
+                val inOwnSilenceWindow = runCatching {
+                    kotlinx.coroutines.runBlocking { settingsRepository.getDndActiveUntil() } >
+                        System.currentTimeMillis()
+                }.getOrDefault(false)
                 val ringerMode = ringerMode(context)
                 when {
-                    stale -> {
+                    stale || inOwnSilenceWindow -> {
                         PrayerNotifier.ensureChannels(context)
                         PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
                     }
                     playWhenSilent || ringerMode == AudioManager.RINGER_MODE_NORMAL -> {
-                        // Play via the foreground service (won't be truncated).
-                        AdhanForegroundService.start(context, prayer, sound.name, isJumua)
+                        // Play via the foreground service (won't be truncated). Defensive: if the OS
+                        // rejects the background FGS start (OEM restriction), degrade to the quiet
+                        // notice instead of dropping the prayer notice entirely.
+                        runCatching { AdhanForegroundService.start(context, prayer, sound.name, isJumua) }
+                            .onFailure {
+                                PrayerNotifier.ensureChannels(context)
+                                PrayerNotifier.postAdhanSilently(context, prayer, isJumua)
+                            }
                     }
                     ringerMode == AudioManager.RINGER_MODE_VIBRATE -> {
                         // Phone on vibrate → no sound, but it MUST buzz. Channel vibration can't be
@@ -83,11 +97,18 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
 
             ACTION_PREWARN -> {
                 val prayer = prayerFrom(intent) ?: return
-                PrayerNotifier.ensureChannels(context)
-                PrayerNotifier.postPreWarning(
-                    context, prayer, intent.getIntExtra(EXTRA_MINUTES, 0),
-                    intent.getBooleanExtra(EXTRA_IS_JUMUA, false),
-                )
+                // Same staleness gate as the Adhan: an OEM-held alarm released hours late must not
+                // post a factually wrong "prayer in N minutes" notice.
+                val warnScheduledAt = intent.getLongExtra(EXTRA_TRIGGER_AT, 0L)
+                val warnStale =
+                    warnScheduledAt > 0L && System.currentTimeMillis() - warnScheduledAt > STALE_ADHAN_MS
+                if (!warnStale) {
+                    PrayerNotifier.ensureChannels(context)
+                    PrayerNotifier.postPreWarning(
+                        context, prayer, intent.getIntExtra(EXTRA_MINUTES, 0),
+                        intent.getBooleanExtra(EXTRA_IS_JUMUA, false),
+                    )
+                }
             }
 
             ACTION_WEEKLY_REMINDER -> PrayerNotifier.postWeeklyReminder(context)
@@ -113,8 +134,19 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                         settingsRepository.setDndActiveUntil(intent.getLongExtra(EXTRA_SILENCE_UNTIL, 0L))
                     }
                     ACTION_SILENCE_END -> {
-                        dndController.restore()
-                        settingsRepository.setDndActiveUntil(0L)
+                        // Only lift DND if WE turned it on (our watermark is set). A stray END alarm
+                        // (e.g. delivered after the user disabled auto-silence, or when START never
+                        // ran) must not force-disable a Do-Not-Disturb the user set themselves.
+                        if (settingsRepository.getDndActiveUntil() > 0L) {
+                            dndController.restore()
+                            settingsRepository.setDndActiveUntil(0L)
+                        }
+                    }
+                    // Shortly-after-midnight self re-arm: plan the NEW day's alarms (above all Fajr)
+                    // and roll the widget to the new day.
+                    ACTION_DAY_ROLLOVER -> {
+                        alarmScheduler.rescheduleAll()
+                        PrayerTimesWidgetReceiver.refresh(context)
                     }
                     // Re-arm next week's reminder.
                     ACTION_WEEKLY_REMINDER -> alarmScheduler.rescheduleAll()
@@ -157,6 +189,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         const val ACTION_SILENCE_START = "de.igbdsandzakkassel.vaktija.ALARM_SILENCE_START"
         const val ACTION_SILENCE_END = "de.igbdsandzakkassel.vaktija.ALARM_SILENCE_END"
         const val ACTION_WEEKLY_REMINDER = "de.igbdsandzakkassel.vaktija.ALARM_WEEKLY_REMINDER"
+        const val ACTION_DAY_ROLLOVER = "de.igbdsandzakkassel.vaktija.ALARM_DAY_ROLLOVER"
         const val EXTRA_PRAYER = "extra_prayer"
         const val EXTRA_MINUTES = "extra_minutes"
         const val EXTRA_SOUND = "extra_sound"

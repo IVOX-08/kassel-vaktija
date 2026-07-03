@@ -26,6 +26,11 @@
     <string name="ramadan_fasted_count">%2$d میں سے %1$d دن روزے رکھے</string>
     <string name="ramadan_dua_title">افطار کی دعا</string>
     <string name="ramadan_dua_meaning">اے اللہ! میں نے تیرے لیے روزہ رکھا اور تیرے رزق سے افطار کیا۔</string>
+    <string name="offline_no_data">انٹرنیٹ کنکشن نہیں ہے – نماز کے اوقات ابھی لوڈ نہیں ہو سکتے۔ براہ کرم Wi-Fi/موبائل ڈیٹا چیک کریں۔</string>
+    <string name="news_offline">انٹرنیٹ کنکشن نہیں ہے – اعلانات لوڈ نہیں ہو سکتے۔</string>
+    <string name="calendar_today">آج</string>
+    <string name="qibla_calibrate">قطب نما درست نہیں – فون کو 8 کی شکل میں گھمائیں۔</string>
+    <string name="tasbih_reset_confirm">کیا واقعی کاؤنٹر صفر کریں؟</string>
     <string name="tracker_streak">لگاتار دن</string>
     <string name="tracker_today">آج</string>
     <string name="tasbih_reset">ری سیٹ</string>

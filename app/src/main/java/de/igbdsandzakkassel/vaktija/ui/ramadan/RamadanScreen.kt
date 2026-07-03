@@ -70,9 +70,14 @@ fun RamadanScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("ramadan_prefs", Context.MODE_PRIVATE) }
-    val today = remember { LocalDate.now() }
-    var fasted by rememberSaveable { mutableStateOf(prefs.getBoolean("f_$today", false)) }
-    LaunchedEffect(fasted) { prefs.edit().putBoolean("f_$today", fasted).apply() }
+    // NOT remembered: the screen stays open across midnight during Ramadan (Tarawih → Suhoor), and
+    // a frozen date would write the fasting mark under YESTERDAY's key. The 1-second ticker keeps
+    // this recomposing, so the date is always current; the saveable is keyed to reset on day change.
+    val today = LocalDate.now()
+    var fasted by rememberSaveable(today.toString()) {
+        mutableStateOf(prefs.getBoolean("f_$today", false))
+    }
+    LaunchedEffect(fasted, today) { prefs.edit().putBoolean("f_$today", fasted).apply() }
 
     if (state.loading) {
         Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }

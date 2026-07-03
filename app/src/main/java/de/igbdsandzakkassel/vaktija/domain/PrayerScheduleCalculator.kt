@@ -27,10 +27,13 @@ object PrayerScheduleCalculator {
         val today = now.toLocalDate()
         val schedule = Prayer.OBLIGATORY.map { it to LocalDateTime.of(today, times.adhan(it)) }
 
-        val next = schedule.firstOrNull { it.second.isAfter(now) }
+        // Pick by TIME, not by list position: on Fridays the Dhuhr slot carries the community
+        // Jumu'ah time, which can be LATER than Asr (e.g. Jumu'ah 15:00 vs winter Asr 14:30) — a
+        // positional scan would then skip Asr entirely.
+        val next = schedule.filter { it.second.isAfter(now) }.minByOrNull { it.second }
             ?: (Prayer.FAJR to LocalDateTime.of(today.plusDays(1), times.fajr))
 
-        val active = schedule.lastOrNull { !it.second.isAfter(now) }?.first
+        val active = schedule.filter { !it.second.isAfter(now) }.maxByOrNull { it.second }?.first
             ?: Prayer.ISHA // before today's Fajr → still in the Isha period
 
         return ScheduleResult(activePrayer = active, nextPrayer = next.first, nextAdhan = next.second)

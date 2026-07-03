@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Auto Backup (Android 11 and below). Exclude the rebuildable caches — the Room prayer-times
+     cache and (much bigger) Firestore's offline cache with Base64 flyer images live in the
+     databases dir and can blow the 25 MB backup quota, which would silently kill the WHOLE backup.
+     Excluding them keeps the genuinely irreplaceable user data (prayer tracker, tasbih counts,
+     Quran resume/bookmarks, settings — all in SharedPreferences/DataStore) small enough to always
+     back up and survive a phone change/reinstall. -->
+<full-backup-content>
+    <exclude domain="database" path="." />
+</full-backup-content>

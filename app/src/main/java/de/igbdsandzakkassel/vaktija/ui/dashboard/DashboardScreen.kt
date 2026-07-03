@@ -100,11 +100,29 @@ fun DashboardScreen(
 @Composable
 private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modifier) {
     if (state.loading) {
+        // First-ever launch with no cache: after a few seconds explain WHY it's still loading
+        // (almost always: no internet yet) instead of spinning silently forever.
+        var showHint by remember { mutableStateOf(false) }
+        LaunchedEffect(Unit) {
+            kotlinx.coroutines.delay(6_000)
+            showHint = true
+        }
         Column(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize().padding(horizontal = 32.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-        ) { CircularProgressIndicator() }
+        ) {
+            CircularProgressIndicator()
+            if (showHint) {
+                Text(
+                    text = stringResource(R.string.offline_no_data),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 16.dp),
+                )
+            }
+        }
         return
     }
 
@@ -203,10 +221,11 @@ private fun Header(gregorianDate: String, hijriDate: String) {
                 .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Left: mosque address → opens Maps.
+            // Left: mosque address → opens Maps. LRI/PDI isolates guarantee the digit-heavy LTR
+            // address renders in order under Arabic/Urdu (same treatment as the Settings screen).
             HeaderSideItem(
                 icon = Icons.Filled.Place,
-                label = stringResource(R.string.community_address),
+                label = "⁦" + stringResource(R.string.community_address) + "⁩",
                 emphasized = false,
                 alignment = Alignment.Start,
                 onClick = { uriHandler.openUri(MAPS_URL) },
@@ -332,6 +351,16 @@ private fun CountdownCard(state: DashboardUiState, modifier: Modifier = Modifier
                 fontWeight = FontWeight.SemiBold,
                 color = BrandGoldLight,
             )
+            // Name WHICH prayer the countdown targets — the pinned card must be self-contained
+            // (the highlighted list card can be scrolled off-screen).
+            state.nextPrayerLabelRes?.let { labelRes ->
+                Text(
+                    text = stringResource(labelRes),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+            }
             Spacer(Modifier.height(6.dp))
             Text(
                 text = state.countdown,

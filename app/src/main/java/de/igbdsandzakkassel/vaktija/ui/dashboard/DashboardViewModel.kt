@@ -88,6 +88,11 @@ class DashboardViewModel @Inject constructor(
             )
         }
 
+        // Zone-aware countdown: across a DST changeover night (Europe/Berlin, 2×/year) a naive
+        // LocalDateTime difference to tomorrow's Fajr is off by exactly 1 hour.
+        val zone = java.time.ZoneId.systemDefault()
+        val remaining = Duration.between(now.atZone(zone), schedule.nextAdhan.atZone(zone))
+
         return DashboardUiState(
             loading = false,
             clock = now.format(CLOCK),
@@ -95,7 +100,12 @@ class DashboardViewModel @Inject constructor(
             hijriDate = HijrahDate.from(now.toLocalDate()).format(hijriFormatter(locale)),
             rows = rows,
             nextPrayer = schedule.nextPrayer,
-            countdown = formatCountdown(Duration.between(now, schedule.nextAdhan)),
+            // Label for the countdown card: names WHICH prayer is being counted down to (Jumu'ah on
+            // the Friday Dhuhr slot).
+            nextPrayerLabelRes =
+                if (isFriday && schedule.nextPrayer == Prayer.DHUHR) R.string.prayer_jumua
+                else schedule.nextPrayer.labelRes,
+            countdown = formatCountdown(remaining),
             // On Friday the Jumua time is shown in the list (no separate card).
             jumua = if (isFriday) null else rules.jumua,
             isStale = !fresh,
@@ -109,9 +119,19 @@ class DashboardViewModel @Inject constructor(
 
     private companion object {
         val CLOCK: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+
+        // Locale-AWARE date patterns: the old fixed "d. MMMM" (Bosnian/German ordinal-dot style)
+        // produced wrong-looking dates in 6 of the 8 languages ("Wednesday, 2. July 2026",
+        // "2. июля 2026"). getBestDateTimePattern picks each locale's own convention.
         fun dateFormatter(locale: Locale): DateTimeFormatter =
-            DateTimeFormatter.ofPattern("EEEE, d. MMMM yyyy", locale)
+            DateTimeFormatter.ofPattern(
+                android.text.format.DateFormat.getBestDateTimePattern(locale, "EEEEdMMMMy"),
+                locale,
+            )
         fun hijriFormatter(locale: Locale): DateTimeFormatter =
-            DateTimeFormatter.ofPattern("d. MMMM yyyy G", locale)
+            DateTimeFormatter.ofPattern(
+                android.text.format.DateFormat.getBestDateTimePattern(locale, "GdMMMMy"),
+                locale,
+            )
     }
 }

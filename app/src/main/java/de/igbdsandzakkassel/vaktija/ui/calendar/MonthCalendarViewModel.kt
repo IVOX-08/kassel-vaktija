@@ -32,4 +32,7 @@ class MonthCalendarViewModel @Inject constructor(
 
     fun previousMonth() = month.update { it.minusMonths(1) }
     fun nextMonth() = month.update { it.plusMonths(1) }
+
+    /** One tap back to the current month after paging around (e.g. checking Ramadan dates). */
+    fun goToToday() = month.update { YearMonth.now() }
 }

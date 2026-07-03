@@ -24,6 +24,13 @@ class PushMessagingService : FirebaseMessagingService() {
     @Inject lateinit var settingsRepository: SettingsRepository
 
     override fun onMessageReceived(message: RemoteMessage) {
+        // Honour the in-app "announcement notifications" opt-out — the polled path already does
+        // (NewsNotificationChecker returns early); pushes must not bypass the user's choice.
+        val enabled = runBlocking {
+            runCatching { settingsRepository.getNewsNotificationsEnabled() }.getOrDefault(true)
+        }
+        if (!enabled) return
+
         if (message.data["type"] == "config") {
             // Watermark-gate it like the poll does, so we don't double-notify (push + later poll) and
             // the admin who just made the change isn't notified about their own edit.

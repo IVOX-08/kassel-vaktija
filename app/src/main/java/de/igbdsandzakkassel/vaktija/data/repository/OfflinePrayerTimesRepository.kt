@@ -38,7 +38,7 @@ class OfflinePrayerTimesRepository @Inject constructor(
 
     override fun observeToday(): Flow<DailyTimes?> =
         currentDate.flatMapLatest { date ->
-            combine(dao.observe(date.toString()), dao.observeLatest()) { today, latest ->
+            combine(dao.observe(date.toString()), dao.observeLatest(date.toString())) { today, latest ->
                 (today ?: latest)?.toModel()
             }
         }
@@ -56,9 +56,14 @@ class OfflinePrayerTimesRepository @Inject constructor(
         // correct times under yesterday's date and wrongly show the "offline/stale" banner. So key
         // the cache by the device's current date instead.
         dao.upsert(times.copy(date = today).toEntity(fetchedAt = System.currentTimeMillis()))
-        // Keep the cache small: drop anything older than ~2 weeks.
+        // Keep the cache small: drop anything older than ~2 weeks, and clean up any future-dated
+        // row a transiently wrong device clock may have left behind (it would otherwise shadow
+        // real data in the observeLatest fallback forever).
         dao.deleteOlderThan(today.minusWeeks(2).toString())
+        dao.deleteNewerThan(today.plusDays(1).toString())
         true
+    } catch (e: kotlinx.coroutines.CancellationException) {
+        throw e // never swallow a cancelled worker's cancellation
     } catch (e: Exception) {
         false
     }

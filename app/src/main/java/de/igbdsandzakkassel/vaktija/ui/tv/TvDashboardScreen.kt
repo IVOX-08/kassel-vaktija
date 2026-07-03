@@ -121,11 +121,32 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
             .padding(horizontal = 36.dp, vertical = 22.dp), // overscan-safe margin
     ) {
         if (state.loading) {
-            Image(
-                painter = painterResource(R.drawable.logo_emblem),
-                contentDescription = stringResource(R.string.cd_app_logo),
-                modifier = Modifier.align(Alignment.Center).size(200.dp),
-            )
+            // First-ever start with an empty cache: don't sit on a silent logo forever — after a
+            // few seconds tell the installer what's wrong (usually: TV not on Wi-Fi yet).
+            var showHint by remember { mutableStateOf(false) }
+            LaunchedEffect(Unit) {
+                delay(6_000)
+                showHint = true
+            }
+            Column(
+                modifier = Modifier.align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.logo_emblem),
+                    contentDescription = stringResource(R.string.cd_app_logo),
+                    modifier = Modifier.size(200.dp),
+                )
+                if (showHint) {
+                    Text(
+                        text = "Gebetszeiten werden geladen … bitte Internetverbindung prüfen\nUčitavanje namaskih vremena … provjeri internet vezu",
+                        color = BrandGreenDark,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(top = 16.dp),
+                    )
+                }
+            }
             return@Box
         }
 
@@ -137,6 +158,19 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
                 label = "boardLanguage",
             ) { german ->
                 BoardBody(state, german, if (german) deCtx else bsCtx)
+            }
+            // Public wall display MUST say when it could not refresh — otherwise days-old times
+            // (which drift 1-2 min/day) would be presented as today's without any hint.
+            if (state.isStale) {
+                Text(
+                    text = "⚠ Vremena možda nisu ažurna (nema interneta) · Zeiten evtl. nicht aktuell (kein Internet)",
+                    color = BrandGold,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                )
             }
             dailyHadith?.let { hadith ->
                 Spacer(Modifier.height(10.dp))
@@ -167,10 +201,33 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
             Image(
                 painter = painterResource(R.drawable.logo_emblem),
                 contentDescription = stringResource(R.string.cd_app_logo),
-                modifier = Modifier.height(104.dp),
+                modifier = Modifier.height(80.dp),
             )
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(6.dp))
             HeroCard(state, german, ctx, Modifier.fillMaxWidth())
+            Spacer(Modifier.height(6.dp))
+            // Growth loop: everyone waiting at the entrance can scan the board to install the app.
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color.White)
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.tv_qr_play),
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp),
+                )
+                Text(
+                    text = "Skeniraj za aplikaciju\nApp scannen",
+                    color = BrandGreenDark,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    lineHeight = 13.sp,
+                    modifier = Modifier.padding(start = 8.dp),
+                )
+            }
         }
 
         // ---- Right column: header + 2-column prayer grid + Džuma ----
@@ -242,9 +299,16 @@ private fun HeroCard(state: DashboardUiState, german: Boolean, ctx: Context, mod
             textAlign = TextAlign.Center,
             maxLines = 1,
         )
-        if (state.hijriDate.isNotEmpty()) {
-            Text(state.hijriDate, color = BrandGoldLight, fontSize = 13.sp, textAlign = TextAlign.Center)
-        }
+        // Format the Hijri date HERE with the board's alternating de/bs locale — state.hijriDate is
+        // rendered in the SYSTEM locale, which would leak a third language onto the bilingual board.
+        Text(
+            text = java.time.chrono.HijrahDate.from(today).format(
+                DateTimeFormatter.ofPattern("d. MMMM yyyy G", locale),
+            ),
+            color = BrandGoldLight,
+            fontSize = 13.sp,
+            textAlign = TextAlign.Center,
+        )
         Spacer(Modifier.height(8.dp))
         Column(
             modifier = Modifier
@@ -261,6 +325,17 @@ private fun HeroCard(state: DashboardUiState, german: Boolean, ctx: Context, mod
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
             )
+            // Name the prayer being counted down to — the most-glanced element must be
+            // self-contained (readable without scanning the grid for the highlighted card).
+            state.rows.firstOrNull { it.isHighlighted }?.let { next ->
+                Text(
+                    text = prayerLabel(next, german, ctx),
+                    color = BrandGoldLight,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                )
+            }
             Spacer(Modifier.height(3.dp))
             Text(state.countdown, color = Color.White, fontSize = 33.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         }

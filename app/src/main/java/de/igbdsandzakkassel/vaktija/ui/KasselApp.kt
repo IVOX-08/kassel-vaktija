@@ -107,11 +107,12 @@ fun KasselApp() {
                             )
                         },
                         label = {
-                            // Single line, smaller, ellipsised — keeps long German labels
-                            // ("Einstellungen", "Nachrichten") from wrapping to two lines.
+                            // Single line, ellipsised — keeps long German labels ("Einstellungen",
+                            // "Nachrichten") from wrapping. 11sp instead of the earlier 9sp: the
+                            // community skews older and 9sp was borderline illegible for primary nav.
                             Text(
                                 text = stringResource(destination.labelRes),
-                                fontSize = 9.sp,
+                                fontSize = 11.sp,
                                 maxLines = 1,
                                 softWrap = false,
                                 overflow = TextOverflow.Ellipsis,
