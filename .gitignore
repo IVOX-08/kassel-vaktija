@@ -12,6 +12,8 @@ keystore.properties
 
 # Convenience copy of the release bundle for uploading (built artifact, not source)
 /Kassel-Vaktija.aab
+# Android Studio's "Generate signed bundle" output — a build artifact, same as the above
+/app/release/
 
 # Local debug screenshots
 _news_*.png

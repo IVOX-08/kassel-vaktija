@@ -2,6 +2,7 @@ package de.igbdsandzakkassel.vaktija.ui.tv
 
 import android.content.Context
 import android.content.res.Configuration
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -23,7 +24,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PhoneIphone
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -201,56 +205,62 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
             Image(
                 painter = painterResource(R.drawable.logo_emblem),
                 contentDescription = stringResource(R.string.cd_app_logo),
-                modifier = Modifier.height(80.dp),
+                // Sized against the slack under the hero card, measured with the WORST case on
+                // screen (the 3-line German hadith, which makes the band below tallest). Going
+                // much past this starts clipping the countdown.
+                modifier = Modifier.height(104.dp),
             )
             Spacer(Modifier.height(6.dp))
             HeroCard(state, german, ctx, Modifier.fillMaxWidth())
-            Spacer(Modifier.height(6.dp))
-            // Growth loop: everyone waiting at the entrance can scan the board to install the app.
-            Row(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color.White)
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.tv_qr_play),
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                )
-                Text(
-                    text = "Skeniraj za aplikaciju\nApp scannen",
-                    color = BrandGreenDark,
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    lineHeight = 13.sp,
-                    modifier = Modifier.padding(start = 8.dp),
-                )
-            }
         }
 
         // ---- Right column: header + 2-column prayer grid + Džuma ----
         Column(modifier = Modifier.fillMaxHeight().weight(0.71f)) {
-            Text(
-                text = "IGBD",
-                color = BrandGreenDark,
-                fontSize = 38.sp,
-                fontWeight = FontWeight.Black,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
+            // Growth loop: everyone waiting in the prayer hall can scan the board to install the
+            // app. The codes flank the community name so they sit at the top of the board — this
+            // TV hangs high on the wall, so the lower it is the worse the scanning angle.
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-            )
-            Text(
-                // The big "IGBD" is already above; the subtitle is just the community name — no
-                // repeated "IGBD-", and "Sandžak Kassel" with a space (not a hyphen).
-                text = "Gemeinde Sandžak Kassel",
-                color = BrandGold,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-            )
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                StoreBadge(
+                    label = "Android",
+                    caption = if (german) "App scannen" else "Skeniraj app",
+                    qr = R.drawable.tv_qr_play,
+                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "IGBD",
+                        color = BrandGreenDark,
+                        fontSize = 38.sp,
+                        fontWeight = FontWeight.Black,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Text(
+                        // The big "IGBD" is already above; the subtitle is just the community name
+                        // — no repeated "IGBD-", and "Sandžak Kassel" with a space (not a hyphen).
+                        text = "Gemeinde Sandžak Kassel",
+                        color = BrandGold,
+                        // 14sp, not 17: the two download badges narrowed this column, and the name
+                        // reads better on one line than wrapped after "Sandžak".
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+                // No iOS build exists yet, so there is deliberately no QR here — a code that
+                // scans into nothing is worse than none. Swap `qr = R.drawable.tv_qr_ios` in once
+                // the App Store listing is live.
+                StoreBadge(
+                    label = "iPhone",
+                    caption = if (german) "Bald verfügbar" else "Uskoro dostupno",
+                    qr = null,
+                )
+            }
             Spacer(Modifier.height(6.dp))
 
             Column(
@@ -531,6 +541,72 @@ private fun DailyHadithBand(
             maxLines = 4,
             overflow = TextOverflow.Ellipsis,
         )
+    }
+}
+
+/**
+ * A download badge flanking the community name: platform label, QR code, and a short call to action.
+ *
+ * Sized for the wall: the code is 112.dp (a bit over 2x the old inline one) because this TV hangs
+ * high and gets scanned from the prayer hall, not from arm's length. A [qr] of null renders the slot
+ * as a placeholder — used for iOS until that build ships, so the layout stays symmetrical and the
+ * community can see it is coming without anyone scanning into a dead end.
+ */
+@Composable
+private fun StoreBadge(label: String, caption: String, @DrawableRes qr: Int?) {
+    // Laid out side-by-side rather than stacked: this row sits above the prayer grid, so every dp
+    // of badge height is taken straight off the grid. Horizontal keeps the code big (the wall TV is
+    // scanned from across the room) while staying roughly as tall as the IGBD heading beside it.
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(14.dp))
+            .background(Color.White)
+            .padding(horizontal = 9.dp, vertical = 5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (qr != null) {
+            Image(
+                painter = painterResource(qr),
+                contentDescription = null,
+                modifier = Modifier.size(72.dp),
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(72.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(PageBackgroundLight),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.PhoneIphone,
+                    contentDescription = null,
+                    tint = BrandGreenDark,
+                    modifier = Modifier.size(44.dp),
+                )
+            }
+        }
+        Column(
+            // Tight, but wide enough for "Android" to fit uncut — the community name between the
+            // two badges still has to stay on one line, so the captions are kept to two short words.
+            modifier = Modifier.width(76.dp).padding(start = 7.dp),
+        ) {
+            Text(
+                text = label,
+                color = BrandGreenDark,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Black,
+                maxLines = 1,
+            )
+            Text(
+                text = caption,
+                color = BrandGreenDark,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold,
+                lineHeight = 13.sp,
+                maxLines = 2,
+            )
+        }
     }
 }
 

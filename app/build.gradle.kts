@@ -27,14 +27,14 @@ val geminiApiKey = (geminiProperties["GEMINI_API_KEY"] as String?).orEmpty()
 
 android {
     namespace = "de.igbdsandzakkassel.vaktija"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "de.igbdsandzakkassel.vaktija"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 11
-        versionName = "1.1.0"
+        targetSdk = 36
+        versionCode = 13
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -95,6 +95,15 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    bundle {
+        // The in-app language picker lets users choose any of the 8 languages regardless of their
+        // device language. Play's per-language bundle splits would only install the device-language
+        // resources, so any other choice fell back to the system locale. Ship all languages instead.
+        language {
+            enableSplit = false
         }
     }
 }
