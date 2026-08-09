@@ -7,6 +7,8 @@ struct iOSApp: App {
     @StateObject private var loc = Localization.shared
 
     init() {
+        // Show Adhan/prayer notifications even while the app is open.
+        NotificationPresenter.shared.install()
         // Green navigation-bar titles throughout (matches the Android branded headers).
         let green = UIColor(Color.appPrimary)
         let standard = UINavigationBarAppearance()

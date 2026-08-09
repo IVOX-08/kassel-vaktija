@@ -9,13 +9,45 @@ import UserNotifications
 // - Sound: "Kurzer Adhan" (adhan_short.mp3) or "Signalton" (chime.wav). iOS plays the notification
 //   sound and vibrates on its own when the phone is on silent/vibrate, so the Adhan is still felt
 //   (there is no Android-style DND override on iOS).
+/// Without a delegate opting in, iOS silently drops notifications while the app is in the
+/// foreground — the Adhan would not be heard by someone who has the app open. This shows the
+/// banner and plays the chosen sound in that case too.
+final class NotificationPresenter: NSObject, UNUserNotificationCenterDelegate {
+    static let shared = NotificationPresenter()
+
+    func install() { UNUserNotificationCenter.current().delegate = self }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        if #available(iOS 14.0, *) { completionHandler([.banner, .list, .sound]) }
+        else { completionHandler([.alert, .sound]) }
+    }
+}
+
 enum NotificationScheduler {
+
+    /// Asks for permission the first time (status .notDetermined). Without this, a user who skipped
+    /// the onboarding assistant would never be asked and no prayer notification would ever fire.
+    /// Returns true when notifications may be scheduled.
+    @discardableResult
+    static func ensureAuthorization() async -> Bool {
+        let center = UNUserNotificationCenter.current()
+        let status = await center.notificationSettings().authorizationStatus
+        switch status {
+        case .authorized, .provisional, .ephemeral:
+            return true
+        case .notDetermined:
+            return (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+        default:
+            return false // denied — the Settings screen offers a button to fix it
+        }
+    }
 
     /// Cancels and re-schedules everything from the current settings + times. Safe to call often.
     static func reschedule(times: DayTimes) async {
         let center = UNUserNotificationCenter.current()
-        let settings = await center.notificationSettings()
-        guard settings.authorizationStatus == .authorized else { return }
+        guard await ensureAuthorization() else { return }
 
         center.removeAllPendingNotificationRequests()
         let d = UserDefaults.standard

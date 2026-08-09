@@ -180,14 +180,17 @@ struct SettingsView: View {
 
     private func refreshAuth() {
         UNUserNotificationCenter.current().getNotificationSettings { s in
-            DispatchQueue.main.async { notifGranted = s.authorizationStatus == .authorized }
+            // Only a real denial should surface the "allow notifications" button; .notDetermined is
+            // handled by ensureAuthorization() asking the system prompt.
+            let granted = s.authorizationStatus != .denied
+            DispatchQueue.main.async { notifGranted = granted }
         }
     }
 
     private func requestNotif() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in
-            refreshAuth()
-        }
+        // Reaching this button means the user denied notifications, and iOS won't prompt again —
+        // send them to the app's page in the system settings.
+        if let u = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(u) }
     }
 
     // prayer key (for @AppStorage) + localization key for the name
