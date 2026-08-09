@@ -19,8 +19,15 @@ struct SettingsView: View {
 
     @State private var showLangPicker = false
     @State private var notifGranted = true
+    @StateObject private var store = PrayerStore()
 
     private var sound: NotifSound { NotifSound(rawValue: soundRaw) ?? .adhan }
+
+    /// Any change to the notification settings (or the language) must re-arm the scheduled
+    /// notifications so they fire with the new texts, sound and pre-warn times.
+    private func rearm() {
+        Task { await NotificationScheduler.reschedule(times: store.today) }
+    }
 
     var body: some View {
         NavigationStack {
@@ -42,10 +49,16 @@ struct SettingsView: View {
         }
         .tint(.brandGreen)
         .onAppear(perform: refreshAuth)
+        .onChange(of: master) { _ in rearm() }
+        .onChange(of: soundRaw) { _ in rearm() }
         .fullScreenCover(isPresented: $showLangPicker) {
             LanguagePickerView(
                 showClose: true,
-                onSelect: { Localization.shared.set($0.tag); showLangPicker = false },
+                onSelect: { lang in
+                    Localization.shared.set(lang.tag)
+                    showLangPicker = false
+                    rearm() // notifications must speak the newly chosen language
+                },
                 onClose: { showLangPicker = false }
             )
         }
@@ -91,7 +104,7 @@ struct SettingsView: View {
             }
             if master {
                 ForEach(SettingsView.prayers, id: \.0) { key, nameKey in
-                    PrayerNotifCard(title: L(nameKey), key: key)
+                    PrayerNotifCard(title: L(nameKey), key: key, onChange: rearm)
                 }
                 Button {
                     SoundPlayer.shared.play(sound.file, ext: sound.ext)
@@ -190,11 +203,13 @@ private func minutesLabel(_ v: Int) -> String { String(format: L("settings_minut
 // One prayer's notification card: a switch (default on) and — when on — a pre-warning pill (0/5/10/15/30).
 private struct PrayerNotifCard: View {
     let title: String
+    let onChange: () -> Void
     @AppStorage private var enabled: Bool
     @AppStorage private var warn: Int
 
-    init(title: String, key: String) {
+    init(title: String, key: String, onChange: @escaping () -> Void) {
         self.title = title
+        self.onChange = onChange
         _enabled = AppStorage(wrappedValue: true, "pn_\(key)")
         _warn = AppStorage(wrappedValue: 0, "pw_\(key)")
     }
@@ -217,6 +232,8 @@ private struct PrayerNotifCard: View {
                 }
             }
         }
+        .onChange(of: enabled) { _ in onChange() }
+        .onChange(of: warn) { _ in onChange() }
     }
 }
 

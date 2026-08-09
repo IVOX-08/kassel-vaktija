@@ -141,6 +141,8 @@ final class PrayerStore: ObservableObject {
         today = dated
         official = true
         calibration = calib
+        // Keep the scheduled prayer notifications in step with the official times.
+        await NotificationScheduler.reschedule(times: dated)
     }
 
     var rows: [PrayerRow] { PrayerModel.rows(today) }
