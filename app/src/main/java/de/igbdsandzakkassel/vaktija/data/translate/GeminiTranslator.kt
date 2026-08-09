@@ -147,11 +147,16 @@ class GeminiTranslator @Inject constructor(
         Rules:
         - Faithful, natural, fluent translation. Preserve meaning, tone, dates, times, numbers, names
           and line breaks. Do NOT add or omit information.
+        - Never add a phrase that is not in the source — no extra politeness formulas, greetings,
+          blessings or calls to action ("we await your contributions", "may Allah reward you").
+          If the source does not say it, it must not appear in the translation.
         - Use the CORRECT Islamic/religious term in each language; never transliterate religious terms
           literally. Examples: Bajram/Bayram = Eid (ar: العيد; the Eid prayer = صلاة العيد);
           namaz / Gebet = the ritual prayer (ar: الصلاة); Džuma = Jumuʿah (ar: صلاة الجمعة);
           Teravija = Tarawih (ar: صلاة التراويح); iftar (ar: الإفطار); sehur (ar: السحور);
-          Ramazan = Ramadan (ar: رمضان); Mevlud = Mawlid; sadaka = sadaqah; abdest = wudu.
+          Ramazan = Ramadan (ar: رمضان); Mevlud = Mawlid; sadaka = sadaqah; abdest = wudu;
+          džemat = the mosque congregation — when it means the building say "the mosque"
+          (ar: المسجد, tr: cami), never a literal "the group/community" (ar: الجماعة).
         - Arabic must be correct, natural Modern Standard Arabic — not a word-for-word gloss.
         - Detect the source language (one of the keys above) and report it as "sourceLang".
 
@@ -166,12 +171,13 @@ class GeminiTranslator @Inject constructor(
     """.trimIndent()
 
     private companion object {
-        // Free-tier models, tried in order. gemini-2.5-flash answers in ~4s and rarely overloads;
-        // gemini-flash-latest is the backup (tracks the newest stable Flash). 3.5-flash was dropped
-        // as primary: it frequently returned HTTP 503 (overloaded) and, when it did answer, was slow
-        // (~18s, near the timeout) — both forced the slow on-device ML Kit fallback. If every model
-        // fails, NewsViewModel still falls back to ML Kit so a post is never blocked.
-        val MODELS = listOf("gemini-2.5-flash", "gemini-flash-latest")
+        // Free-tier models, tried in order. Re-measured 2026-08 on a real announcement (Mevlud +
+        // sadaka + abdesthane, i.e. the community vocabulary that trips translators up):
+        // 3.6-flash 7.5-10s and the most natural output; flash-latest ~8s and equally faithful;
+        // 2.5-flash was the SLOWEST (12.7s) and stiffest, so it drops to last resort. Pro models
+        // are not usable here — gemini-2.5-pro returns 429 immediately on the free tier.
+        // If every model fails, NewsViewModel still falls back to ML Kit so a post is never blocked.
+        val MODELS = listOf("gemini-3.6-flash", "gemini-flash-latest", "gemini-2.5-flash")
         const val ATTEMPTS_PER_MODEL = 2
         const val RETRY_DELAY_MS = 800L
         const val BASE = "https://generativelanguage.googleapis.com/v1beta/models"
