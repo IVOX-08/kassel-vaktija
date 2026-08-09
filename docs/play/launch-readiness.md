@@ -64,10 +64,11 @@ the store listing and the Data-safety form. (Hosting decision — see "Decisions
   (D-pad/leanback navigation, banner asset — `tv_banner.png` already done, no touchscreen required).
 - This is a *separate* review track from the phone listing; can be enabled after the phone launch.
 
-## C3. Target API level
-- `targetSdk 35` (Android 15) — **meets** today's requirement for new apps.
-- From **31 Aug 2026**, new apps/updates must target **API 36** (Android TV stays at 35). Plan a
-  routine `targetSdk 36` bump before then.
+## C3. Target API level — **done**
+- `compileSdk`/`targetSdk` are both **36** (Android 16), so the **31 Aug 2026** deadline for new
+  apps/updates is already met. (Android TV only requires 35, and 36 satisfies that too.)
+- Caveat: AGP 8.7.3 warns it was only tested up to `compileSdk 35`. The build is clean, but an AGP
+  bump to a version that officially supports 36 is worth doing at the next dependency refresh.
 
 ---
 
