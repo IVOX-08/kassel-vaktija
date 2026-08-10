@@ -111,18 +111,30 @@ Also note from `docs/push/SETUP.md`: the Cloud Function may still be **undeploye
 Firebase Blaze plan). Until it is, announcements arrive on both platforms only via poll-on-wake, not
 instantly. Verify the current state in the console rather than assuming.
 
-## 5. Gemini translation — probably not needed on iOS
+## 5. Gemini translation — **required**, the admin will post from the iPhone
 
-Announcements are translated **once, on the admin's device, at post time**
+Announcements are translated **once, on the posting device, at post time**
 (`ui/news/NewsViewModel.kt`, `postNews`). The result is written to Firestore as the per-language maps
-described in §3. Every other device just **reads** the finished map.
+described in §3. Reading devices never translate — they just read their language out of the map.
 
-So iPhone users get the Gemini translations with **zero Gemini code in the iOS app**. Port
-`data/translate/` only if the admin needs to post *from an iPhone* — which also raises the question
-of how to ship an API key inside an iOS binary safely. Default assumption: **skip it.**
+That means a **reader-only** iOS build needs no Gemini at all. But the admin has decided he will also
+post from the iPhone, so the iOS app **does** need it: an announcement posted from an unported iPhone
+would reach the community in one language only.
 
-The API key itself lives in the gitignored `gemini.properties` on the Windows dev machine and is
-deliberately not in this repo.
+A ready-to-use Swift port is in **`docs/ios/GeminiTranslator.swift`** — same models, same retry
+behaviour, same prompt. **Keep the prompt in sync with the Kotlin original.** It encodes fixes that
+came from real mistranslations (`džemat` → the mosque, not "the group"; no invented greetings or
+calls to action). If the platforms drift, the same announcement gets translated differently
+depending on which phone the imam happened to pick up.
+
+One deliberate difference from the Kotlin version: the Swift port sends the key as an
+`x-goog-api-key` **header** instead of a `?key=` query parameter, so it cannot leak into logs or
+crash reports. Both are supported by the API.
+
+**The key itself is not in this repo** (gitignored `gemini.properties` on the Windows machine); copy
+it across by hand, not through GitHub. Note that a key shipped in an app binary is extractable on
+both platforms — this is parity with the existing Android risk, not a new one. If it ever gets
+abused, move translation behind a Cloud Function.
 
 ## 6. Checklist
 

@@ -33,6 +33,12 @@ async function notify(snap, fallbackTitle) {
       priority: "high",
       notification: { channelId: "news_announcements_v2" },
     },
+    // iOS ignores the `android` block entirely, so it needs its own alert config. `alert` push type
+    // + priority 10 is the visible-notification case; without it APNs can reject or delay the send.
+    apns: {
+      headers: { "apns-priority": "10", "apns-push-type": "alert" },
+      payload: { aps: { sound: "default" } },
+    },
     data: { type: snap.ref.parent.id, id: snap.id },
   });
 }
@@ -55,6 +61,15 @@ exports.onConfigUpdated = onDocumentUpdated("config/community", (event) => {
   return getMessaging().send({
     topic: "announcements",
     android: { priority: "high" },
+    // Data-only messages reach iOS ONLY as a silent background push, which needs push type
+    // "background", priority 5 and content-available — a data-only send without these is dropped by
+    // APNs outright. Note the honest limitation: iOS throttles background pushes and delivers none
+    // at all while the app is force-quit, so this informs iPhones on a best-effort basis. Making it
+    // as reliable as Android needs per-language topics + a visible notification (see docs/push/SETUP.md).
+    apns: {
+      headers: { "apns-priority": "5", "apns-push-type": "background" },
+      payload: { aps: { "content-available": 1 } },
+    },
     data: { type: "config", updatedAt: String(updatedAt || "") },
   });
 });
