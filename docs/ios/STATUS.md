@@ -142,3 +142,24 @@ mit **Nein**).
 **Zu klären:** Ob eine Erlaubnis des Verlags vorliegt. Falls nicht, wäre eine
 Anfrage bei Erkam Yayınları der saubere Weg — bei religiösen Texten für einen
 gemeinnützigen Verein wird das häufig gestattet. Betrifft beide Plattformen.
+
+## Eingereicht — 22.08.2026
+
+**iOS-App 1.0, Build 1.0 (2)** ist bei Apple zur Prüfung. Veröffentlichung erfolgt
+automatisch, sobald die Prüfung bestanden ist.
+
+Gebaut wurde der Build in der GitHub-Cloud (Xcode 26.6, iPhoneOS 26.5 SDK), weil der
+Intel-Mac der Gemeinde kein macOS 26 mehr bekommt. Ablauf: `.github/workflows/ios-release.yml`,
+Anleitung in `docs/ios/CLOUD-BUILD.md`.
+
+### Drei Fehler auf dem Weg dorthin — falls sie wiederkommen
+1. `./gradlew: Permission denied` → Ausführungsrecht war im Repo nicht gesetzt (`git update-index --chmod=+x`)
+2. `Cloud signing permission error` → der App-Store-Connect-API-Schlüssel braucht die Rolle **Admin**, nicht App Manager
+3. `No orientations were specified` → `UISupportedInterfaceOrientations` und `TARGETED_DEVICE_FAMILY: "1"` fehlten
+
+### Nach der Freigabe prüfen
+- **Auf echtem iPhone gegenhören**, ob der 19-Sekunden-Adhan in der Benachrichtigung klingt.
+  Der Ton lag vorher im falschen Bundle-Ordner; der Fix folgt der dokumentierten Regel,
+  konnte im Simulator aber nicht bewiesen werden.
+- **Push testen** — APNs-Schlüssel liegt in Firebase, aber noch nie eine echte Mitteilung zugestellt.
+- **`onConfigUpdated` deployen** (Server-Fix liegt bereit, betrifft die Android-App).
