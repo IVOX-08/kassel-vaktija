@@ -125,3 +125,20 @@ Vor Rückgabe des Macs: `gh auth logout`, Apple-ID abmelden, Projekt +
 Werkzeuge löschen. Secrets (`gemini.properties`, `keystore.properties`,
 `local.properties`, `google-services.json`) sind gitignored und dürfen
 **nicht** committet werden.
+
+## Offener Punkt: Herkunft der Hadith-Übersetzungen
+
+`iosApp/Resources/hadith/riyadussalihin/*.json` trägt im Feld `metadata.translator`
+eine veröffentlichte Übersetzung: **„Riyâzü's-Sâlihîn Tercüme ve Şerhi"**
+(M. Yaşar Kandemir, İsmail Lütfi Çakan, Raşit Küçük — **Erkam Yayınları**), plus
+eine Passage von hadeethenc.com.
+
+Der arabische Korantext ist gemeinfrei; diese Übersetzung ist es nicht. Dieselben
+Texte stecken bereits in der Android-App im Play Store — das Thema ist also nicht
+durch iOS entstanden, fällt dort aber auf, weil App Store Connect ausdrücklich nach
+Inhalten Dritter fragt (Feld „Informationen zu den Inhaltsrechten", beantwortet
+mit **Nein**).
+
+**Zu klären:** Ob eine Erlaubnis des Verlags vorliegt. Falls nicht, wäre eine
+Anfrage bei Erkam Yayınları der saubere Weg — bei religiösen Texten für einen
+gemeinnützigen Verein wird das häufig gestattet. Betrifft beide Plattformen.
