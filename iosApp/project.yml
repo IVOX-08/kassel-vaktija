@@ -34,6 +34,10 @@ targets:
       properties:
         CFBundleDisplayName: Kassel Vaktija
         UILaunchScreen: {}
+        # Die App spricht nur über HTTPS, nutzt also ausschließlich die
+        # Standardverschlüsselung des Systems. Mit diesem Eintrag entfällt die
+        # Ausfuhrkontroll-Frage bei jedem Upload.
+        ITSAppUsesNonExemptEncryption: false
         # Pflichtangabe für den App-Store-Upload ("No orientations were specified").
         # Die App ist durchgehend im Hochformat gestaltet.
         UISupportedInterfaceOrientations:
