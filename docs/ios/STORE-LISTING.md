@@ -110,3 +110,49 @@ von der Ausfuhrgenehmigung befreit.
    dazuschreiben**, sonst findet der Prüfer ihn nicht.
 2. **Religiöse Inhalte** sind unproblematisch, solange nichts zu Hass aufruft.
 3. **Screenshots** müssen aus der echten App stammen, keine Montagen.
+
+## Anmerkungen für die App-Prüfung (App Review Information → Notes)
+
+Wörtlich in das Feld kopieren. Englisch, weil die Prüfer kein Deutsch lesen.
+Kein Demo-Zugang — der Admin-Bereich ist dem Gemeindevorstand vorbehalten (Variante B).
+
+```
+Kassel Vaktija is a free prayer-time app for the IGBD Sandzak-Kassel mosque
+community in Kassel, Germany. No account, no login, no purchases: every
+feature you see on first launch is fully available.
+
+STAFF-ONLY AREA
+The app contains a small administration area used exclusively by the elected
+board of the association to publish announcements and adjust the community's
+prayer times. It is intentionally not advertised in the UI.
+
+To view it: open "Mehr" -> "Über uns" and tap the community crest 7 times.
+A sign-in screen appears.
+
+We are not able to provide credentials for it. Access is restricted to a
+single Firebase account belonging to the board, enforced server-side by
+Firestore security rules. That account can post announcements to every
+installed device, so sharing its password would put the community's
+communication channel at risk.
+
+The area contains no additional user-facing functionality — nothing is
+unlocked, purchased or hidden behind it. Regular users are never asked to
+sign in anywhere in the app.
+
+If you do need to inspect it, please let us know and we will arrange access.
+
+NOTIFICATIONS
+Prayer reminders are scheduled locally on the device. Push (Firebase Cloud
+Messaging) is used only for community announcements sent by the board.
+
+PRAYER TIMES
+Times are published by the mosque itself and fetched from vaktija.eu/kassel.
+They are cached so the app works offline.
+
+Contact: vorstand@igbdsandzakkassel.de
+```
+
+**Falls Apple doch einen Zugang verlangt** (kommt vor, Richtlinie 2.1): Antwort im
+Resolution Center abwarten, dann im Vorstand entscheiden, ob ihr die Zugangsdaten
+herausgebt. Ein zweites Admin-Konto anzulegen geht nicht ohne Weiteres — die Admin-UID
+`1a7xqRgIYDR0RZqa3KghBlz98PK2` steht fest in den Firestore-Regeln.
