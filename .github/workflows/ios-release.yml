@@ -74,6 +74,12 @@ jobs:
           sed -i '' "s/CURRENT_PROJECT_VERSION: \"[0-9]*\"/CURRENT_PROJECT_VERSION: \"${{ inputs.build_number }}\"/g" iosApp/project.yml
           grep CURRENT_PROJECT_VERSION iosApp/project.yml
 
+      # gradlew wird aus dem Xcode-Build-Skript heraus aufgerufen. Fehlt das
+      # Ausführungsrecht, bricht das Archiv mit "Permission denied" ab. Im Repo ist
+      # es gesetzt — diese Zeile ist die Absicherung, falls es je wieder verloren geht.
+      - name: gradlew ausführbar machen
+        run: chmod +x gradlew
+
       - name: Xcode-Projekt erzeugen
         working-directory: iosApp
         run: xcodegen generate
