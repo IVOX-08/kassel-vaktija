@@ -27,16 +27,17 @@ struct PrayerRow: Identifiable {
 }
 
 enum PrayerModel {
-    // Community Iqamah rule (mirrors shared DashboardData): Fajr fixed 04:30; Dhuhr/Asr +10;
-    // Maghrib +5; Isha +0; Sunrise none.
-    static func rows(_ t: DayTimes) -> [PrayerRow] {
+    // Iqamah times follow the community rule the board edits (Firestore `config/community`):
+    // a fixed Fajr Iqamah, per-prayer offsets for the rest, no Iqamah for sunrise. Falls back to
+    // the values the app shipped with when the document hasn't loaded yet.
+    static func rows(_ t: DayTimes, rule: CommunityRule = CommunityRule.fallback) -> [PrayerRow] {
         [
-            PrayerRow(name: "Fajr", adhan: DayTimes.hhmm(t.fajr), iqamah: DayTimes.hhmm(4 * 60 + 30)),
+            PrayerRow(name: "Fajr", adhan: DayTimes.hhmm(t.fajr), iqamah: rule.fajrIqamah),
             PrayerRow(name: "Sunrise", adhan: DayTimes.hhmm(t.sunrise), iqamah: nil),
-            PrayerRow(name: "Dhuhr", adhan: DayTimes.hhmm(t.dhuhr), iqamah: DayTimes.hhmm(t.dhuhr + 10)),
-            PrayerRow(name: "Asr", adhan: DayTimes.hhmm(t.asr), iqamah: DayTimes.hhmm(t.asr + 10)),
-            PrayerRow(name: "Maghrib", adhan: DayTimes.hhmm(t.maghrib), iqamah: DayTimes.hhmm(t.maghrib + 5)),
-            PrayerRow(name: "Isha", adhan: DayTimes.hhmm(t.isha), iqamah: DayTimes.hhmm(t.isha)),
+            PrayerRow(name: "Dhuhr", adhan: DayTimes.hhmm(t.dhuhr), iqamah: DayTimes.hhmm(t.dhuhr + rule.dhuhrOffsetMin)),
+            PrayerRow(name: "Asr", adhan: DayTimes.hhmm(t.asr), iqamah: DayTimes.hhmm(t.asr + rule.asrOffsetMin)),
+            PrayerRow(name: "Maghrib", adhan: DayTimes.hhmm(t.maghrib), iqamah: DayTimes.hhmm(t.maghrib + rule.maghribOffsetMin)),
+            PrayerRow(name: "Isha", adhan: DayTimes.hhmm(t.isha), iqamah: DayTimes.hhmm(t.isha + rule.ishaOffsetMin)),
         ]
     }
 
@@ -145,7 +146,7 @@ final class PrayerStore: ObservableObject {
         await NotificationScheduler.reschedule(times: dated)
     }
 
-    var rows: [PrayerRow] { PrayerModel.rows(today) }
+    var rows: [PrayerRow] { PrayerModel.rows(today, rule: CommunityRuleStore.shared.rule) }
 
     static func calibration() -> [Int] {
         (UserDefaults.standard.array(forKey: calibKey) as? [Int]) ?? [0, 0, 0, 0, 0, 0]

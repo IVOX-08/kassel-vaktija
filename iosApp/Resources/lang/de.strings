@@ -17,6 +17,11 @@
 "ramadan_sehur" = "Sehur";
 "ramadan_teravija" = "Tarawih";
 "ramadan_fasted_today" = "Heute gefastet";
+"ramadan_day_badge" = "%1$d. Ramadan %2$d";
+"ramadan_mubarak" = "Ramadan Mubarak!";
+"ramadan_starts_in" = "Ramadan beginnt in %1$d Tagen";
+"ramadan_dua_title" = "Bittgebet beim Fastenbrechen";
+"ramadan_fasted_count" = "%1$d von %2$d Tagen gefastet";
 "tracker_streak" = "Tage in Folge";
 "tracker_today" = "Heute";
 "tasbih_reset" = "Zurücksetzen";
@@ -25,6 +30,7 @@
 "hadith_nawawi" = "An-Nawawis 40 Hadithe";
 "hadith_riyad" = "Riyad as-Salihin";
 "hadith_of_the_day" = "Hadith des Tages";
+"hadith_translation_credit" = "Übersetzung: %1$@";
 "quran_verses" = "%1$d Verse";
 "quran_continue" = "Weiterlesen";
 "quran_bookmarks" = "Lesezeichen";
@@ -64,6 +70,9 @@
 "prayer_abbr_maghrib" = "Abend";
 "prayer_abbr_isha" = "Nacht";
 "prayer_jumua" = "Freitagsgebet";
+"bajram_prayer" = "Bajram-Gebet";
+"admin_bajram_set" = "Bajram-Gebet ankündigen (Datum & Uhrzeit)";
+"admin_bajram_remove" = "Bajram-Ankündigung entfernen";
 "action_change_language" = "Sprache ändern";
 "language_picker_title" = "Sprache";
 "dashboard_next_prayer_in" = "NÄCHSTES GEBET IN";
@@ -98,6 +107,7 @@
 "cd_app_logo" = "Logo der Gemeinde";
 "cd_back" = "Zurück";
 "action_donate" = "Spenden";
+"action_cancel" = "Abbrechen";
 "qibla_hint" = "Halte das Handy flach und drehe dich, bis der Pfeil nach oben zeigt.";
 "qibla_facing" = "Du schaust Richtung Qibla";
 "qibla_no_sensor" = "Kompass-Sensor auf diesem Gerät nicht verfügbar.";
@@ -130,6 +140,8 @@
 "admin_sign_in" = "Anmelden";
 "admin_sign_out" = "Abmelden";
 "admin_login_failed" = "Anmeldung fehlgeschlagen";
+"admin_reset_password" = "Passwort vergessen?";
+"admin_reset_sent" = "E-Mail zum Zurücksetzen wurde gesendet.";
 "admin_save" = "Speichern";
 "admin_saved" = "Gespeichert";
 "settings_notification_sound" = "Benachrichtigungston";

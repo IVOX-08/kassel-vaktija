@@ -5,7 +5,9 @@ import Shared
 // one row per day, today highlighted green (alpha 0.14, bold green), auto-scrolls to today.
 struct CalendarView: View {
     @State private var monthOffset = 0
+    @State private var flash = false
     @StateObject private var store = PrayerStore()
+    private let pulseStep = 0.45
 
     private var monthDate: Date {
         Calendar.current.date(byAdding: .month, value: monthOffset, to: Date()) ?? Date()
@@ -61,15 +63,21 @@ struct CalendarView: View {
                         }
                     }
                 }
-                .onAppear {
-                    if let today = days.first(where: { $0.isToday }) {
-                        withAnimation { proxy.scrollTo(Int(today.day), anchor: .center) }
-                    }
-                }
+                .onAppear { jumpToToday(proxy) }
             }
         }
         .background(Color.appBackground.ignoresSafeArea())
         .task { await store.refresh() }
+    }
+
+    /// Opening the tab jumps to today, pulses its row a few times, and leaves it highlighted.
+    private func jumpToToday(_ proxy: ScrollViewProxy) {
+        guard let today = days.first(where: { $0.isToday }) else { return }
+        withAnimation { proxy.scrollTo(Int(today.day), anchor: .center) }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            withAnimation(.easeInOut(duration: pulseStep).repeatCount(4, autoreverses: true)) { flash = true }
+            DispatchQueue.main.asyncAfter(deadline: .now() + pulseStep * 4) { flash = false }
+        }
     }
 
     private func dayRow(_ d: CalendarDay) -> some View {
@@ -88,6 +96,6 @@ struct CalendarView: View {
             .font(.inter(13, weight)).foregroundColor(textColor).monospacedDigit().frame(maxWidth: .infinity)
         }
         .padding(.horizontal, 8).padding(.vertical, 8)
-        .background(d.isToday ? Color.appPrimary.opacity(0.14) : Color.clear)
+        .background(d.isToday ? Color.appPrimary.opacity(flash ? 0.42 : 0.14) : Color.clear)
     }
 }

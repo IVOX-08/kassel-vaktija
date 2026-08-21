@@ -5,6 +5,12 @@ options:
   bundleIdPrefix: de.igbdsandzakkassel.vaktija
   deploymentTarget:
     iOS: "16.0"
+# Same Firebase project as Android (`kassel-vaktija`) — see docs/ios/FIREBASE-HANDOFF.md.
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    minVersion: "11.0.0"
+    maxVersion: "12.0.0"
 targets:
   iosApp:
     type: application
@@ -17,8 +23,10 @@ targets:
         type: folder
       - path: Resources/flags
         type: folder
+      # NOT a folder reference: UNNotificationSound only finds tones at the bundle root
+      # (or in Library/Sounds) — from a subfolder iOS silently falls back to the default
+      # tone, so the 19-second Adhan would never be heard.
       - path: Resources/audio
-        type: folder
       - path: Resources/lang
         type: folder
     info:
@@ -26,13 +34,31 @@ targets:
       properties:
         CFBundleDisplayName: Kassel Vaktija
         UILaunchScreen: {}
+        # Pflichtangabe für den App-Store-Upload ("No orientations were specified").
+        # Die App ist durchgehend im Hochformat gestaltet.
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
         UIAppFonts:
           - Inter.ttf
         NSLocationWhenInUseUsageDescription: "Für die Qibla-Anzeige wird die Kompassrichtung verwendet."
+        # Silent push for prayer-time changes (onConfigUpdated sends content-available).
+        UIBackgroundModes:
+          - remote-notification
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.igbdsandzakkassel.vaktija.ios
         GENERATE_INFOPLIST_FILE: "YES"
+        # 1 = nur iPhone. Ohne das gilt die App als iPad-fähig und Apple verlangt
+        # iPad-Multitasking mit allen vier Ausrichtungen — dafür ist sie nicht gebaut.
+        TARGETED_DEVICE_FAMILY: "1"
+        # App icon: the community crest on white (Apple rejects transparency in app icons).
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Push (Firebase Messaging) braucht das aps-environment-Entitlement.
+        CODE_SIGN_ENTITLEMENTS: iosApp/iosApp.entitlements
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        # IGBD - Gemeinde Sandzak-Kassel e.V. (Company-Account).
+        DEVELOPMENT_TEAM: RM3FWBH4T7
         # Allow the Gradle build-script phase below to run (Xcode 15+ sandboxing would block it).
         ENABLE_USER_SCRIPT_SANDBOXING: "NO"
         # Where Kotlin's embedAndSignAppleFrameworkForXcode places the built "Shared" framework.
@@ -44,9 +70,30 @@ targets:
           - $(inherited)
           - -framework
           - Shared
+      configs:
+        # Ad-hoc signing so the Simulator build can use the keychain — without it Firebase Auth
+        # fails with error 17995 ("An error occurred when accessing the keychain") and no admin can
+        # sign in. Nur Debug — Release muss echt signiert werden, sonst lehnt Apple den Upload ab.
+        Debug:
+          CODE_SIGN_IDENTITY: "-"
+          CODE_SIGNING_REQUIRED: "NO"
+          CODE_SIGNING_ALLOWED: "YES"
+        Release:
+          # Keine CODE_SIGN_IDENTITY setzen: bei Automatic wählt Xcode sie selbst
+          # (Development zum Bauen, Distribution beim Archivieren). Eine feste Angabe
+          # führt zu "conflicting provisioning settings".
+          CODE_SIGN_STYLE: Automatic
+          CODE_SIGNING_REQUIRED: "YES"
+          CODE_SIGNING_ALLOWED: "YES"
     # Embed the home-screen widget extension in the app.
     dependencies:
       - target: iosWidget
+      - package: Firebase
+        product: FirebaseFirestore
+      - package: Firebase
+        product: FirebaseAuth
+      - package: Firebase
+        product: FirebaseMessaging
     # Build (and embed) the Kotlin shared framework before compiling the Swift app.
     preBuildScripts:
       - name: Build Kotlin Shared framework
@@ -71,8 +118,15 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.igbdsandzakkassel.vaktija.ios.widget
         GENERATE_INFOPLIST_FILE: "NO"
+        # Muss zur App passen, sonst lehnt die Validierung das Paket ab.
+        TARGETED_DEVICE_FAMILY: "1"
         SKIP_INSTALL: "YES"
         ENABLE_USER_SCRIPT_SANDBOXING: "NO"
+        # Muss zur App passen, sonst weist App Store Connect das Paket zurück.
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        # IGBD - Gemeinde Sandzak-Kassel e.V. (Company-Account).
+        DEVELOPMENT_TEAM: RM3FWBH4T7
         FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           - $(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)
@@ -83,6 +137,18 @@ targets:
         LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - "@executable_path/../../Frameworks"
+      configs:
+        Debug:
+          CODE_SIGN_IDENTITY: "-"
+          CODE_SIGNING_REQUIRED: "NO"
+          CODE_SIGNING_ALLOWED: "YES"
+        Release:
+          # Keine CODE_SIGN_IDENTITY setzen: bei Automatic wählt Xcode sie selbst
+          # (Development zum Bauen, Distribution beim Archivieren). Eine feste Angabe
+          # führt zu "conflicting provisioning settings".
+          CODE_SIGN_STYLE: Automatic
+          CODE_SIGNING_REQUIRED: "YES"
+          CODE_SIGNING_ALLOWED: "YES"
     # The widget links the shared framework too, so make sure it's built first.
     preBuildScripts:
       - name: Build Kotlin Shared framework

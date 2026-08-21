@@ -2,8 +2,8 @@ import SwiftUI
 
 // Ramadan (update prompt #1) — redesigned: day badge, progress ring (fasting/night window),
 // Sehur/Iftar/Teravih times card, the Iftar dua (multilingual meaning), and a fasting counter.
-// Uses the official vaktija.eu times via PrayerStore. UI labels are German for now; the Iftar dua
-// meanings are the exact translations supplied by the community (never machine-translated).
+// Uses the official vaktija.eu times via PrayerStore. UI labels follow the chosen app language;
+// the Iftar dua meanings are the exact translations supplied by the community (never machine-translated).
 struct RamadanView: View {
     @StateObject private var store = PrayerStore()
     @State private var now = Date()
@@ -44,11 +44,11 @@ struct RamadanView: View {
     private var dayBadge: some View {
         VStack(spacing: 4) {
             if isRamadan {
-                Text("🌙 \(hijriDay). Ramadan \(hijriYear)")
+                Text("🌙 " + String(format: L("ramadan_day_badge"), hijriDay, hijriYear))
                     .font(.inter(20, .bold)).foregroundColor(.brandGreen)
-                Text("Ramadan Mubarak!").font(.inter(16, .semibold)).foregroundColor(.appSecondary)
+                Text(L("ramadan_mubarak")).font(.inter(16, .semibold)).foregroundColor(.appSecondary)
             } else {
-                Text("🌙 Ramadan beginnt in \(daysUntilRamadan) Tagen")
+                Text("🌙 " + String(format: L("ramadan_starts_in"), daysUntilRamadan))
                     .font(.inter(18, .bold)).foregroundColor(.brandGreen)
                     .multilineTextAlignment(.center)
             }
@@ -63,7 +63,7 @@ struct RamadanView: View {
                 .stroke(Color.brandGoldLight, style: StrokeStyle(lineWidth: 14, lineCap: .round))
                 .rotationEffect(.degrees(-90))
             VStack(spacing: 6) {
-                Text(fasting ? "Bis zum Iftar" : "Bis zum Ende des Sehur")
+                Text(L(fasting ? "ramadan_until_iftar" : "ramadan_until_sehur"))
                     .font(.inter(14, .semibold)).foregroundColor(.brandGoldLight)
                 Text(countdown).font(.inter(40, .bold)).monospacedDigit().foregroundColor(.white)
             }
@@ -103,7 +103,7 @@ struct RamadanView: View {
     // d) Iftar dua card
     private var duaCard: some View {
         VStack(spacing: 10) {
-            Text("Bittgebet beim Fastenbrechen").font(.inter(15, .bold)).foregroundColor(.brandGreen)
+            Text(L("ramadan_dua_title")).font(.inter(15, .bold)).foregroundColor(.brandGreen)
             Text("اللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ")
                 .font(.system(size: 24, weight: .bold)).foregroundColor(.appOnSurface)
                 .multilineTextAlignment(.center)
@@ -126,7 +126,7 @@ struct RamadanView: View {
     // e) Fasting counter (Ramadan only)
     private var fastingCounter: some View {
         VStack(spacing: 10) {
-            Text("\(fastedCount) von \(ramadanLength) Tagen gefastet")
+            Text(String(format: L("ramadan_fasted_count"), fastedCount, ramadanLength))
                 .font(.inter(16, .bold)).foregroundColor(.brandGreen)
             Toggle(L("ramadan_fasted_today"), isOn: Binding(
                 get: { fastedToday },

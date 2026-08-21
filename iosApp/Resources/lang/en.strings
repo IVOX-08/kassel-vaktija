@@ -17,6 +17,11 @@
 "ramadan_sehur" = "Suhoor";
 "ramadan_teravija" = "Tarawih";
 "ramadan_fasted_today" = "Fasted today";
+"ramadan_day_badge" = "Ramadan %1$d, %2$d";
+"ramadan_mubarak" = "Ramadan Mubarak!";
+"ramadan_starts_in" = "Ramadan begins in %1$d days";
+"ramadan_dua_title" = "Supplication for breaking the fast";
+"ramadan_fasted_count" = "Fasted %1$d of %2$d days";
 "tracker_streak" = "day streak";
 "tracker_today" = "Today";
 "tasbih_reset" = "Reset";
@@ -25,6 +30,7 @@
 "hadith_nawawi" = "An-Nawawi's 40 Hadith";
 "hadith_riyad" = "Riyad as-Salihin";
 "hadith_of_the_day" = "Hadith of the day";
+"hadith_translation_credit" = "Translation: %1$@";
 "quran_verses" = "%1$d verses";
 "quran_continue" = "Continue reading";
 "quran_bookmarks" = "Bookmarks";
@@ -64,6 +70,9 @@
 "prayer_abbr_maghrib" = "Magh.";
 "prayer_abbr_isha" = "Isha";
 "prayer_jumua" = "Jumu'ah";
+"bajram_prayer" = "Eid prayer";
+"admin_bajram_set" = "Announce Eid prayer (date & time)";
+"admin_bajram_remove" = "Remove Eid announcement";
 "action_change_language" = "Change language";
 "language_picker_title" = "Language";
 "dashboard_next_prayer_in" = "NEXT PRAYER IN";
@@ -98,6 +107,7 @@
 "cd_app_logo" = "Community logo";
 "cd_back" = "Back";
 "action_donate" = "Donate";
+"action_cancel" = "Cancel";
 "qibla_hint" = "Hold the phone flat and turn until the arrow points up.";
 "qibla_facing" = "You are facing the Qibla";
 "qibla_no_sensor" = "Compass sensor not available on this device.";
@@ -130,6 +140,8 @@
 "admin_sign_in" = "Sign in";
 "admin_sign_out" = "Sign out";
 "admin_login_failed" = "Sign-in failed";
+"admin_reset_password" = "Forgot password?";
+"admin_reset_sent" = "Password reset e-mail sent.";
 "admin_save" = "Save";
 "admin_saved" = "Saved";
 "settings_notification_sound" = "Notification sound";

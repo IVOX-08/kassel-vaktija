@@ -49,35 +49,72 @@ xcrun simctl launch $DEV de.igbdsandzakkassel.vaktija.ios
 - **Widget** — WidgetKit-Extension, nächstes Gebet + Live-Countdown
 - **Ramadan-Screen (neu)** — Tag-Abzeichen, goldener Fortschrittsring +
   Countdown, Sehur/Iftar/Teravih-Karte, Iftar-Bittgebet (arabisch +
-  Umschrift + Bedeutung), Fasten-Zähler
+  Umschrift + Bedeutung), Fasten-Zähler; **alle UI-Labels in allen 8 Sprachen**
+  (Schlüssel `ramadan_day_badge`, `ramadan_mubarak`, `ramadan_starts_in`,
+  `ramadan_dua_title`, `ramadan_fasted_count`) — geprüft in de, bs und ar (RTL)
 - **Benachrichtigungen** — geplant für 7 Tage, Texte in der **gewählten
   App-Sprache**, gewählter Ton, time-sensitive (Vibration bei lautlos),
   erscheinen auch bei offener App. Bewiesen: zugestellte Nachricht
   „Vrijeme za Akšam" (bosnisch) mit `adhan_short.mp3`
 - **Inhalte bereinigt** — `<br>`/`\n`-Reste aus Hadith-JSON entfernt
 
-## Offen
-1. **Ramadan-UI-Labels in den 7 anderen Sprachen** (aktuell nur Deutsch;
-   das Iftar-Bittgebet ist bereits mehrsprachig vom Nutzer geliefert).
-   Betrifft: „Ramadan beginnt in X Tagen", „X von Y Tagen gefastet",
-   „Bittgebet beim Fastenbrechen", „Bis zum Ende des Sehur", „Ramadan Mubarak"
-2. **Nachrichten + Admin** — brauchen `GoogleService-Info.plist` (Firebase)
-   vom Vorstand. Admin-Spec steht in Abschnitt 9 der Haupt-Spec
-   (fester UID `1a7xqRgIYDR0RZqa3KghBlz98PK2`, Zeiten-Editor, Mitteilungs-Editor)
-3. **App-Icon + Store-Vorbereitung** (Screenshots, Texte, Altersfreigabe)
+## Veröffentlichung — Stand 21.08.2026
 
-## Veröffentlichung — was der Nutzer besorgen muss
-1. **Apple Developer Program, 99 €/Jahr** (Vorstand freigeben lassen)
-2. **D-U-N-S-Nummer** für den Verein → dauert 1–2 Wochen, **zuerst beantragen**
-   (nötig für Organisations-Account, sonst erscheint der Privatname)
-3. **Datenschutzerklärung mit öffentlicher URL** (Pflicht bei Apple)
-4. **Firebase-Datei** vom Vorstand
-5. Zum Hochladen wird ein Mac mit Xcode gebraucht
+### Erledigt
+- **Apple Developer Program** — Company-Account `IGBD - Gemeinde Sandzak-Kassel e.V.`,
+  Team-ID `RM3FWBH4T7`, über die **Gebührenbefreiung** (keine 99 € gezahlt)
+- **App Store Connect** — App „Kassel Vaktija", Version 1.0, Bundle-ID
+  `de.igbdsandzakkassel.vaktija.ios`
+- **Signing** — Debug bleibt Ad-hoc (Simulator/Keychain), Release nutzt automatisches
+  Signing. `CODE_SIGN_IDENTITY` darf bei Automatic **nicht** gesetzt werden, sonst
+  "conflicting provisioning settings". Ein Gerät muss im Team registriert sein, sonst
+  scheitert das Archiv an "team has no devices" (registriert: `iPhone von Alen`)
+- **Archiv + .ipa** gebaut, Distribution-signiert, `aps-environment = production`
+- **Datenschutz-URL** live: https://ivox-08.github.io/Kassel-Datenschutz/
+- **Screenshots** — 5 Stück, 1320×2868, in `docs/ios/screenshots/`
+- **Store-Texte** — `docs/ios/STORE-LISTING.md`
+
+### Zwei behobene Fehler
+1. **Adhan-Ton klang nie in Benachrichtigungen.** Die Datei lag unter
+   `<App>/audio/adhan_short.mp3`; `UNNotificationSound` sucht aber nur im Bundle-Root
+   (oder `Library/Sounds`) und fällt sonst kommentarlos auf den Standardton zurück.
+   `Resources/audio` ist deshalb **keine Ordner-Referenz** mehr, und `SoundPlayer`
+   lädt ohne `subdirectory:`. **Auf echtem Gerät noch nicht gegengehört.**
+2. **Push war gar nicht angebunden.** `FirebaseMessaging` war eingebunden, aber kein
+   Code nutzte es. Neu: `PushService.swift` (APNs-Token an FCM, Topic `announcements`,
+   Silent-Push-Handler) plus `@UIApplicationDelegateAdaptor` in `iOSApp.swift`.
+
+### Offen — braucht den Login des Vorstands
+1. **APNs-Schlüssel** (.p8) erzeugen und in Firebase hochladen (Team-ID `RM3FWBH4T7`).
+   **Ohne ihn erreicht kein Push ein iPhone.**
+2. **Upload der .ipa** — entweder App-Store-Connect-API-Schlüssel bereitstellen, oder
+   selbst über Xcode → Organizer → Distribute App hochladen
+3. **Formulare in App Store Connect** — App-Datenschutz, Altersfreigabe,
+   Datenschutz-URL, **Händlerstatus** (EU-Pflicht, Prüfung dauert Tage, blockiert
+   die Einreichung)
+4. **Anmerkungen für die App-Prüfung** — der Admin-Bereich liegt hinter 7 Tipps auf
+   „Über uns". Findet der Prüfer ihn nicht, gilt die App als unvollständig
+
+### Offen — Server, nicht deployed
+`functions/index.js` → `onConfigUpdated` hat jetzt einen `apns`-Block mit
+`content-available: 1`. Ohne ihn erreichen **Gebetszeit-Änderungen nie ein iPhone**.
+Die Änderung ist eingetragen, aber **nicht deployed** — betrifft die laufende
+Android-App, deshalb vorher mit dem Android-Team abstimmen.
+
+### Nicht mehr nötig
+Eine **D-U-N-S-Nummer** war nicht erforderlich — der Company-Account bestand bereits.
 
 ## Bekannte Macken dieses Macs
+- **Ursache der Simulator-Aussetzer: Hitze.** Vom Nutzer herausgefunden — der Mac
+  ist alt, und nach mehreren langen Builds hintereinander wird er so warm, dass
+  der Simulator keine Klicks mehr annimmt (Screenshots und `simctl` gehen oft
+  noch). **Erst abkühlen lassen**, dann läuft es wieder; ein Neustart hilft vor
+  allem deshalb, weil er eine Pause erzwingt. Praktische Folge: Builds nicht
+  ohne Pause aneinanderreihen, und bei ausbleibenden Klicks warten statt
+  Prozesse zu killen.
 - **CoreSimulator hängt sich regelmäßig auf**: `simctl` antwortet nicht mehr,
   Klicks kommen nicht an, oder das Gerät verschwindet. Prozess-Kills helfen
-  meist nicht → **Mac neu starten**. Danach läuft es wieder.
+  meist nicht → abkühlen lassen, notfalls **Mac neu starten**.
 - `simctl spawn` hängt fast immer → nicht verwenden.
 - Screenshots: `xcrun simctl io $DEV screenshot datei.png` funktioniert auch,
   wenn die computer-use-Screenshots klemmen.

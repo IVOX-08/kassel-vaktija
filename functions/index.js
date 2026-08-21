@@ -55,6 +55,13 @@ exports.onConfigUpdated = onDocumentUpdated("config/community", (event) => {
   return getMessaging().send({
     topic: "announcements",
     android: { priority: "high" },
+    // iOS drops a data-only message unless it is explicitly marked as a background wake-up.
+    // Without this block prayer-time changes never reach iPhones — silently, no error.
+    // Priority 5 is required by APNs for content-available pushes; 10 gets rejected.
+    apns: {
+      headers: { "apns-priority": "5" },
+      payload: { aps: { "content-available": 1 } },
+    },
     data: { type: "config", updatedAt: String(updatedAt || "") },
   });
 });

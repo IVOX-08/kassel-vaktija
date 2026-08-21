@@ -18,6 +18,11 @@
 "ramadan_sehur" = "Sehur";
 "ramadan_teravija" = "Teravija";
 "ramadan_fasted_today" = "Danas postih";
+"ramadan_day_badge" = "%1$d. ramazan %2$d.";
+"ramadan_mubarak" = "Ramazan mubarek!";
+"ramadan_starts_in" = "Ramazan počinje za %1$d dana";
+"ramadan_dua_title" = "Dova prilikom iftara";
+"ramadan_fasted_count" = "Postio/la %1$d od %2$d dana";
 "tracker_streak" = "dana zaredom";
 "tracker_today" = "Danas";
 "tasbih_reset" = "Poništi";
@@ -26,6 +31,7 @@
 "hadith_nawawi" = "40 hadisa imama Nevevija";
 "hadith_riyad" = "Rijadus-salihin";
 "hadith_of_the_day" = "Hadis dana";
+"hadith_translation_credit" = "Prijevod: %1$@";
 "quran_verses" = "%1$d ajeta";
 "quran_continue" = "Nastavi čitanje";
 "quran_bookmarks" = "Oznake";
@@ -59,6 +65,9 @@
 "prayer_maghrib" = "Akšam";
 "prayer_isha" = "Jacija";
 "prayer_jumua" = "Džuma namaz";
+"bajram_prayer" = "Bajram-namaz";
+"admin_bajram_set" = "Najavi Bajram-namaz (datum i vrijeme)";
+"admin_bajram_remove" = "Ukloni Bajram-najavu";
 "tv_prayer_fajr" = "Fajr";
 "tv_prayer_dhuhr" = "Dhuhr";
 "tv_prayer_asr" = "Asr";
@@ -119,6 +128,7 @@
 "cd_app_logo" = "Logo zajednice";
 "cd_back" = "Nazad";
 "action_donate" = "Doniraj";
+"action_cancel" = "Otkaži";
 "community_address" = "Schwanenweg 13\n34123 Kassel";
 "qibla_hint" = "Drži telefon vodoravno i okreći se dok strelica ne pokaže prema gore.";
 "qibla_facing" = "Okrenuti ste prema Kibli";
@@ -152,6 +162,8 @@
 "admin_sign_in" = "Prijava";
 "admin_sign_out" = "Odjava";
 "admin_login_failed" = "Prijava nije uspjela";
+"admin_reset_password" = "Zaboravljena lozinka?";
+"admin_reset_sent" = "Poslana je e-mail poruka za promjenu lozinke.";
 "admin_save" = "Sačuvaj";
 "admin_saved" = "Sačuvano";
 "notif_channel_news" = "Obavijesti zajednice";

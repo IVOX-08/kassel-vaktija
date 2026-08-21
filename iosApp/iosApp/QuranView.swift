@@ -49,14 +49,15 @@ struct QuranView: View {
                         .frame(width: 40, height: 40).background(Color.brandGreen.opacity(0.14)).clipShape(Circle())
                     VStack(alignment: .leading, spacing: 2) {
                         Text(s.transliteration).font(.inter(16, .semibold)).foregroundColor(.appOnSurface)
-                        Text("\(s.total_verses) Verse").font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                        Text(String(format: L("quran_verses"), s.total_verses))
+                            .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
                     }
                     Spacer()
                     Text(s.name).font(.system(size: 22, weight: .bold)).foregroundColor(.brandGreen)
                 }
             }
         }
-        .listStyle(.plain).navigationTitle("Koran").navigationBarTitleDisplayMode(.inline)
+        .listStyle(.plain).navigationTitle(L("library_quran")).navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -118,7 +119,7 @@ private struct SurahReader: View {
                         .font(.system(size: 22, weight: .bold)).foregroundColor(.brandGreen)
                 }
             }
-            Text(flowing(pages[i]))
+            Text(flowingAttributed(pages[i]))
                 .font(.system(size: readerFontSize))
                 .lineSpacing(readerLineSpacing)
                 .foregroundColor(.appOnSurface)
@@ -134,6 +135,20 @@ private struct SurahReader: View {
 
     private func flowing(_ a: [Ayah]) -> String {
         a.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
+    }
+
+    /// Same text as `flowing`, but the ayah marker ﴿n﴾ (brackets included) is gold.
+    /// Character-for-character identical to `flowing`, so the pagination measurement stays valid.
+    private func flowingAttributed(_ a: [Ayah]) -> AttributedString {
+        var out = AttributedString()
+        for (idx, ayah) in a.enumerated() {
+            if idx > 0 { out.append(AttributedString("  ")) }
+            out.append(AttributedString("\(ayah.t) "))
+            var marker = AttributedString("﴿\(arabicDigits(ayah.n))﴾")
+            marker.foregroundColor = .brandGoldLight
+            out.append(marker)
+        }
+        return out
     }
 
     // Greedily pack complete ayahs onto each page until the next one would overflow.

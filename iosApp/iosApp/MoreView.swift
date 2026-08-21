@@ -104,22 +104,25 @@ struct TasbihView: View {
                     }
                 }.frame(width: 260, height: 260)
             }.buttonStyle(.plain)
-            Text("Runden: \(rounds)").font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
-            Text("Tippen zum Zählen").font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+            Text(String(format: L("tasbih_rounds"), rounds)).font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
+            Text(L("tasbih_hint")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
             Spacer()
-            Button("Zurücksetzen") { count = 0 }.font(.inter(15, .semibold)).foregroundColor(.brandGreen)
+            Button(L("tasbih_reset")) { count = 0 }.font(.inter(15, .semibold)).foregroundColor(.brandGreen)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.appBackground.ignoresSafeArea())
-        .navigationTitle("Tasbih").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("library_tasbih")).navigationBarTitleDisplayMode(.inline)
     }
 }
 
 // MARK: - 5.5 Gebets-Tracker (5-bit mask per day + streak)
 
 struct TrackerView: View {
-    private let names = ["Morgengebet", "Mittagsgebet", "Nachmittagsgebet", "Abendgebet", "Nachtgebet"]
+    // The five daily prayers in the selected app language (sunrise is not tracked).
+    private var names: [String] {
+        ["prayer_fajr", "prayer_dhuhr", "prayer_asr", "prayer_maghrib", "prayer_isha"].map { L($0) }
+    }
     @State private var mask = TrackerStore.maskFor(TrackerStore.today())
     private var doneCount: Int { (0..<5).filter { mask & (1 << $0) != 0 }.count }
     private var streak: Int { TrackerStore.streak() }
@@ -132,14 +135,14 @@ struct TrackerView: View {
                     Text("🔥").font(.system(size: 40))
                     VStack(alignment: .leading) {
                         Text("\(streak)").font(.inter(32, .bold)).foregroundColor(.brandGreen)
-                        Text("Tage in Folge").font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+                        Text(L("tracker_streak")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
                     }
                     Spacer()
                     Text("\(doneCount) / 5").font(.inter(24, .bold)).foregroundColor(doneCount == 5 ? .brandGold : .appOnSurfaceVariant)
                 }
                 .padding().background(Color.brandGreen.opacity(0.12)).clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
 
-                Text("Heute").font(.inter(17, .bold)).foregroundColor(.appOnSurface).frame(maxWidth: .infinity, alignment: .leading)
+                Text(L("tracker_today")).font(.inter(17, .bold)).foregroundColor(.appOnSurface).frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(spacing: 0) {
                     ForEach(0..<5, id: \.self) { i in
@@ -158,7 +161,7 @@ struct TrackerView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.appBackground.ignoresSafeArea())
-        .navigationTitle("Gebets-Tracker").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("library_tracker")).navigationBarTitleDisplayMode(.inline)
     }
 
     private func toggle(_ i: Int) {
@@ -213,7 +216,7 @@ struct QiblaView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("Qibla").font(.inter(22, .bold)).foregroundColor(.appPrimary)
+            Text(L("nav_qibla")).font(.inter(22, .bold)).foregroundColor(.appPrimary)
             Text("\(Int(qibla.rounded()))°").font(.inter(17)).foregroundColor(.appSecondary)
             ZStack {
                 Circle().stroke(Color.appOnSurfaceVariant.opacity(0.3), lineWidth: 2)
@@ -242,14 +245,14 @@ struct QiblaView: View {
                     .foregroundColor(aligned ? .brandGreen : .appOnSurfaceVariant)
                     .multilineTextAlignment(.center)
             } else {
-                Text("Kompass-Sensor auf diesem Gerät nicht verfügbar.")
+                Text(L("qibla_no_sensor"))
                     .font(.inter(14)).foregroundColor(.appOnSurfaceVariant).multilineTextAlignment(.center)
             }
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.appBackground.ignoresSafeArea())
-        .navigationTitle("Qibla").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("nav_qibla")).navigationBarTitleDisplayMode(.inline)
         .onAppear { model.start() }
         .onDisappear { model.stop() }
     }

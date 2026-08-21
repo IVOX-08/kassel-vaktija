@@ -6,6 +6,8 @@ import Shared
 // countdown, and prayer cards with Adhan + a divider + Iqamah. Inter font + exact brand colors.
 struct ContentView: View {
     @StateObject private var store = PrayerStore()
+    // Iqamah/Jumua/Eid come from the board's Firestore document; observed so an edit lands live.
+    @ObservedObject private var community = CommunityRuleStore.shared
 
     @State private var now = Date()
     @Environment(\.colorScheme) private var scheme
@@ -21,7 +23,10 @@ struct ContentView: View {
                 VStack(spacing: 14) {
                     header
                     countdownCard.padding(.horizontal, 12)
-                    VStack(spacing: 12) { ForEach(store.rows) { prayerCard($0) } }
+                    // The announced Eid prayer is the community's most-asked question, so it leads.
+                    if let bajram = activeBajram { bajramCard(bajram) }
+                    if !isFriday { jumuaCard }
+                    VStack(spacing: 12) { ForEach(rows) { prayerCard($0) } }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -29,6 +34,7 @@ struct ContentView: View {
         }
         .onReceive(ticker) { now = $0 }
         .task { await store.refresh() }
+        .onAppear { community.start() }
     }
 
     // MARK: Header
@@ -72,12 +78,79 @@ struct ContentView: View {
         VStack(spacing: 6) {
             Text(L("dashboard_next_prayer_in") + ":").font(.inter(16, .semibold)).foregroundColor(.brandGoldLight)
             Text(countdown).font(.inter(48, .bold)).monospacedDigit().foregroundColor(.white)
+            Text(germanName(nextInfo.name)).font(.inter(20, .semibold)).foregroundColor(.white)
+            Text(nextInfo.time).font(.inter(24, .bold)).monospacedDigit().foregroundColor(.brandGoldLight)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 18)
         .background(Color.brandGreen)
         .clipShape(RoundedRectangle(cornerRadius: Radius.hero, style: .continuous))
         .shadow(color: .black.opacity(0.18), radius: 6, y: 3)
+    }
+
+    // MARK: Friday / Eid (mirrors the Android dashboard)
+
+    private var isFriday: Bool { Calendar.current.component(.weekday, from: now) == 6 }
+
+    /// On Friday the Dhuhr row becomes Jumua: the community's Jumua time, and no Iqamah line.
+    private var rows: [PrayerRow] {
+        let base = store.rows
+        guard isFriday else { return base }
+        return base.map { row in
+            row.name == "Dhuhr"
+                ? PrayerRow(name: "Jumua", adhan: community.rule.jumua, iqamah: nil)
+                : row
+        }
+    }
+
+    /// The announced Eid prayer, hidden again once its day has passed.
+    private var activeBajram: (date: String, time: String)? {
+        guard let b = community.rule.bajram else { return nil }
+        let f = DateFormatter()
+        f.calendar = Calendar(identifier: .gregorian)
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "yyyy-MM-dd"
+        guard let day = f.date(from: b.date) else { return nil }
+        return Calendar.current.isDateInToday(day) || day > now ? b : nil
+    }
+
+    private func bajramCard(_ b: (date: String, time: String)) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("🌙 " + L("bajram_prayer")).font(.inter(17, .bold)).foregroundColor(.brandGoldLight)
+                Text(longDate(b.date)).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+            }
+            Spacer()
+            Text(b.time).font(.inter(30, .bold)).foregroundColor(.appPrimary).monospacedDigit()
+        }
+        .padding(16)
+        .background(Color.appSurface)
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Color.brandGoldLight, lineWidth: 2))
+    }
+
+    private var jumuaCard: some View {
+        HStack {
+            Text(L("prayer_jumua")).font(.inter(17, .bold)).foregroundColor(.brandGoldLight)
+            Spacer()
+            Text(community.rule.jumua).font(.inter(30, .bold)).foregroundColor(.appPrimary).monospacedDigit()
+        }
+        .padding(16)
+        .background(Color.appSurface)
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Color.appPrimary, lineWidth: 2))
+    }
+
+    private func longDate(_ iso: String) -> String {
+        let parser = DateFormatter()
+        parser.calendar = Calendar(identifier: .gregorian)
+        parser.locale = Locale(identifier: "en_US_POSIX")
+        parser.dateFormat = "yyyy-MM-dd"
+        guard let d = parser.date(from: iso) else { return iso }
+        let out = DateFormatter()
+        out.locale = Locale(identifier: Localization.shared.lang)
+        out.dateFormat = "EEEE, d. MMMM"
+        return out.string(from: d)
     }
 
     // MARK: Prayer card (Adhan + divider + Iqamah)
@@ -127,14 +200,26 @@ struct ContentView: View {
         case "Asr": return L("prayer_asr")
         case "Maghrib": return L("prayer_maghrib")
         case "Isha": return L("prayer_isha")
+        case "Jumua": return L("prayer_jumua")
         default: return n
         }
     }
 
     // MARK: Derived strings
 
+    /// On Friday the midday prayer IS Jumua, at the community's time — so the countdown must use it
+    /// rather than the calculated Dhuhr, and name it accordingly.
     private var nextInfo: (name: String, time: String, inSeconds: Int) {
-        PrayerModel.next(store.today, now: now)
+        var times = store.today
+        if isFriday, let jumua = minutes(community.rule.jumua) { times.dhuhr = jumua }
+        let next = PrayerModel.next(times, now: now)
+        return isFriday && next.name == "Dhuhr" ? ("Jumua", next.time, next.inSeconds) : next
+    }
+
+    private func minutes(_ hhmm: String) -> Int? {
+        let p = hhmm.split(separator: ":")
+        guard p.count == 2, let h = Int(p[0]), let m = Int(p[1]) else { return nil }
+        return h * 60 + m
     }
     private var countdown: String {
         let r = max(0, nextInfo.inSeconds)

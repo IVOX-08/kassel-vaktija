@@ -7,7 +7,7 @@ struct DhikrView: View {
     @AppStorage("dhikr_ptr") private var ptr = 0
 
     private var items: [DhikrItem] {
-        let all = DhikrDataKt.dhikrList(lang: "de")
+        let all = DhikrDataKt.dhikrList(lang: Localization.shared.lang)
         guard !all.isEmpty else { return [] }
         let p = ((ptr % all.count) + all.count) % all.count
         return Array(all[p...] + all[..<p])
@@ -38,7 +38,7 @@ struct DhikrView: View {
             .padding()
         }
         .background(Color.appBackground.ignoresSafeArea())
-        .navigationTitle("Dhikr").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("library_dhikr")).navigationBarTitleDisplayMode(.inline)
         .onAppear { ptr += 5 }
     }
 }

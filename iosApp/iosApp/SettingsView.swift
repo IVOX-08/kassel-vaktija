@@ -17,6 +17,7 @@ struct SettingsView: View {
     @AppStorage("msg_notif") private var msgNotif = true
     @AppStorage("weekly_reminder") private var weekly = true
 
+    @ObservedObject private var admin = AdminStore.shared
     @State private var showLangPicker = false
     @State private var notifGranted = true
     @StateObject private var store = PrayerStore()
@@ -39,6 +40,8 @@ struct SettingsView: View {
                     announcementsSection
                     if !notifGranted { permissionsSection }
                     languageSection
+                    // Only visible once the board's account is signed in (via the 7-tap gate below).
+                    if admin.isAdmin { AdminSection() }
                     AboutCard()
                 }
                 .padding(16)
@@ -48,7 +51,7 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .tint(.brandGreen)
-        .onAppear(perform: refreshAuth)
+        .onAppear { refreshAuth(); admin.start() }
         .onChange(of: master) { _ in rearm() }
         .onChange(of: soundRaw) { _ in rearm() }
         .fullScreenCover(isPresented: $showLangPicker) {
@@ -275,11 +278,7 @@ private struct AboutCard: View {
                     }
             }
         }
-        .alert("Admin-Login", isPresented: $showAdmin) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("Der Admin-Bereich benötigt die Firebase-Konfiguration vom Vorstand und wird danach freigeschaltet.")
-        }
+        .sheet(isPresented: $showAdmin) { AdminLoginSheet() }
     }
 
     private func row(_ icon: String, _ text: String, action: @escaping () -> Void) -> some View {

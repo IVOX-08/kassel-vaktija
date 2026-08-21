@@ -25,14 +25,14 @@ private enum HadithLoader {
 struct HadithView: View {
     var body: some View {
         List {
-            NavigationLink(destination: HadithReader(collection: "nawawi40", title: "An-Nawawis 40 Hadithe")) {
-                Text("An-Nawawis 40 Hadithe").font(.inter(16)).foregroundColor(.appOnSurface)
+            NavigationLink(destination: HadithReader(collection: "nawawi40", title: L("hadith_nawawi"))) {
+                Text(L("hadith_nawawi")).font(.inter(16)).foregroundColor(.appOnSurface)
             }
-            NavigationLink(destination: HadithReader(collection: "riyadussalihin", title: "Riyad as-Salihin")) {
-                Text("Riyad as-Salihin").font(.inter(16)).foregroundColor(.appOnSurface)
+            NavigationLink(destination: HadithReader(collection: "riyadussalihin", title: L("hadith_riyad"))) {
+                Text(L("hadith_riyad")).font(.inter(16)).foregroundColor(.appOnSurface)
             }
         }
-        .navigationTitle("Hadith").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("library_hadith")).navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -40,10 +40,13 @@ struct HadithReader: View {
     let collection: String
     let title: String
 
+    // The translation follows the selected app language; English is the fallback for a collection
+    // that happens to be missing it. (All 8 languages ship, so the fallback should never show.)
+    private var lang: String { Localization.shared.lang }
     private var arFile: HadithFile? { HadithLoader.load(collection, "ar") }
-    private var de: [Int: String] { HadithLoader.map(HadithLoader.load(collection, "de")) }
-    private var en: [Int: String] { HadithLoader.map(HadithLoader.load(collection, "en")) }
-    private var credit: String? { HadithLoader.load(collection, "de")?.metadata.translator }
+    private var translation: [Int: String] { HadithLoader.map(HadithLoader.load(collection, lang)) }
+    private var fallback: [Int: String] { HadithLoader.map(HadithLoader.load(collection, "en")) }
+    private var credit: String? { HadithLoader.load(collection, lang)?.metadata.translator }
 
     var body: some View {
         ScrollView {
@@ -58,7 +61,7 @@ struct HadithReader: View {
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .multilineTextAlignment(.trailing)
                             .environment(\.layoutDirection, .rightToLeft)
-                        if let t = de[h.hadithnumber] ?? en[h.hadithnumber] {
+                        if let t = translation[h.hadithnumber] ?? fallback[h.hadithnumber] {
                             Divider()
                             Text(t).font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
                         }
@@ -69,7 +72,7 @@ struct HadithReader: View {
                     .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
                 }
                 if let credit = credit {
-                    Text("Übersetzung: " + credit).font(.inter(11)).foregroundColor(.appOnSurfaceVariant).padding(.vertical, 8)
+                    Text(String(format: L("hadith_translation_credit"), credit)).font(.inter(11)).foregroundColor(.appOnSurfaceVariant).padding(.vertical, 8)
                 }
             }
             .padding()

@@ -1,19 +1,194 @@
 import SwiftUI
 
-// "Nachrichten" (spec section 4). Firebase wiring is a later step; for now the empty state per spec.
+// "Nachrichten" (spec section 4): the community announcements the admin posts from Android (and
+// later from the iPhone). Each item is shown in the reader's app language, falling back to the
+// language it was written in. Posting/deleting is admin-only and comes with the admin area.
 struct NewsView: View {
+    @StateObject private var store = NewsStore()
+    @ObservedObject private var admin = AdminStore.shared
+    @State private var viewerImage: Data?
+    @State private var showCompose = false
+    @State private var pendingDelete: NewsItem?
+
+    private var deleteDialog: Binding<Bool> {
+        Binding(get: { pendingDelete != nil }, set: { if !$0 { pendingDelete = nil } })
+    }
+
     var body: some View {
         NavigationStack {
-            VStack {
-                Spacer()
-                Text(L("news_empty"))
-                    .font(.inter(17))
-                    .foregroundColor(.appOnSurfaceVariant)
-                Spacer()
+            Group {
+                switch store.items {
+                case .none:
+                    ProgressView().tint(.brandGreen)
+                case .some(let list) where list.isEmpty:
+                    Text(L("news_empty"))
+                        .font(.inter(17)).foregroundColor(.appOnSurfaceVariant)
+                        .multilineTextAlignment(.center).padding(.horizontal, 32)
+                case .some(let list):
+                    ScrollView {
+                        LazyVStack(spacing: 12) {
+                            ForEach(list) { item in
+                                NewsCard(item: item, canDelete: admin.isAdmin,
+                                         loadImage: store.image,
+                                         onImageTap: { viewerImage = $0 },
+                                         onDelete: { pendingDelete = item })
+                            }
+                        }
+                        .padding(.horizontal, 16).padding(.vertical, 12)
+                    }
+                }
+            }
+            .safeAreaInset(edge: .top) {
+                if admin.isAdmin {
+                    Button { showCompose = true } label: {
+                        Label(L("news_add"), systemImage: "plus")
+                            .font(.inter(15, .semibold)).foregroundColor(.white)
+                            .frame(maxWidth: .infinity).padding(.vertical, 12)
+                            .background(Color.brandGreen)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                    .padding(.horizontal, 16).padding(.bottom, 4)
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle(L("nav_news"))
         }
+        .onAppear { store.start(); admin.start() }
+        .fullScreenCover(item: $viewerImage) { data in
+            FullScreenImageViewer(data: data) { viewerImage = nil }
+        }
+        .sheet(isPresented: $showCompose) { NewsComposeView() }
+        .confirmationDialog(L("news_delete_confirm"), isPresented: deleteDialog, titleVisibility: .visible) {
+            Button(L("news_delete"), role: .destructive) {
+                if let id = pendingDelete?.id {
+                    Task { _ = await AdminStore.shared.deleteNews(id) }
+                }
+                pendingDelete = nil
+            }
+            Button(L("action_cancel"), role: .cancel) { pendingDelete = nil }
+        }
     }
+}
+
+private struct NewsCard: View {
+    let item: NewsItem
+    let canDelete: Bool
+    let loadImage: (String) async -> Data?
+    let onImageTap: (Data) -> Void
+    let onDelete: () -> Void
+
+    @State private var flyer: Data?
+    @State private var flyerLoaded = false
+
+    private var lang: String { Localization.shared.lang }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top) {
+                Text(item.title(lang)).font(.inter(17, .bold)).foregroundColor(.brandGreen)
+                if canDelete {
+                    Spacer()
+                    Button(action: onDelete) {
+                        Image(systemName: "trash").font(.system(size: 16)).foregroundColor(.qiblaRed)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(L("news_delete"))
+                }
+            }
+            if let date = item.date {
+                Text(dateText(date)).font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+            }
+            let body = item.body(lang)
+            if !body.isEmpty {
+                Text(body).font(.inter(15)).foregroundColor(.appOnSurface)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            if item.hasImage {
+                flyerSlot
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(Color.appSurface)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
+        .shadow(color: .black.opacity(0.06), radius: 3, y: 1)
+    }
+
+    // Fetched only once this card is on screen. If it can't be loaded the slot disappears rather
+    // than spinning forever — same behaviour as Android.
+    @ViewBuilder private var flyerSlot: some View {
+        if let flyer, let image = UIImage(data: flyer) {
+            Image(uiImage: image)
+                .resizable().scaledToFit()
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .onTapGesture { onImageTap(flyer) }
+        } else if !flyerLoaded {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color.appOnSurfaceVariant.opacity(0.15))
+                .aspectRatio(16.0 / 9.0, contentMode: .fit)
+                .overlay(ProgressView().tint(.brandGreen))
+                .task {
+                    flyer = await loadImage(item.id)
+                    flyerLoaded = true
+                }
+        }
+    }
+
+    private func dateText(_ d: Date) -> String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: lang)
+        f.dateFormat = "d. MMMM yyyy, HH:mm"
+        return f.string(from: d)
+    }
+}
+
+/// Full-screen flyer with pinch-to-zoom, dismissed by tapping the close button or double-tapping.
+private struct FullScreenImageViewer: View {
+    let data: Data
+    let onDismiss: () -> Void
+
+    @State private var scale: CGFloat = 1
+    @State private var offset: CGSize = .zero
+
+    var body: some View {
+        ZStack {
+            Color.black.ignoresSafeArea()
+            if let image = UIImage(data: data) {
+                Image(uiImage: image)
+                    .resizable().scaledToFit()
+                    .scaleEffect(scale)
+                    .offset(offset)
+                    .gesture(
+                        MagnificationGesture()
+                            .onChanged { scale = max(1, min(5, $0)) }
+                            .onEnded { _ in if scale <= 1 { withAnimation { offset = .zero } } }
+                    )
+                    .simultaneousGesture(
+                        DragGesture()
+                            .onChanged { if scale > 1 { offset = $0.translation } }
+                    )
+                    .onTapGesture(count: 2) {
+                        withAnimation { scale = scale > 1 ? 1 : 2; offset = .zero }
+                    }
+            }
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 18, weight: .bold)).foregroundColor(.white)
+                            .padding(12).background(Circle().fill(Color.black.opacity(0.5)))
+                    }
+                    .padding(16)
+                }
+                Spacer()
+            }
+        }
+    }
+}
+
+// Lets `Data` drive .fullScreenCover(item:).
+extension Data: Identifiable {
+    public var id: Int { hashValue }
 }

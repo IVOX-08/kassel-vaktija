@@ -1,0 +1,119 @@
+# Baut die iOS-App auf einem Mac in der GitHub-Cloud und lädt sie zu TestFlight hoch.
+#
+# Warum es das gibt: Apple verlangt das iOS-26-SDK (Xcode 26, macOS 26). Der Mac der
+# Gemeinde ist ein Intel-MacBook-Air 2020, das kein macOS 26 mehr bekommt — dort lässt
+# sich keine hochladbare Version mehr bauen. Die Cloud-Macs können es.
+#
+# Start: Actions → "iOS Release" → "Run workflow". Läuft absichtlich NICHT bei jedem
+# Push, weil Mac-Minuten zehnfach auf das Freikontingent angerechnet werden.
+name: iOS Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_number:
+        description: "Build-Nummer (muss bei jedem Upload höher sein als zuvor)"
+        required: true
+        default: "2"
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Das Kotlin-Modul "shared" wird als Framework in die App eingebettet.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # Erzeugt iosApp.xcodeproj aus project.yml — das Projekt liegt bewusst nicht im Repo.
+      - name: XcodeGen installieren
+        run: brew install xcodegen
+
+      # Neueste installierte Xcode-Version wählen. Apple lehnt Uploads ab, die mit
+      # einem älteren SDK als iOS 26 gebaut wurden.
+      - name: Xcode auswählen
+        run: |
+          set -e
+          NEWEST=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          echo "Verwende $NEWEST"
+          sudo xcode-select -s "$NEWEST/Contents/Developer"
+          xcodebuild -version
+
+      # Diese beiden Dateien sind gitignored (echte Zugangsdaten) und kommen aus den
+      # GitHub-Secrets. Ohne sie startet die App ohne Firebase bzw. ohne Übersetzung.
+      - name: Geheime Konfigurationsdateien schreiben
+        env:
+          GOOGLE_SERVICE_INFO_PLIST: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
+          SECRETS_PLIST: ${{ secrets.SECRETS_PLIST }}
+        run: |
+          set -e
+          echo "$GOOGLE_SERVICE_INFO_PLIST" | base64 --decode > iosApp/iosApp/GoogleService-Info.plist
+          echo "$SECRETS_PLIST" | base64 --decode > iosApp/iosApp/Secrets.plist
+          plutil -lint iosApp/iosApp/GoogleService-Info.plist
+          plutil -lint iosApp/iosApp/Secrets.plist
+
+      # Der Upload-Schlüssel muss dort liegen, wo xcodebuild ihn erwartet.
+      - name: App-Store-Connect-Schlüssel ablegen
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        run: |
+          set -e
+          mkdir -p ~/private_keys
+          echo "$ASC_KEY_P8" | base64 --decode > ~/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          chmod 600 ~/private_keys/AuthKey_${ASC_KEY_ID}.p8
+
+      - name: Build-Nummer setzen
+        run: |
+          set -e
+          sed -i '' "s/CURRENT_PROJECT_VERSION: \"[0-9]*\"/CURRENT_PROJECT_VERSION: \"${{ inputs.build_number }}\"/g" iosApp/project.yml
+          grep CURRENT_PROJECT_VERSION iosApp/project.yml
+
+      - name: Xcode-Projekt erzeugen
+        working-directory: iosApp
+        run: xcodegen generate
+
+      - name: Archiv bauen
+        working-directory: iosApp
+        run: |
+          xcodebuild \
+            -project iosApp.xcodeproj \
+            -scheme iosApp \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/iosApp.xcarchive \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8 \
+            -authenticationKeyID ${{ secrets.ASC_KEY_ID }} \
+            -authenticationKeyIssuerID ${{ secrets.ASC_ISSUER_ID }} \
+            archive
+
+      # destination "upload" exportiert und lädt in einem Schritt zu App Store Connect.
+      - name: Exportieren und hochladen
+        working-directory: iosApp
+        run: |
+          xcodebuild \
+            -exportArchive \
+            -archivePath build/iosApp.xcarchive \
+            -exportPath build/ipa \
+            -exportOptionsPlist ExportOptions-CI.plist \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8 \
+            -authenticationKeyID ${{ secrets.ASC_KEY_ID }} \
+            -authenticationKeyIssuerID ${{ secrets.ASC_ISSUER_ID }}
+
+      # Bei einem Fehlschlag sind die Protokolle die einzige Spur — der Runner wird gelöscht.
+      - name: Protokolle sichern
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            iosApp/build/ipa/*.log
+            iosApp/build/ipa/DistributionSummary.plist
+          if-no-files-found: ignore

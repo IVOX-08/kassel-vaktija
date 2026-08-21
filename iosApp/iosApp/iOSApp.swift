@@ -1,12 +1,21 @@
 import SwiftUI
+import FirebaseCore
 
 @main
 struct iOSApp: App {
     @AppStorage("appColorScheme") private var appColorScheme = "system"
     @AppStorage("onboarding_done") private var onboardingDone = false
     @StateObject private var loc = Localization.shared
+    // Push needs the UIKit delegate callbacks (APNs token, silent push) — SwiftUI has no
+    // equivalent. See PushService.swift.
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     init() {
+        // Same Firebase project as Android — announcements and community settings come from there.
+        // Guarded so a missing GoogleService-Info.plist degrades to "no news" instead of a crash.
+        if Bundle.main.url(forResource: "GoogleService-Info", withExtension: "plist") != nil {
+            FirebaseApp.configure()
+        }
         // Show Adhan/prayer notifications even while the app is open.
         NotificationPresenter.shared.install()
         // Green navigation-bar titles throughout (matches the Android branded headers).

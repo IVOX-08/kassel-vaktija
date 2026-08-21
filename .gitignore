@@ -5,6 +5,9 @@ build/
 *.iml
 .DS_Store
 app/google-services.json
+iosApp/iosApp/GoogleService-Info.plist
+# Gemini API key for the iOS admin's posting flow (mirrors gemini.properties on Android)
+iosApp/iosApp/Secrets.plist
 *.jks
 *.keystore
 keystore.properties
