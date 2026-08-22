@@ -17,6 +17,7 @@ import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
+import de.igbdsandzakkassel.vaktija.service.work.StaleTimesWatcher
 import de.igbdsandzakkassel.vaktija.service.work.VaktijaRefreshWorker
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -30,6 +31,9 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
+
+    @Inject
+    lateinit var staleTimesWatcher: StaleTimesWatcher
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
@@ -49,6 +53,9 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         // No-billing fallback for announcement/Iqamah notifications: poll every ~15 min (plus the
         // on-wake check at each prayer alarm). Replaced by instant FCM push once Blaze is enabled.
         NewsCheckWorker.schedulePeriodic(this)
+        // The TV board never restarts, so every start-tied refresh above fires only once in its
+        // life. This watcher is what actually keeps it current day to day.
+        staleTimesWatcher.start()
     }
 
     /**
@@ -104,15 +111,20 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         // Daily background refresh (vaktija.eu publishes one day at a time).
         workManager.enqueueUniquePeriodicWork(
             VaktijaRefreshWorker.UNIQUE_PERIODIC,
-            ExistingPeriodicWorkPolicy.KEEP,
-            PeriodicWorkRequestBuilder<VaktijaRefreshWorker>(1, TimeUnit.DAYS)
+            // UPDATE, not KEEP: existing installs are carrying the old (broken) constraints and
+            // would otherwise keep them for the lifetime of the install.
+            ExistingPeriodicWorkPolicy.UPDATE,
+            // Every 6 h, not daily: a once-a-day job may land at any point inside its period, so
+            // the board could sit on yesterday's times all morning. No batteryNotLow constraint —
+            // a mains-powered TV has no battery to report, and an unsatisfiable constraint would
+            // park this job forever.
+            PeriodicWorkRequestBuilder<VaktijaRefreshWorker>(6, TimeUnit.HOURS)
                 .setConstraints(
                     Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .setRequiresBatteryNotLow(true)
                         .build(),
                 )
-                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.HOURS)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 15, TimeUnit.MINUTES)
                 .build(),
         )
     }

@@ -12,6 +12,7 @@ import android.os.VibratorManager
 import dagger.hilt.android.AndroidEntryPoint
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
+import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
@@ -39,6 +40,9 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
+
+    @Inject
+    lateinit var timesRepository: PrayerTimesRepository
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
@@ -145,6 +149,11 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                     // Shortly-after-midnight self re-arm: plan the NEW day's alarms (above all Fajr)
                     // and roll the widget to the new day.
                     ACTION_DAY_ROLLOVER -> {
+                        // Fetch the NEW day's times FIRST — vaktija.eu publishes one day at a time,
+                        // so without this the alarms below (and the board, and the widget) would all
+                        // be re-armed from yesterday's cached values. If the fetch fails here (the
+                        // mosque Wi-Fi may not be up at 00:05) StaleTimesWatcher keeps retrying.
+                        runCatching { timesRepository.refresh() }
                         alarmScheduler.rescheduleAll()
                         PrayerTimesWidgetReceiver.refresh(context)
                     }
