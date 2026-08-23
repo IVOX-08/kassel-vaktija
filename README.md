@@ -1,39 +1,47 @@
 # Kassel Vaktija
 
-Native Android prayer-times app for the **IGBD-Gemeinde Sandžak-Kassel**. Android-only project
-(iOS is a separate, later project — no iOS code lives here).
+Prayer-times app for the **IGBD-Gemeinde Sandžak-Kassel**, built natively for **Android and iOS**.
 
 - **applicationId:** `de.igbdsandzakkassel.vaktija`
 - **minSdk:** 26 (Android 8.0) · **compileSdk / targetSdk:** 35
-- **Stack:** Kotlin · Jetpack Compose + Material 3 · MVVM · Hilt · Room · DataStore ·
+- **Android stack:** Kotlin · Jetpack Compose + Material 3 · MVVM · Hilt · Room · DataStore ·
   WorkManager · AlarmManager · Glance · Retrofit/OkHttp/kotlinx.serialization · Jsoup (fallback) ·
-  Firebase (Firestore/Auth/FCM/Storage — wired in Phase 1/4b)
+  Firebase (Firestore/Auth/FCM) — wired and in active use (News, Community Rules, Push, Admin)
+- **iOS stack:** Swift/SwiftUI, native iOS widget (`iosWidget`), same Firebase backend
+  (Firestore/Push) shared with the Android app
 
 ---
 
 ## Build status by phase
 
-- [x] **Phase 0 — Project setup** (this commit): builds & runs, themed single-Activity scaffold,
-  bottom nav (5 tabs), 7-language localization with in-app switching, TV (leanback) routing,
-  Hilt DI root, bundled Inter font, adaptive launcher icon.
+- [x] **Phase 0 — Project setup**: themed single-Activity scaffold, bottom nav, 7-language
+  localization with in-app switching, TV (leanback) routing, Hilt DI root, bundled Inter font,
+  adaptive launcher icon.
 - [x] **Phase 1 — Data layer**: vaktija.eu/kassel JSON-LD source + Room cache + daily WorkManager
-  refresh (offline-first), behind `PrayerTimesRepository`. (Community overrides still default; Firebase in 4b.)
+  refresh (offline-first), behind `PrayerTimesRepository`.
 - [x] **Phase 2 — Dashboard UI**: emblem, countdown hero, prayer cards (Adhan/Iqamah with divider,
   next-prayer highlight), Džuma card. Light/dark, 8 languages, RTL.
 - [x] **Phase 3 — Notifications & Adhan**: exact alarms (AlarmManager) per prayer + pre-warnings,
-  foreground playback service (placeholder sound — real Adhans TBD, Open Item #4), reschedule on
-  boot/time/locale, Settings with per-prayer toggles + pre-warning + permissions + test button.
+  foreground playback service, reschedule on boot/time/locale, Settings with per-prayer toggles +
+  pre-warning + permissions + test button.
+- [x] **Phase 4b — Admin mode & Firebase backend**: Firestore/Auth/FCM wired via Hilt
+  (`FirebaseModule`), `AdminController`, community-rule overrides, push-based news.
+- [x] **Phase 5 — Widgets**: home-screen widget on Android (`PrayerTimesWidgetReceiver`) and a
+  native `iosWidget` on iOS.
+- [x] **Phase 6 — Qibla compass**: `QiblaScreen` (Android) using the shared bearing calculation
+  in `shared/Qibla.kt`, with a native counterpart on iOS.
+- [x] **iOS app**: SwiftUI app (`iosApp/`) covering Dashboard, Calendar, News, Settings, Qibla,
+  Hadith/Quran views, onboarding and push notifications, sharing the same Firebase backend.
 - [x] **Feature batch**: light/dark/system **theme selector**; Dashboard **auto-scroll + one-shot
   pulse** to the next prayer; **Month Calendar** (full month via adhan2, calibrated to today's
-  official value, cached in Room) — replaces the Zakat calculator; bottom nav reordered
-  (Home · Calendar · News · Qibla · Settings); pre-warning options 0/5/10/15/30; emblem launcher icon.
-- [ ] Phase 4 — Auto-silence / DND
-- [ ] Phase 4b — Admin mode & Firebase backend
-- [ ] Phase 5 — Widgets (Glance)
-- [ ] Phase 6 — Qibla compass
-- [ ] ~~Zakat calculator~~ → replaced by the Month Calendar (above)
-- [ ] Phase 8 — News & Donations
+  official value, cached in Room); bottom nav reordered (Home · Calendar · News · Qibla ·
+  Settings); pre-warning options 0/5/10/15/30; emblem launcher icon.
+- [ ] Phase 8 — Donations
 - [ ] Phase 9 — Polish, accessibility, release prep
+
+> Note: this list reflects what's implemented in code as of the last update. Some
+> details (e.g. exact Adhan sound assets, donation account data) are still placeholders —
+> see **Open items** below.
 
 ---
 
@@ -90,6 +98,13 @@ $adb = "C:\Users\<you>\AppData\Local\Android\Sdk\platform-tools\adb.exe"
 ```
 
 ---
+
+## iOS setup
+
+The iOS app lives in `iosApp/` as a native SwiftUI project (generated via `project.yml` /
+XcodeGen). Open it in Xcode, provide `GoogleService-Info.plist` locally (also git-ignored, same
+reasoning as `google-services.json` on Android), and build against the shared Firebase backend.
+The `iosWidget` target ships a native home-screen widget.
 
 ## Internationalization
 
@@ -154,8 +169,9 @@ added in **Phase 9**; keystores and `keystore.properties` are git-ignored and mu
 
 ## Firebase
 
-Not yet wired (Phase 1/4b). When ready: add `app/google-services.json`, uncomment the
-`google-services` plugin in `app/build.gradle.kts` and the Firebase dependencies, and bake the
-admin UID into `BuildConfig.ADMIN_UID`. The real admin protection is the **Firestore Security
-Rule** on the server — the in-app unlock gesture is only obfuscation. `google-services.json` is
-git-ignored by default (Open Item #7 — decide whether to commit it).
+Wired and in active use via the `google-services` plugin and `FirebaseModule` (Hilt): Firestore
+for community rules and news, Auth for the admin account, and FCM for push notifications on both
+Android and iOS. `app/google-services.json` is intentionally **git-ignored** and not committed —
+it's provided locally per environment, not checked into the repo. The real admin protection is
+the **Firestore Security Rule** on the server — the in-app unlock gesture is only obfuscation.
+README aktualisiert: iOS und Firebase-Status korrigiert
