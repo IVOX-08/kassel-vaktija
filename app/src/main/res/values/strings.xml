@@ -249,4 +249,7 @@
     <string name="community_search_hint">Traži grad ili džemat</string>
     <string name="community_search_clear">Obriši pretragu</string>
     <string name="community_search_empty">Nema rezultata. Provjerite pravopis ili tražite susjedni grad.</string>
+    <string name="settings_community_header">Džemat</string>
+    <string name="community_inactive_notice">Ovaj džemat trenutno nije aktivan. U Postavkama možete odabrati drugi džemat.</string>
+    <string name="community_none_available">Trenutno nema dostupnih džemata. Provjerite internet vezu i pokušajte ponovo.</string>
 </resources>

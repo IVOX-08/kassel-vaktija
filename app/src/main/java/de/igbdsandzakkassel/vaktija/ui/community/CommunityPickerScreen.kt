@@ -61,6 +61,7 @@ fun CommunityPickerScreen(
 ) {
     val query by viewModel.query.collectAsStateWithLifecycle()
     val results by viewModel.results.collectAsStateWithLifecycle()
+    val loaded by viewModel.loaded.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
@@ -106,10 +107,15 @@ fun CommunityPickerScreen(
         Spacer(Modifier.height(12.dp))
 
         when {
-            results.isEmpty() && query.isBlank() -> CenteredHint { CircularProgressIndicator() }
+            !loaded -> CenteredHint { CircularProgressIndicator() }
             results.isEmpty() -> CenteredHint {
                 Text(
-                    text = stringResource(R.string.community_search_empty),
+                    text = stringResource(
+                        // No query and nothing to show means the catalogue itself is empty, which
+                        // is a different problem from "your search matched nothing".
+                        if (query.isBlank()) R.string.community_none_available
+                        else R.string.community_search_empty,
+                    ),
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

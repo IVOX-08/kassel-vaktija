@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.Normalizer
@@ -39,7 +40,7 @@ class CommunityPickerViewModel @Inject constructor(
      * as two rows with the same town but different names.
      */
     val results: StateFlow<List<MosqueEntry>> =
-        combine(communityRepository.observeAll(), _query) { communities, query ->
+        combine(communityRepository.observeSelectable(), _query) { communities, query ->
             val needle = query.fold()
             communities
                 .flatMap { community -> community.locations.map { MosqueEntry(community, it) } }
@@ -50,6 +51,16 @@ class CommunityPickerViewModel @Inject constructor(
                 }
                 .sortedWith(compareBy({ it.location.name.fold() }, { it.community.name.fold() }))
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    /**
+     * Whether the catalogue has answered at all. Without this the screen cannot tell "still
+     * loading" from "loaded, and there is genuinely nothing to show" — and an empty list rendered
+     * as a spinner leaves the user staring at it forever, which is what happens the moment every
+     * community in range is switched off or the catalogue read fails.
+     */
+    val loaded: StateFlow<Boolean> = communityRepository.observeSelectable()
+        .map { true }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     fun onQueryChange(value: String) { _query.value = value }
 

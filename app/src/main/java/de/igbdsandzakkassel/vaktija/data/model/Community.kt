@@ -12,6 +12,12 @@ data class Community(
     val logoUrl: String? = null,
     val donationUrl: String? = null,
     val locations: List<CommunityLocation> = emptyList(),
+    /**
+     * Whether the community is currently taking part. Set false by the head admin when a community
+     * leaves the programme: it drops out of the picker so nobody new joins it, and anyone already
+     * following it is told, rather than being left wondering why announcements stopped.
+     */
+    val active: Boolean = true,
 )
 
 /**

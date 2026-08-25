@@ -26,7 +26,10 @@ class CommunityRepository @Inject constructor(
     private val selectionRepository: CommunitySelectionRepository,
 ) {
 
-    /** All listed communities, newest catalogue wins; falls back to the bundled seed when empty. */
+    /** Only communities currently taking part — what the picker offers. */
+    fun observeSelectable(): Flow<List<Community>> = observeAll().map { all -> all.filter { it.active } }
+
+    /** Every community including switched-off ones; the selection has to resolve against these. */
     fun observeAll(): Flow<List<Community>> = callbackFlow {
         val registration = firestore.collection(COLLECTION)
             .addSnapshotListener { snapshot, _ ->
@@ -72,6 +75,9 @@ class CommunityRepository @Inject constructor(
         if (locations.isEmpty()) return null
         return Community(
             id = id,
+            // Absent means active: a community document written before this field existed, or by
+            // hand in the console, must not silently switch itself off.
+            active = getBoolean("active") ?: true,
             name = name,
             logoUrl = getString("logoUrl"),
             donationUrl = getString("donationUrl"),

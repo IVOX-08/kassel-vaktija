@@ -40,4 +40,6 @@ data class DashboardUiState(
     val locationAddress: String? = null,
     /** The selected community's donation link. */
     val donationUrl: String? = null,
+    /** False once the head admin switches this community off — surfaced as a banner. */
+    val communityActive: Boolean = true,
 )

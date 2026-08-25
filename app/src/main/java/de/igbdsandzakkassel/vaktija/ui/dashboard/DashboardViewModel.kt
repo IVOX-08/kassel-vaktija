@@ -58,6 +58,7 @@ class DashboardViewModel @Inject constructor(
             locationName = selection?.location?.name.orEmpty(),
             locationAddress = selection?.location?.address,
             donationUrl = selection?.community?.donationUrl,
+            communityActive = selection?.community?.active ?: true,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -169,6 +169,11 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
 
     Column(modifier = modifier.fillMaxSize()) {
         Header(state, state.gregorianDate, state.hijriDate)
+        // Pinned, not a list item: the list auto-scrolls to the next prayer on open, which would
+        // carry this notice off the top of the screen exactly when it needs to be read.
+        if (!state.communityActive) {
+            InactiveCommunityBanner(modifier = Modifier.padding(horizontal = 16.dp))
+        }
         // Pinned above the list, always visible — never hides on touch/scroll.
         CountdownCard(state, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
         LazyColumn(
@@ -188,6 +193,29 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
             state.jumua?.let { jumua -> item { JumuaCard(jumua) } }
             item { Spacer(Modifier.height(8.dp)) }
         }
+    }
+}
+
+/**
+ * Shown when the head admin has switched this community off. Deliberately points at Settings: the
+ * ordinary member did nothing wrong and needs a way out, not just a notice.
+ */
+@Composable
+private fun InactiveCommunityBanner(modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        shape = RoundedCornerShape(12.dp),
+        color = BrandGold,
+    ) {
+        Text(
+            text = stringResource(R.string.community_inactive_notice),
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Medium,
+            color = Color.White,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+        )
     }
 }
 

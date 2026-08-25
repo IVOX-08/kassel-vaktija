@@ -183,4 +183,7 @@
     <string name="community_search_hint">ابحث عن مدينة أو جماعة</string>
     <string name="community_search_clear">مسح البحث</string>
     <string name="community_search_empty">لا توجد نتائج. تحقق من الإملاء أو جرّب مدينة مجاورة.</string>
+    <string name="settings_community_header">الجماعة</string>
+    <string name="community_inactive_notice">هذه الجماعة غير مُفعَّلة حاليًا. يمكنك اختيار جماعة أخرى من الإعدادات.</string>
+    <string name="community_none_available">لا توجد جماعات متاحة حاليًا. تحقق من اتصال الإنترنت وحاول مرة أخرى.</string>
 </resources>

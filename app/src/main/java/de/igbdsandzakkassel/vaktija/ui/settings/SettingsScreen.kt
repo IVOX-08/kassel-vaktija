@@ -80,6 +80,7 @@ import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.PrayerAlarmPrefs
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
+import de.igbdsandzakkassel.vaktija.ui.community.ChangeCommunityPill
 import de.igbdsandzakkassel.vaktija.ui.components.ChangeLanguagePill
 import java.time.format.DateTimeFormatter
 
@@ -343,6 +344,10 @@ fun SettingsScreen(
                 ) { Text(stringResource(R.string.settings_perm_battery)) }
             }
         }
+
+        Spacer(Modifier.height(8.dp))
+        SectionHeader(stringResource(R.string.settings_community_header))
+        ChangeCommunityPill()
 
         Spacer(Modifier.height(8.dp))
         SectionHeader(stringResource(R.string.language_picker_title))

@@ -183,4 +183,7 @@
     <string name="community_search_hint">Kërko qytet ose xhemat</string>
     <string name="community_search_clear">Pastro kërkimin</string>
     <string name="community_search_empty">Asnjë rezultat. Kontrolloni shkrimin ose provoni qytetin fqinj.</string>
+    <string name="settings_community_header">Xhemati</string>
+    <string name="community_inactive_notice">Ky xhemat aktualisht nuk është aktiv. Në Cilësimet mund të zgjidhni një xhemat tjetër.</string>
+    <string name="community_none_available">Aktualisht nuk ka xhemate në dispozicion. Kontrolloni lidhjen e internetit dhe provoni sërish.</string>
 </resources>

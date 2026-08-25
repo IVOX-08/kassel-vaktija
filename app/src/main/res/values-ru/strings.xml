@@ -183,4 +183,7 @@
     <string name="community_search_hint">Поиск города или общины</string>
     <string name="community_search_clear">Очистить поиск</string>
     <string name="community_search_empty">Ничего не найдено. Проверьте написание или попробуйте соседний город.</string>
+    <string name="settings_community_header">Община</string>
+    <string name="community_inactive_notice">Эта община сейчас неактивна. Вы можете выбрать другую в настройках.</string>
+    <string name="community_none_available">Сейчас нет доступных общин. Проверьте подключение к интернету и повторите попытку.</string>
 </resources>
