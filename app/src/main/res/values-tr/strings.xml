@@ -196,4 +196,6 @@
     <string name="action_cancel">İptal</string>
     <string name="settings_developer_header">Uygulama</string>
     <string name="settings_sunrise_note">Güneş doğmadan önce hatırlatma — sabah namazının vakti o zaman çıkar. Ezan yok.</string>
+    <string name="news_broadcast_all">Tüm cemaatlere gönder</string>
+    <string name="news_broadcast_hint">Uygulamanın tüm kullanıcıları görür, sadece sizin cemaatiniz değil.</string>
 </resources>

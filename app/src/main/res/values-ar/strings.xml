@@ -196,4 +196,6 @@
     <string name="action_cancel">إلغاء</string>
     <string name="settings_developer_header">التطبيق</string>
     <string name="settings_sunrise_note">تذكير قبل الشروق، حين ينتهي وقت الفجر. بدون أذان.</string>
+    <string name="news_broadcast_all">إرسال إلى جميع الجماعات</string>
+    <string name="news_broadcast_hint">سيراه كل مستخدمي التطبيق، وليس جماعتك فقط.</string>
 </resources>

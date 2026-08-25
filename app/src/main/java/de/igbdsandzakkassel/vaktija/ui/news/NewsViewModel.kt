@@ -8,6 +8,8 @@ import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.media.NewsImageCompressor
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
+import de.igbdsandzakkassel.vaktija.data.model.AdminRole
+import kotlinx.coroutines.flow.map
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
 import de.igbdsandzakkassel.vaktija.data.translate.GeminiTranslator
@@ -27,7 +29,7 @@ class NewsViewModel @Inject constructor(
     private val geminiTranslator: GeminiTranslator,
     private val translator: NewsTranslator,
     private val imageCompressor: NewsImageCompressor,
-    adminController: AdminController,
+    private val adminController: AdminController,
     private val communityRepository: CommunityRepository,
 ) : ViewModel() {
 
@@ -35,6 +37,11 @@ class NewsViewModel @Inject constructor(
     // refetch. Only successful loads are cached (a transient failure stays retryable).
     private val imageCache = mutableMapOf<String, ByteArray>()
     private val imageMutex = Mutex()
+
+    /** True only for the head admin — the one account allowed to reach every community. */
+    val canBroadcast: StateFlow<Boolean> = adminController.observeRole()
+        .map { it == AdminRole.Head }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     /** Newest-first announcements; null while the first snapshot is still loading. */
     val news: StateFlow<List<NewsItem>?> = newsRepository.observeNews()
@@ -70,7 +77,13 @@ class NewsViewModel @Inject constructor(
      * falling back to the current UI language. Reports any languages that failed to translate, and
      * whether the picked image couldn't be attached, so the admin can be warned (e.g. posted offline).
      */
-    fun postNews(title: String, body: String, imageUri: Uri?, onResult: (PostOutcome) -> Unit) {
+    fun postNews(
+        title: String,
+        body: String,
+        imageUri: Uri?,
+        broadcast: Boolean,
+        onResult: (PostOutcome) -> Unit,
+    ) {
         val fallbackLang = LocaleController.current().tag
         viewModelScope.launch {
             val result = runCatching {
@@ -88,6 +101,7 @@ class NewsViewModel @Inject constructor(
                     bodyByLang = translated.bodyByLang,
                     sourceLang = translated.sourceLang,
                     imageJpeg = imageJpeg,
+                    broadcast = broadcast,
                 )
                 translated.failedLangs to imageDropped
             }
@@ -96,15 +110,15 @@ class NewsViewModel @Inject constructor(
         }
     }
 
-    /** Lazily fetches the flyer bytes for [id] (cache-first), caching successes for the session. */
-    suspend fun loadImage(id: String): ByteArray? {
-        imageMutex.withLock { imageCache[id] }?.let { return it }
-        val bytes = newsRepository.getNewsImage(id)
-        if (bytes != null) imageMutex.withLock { imageCache[id] = bytes }
+    /** Lazily fetches the flyer bytes (cache-first), caching successes for the session. */
+    suspend fun loadImage(item: NewsItem): ByteArray? {
+        imageMutex.withLock { imageCache[item.id] }?.let { return it }
+        val bytes = newsRepository.getNewsImage(item)
+        if (bytes != null) imageMutex.withLock { imageCache[item.id] = bytes }
         return bytes
     }
 
-    fun deleteNews(id: String) {
-        viewModelScope.launch { runCatching { newsRepository.deleteNews(id) } }
+    fun deleteNews(item: NewsItem) {
+        viewModelScope.launch { runCatching { newsRepository.deleteNews(item) } }
     }
 }

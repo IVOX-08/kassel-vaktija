@@ -20,6 +20,12 @@ data class NewsItem(
     val sourceLang: String,
     val createdAt: Long,
     val hasImage: Boolean = false,
+    /**
+     * True for an announcement from the head admin, which reaches every community rather than one.
+     * Kept on the item because it decides where the document lives — and therefore where a delete
+     * has to go.
+     */
+    val isBroadcast: Boolean = false,
 ) {
     /** Title in [lang], falling back to the source language, then any available text. */
     fun title(lang: String): String = pick(titleByLang, lang)

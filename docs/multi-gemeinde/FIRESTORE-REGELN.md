@@ -38,8 +38,13 @@ service cloud.firestore {
       allow write: if isHead();
     }
 
-    // Nachrichten und Einstellungen einer Gemeinde: lesen alle, schreiben nur der eigene Admin.
+    // Nachrichten, Bilder und Einstellungen einer Gemeinde:
+    // lesen alle, schreiben nur der Admin GENAU DIESER Gemeinde (oder der Hauptadministrator).
     match /communities/{communityId}/news/{newsId} {
+      allow read: if true;
+      allow write: if administers(communityId);
+    }
+    match /communities/{communityId}/news_images/{imageId} {
       allow read: if true;
       allow write: if administers(communityId);
     }
@@ -57,6 +62,10 @@ service cloud.firestore {
 
     // Verbandsweite Mitteilungen des Hauptadministrators an alle Nutzer.
     match /broadcasts/{docId} {
+      allow read: if true;
+      allow write: if isHead();
+    }
+    match /broadcast_images/{imageId} {
       allow read: if true;
       allow write: if isHead();
     }

@@ -196,4 +196,6 @@
     <string name="action_cancel">منسوخ کریں</string>
     <string name="settings_developer_header">ایپ</string>
     <string name="settings_sunrise_note">طلوعِ آفتاب سے پہلے یاد دہانی — تب فجر کا وقت ختم ہو جاتا ہے۔ اذان کے بغیر۔</string>
+    <string name="news_broadcast_all">تمام جماعتوں کو بھیجیں</string>
+    <string name="news_broadcast_hint">ایپ کے تمام صارفین دیکھیں گے، صرف آپ کی جماعت نہیں۔</string>
 </resources>

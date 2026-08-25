@@ -196,4 +196,6 @@
     <string name="action_cancel">Отмена</string>
     <string name="settings_developer_header">Приложение</string>
     <string name="settings_sunrise_note">Напоминание перед восходом — тогда истекает время фаджра. Без азана.</string>
+    <string name="news_broadcast_all">Отправить всем общинам</string>
+    <string name="news_broadcast_hint">Увидят все пользователи приложения, а не только ваша община.</string>
 </resources>

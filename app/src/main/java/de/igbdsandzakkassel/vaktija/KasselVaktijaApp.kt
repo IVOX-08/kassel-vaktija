@@ -11,11 +11,11 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.HiltAndroidApp
 import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
+import de.igbdsandzakkassel.vaktija.service.notification.PushTopicSubscriber
 import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
 import de.igbdsandzakkassel.vaktija.service.work.StaleTimesWatcher
 import de.igbdsandzakkassel.vaktija.service.work.VaktijaRefreshWorker
@@ -35,6 +35,9 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
     @Inject
     lateinit var staleTimesWatcher: StaleTimesWatcher
 
+    @Inject
+    lateinit var pushTopicSubscriber: PushTopicSubscriber
+
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
@@ -45,10 +48,10 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         installTvCrashRecovery()
         PrayerNotifier.ensureChannels(this)
         NewsNotifier.ensureChannel(this)
-        // Subscribe for instant announcement pushes. No-op until a Cloud Function publishes to the
-        // "announcements" topic (needs the Firebase Blaze plan); until then the polling check below
-        // is the fallback.
-        runCatching { FirebaseMessaging.getInstance().subscribeToTopic("announcements") }
+        // Subscribe for instant announcement pushes: one channel per community plus the
+        // federation-wide one. No-op until a Cloud Function publishes to them (needs the Firebase
+        // Blaze plan); until then the polling check below is the fallback.
+        pushTopicSubscriber.start()
         schedulePrayerTimesRefresh()
         // No-billing fallback for announcement/Iqamah notifications: poll every ~15 min (plus the
         // on-wake check at each prayer alarm). Replaced by instant FCM push once Blaze is enabled.

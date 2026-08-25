@@ -262,4 +262,6 @@
     <string name="action_cancel">Odustani</string>
     <string name="settings_developer_header">Aplikacija</string>
     <string name="settings_sunrise_note">Podsjetnik prije izlaska sunca — vrijeme sabaha tada ističe. Bez ezana.</string>
+    <string name="news_broadcast_all">Poslati svim džematima</string>
+    <string name="news_broadcast_hint">Vidjet će svi korisnici aplikacije, ne samo vaš džemat.</string>
 </resources>

@@ -29,15 +29,17 @@ interface NewsRepository {
         bodyByLang: Map<String, String>,
         sourceLang: String,
         imageJpeg: ByteArray? = null,
+        /** True publishes to EVERY community (head admin only); false to the selected one. */
+        broadcast: Boolean = false,
     )
 
-    /** Admin-only: remove an announcement (and its attached image, if any) by its document id. */
-    suspend fun deleteNews(id: String)
+    /** Admin-only: remove an announcement (and its attached image, if any). */
+    suspend fun deleteNews(item: NewsItem)
 
     /**
      * Fetches the attached flyer/image bytes for [id], or null if the announcement has none or the
      * fetch fails. Cache-first (an image already seen on this device never re-downloads), so it is
      * cheap to call lazily when a card scrolls into view.
      */
-    suspend fun getNewsImage(id: String): ByteArray?
+    suspend fun getNewsImage(item: NewsItem): ByteArray?
 }

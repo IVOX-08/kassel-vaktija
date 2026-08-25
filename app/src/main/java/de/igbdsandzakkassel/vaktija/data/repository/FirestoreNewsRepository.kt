@@ -11,6 +11,12 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,40 +36,69 @@ import javax.inject.Singleton
  * free Firestore plan); the per-image doc just has to stay under Firestore's 1 MB document limit,
  * which the admin-side compressor enforces.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 class FirestoreNewsRepository @Inject constructor(
     private val firestore: FirebaseFirestore,
+    private val communityRepository: CommunityRepository,
 ) : NewsRepository {
 
-    private val collection get() = firestore.collection(COLLECTION)
-    private val imagesCollection get() = firestore.collection(IMAGES_COLLECTION)
+    /** Announcements of one community. */
+    private fun newsOf(communityId: String) =
+        firestore.collection(COMMUNITIES).document(communityId).collection(NEWS)
 
-    override fun observeNews(): Flow<List<NewsItem>?> = callbackFlow {
-        val registration = collection.addSnapshotListener { snapshot, _ ->
-            val items = snapshot?.documents
-                ?.mapNotNull { it.toNewsItem() }
-                ?.sortedByDescending { it.createdAt }
-                ?: emptyList()
-            trySend(items)
+    private fun imagesOf(communityId: String) =
+        firestore.collection(COMMUNITIES).document(communityId).collection(IMAGES)
+
+    /** The head admin's announcements to every community. */
+    private val broadcasts get() = firestore.collection(BROADCASTS)
+    private val broadcastImages get() = firestore.collection(BROADCAST_IMAGES)
+
+    /**
+     * The selected community's announcements merged with the head admin's federation-wide ones,
+     * newest first. Merged rather than shown apart: to the reader they are all "news from the
+     * mosque", and a separate tab for the rare federation notice would mostly sit empty.
+     */
+    override fun observeNews(): Flow<List<NewsItem>?> =
+        communityRepository.observeSelection().flatMapLatest { selection ->
+            val communityId = selection?.community?.id
+            combine(
+                if (communityId == null) flowOf(emptyList()) else observeCollection(newsOf(communityId), false),
+                observeCollection(broadcasts, true),
+            ) { own, all -> (own + all).sortedByDescending { it.createdAt } }
+        }
+
+    private fun observeCollection(
+        ref: com.google.firebase.firestore.Query,
+        broadcast: Boolean,
+    ): Flow<List<NewsItem>> = callbackFlow {
+        val registration = ref.addSnapshotListener { snapshot, _ ->
+            trySend(snapshot?.documents?.mapNotNull { it.toNewsItem(broadcast) } ?: emptyList())
         }
         awaitClose { registration.remove() }
     }
 
-    override suspend fun getLatestNews(): List<NewsItem>? =
-        runCatching {
-            collection.get().await().documents
-                .mapNotNull { it.toNewsItem() }
-                .sortedByDescending { it.createdAt }
-        }.getOrNull()
+    override suspend fun getLatestNews(): List<NewsItem>? = runCatching {
+        val communityId = communityRepository.observeSelection().first()?.community?.id
+        val own = if (communityId == null) emptyList() else
+            newsOf(communityId).get().await().documents.mapNotNull { it.toNewsItem(false) }
+        val all = broadcasts.get().await().documents.mapNotNull { it.toNewsItem(true) }
+        (own + all).sortedByDescending { it.createdAt }
+    }.getOrNull()
 
     override suspend fun postNews(
         titleByLang: Map<String, String>,
         bodyByLang: Map<String, String>,
         sourceLang: String,
         imageJpeg: ByteArray?,
+        broadcast: Boolean,
     ) {
-        // Pre-allocate the id so the image can be written to the matching news_images doc.
-        val doc = collection.document()
+        val communityId = communityRepository.observeSelection().first()?.community?.id
+        if (!broadcast && communityId == null) return
+        val target = if (broadcast) broadcasts else newsOf(communityId!!)
+        val imageTarget = if (broadcast) broadcastImages else imagesOf(communityId!!)
+        // Pre-allocate the id so the image can be written to the matching image doc.
+        val doc = target.document()
         // Fire-and-forget: Firestore commits to the local cache immediately and syncs when online
         // (awaiting the Task would block indefinitely while offline).
         if (imageJpeg != null) {
@@ -71,7 +106,7 @@ class FirestoreNewsRepository @Inject constructor(
             // appears; readers tolerate a missing image regardless of ordering. Fire-and-forget, but
             // log a server rejection (the most likely cause is the news_images security rule not yet
             // being published — see docs/firestore/RULES.md) so a silent no-image is at least traceable.
-            imagesCollection.document(doc.id).set(
+            imageTarget.document(doc.id).set(
                 mapOf("data" to Base64.encodeToString(imageJpeg, Base64.NO_WRAP)),
             ).addOnFailureListener { e ->
                 Log.w(TAG, "Announcement image upload failed for ${doc.id}; the flyer won't appear", e)
@@ -88,13 +123,22 @@ class FirestoreNewsRepository @Inject constructor(
         )
     }
 
-    override suspend fun deleteNews(id: String) {
-        collection.document(id).delete()
+    override suspend fun deleteNews(item: NewsItem) {
+        val communityId = communityRepository.observeSelection().first()?.community?.id
+        if (!item.isBroadcast && communityId == null) return
+        val target = if (item.isBroadcast) broadcasts else newsOf(communityId!!)
+        val imageTarget = if (item.isBroadcast) broadcastImages else imagesOf(communityId!!)
+        target.document(item.id).delete()
         // Remove the attached image too (no-op if there wasn't one).
-        imagesCollection.document(id).delete()
+        imageTarget.document(item.id).delete()
     }
 
-    override suspend fun getNewsImage(id: String): ByteArray? = runCatching {
+    override suspend fun getNewsImage(item: NewsItem): ByteArray? = runCatching {
+        val communityId = communityRepository.observeSelection().first()?.community?.id
+        if (!item.isBroadcast && communityId == null) return null
+        val imagesCollection =
+            if (item.isBroadcast) broadcastImages else imagesOf(communityId!!)
+        val id = item.id
         // Cache-first: a picture already seen on this device is read from local cache and never
         // re-downloaded; only the first view of a given image hits the network.
         val snapshot = runCatching { imagesCollection.document(id).get(Source.CACHE).await() }
@@ -105,7 +149,7 @@ class FirestoreNewsRepository @Inject constructor(
         Base64.decode(data, Base64.NO_WRAP)
     }.getOrNull()
 
-    private fun DocumentSnapshot.toNewsItem(): NewsItem? {
+    private fun DocumentSnapshot.toNewsItem(broadcast: Boolean): NewsItem? {
         val sourceLang = getString("sourceLang") ?: AppLanguage.DEFAULT.tag
         val title = readLangMap("title", sourceLang) ?: return null
         return NewsItem(
@@ -115,6 +159,7 @@ class FirestoreNewsRepository @Inject constructor(
             sourceLang = sourceLang,
             createdAt = getLong("createdAt") ?: 0L,
             hasImage = getBoolean("hasImage") ?: false,
+            isBroadcast = broadcast,
         )
     }
 
@@ -130,8 +175,11 @@ class FirestoreNewsRepository @Inject constructor(
         }
 
     private companion object {
-        const val COLLECTION = "news"
-        const val IMAGES_COLLECTION = "news_images"
+        const val COMMUNITIES = "communities"
+        const val NEWS = "news"
+        const val IMAGES = "news_images"
+        const val BROADCASTS = "broadcasts"
+        const val BROADCAST_IMAGES = "broadcast_images"
         const val TAG = "FirestoreNews"
     }
 }

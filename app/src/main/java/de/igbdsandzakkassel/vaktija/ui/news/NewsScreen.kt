@@ -70,6 +70,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import androidx.compose.material3.Switch
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
@@ -86,6 +87,7 @@ fun NewsScreen(
 ) {
     val news by viewModel.news.collectAsStateWithLifecycle()
     val isAdmin by viewModel.isAdmin.collectAsStateWithLifecycle()
+    val canBroadcast by viewModel.canBroadcast.collectAsStateWithLifecycle()
     // The user's selected app language — each announcement is shown in this language.
     val locales = LocalConfiguration.current.locales
     val lang = if (locales.isEmpty) LocaleController.current().tag else locales[0].language
@@ -169,8 +171,9 @@ fun NewsScreen(
     if (showCompose) {
         ComposeNewsDialog(
             onDismiss = { showCompose = false },
-            onPost = { title, body, imageUri, cb ->
-                viewModel.postNews(title, body, imageUri) { outcome ->
+            canBroadcast = canBroadcast,
+            onPost = { title, body, imageUri, broadcast, cb ->
+                viewModel.postNews(title, body, imageUri, broadcast) { outcome ->
                     when {
                         !outcome.ok ->
                             Toast.makeText(context, failMsg, Toast.LENGTH_LONG).show()
@@ -201,7 +204,7 @@ fun NewsScreen(
             text = { Text(target.title(lang)) },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.deleteNews(target.id)
+                    viewModel.deleteNews(target)
                     pendingDelete = null
                 }) { Text(stringResource(R.string.news_delete)) }
             },
@@ -220,7 +223,7 @@ private fun NewsCard(
     lang: String,
     canDelete: Boolean,
     onDelete: () -> Unit,
-    loadImage: suspend (String) -> ByteArray?,
+    loadImage: suspend (NewsItem) -> ByteArray?,
     onImageClick: (ByteArray) -> Unit,
 ) {
     val body = item.body(lang)
@@ -264,7 +267,7 @@ private fun NewsCard(
                 // holds a 16:9 slot until the flyer is ready; if it can't be loaded (e.g. offline,
                 // or the rule isn't deployed yet) the slot disappears instead of spinning forever.
                 val flyer by produceState<FlyerState>(FlyerState.Loading, item.id) {
-                    value = loadImage(item.id)?.let { FlyerState.Ready(it) } ?: FlyerState.Unavailable
+                    value = loadImage(item)?.let { FlyerState.Ready(it) } ?: FlyerState.Unavailable
                 }
                 when (val state = flyer) {
                     FlyerState.Loading -> {
@@ -392,12 +395,14 @@ private fun FullScreenImageViewer(
 @Composable
 private fun ComposeNewsDialog(
     onDismiss: () -> Unit,
-    onPost: (String, String, Uri?, (Boolean) -> Unit) -> Unit,
+    onPost: (String, String, Uri?, Boolean, (Boolean) -> Unit) -> Unit,
+    canBroadcast: Boolean = false,
 ) {
     var title by remember { mutableStateOf("") }
     var body by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var loading by remember { mutableStateOf(false) }
+    var broadcast by remember { mutableStateOf(false) }
     // System photo picker (no storage permission needed; available on every supported API level).
     val pickImage = rememberLauncherForActivityResult(
         ActivityResultContracts.PickVisualMedia(),
@@ -469,6 +474,31 @@ private fun ComposeNewsDialog(
                         Text(stringResource(R.string.news_add_image))
                     }
                 }
+                // Only the head admin sees this. Off by default, deliberately: reaching every
+                // community in Germany should be a decision, not the setting you forgot to change.
+                if (canBroadcast) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.news_broadcast_all),
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                            Text(
+                                text = stringResource(R.string.news_broadcast_hint),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        Switch(
+                            checked = broadcast,
+                            onCheckedChange = { broadcast = it },
+                            enabled = !loading,
+                        )
+                    }
+                }
                 if (loading) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -489,7 +519,7 @@ private fun ComposeNewsDialog(
                 enabled = !loading && title.isNotBlank(),
                 onClick = {
                     loading = true
-                    onPost(title, body, imageUri) { loading = false }
+                    onPost(title, body, imageUri, broadcast) { loading = false }
                 },
             ) { Text(stringResource(R.string.news_post)) }
         },

@@ -208,4 +208,6 @@
     <string name="action_cancel">Cancel</string>
     <string name="settings_developer_header">App</string>
     <string name="settings_sunrise_note">A reminder before sunrise, when the time for Fajr runs out. No Adhan.</string>
+    <string name="news_broadcast_all">Send to all communities</string>
+    <string name="news_broadcast_hint">Every user of the app sees this, not only your community.</string>
 </resources>
