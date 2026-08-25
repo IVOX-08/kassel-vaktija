@@ -34,4 +34,10 @@ data class DashboardUiState(
     /** Admin-announced Eid (Bajram) prayer — shown as a gold banner while today or upcoming. */
     val bajram: Pair<java.time.LocalDate, LocalTime>? = null,
     val isStale: Boolean = false,
+    /** Selected town — shown in the header, since one community can span several towns. */
+    val locationName: String = "",
+    /** Street address of the selected town; null when that town has none on file yet. */
+    val locationAddress: String? = null,
+    /** The selected community's donation link. */
+    val donationUrl: String? = null,
 )

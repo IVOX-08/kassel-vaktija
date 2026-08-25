@@ -176,4 +176,11 @@
     <string name="update_ready_title">التحديث جاهز</string>
     <string name="update_ready_body">تم تنزيل التحديث. أعِد تشغيل التطبيق لتثبيته.</string>
     <string name="update_restart">إعادة التشغيل</string>
+
+    <!-- Gemeinde-/Moschee-Auswahl -->
+    <string name="community_picker_title">اختر جماعتك</string>
+    <string name="community_picker_subtitle">تختلف مواقيت الصلاة حسب المدينة — اختر المكان الذي تصلي فيه.</string>
+    <string name="community_search_hint">ابحث عن مدينة أو جماعة</string>
+    <string name="community_search_clear">مسح البحث</string>
+    <string name="community_search_empty">لا توجد نتائج. تحقق من الإملاء أو جرّب مدينة مجاورة.</string>
 </resources>

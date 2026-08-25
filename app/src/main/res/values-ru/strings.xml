@@ -176,4 +176,11 @@
     <string name="update_ready_title">Обновление готово</string>
     <string name="update_ready_body">Обновление загружено. Перезапустите приложение, чтобы установить его.</string>
     <string name="update_restart">Перезапустить</string>
+
+    <!-- Gemeinde-/Moschee-Auswahl -->
+    <string name="community_picker_title">Выберите свою общину</string>
+    <string name="community_picker_subtitle">Время намаза различается по городам — выберите, где вы молитесь.</string>
+    <string name="community_search_hint">Поиск города или общины</string>
+    <string name="community_search_clear">Очистить поиск</string>
+    <string name="community_search_empty">Ничего не найдено. Проверьте написание или попробуйте соседний город.</string>
 </resources>

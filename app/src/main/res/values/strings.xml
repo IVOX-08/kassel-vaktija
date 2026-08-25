@@ -242,4 +242,11 @@
     <string name="update_ready_title">Ažuriranje spremno</string>
     <string name="update_ready_body">Ažuriranje je preuzeto. Ponovo pokrenite aplikaciju da biste ga instalirali.</string>
     <string name="update_restart">Ponovo pokreni</string>
+
+    <!-- Gemeinde-/Moschee-Auswahl -->
+    <string name="community_picker_title">Odaberite svoj džemat</string>
+    <string name="community_picker_subtitle">Namaska vremena se razlikuju po gradu — odaberite gdje klanjate.</string>
+    <string name="community_search_hint">Traži grad ili džemat</string>
+    <string name="community_search_clear">Obriši pretragu</string>
+    <string name="community_search_empty">Nema rezultata. Provjerite pravopis ili tražite susjedni grad.</string>
 </resources>

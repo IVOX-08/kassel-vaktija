@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,17 +45,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
+import de.igbdsandzakkassel.vaktija.ui.community.CommunityPickerScreen
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import kotlinx.coroutines.launch
 
 /**
  * First-launch onboarding. Step 1: pick a language (no locale set yet) — applying it recreates the
- * Activity. Step 2 (locale now set): a short swipeable intro; finishing marks onboarding complete.
+ * Activity. Step 2: pick the mosque, since prayer times differ per town and everything after this
+ * depends on it. Step 3: a short swipeable intro, then the permission steps.
  */
 @Composable
-fun OnboardingScreen(onFinished: () -> Unit) {
+fun OnboardingScreen(
+    onFinished: () -> Unit,
+    viewModel: OnboardingViewModel = hiltViewModel(),
+) {
     val context = androidx.compose.ui.platform.LocalContext.current
     // Survives the Activity recreate that LocaleController.set triggers. We don't rely on
     // AppCompatDelegate.getApplicationLocales() here because it can read empty right after the
@@ -62,12 +69,18 @@ fun OnboardingScreen(onFinished: () -> Unit) {
     var languageChosen by rememberSaveable {
         mutableStateOf(!AppCompatDelegate.getApplicationLocales().isEmpty)
     }
+    // Existing installs implicitly chose Kassel by installing the app, so they skip this step
+    // instead of being sent to a picker on update.
+    var communityChosen by rememberSaveable { mutableStateOf<Boolean?>(null) }
+    LaunchedEffect(Unit) { communityChosen = viewModel.hasChosenCommunity() }
     var introDone by rememberSaveable { mutableStateOf(false) }
     when {
         !languageChosen -> LanguagePickerScreen(onSelected = {
             languageChosen = true
             LocaleController.set(context, it) // persist the tag + apply (recreates the Activity)
         })
+        communityChosen == null -> Unit // one DataStore read; too brief to warrant a spinner
+        communityChosen == false -> CommunityPickerScreen(onSelected = { communityChosen = true })
         // Language → short intro → permissions (notifications, exact alarm, battery, Do-Not-Disturb).
         !introDone -> OnboardingIntro(onFinished = { introDone = true })
         else -> OnboardingPermissions(onFinished = onFinished)

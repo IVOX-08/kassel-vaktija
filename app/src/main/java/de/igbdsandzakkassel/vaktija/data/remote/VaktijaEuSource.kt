@@ -15,7 +15,7 @@ import java.time.LocalTime
 import javax.inject.Inject
 
 /**
- * Reads prayer times from https://vaktija.eu/kassel.
+ * Reads prayer times from https://vaktija.eu/<town>.
  *
  * Strategy: the page embeds a schema.org JSON-LD block (Dataset → Schedule → eventSchedule) with
  * the day's times. We parse that rather than scraping styled HTML — it's machine-readable and far
@@ -27,9 +27,9 @@ class VaktijaEuSource @Inject constructor(
     private val json: Json,
 ) : RemoteVaktijaSource {
 
-    override suspend fun fetchLatest(): DailyTimes = withContext(Dispatchers.IO) {
+    override suspend fun fetchLatest(slug: String): DailyTimes = withContext(Dispatchers.IO) {
         val request = Request.Builder()
-            .url(URL)
+            .url(BASE + slug)
             .header("User-Agent", USER_AGENT)
             .header("Accept-Language", "bs,hr,sr")
             .build()
@@ -107,7 +107,7 @@ class VaktijaEuSource @Inject constructor(
     }
 
     private companion object {
-        const val URL = "https://vaktija.eu/kassel"
+        const val BASE = "https://vaktija.eu/"
         const val USER_AGENT =
             "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) " +
                 "Chrome/120.0 Mobile Safari/537.36 KasselVaktija"

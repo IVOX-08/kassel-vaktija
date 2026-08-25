@@ -188,4 +188,11 @@
     <string name="update_ready_title">Update ready</string>
     <string name="update_ready_body">The update has been downloaded. Restart the app to install it.</string>
     <string name="update_restart">Restart</string>
+
+    <!-- Gemeinde-/Moschee-Auswahl -->
+    <string name="community_picker_title">Choose your community</string>
+    <string name="community_picker_subtitle">Prayer times differ by town — choose where you pray.</string>
+    <string name="community_search_hint">Search town or community</string>
+    <string name="community_search_clear">Clear search</string>
+    <string name="community_search_empty">No matches. Check the spelling or try a neighbouring town.</string>
 </resources>

@@ -5,7 +5,9 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [DailyTimesEntity::class, MonthDayTimesEntity::class],
-    version = 2,
+    // 3: both cache tables gained locationId in their primary key (multi-community).
+    // This DB is a rebuildable cache, so the destructive migration in DatabaseModule is fine.
+    version = 3,
     exportSchema = false,
 )
 abstract class KasselDatabase : RoomDatabase() {

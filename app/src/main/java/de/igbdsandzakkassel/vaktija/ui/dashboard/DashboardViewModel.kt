@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.DailyTimes
+import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
@@ -28,6 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val timesRepository: PrayerTimesRepository,
+    private val communityRepository: CommunityRepository,
     ruleProvider: CommunityRuleProvider,
 ) : ViewModel() {
 
@@ -48,10 +50,15 @@ class DashboardViewModel @Inject constructor(
         timesRepository.observeToday(),
         timesRepository.observeFreshness(),
         ruleProvider.observeRules(),
+        communityRepository.observeSelection(),
         ticker,
-    ) { times, fresh, rules, _ ->
+    ) { times, fresh, rules, selection, _ ->
         if (times == null) DashboardUiState(loading = true)
-        else buildState(times, rules, fresh, LocalDateTime.now())
+        else buildState(times, rules, fresh, LocalDateTime.now()).copy(
+            locationName = selection?.location?.name.orEmpty(),
+            locationAddress = selection?.location?.address,
+            donationUrl = selection?.community?.donationUrl,
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

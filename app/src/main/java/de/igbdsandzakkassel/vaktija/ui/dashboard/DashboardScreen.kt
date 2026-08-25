@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.ui.dashboard
 
+import android.net.Uri
 import android.provider.Settings
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
@@ -85,9 +86,9 @@ private fun LocalTime.hhmm(): String = format(TIME)
 // flow if the community sets one up.
 private const val PAYPAL_URL =
     "https://www.paypal.com/donate/?business=ikzsandzakkassel@gmail.com&currency_code=EUR"
-// Opens Google Maps at the mosque address.
-private const val MAPS_URL =
-    "https://www.google.com/maps/search/?api=1&query=Schwanenweg+13%2C+34123+Kassel"
+/** Maps search for whichever town is selected — the address is no longer a fixed string. */
+private fun mapsUrl(query: String): String =
+    "https://www.google.com/maps/search/?api=1&query=" + Uri.encode(query)
 
 @Composable
 fun DashboardScreen(
@@ -167,7 +168,7 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
     }
 
     Column(modifier = modifier.fillMaxSize()) {
-        Header(state.gregorianDate, state.hijriDate)
+        Header(state, state.gregorianDate, state.hijriDate)
         // Pinned above the list, always visible — never hides on touch/scroll.
         CountdownCard(state, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
         LazyColumn(
@@ -210,7 +211,7 @@ private fun StaleBanner() {
 }
 
 @Composable
-private fun Header(gregorianDate: String, hijriDate: String) {
+private fun Header(state: DashboardUiState, gregorianDate: String, hijriDate: String) {
     val uriHandler = LocalUriHandler.current
     Column(
         modifier = Modifier
@@ -226,12 +227,15 @@ private fun Header(gregorianDate: String, hijriDate: String) {
         ) {
             // Left: mosque address → opens Maps. LRI/PDI isolates guarantee the digit-heavy LTR
             // address renders in order under Arabic/Urdu (same treatment as the Settings screen).
+            // Falls back to the town name while a community still has no street address on file,
+            // so the header never sits empty for a newly-added community.
+            val address = state.locationAddress ?: state.locationName
             HeaderSideItem(
                 icon = Icons.Filled.Place,
-                label = "⁦" + stringResource(R.string.community_address) + "⁩",
+                label = "⁦" + address + "⁩",
                 emphasized = false,
                 alignment = Alignment.Start,
-                onClick = { uriHandler.openUri(MAPS_URL) },
+                onClick = { if (address.isNotBlank()) uriHandler.openUri(mapsUrl(address)) },
                 modifier = Modifier.weight(1f),
             )
             // Center: community emblem, blended into the page background (like the website logo).
@@ -242,7 +246,7 @@ private fun Header(gregorianDate: String, hijriDate: String) {
                 label = stringResource(R.string.action_donate),
                 emphasized = true,
                 alignment = Alignment.End,
-                onClick = { uriHandler.openUri(PAYPAL_URL) },
+                onClick = { uriHandler.openUri(state.donationUrl ?: PAYPAL_URL) },
                 modifier = Modifier.weight(1f),
             )
         }

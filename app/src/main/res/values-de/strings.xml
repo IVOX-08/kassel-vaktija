@@ -188,4 +188,11 @@
     <string name="update_ready_title">Update bereit</string>
     <string name="update_ready_body">Das Update wurde heruntergeladen. Starte die App neu, um es zu installieren.</string>
     <string name="update_restart">Neu starten</string>
+
+    <!-- Gemeinde-/Moschee-Auswahl -->
+    <string name="community_picker_title">Wählen Sie Ihre Gemeinde</string>
+    <string name="community_picker_subtitle">Die Gebetszeiten unterscheiden sich je Stadt — wählen Sie, wo Sie beten.</string>
+    <string name="community_search_hint">Stadt oder Gemeinde suchen</string>
+    <string name="community_search_clear">Suche löschen</string>
+    <string name="community_search_empty">Keine Treffer. Prüfen Sie die Schreibweise oder suchen Sie die Nachbarstadt.</string>
 </resources>

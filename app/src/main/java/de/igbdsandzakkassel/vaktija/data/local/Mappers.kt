@@ -24,7 +24,8 @@ fun MonthDayTimesEntity.toModel(): DailyTimes = DailyTimes(
     isha = LocalTime.parse(isha),
 )
 
-fun DailyTimes.toMonthEntity(): MonthDayTimesEntity = MonthDayTimesEntity(
+fun DailyTimes.toMonthEntity(locationId: String): MonthDayTimesEntity = MonthDayTimesEntity(
+    locationId = locationId,
     date = date.toString(),
     fajr = fajr.toString(),
     sunrise = sunrise.toString(),
@@ -34,7 +35,8 @@ fun DailyTimes.toMonthEntity(): MonthDayTimesEntity = MonthDayTimesEntity(
     isha = isha.toString(),
 )
 
-fun DailyTimes.toEntity(fetchedAt: Long): DailyTimesEntity = DailyTimesEntity(
+fun DailyTimes.toEntity(locationId: String, fetchedAt: Long): DailyTimesEntity = DailyTimesEntity(
+    locationId = locationId,
     date = date.toString(),
     fajr = fajr.toString(),
     sunrise = sunrise.toString(),

@@ -1,6 +1,7 @@
 package de.igbdsandzakkassel.vaktija.data.repository
 
 import de.igbdsandzakkassel.vaktija.data.calendar.PrayerTimeCalculator
+import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
 import de.igbdsandzakkassel.vaktija.data.local.MonthTimesDao
 import de.igbdsandzakkassel.vaktija.data.local.toModel
 import de.igbdsandzakkassel.vaktija.data.local.toMonthEntity
@@ -31,20 +32,26 @@ class MonthCalendarRepository @Inject constructor(
     private val monthDao: MonthTimesDao,
     private val timesRepository: PrayerTimesRepository,
     private val settingsRepository: SettingsRepository,
+    private val communityRepository: CommunityRepository,
 ) {
     suspend fun getMonth(month: YearMonth): List<DailyTimes> = withContext(Dispatchers.Default) {
+        // The calendar is computed for the SELECTED town, so a community spanning several towns
+        // gets a correct month per town rather than the head office's.
+        val loc = communityRepository.observeLocation().first()
+            ?: return@withContext emptyList()
         // Locale.ROOT → ASCII digits. Using the default locale here would emit Arabic-Indic digits
         // under an Arabic UI ("٢٠٢٦-٠٦%"), which never matches the ASCII dates stored in Room and
         // left the whole calendar empty (blank/black screen).
         val prefix = String.format(Locale.ROOT, "%04d-%02d%%", month.year, month.monthValue)
 
-        var cached = monthDao.getMonth(prefix)
+        var cached = monthDao.getMonth(loc.id, prefix)
         if (cached.size < month.lengthOfMonth()) {
             val rows = (1..month.lengthOfMonth()).map { day ->
-                calculator.compute(month.atDay(day)).toMonthEntity()
+                calculator.compute(month.atDay(day), loc.latitude, loc.longitude)
+                    .toMonthEntity(loc.id)
             }
             monthDao.upsertAll(rows)
-            cached = monthDao.getMonth(prefix)
+            cached = monthDao.getMonth(loc.id, prefix)
         }
 
         val today = LocalDate.now()

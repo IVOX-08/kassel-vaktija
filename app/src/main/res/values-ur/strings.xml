@@ -176,4 +176,11 @@
     <string name="update_ready_title">اپ ڈیٹ تیار ہے</string>
     <string name="update_ready_body">اپ ڈیٹ ڈاؤن لوڈ ہو گیا ہے۔ اسے انسٹال کرنے کے لیے ایپ کو دوبارہ شروع کریں۔</string>
     <string name="update_restart">دوبارہ شروع کریں</string>
+
+    <!-- Gemeinde-/Moschee-Auswahl -->
+    <string name="community_picker_title">اپنی جماعت منتخب کریں</string>
+    <string name="community_picker_subtitle">نماز کے اوقات شہر کے مطابق مختلف ہوتے ہیں — منتخب کریں کہ آپ کہاں نماز پڑھتے ہیں۔</string>
+    <string name="community_search_hint">شہر یا جماعت تلاش کریں</string>
+    <string name="community_search_clear">تلاش صاف کریں</string>
+    <string name="community_search_empty">کوئی نتیجہ نہیں۔ ہجے دیکھیں یا قریبی شہر آزمائیں۔</string>
 </resources>

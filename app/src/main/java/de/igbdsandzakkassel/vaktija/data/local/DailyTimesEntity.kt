@@ -1,12 +1,18 @@
 package de.igbdsandzakkassel.vaktija.data.local
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-/** Cached prayer times for one day. Times stored as "HH:mm"; date as ISO "yyyy-MM-dd". */
-@Entity(tableName = "daily_times")
+/**
+ * Cached prayer times for one day AT ONE LOCATION. Times stored as "HH:mm"; date as ISO
+ * "yyyy-MM-dd".
+ *
+ * The key is (locationId, date), not date alone: one community can span several towns whose times
+ * differ, and a user switching town must not read the previous town's rows.
+ */
+@Entity(tableName = "daily_times", primaryKeys = ["locationId", "date"])
 data class DailyTimesEntity(
-    @PrimaryKey val date: String,
+    val locationId: String,
+    val date: String,
     val fajr: String,
     val sunrise: String,
     val dhuhr: String,

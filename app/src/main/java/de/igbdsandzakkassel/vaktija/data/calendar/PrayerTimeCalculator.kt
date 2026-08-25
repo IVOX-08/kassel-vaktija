@@ -25,10 +25,10 @@ import java.time.Instant as JavaInstant
 @Singleton
 class PrayerTimeCalculator @Inject constructor() {
 
-    private val coordinates = Coordinates(KASSEL_LAT, KASSEL_LNG)
     private val parameters = CalculationMethod.MUSLIM_WORLD_LEAGUE.parameters.copy(madhab = Madhab.HANAFI)
 
-    fun compute(date: LocalDate): DailyTimes {
+    fun compute(date: LocalDate, latitude: Double, longitude: Double): DailyTimes {
+        val coordinates = Coordinates(latitude, longitude)
         val components = DateComponents(date.year, date.monthValue, date.dayOfMonth)
         val times = PrayerTimes(coordinates, components, parameters)
         return DailyTimes(

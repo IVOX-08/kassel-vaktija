@@ -176,4 +176,11 @@
     <string name="update_ready_title">Përditësimi gati</string>
     <string name="update_ready_body">Përditësimi u shkarkua. Rinisni aplikacionin për ta instaluar.</string>
     <string name="update_restart">Rinis</string>
+
+    <!-- Gemeinde-/Moschee-Auswahl -->
+    <string name="community_picker_title">Zgjidhni xhematin tuaj</string>
+    <string name="community_picker_subtitle">Kohët e namazit ndryshojnë sipas qytetit — zgjidhni ku faleni.</string>
+    <string name="community_search_hint">Kërko qytet ose xhemat</string>
+    <string name="community_search_clear">Pastro kërkimin</string>
+    <string name="community_search_empty">Asnjë rezultat. Kontrolloni shkrimin ose provoni qytetin fqinj.</string>
 </resources>

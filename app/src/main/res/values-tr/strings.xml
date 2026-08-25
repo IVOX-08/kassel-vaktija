@@ -176,4 +176,11 @@
     <string name="update_ready_title">Güncelleme hazır</string>
     <string name="update_ready_body">Güncelleme indirildi. Yüklemek için uygulamayı yeniden başlatın.</string>
     <string name="update_restart">Yeniden başlat</string>
+
+    <!-- Gemeinde-/Moschee-Auswahl -->
+    <string name="community_picker_title">Cemaatinizi seçin</string>
+    <string name="community_picker_subtitle">Namaz vakitleri şehre göre değişir — nerede namaz kıldığınızı seçin.</string>
+    <string name="community_search_hint">Şehir veya cemaat ara</string>
+    <string name="community_search_clear">Aramayı temizle</string>
+    <string name="community_search_empty">Sonuç yok. Yazımı kontrol edin veya komşu şehri deneyin.</string>
 </resources>
