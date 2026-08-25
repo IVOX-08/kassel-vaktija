@@ -50,13 +50,23 @@ data class AlarmSettings(
     val silenceMinutes: Int = 10,
     /** A gentle weekly reminder (Friday) to read some dhikr and a hadith. */
     val weeklyReminderEnabled: Boolean = true,
-    val perPrayer: Map<Prayer, PrayerAlarmPrefs> = Prayer.OBLIGATORY.associateWith { PrayerAlarmPrefs() },
+    val perPrayer: Map<Prayer, PrayerAlarmPrefs> = Prayer.NOTIFIABLE.associateWith { prayer ->
+        // Sunrise is off by default: it is a reminder that Fajr is running out, wanted by some and
+        // an unexpected early alarm for everyone else.
+        PrayerAlarmPrefs(enabled = prayer != Prayer.SUNRISE)
+    },
 ) {
     fun prefs(prayer: Prayer): PrayerAlarmPrefs = perPrayer[prayer] ?: PrayerAlarmPrefs()
 
     companion object {
         /** Pre-warning options offered in the UI (minutes before Adhan; 0 = exactly at Adhan). */
         val PRE_WARN_OPTIONS = listOf(0, 5, 10, 15, 30)
+
+        /**
+         * Minutes BEFORE sunrise for the Fajr-is-ending reminder. Starts at 5, not 0: a notice at
+         * the very moment Fajr expires helps nobody.
+         */
+        val SUNRISE_WARN_OPTIONS = listOf(5, 10, 15, 20, 25, 30)
 
         /** Auto-silence duration options (minutes before/after the Adhan). */
         val SILENCE_OPTIONS = listOf(5, 10, 15, 20, 30)

@@ -260,4 +260,6 @@
     <string name="admin_login_entry">Prijava za administratore džemata</string>
     <string name="community_pick_town">Za koji grad želite namaska vremena?</string>
     <string name="action_cancel">Odustani</string>
+    <string name="settings_developer_header">Aplikacija</string>
+    <string name="settings_sunrise_note">Podsjetnik prije izlaska sunca — vrijeme sabaha tada ističe. Bez ezana.</string>
 </resources>

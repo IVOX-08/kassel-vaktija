@@ -35,11 +35,18 @@ class SettingsRepository @Inject constructor(
             silenceMinutes = (prefs[SILENCE_MINUTES] ?: 10)
                 .takeIf { it in AlarmSettings.SILENCE_OPTIONS } ?: 10,
             weeklyReminderEnabled = prefs[WEEKLY_REMINDER] ?: true,
-            perPrayer = Prayer.OBLIGATORY.associateWith { prayer ->
+            perPrayer = Prayer.NOTIFIABLE.associateWith { prayer ->
+                val isSunrise = prayer == Prayer.SUNRISE
                 PrayerAlarmPrefs(
-                    enabled = prefs[enabledKey(prayer)] ?: true,
+                    // Sunrise defaults OFF: it is a reminder that Fajr is ending, wanted by the
+                    // members who pray on their way to work and an unexplained early alarm for
+                    // everyone else.
+                    enabled = prefs[enabledKey(prayer)] ?: !isSunrise,
                     // Coerce legacy/invalid values (e.g. a previously-saved 30) to a valid option.
-                    preWarnMinutes = coercePreWarn(prefs[preWarnKey(prayer)] ?: 0),
+                    preWarnMinutes = coercePreWarn(
+                        prefs[preWarnKey(prayer)] ?: if (isSunrise) SUNRISE_DEFAULT_WARN else 0,
+                        isSunrise,
+                    ),
                 )
             },
         )
@@ -91,12 +98,19 @@ class SettingsRepository @Inject constructor(
 
     suspend fun getSavedInterruptionFilter(): Int? = store.data.first()[SAVED_FILTER]
 
-    private fun coercePreWarn(value: Int): Int =
-        if (value in AlarmSettings.PRE_WARN_OPTIONS) {
+    /**
+     * Snaps a stored value onto the options actually offered, so a value written by an older build
+     * (or a different prayer's list) can never leave a pill showing something unselectable.
+     */
+    private fun coercePreWarn(value: Int, sunrise: Boolean = false): Int {
+        val options =
+            if (sunrise) AlarmSettings.SUNRISE_WARN_OPTIONS else AlarmSettings.PRE_WARN_OPTIONS
+        return if (value in options) {
             value
         } else {
-            AlarmSettings.PRE_WARN_OPTIONS.minByOrNull { kotlin.math.abs(it - value) } ?: 0
+            options.minByOrNull { kotlin.math.abs(it - value) } ?: options.first()
         }
+    }
 
     // --- Community announcement (news) notifications ---
 
@@ -174,6 +188,9 @@ class SettingsRepository @Inject constructor(
             ?.takeIf { it.size == 6 }
 
     private companion object {
+        /** Fifteen minutes before sunrise — inside the 10-30 window members asked for. */
+        const val SUNRISE_DEFAULT_WARN = 15
+
         val MASTER_ENABLED = booleanPreferencesKey("master_enabled")
         val SOUND = stringPreferencesKey("adhan_sound")
         val PLAY_WHEN_SILENT = booleanPreferencesKey("play_when_silent")

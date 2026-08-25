@@ -194,4 +194,6 @@
     <string name="admin_login_entry">جماعت کے منتظمین کے لیے سائن ان</string>
     <string name="community_pick_town">آپ کس شہر کے نماز اوقات چاہتے ہیں؟</string>
     <string name="action_cancel">منسوخ کریں</string>
+    <string name="settings_developer_header">ایپ</string>
+    <string name="settings_sunrise_note">طلوعِ آفتاب سے پہلے یاد دہانی — تب فجر کا وقت ختم ہو جاتا ہے۔ اذان کے بغیر۔</string>
 </resources>

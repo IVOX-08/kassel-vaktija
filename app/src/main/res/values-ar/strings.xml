@@ -194,4 +194,6 @@
     <string name="admin_login_entry">تسجيل دخول مشرفي الجماعة</string>
     <string name="community_pick_town">مواقيت أي مدينة تريد؟</string>
     <string name="action_cancel">إلغاء</string>
+    <string name="settings_developer_header">التطبيق</string>
+    <string name="settings_sunrise_note">تذكير قبل الشروق، حين ينتهي وقت الفجر. بدون أذان.</string>
 </resources>

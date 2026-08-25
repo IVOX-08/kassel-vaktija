@@ -25,6 +25,9 @@ object CommunityCatalog {
             name = "IGBD-Gemeinde Sandžak-Kassel",
             donationUrl = "https://www.paypal.com/donate?business=ikzsandzakkassel@gmail.com",
             address = "Schwanenweg 13, 34123 Kassel",
+            email = "vorstand@igbdsandzakkassel.de",
+            imamName = "Alen Golac",
+            imamPhone = "0176 3037 2402",
             locations = listOf(
                 CommunityLocation(
                     id = "kassel",

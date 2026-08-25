@@ -206,4 +206,6 @@
     <string name="admin_login_entry">Sign in for community administrators</string>
     <string name="community_pick_town">Which town do you want prayer times for?</string>
     <string name="action_cancel">Cancel</string>
+    <string name="settings_developer_header">App</string>
+    <string name="settings_sunrise_note">A reminder before sunrise, when the time for Fajr runs out. No Adhan.</string>
 </resources>

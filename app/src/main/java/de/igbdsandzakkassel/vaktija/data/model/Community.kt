@@ -17,6 +17,11 @@ data class Community(
      * pointed at Schwanenweg 13. A town may override it if a community ever runs a second mosque.
      */
     val address: String? = null,
+    /** Contact address of the community office, shown in "About". */
+    val email: String? = null,
+    /** The community's imam, and the number people may call. Both optional. */
+    val imamName: String? = null,
+    val imamPhone: String? = null,
     val locations: List<CommunityLocation> = emptyList(),
     val status: CommunityStatus = CommunityStatus.ACTIVE,
 )
@@ -75,6 +80,11 @@ data class CommunityLocation(
     val longitude: Double,
     /** Only set when this town has its OWN mosque; otherwise the community's address is used. */
     val address: String? = null,
+    /** Contact address of the community office, shown in "About". */
+    val email: String? = null,
+    /** The community's imam, and the number people may call. Both optional. */
+    val imamName: String? = null,
+    val imamPhone: String? = null,
 )
 
 /** What the user picked in the onboarding picker: a location, and the community that runs it. */

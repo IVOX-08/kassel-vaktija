@@ -18,5 +18,16 @@ enum class Prayer(@param:StringRes val labelRes: Int, val hasIqamah: Boolean) {
     companion object {
         /** The five obligatory prayers (used for active/next-prayer logic). */
         val OBLIGATORY = listOf(FAJR, DHUHR, ASR, MAGHRIB, ISHA)
+
+        /**
+         * Everything a user can be reminded about. Sunrise is not a prayer and never gets an
+         * Adhan — it is here because Fajr ENDS at sunrise, and many members pray it 10-30 minutes
+         * beforehand on their way to work. A reminder before sunrise is a reminder that Fajr is
+         * about to run out.
+         */
+        val NOTIFIABLE = OBLIGATORY + SUNRISE
+
+        /** Whether this entry may sound the Adhan. Sunrise never does — nobody calls it. */
+        val Prayer.soundsAdhan: Boolean get() = this != SUNRISE
     }
 }

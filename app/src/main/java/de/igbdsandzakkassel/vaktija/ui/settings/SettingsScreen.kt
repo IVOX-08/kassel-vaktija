@@ -74,11 +74,13 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import de.igbdsandzakkassel.vaktija.BuildConfig
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
+import de.igbdsandzakkassel.vaktija.data.model.CommunitySelection
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material.icons.outlined.Lock
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.model.Prayer.Companion.soundsAdhan
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.PrayerAlarmPrefs
@@ -202,10 +204,13 @@ fun SettingsScreen(
                     )
                 }
             }
-            Prayer.OBLIGATORY.forEach { prayer ->
+            Prayer.NOTIFIABLE.forEach { prayer ->
                 PrayerSettingCard(
                     prayer = prayer,
                     prefs = settings.prefs(prayer),
+                    // Sunrise is a reminder that Fajr is ending, never a call to prayer: it offers
+                    // minutes-before only, and the note under it says what it is for.
+                    reminderOnly = !prayer.soundsAdhan,
                     onToggle = { viewModel.setPrayerEnabled(prayer, it) },
                     onSelectMinutes = { viewModel.setPreWarn(prayer, it) },
                 )
@@ -362,29 +367,25 @@ fun SettingsScreen(
         }
 
         Spacer(Modifier.height(8.dp))
-        SectionHeader(stringResource(R.string.settings_community_header))
-        ChangeCommunityPill()
+        // Switching community is the head admin's tool only. For everyone else it would be a way
+        // to sit inside a community they do not belong to and read its announcements — and it
+        // would let a mistap silently swap someone's prayer times for another town's.
+        if (adminRole is AdminRole.Head) {
+            SectionHeader(stringResource(R.string.settings_community_header))
+            ChangeCommunityPill()
+            Spacer(Modifier.height(8.dp))
+        }
 
-        Spacer(Modifier.height(8.dp))
         SectionHeader(stringResource(R.string.language_picker_title))
         ChangeLanguagePill()
 
         Spacer(Modifier.height(8.dp))
+        SectionHeader(stringResource(R.string.settings_developer_header))
+        DeveloperCard()
+
+        Spacer(Modifier.height(8.dp))
         SectionHeader(stringResource(R.string.settings_about_header))
-        // The version number keeps its seven-tap gesture as the head admin's own way in — it is
-        // his habit and costs nothing. Community admins get the visible button below, because a
-        // door nobody can find is a support call every time a committee changes.
-        AboutCard(
-            onVersionClick = {
-                if (!isAdmin) {
-                    versionTaps++
-                    if (versionTaps >= 7) {
-                        versionTaps = 0
-                        showLogin = true
-                    }
-                }
-            },
-        )
+        AboutCard(selection)
 
         if (!isAdmin) {
             FilledTonalButton(
@@ -405,6 +406,25 @@ fun SettingsScreen(
                 )
             }
         }
+
+        // Under the login button, where the owner wants it: the seven taps are his own way in.
+        Text(
+            text = "v${BuildConfig.VERSION_NAME}",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                    if (!isAdmin) {
+                        versionTaps++
+                        if (versionTaps >= 7) {
+                            versionTaps = 0
+                            showLogin = true
+                        }
+                    }
+                }
+                .padding(top = 12.dp),
+        )
 
         Spacer(Modifier.height(24.dp))
     }
@@ -439,8 +459,9 @@ private const val DEV_EMAIL = "muhamedgolac311@gmail.com"
 
 /** "About the community" card: name, address (→Maps), e-mail (→mail app), donate (→PayPal), version. */
 @Composable
-private fun AboutCard(onVersionClick: () -> Unit) {
+private fun AboutCard(selection: CommunitySelection?) {
     val context = LocalContext.current
+    val community = selection?.community ?: return
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
@@ -449,48 +470,78 @@ private fun AboutCard(onVersionClick: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             Text(
-                text = stringResource(R.string.header_subtitle),
+                text = community.name,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
             )
             Spacer(Modifier.height(6.dp))
-            AboutRow(Icons.Filled.Place, ltr(stringResource(R.string.community_address))) {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MAPS_URL)))
+            community.address?.let { address ->
+                AboutRow(Icons.Filled.Place, ltr(address)) {
+                    val query = Uri.encode(address)
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://www.google.com/maps/search/?api=1&query=$query"),
+                        ),
+                    )
+                }
             }
-            AboutRow(Icons.Filled.Email, COMMUNITY_EMAIL) {
-                context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$COMMUNITY_EMAIL")))
+            community.email?.let { email ->
+                AboutRow(Icons.Filled.Email, email) {
+                    context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email")))
+                }
             }
-            AboutRow(Icons.Filled.Favorite, stringResource(R.string.action_donate)) {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PAYPAL_URL)))
+            community.donationUrl?.let { url ->
+                AboutRow(Icons.Filled.Favorite, stringResource(R.string.action_donate)) {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                }
             }
-            AboutRow(
-                Icons.Filled.Person,
-                "${stringResource(R.string.about_imam)}: $IMAM_NAME\n${ltr(IMAM_PHONE_DISPLAY)}",
-            ) {
-                context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$IMAM_PHONE_DIAL")))
+            community.imamName?.let { imam ->
+                val phone = community.imamPhone
+                AboutRow(
+                    Icons.Filled.Person,
+                    buildString {
+                        append(stringResource(R.string.about_imam)).append(": ").append(imam)
+                        if (!phone.isNullOrBlank()) append("\n").append(ltr(phone))
+                    },
+                ) {
+                    if (!phone.isNullOrBlank()) {
+                        context.startActivity(
+                            Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone.filter { it.isDigit() })),
+                        )
+                    }
+                }
             }
+        }
+    }
+}
+
+/**
+ * The developer's own contact, deliberately its own box rather than a couple of rows inside the
+ * community card. In a multi-community app that card belongs to whichever community you follow —
+ * a Rosenheim member reading it should not find a Kassel phone number in the middle of it.
+ */
+@Composable
+private fun DeveloperCard() {
+    val context = LocalContext.current
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
             AboutRow(
                 Icons.Filled.Call,
-                "${stringResource(R.string.about_dev_promo)}\n${ltr(DEV_PHONE_DISPLAY)}",
+                stringResource(R.string.about_dev_promo) + "\n" + ltr(DEV_PHONE_DISPLAY),
             ) {
                 context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$DEV_PHONE_DIAL")))
             }
             AboutRow(
                 Icons.Filled.Email,
-                "${stringResource(R.string.about_dev_email)}\n$DEV_EMAIL",
+                stringResource(R.string.about_dev_email) + "\n" + DEV_EMAIL,
             ) {
                 context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$DEV_EMAIL")))
             }
-            Spacer(Modifier.height(8.dp))
-            // Tapping the version 7× reveals the admin login — kept as the head admin's own way
-            // in, alongside the visible button that community admins use.
-            Text(
-                text = "v${BuildConfig.VERSION_NAME}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.clickable(onClick = onVersionClick),
-            )
         }
     }
 }
@@ -747,26 +798,42 @@ private fun PrayerSettingCard(
     prefs: PrayerAlarmPrefs,
     onToggle: (Boolean) -> Unit,
     onSelectMinutes: (Int) -> Unit,
+    reminderOnly: Boolean = false,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(prayer.labelRes),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.weight(1f),
-            )
-            // When the prayer is on, the pill picks how many minutes early to also remind.
-            if (prefs.enabled) {
-                PreWarnSelector(preWarnMinutes = prefs.preWarnMinutes, onSelectMinutes = onSelectMinutes)
-                Spacer(Modifier.width(8.dp))
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(prayer.labelRes),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f),
+                )
+                // When the prayer is on, the pill picks how many minutes early to also remind.
+                if (prefs.enabled) {
+                    PreWarnSelector(
+                        preWarnMinutes = prefs.preWarnMinutes,
+                        onSelectMinutes = onSelectMinutes,
+                        options = if (reminderOnly) AlarmSettings.SUNRISE_WARN_OPTIONS
+                        else AlarmSettings.PRE_WARN_OPTIONS,
+                    )
+                    Spacer(Modifier.width(8.dp))
+                }
+                // Per-prayer on/off — e.g. turn Dhuhr off while at work/school.
+                Switch(checked = prefs.enabled, onCheckedChange = onToggle)
             }
-            // Per-prayer on/off — e.g. turn Dhuhr off while at work/school.
-            Switch(checked = prefs.enabled, onCheckedChange = onToggle)
+            if (reminderOnly) {
+                Text(
+                    text = stringResource(R.string.settings_sunrise_note),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 10.dp),
+                )
+            }
         }
     }
 }
@@ -780,6 +847,7 @@ private fun PrayerSettingCard(
 private fun PreWarnSelector(
     preWarnMinutes: Int,
     onSelectMinutes: (Int) -> Unit,
+    options: List<Int> = AlarmSettings.PRE_WARN_OPTIONS,
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box {
@@ -795,7 +863,7 @@ private fun PreWarnSelector(
             )
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            AlarmSettings.PRE_WARN_OPTIONS.forEach { minutes ->
+            options.forEach { minutes ->
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.settings_minutes, minutes)) },
                     onClick = {

@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.core.content.getSystemService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.model.Prayer.Companion.soundsAdhan
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
@@ -84,7 +85,7 @@ class AlarmScheduler @Inject constructor(
         val today = LocalDate.now()
         val isFriday = today.dayOfWeek == DayOfWeek.FRIDAY
 
-        Prayer.OBLIGATORY.forEach { prayer ->
+        Prayer.NOTIFIABLE.forEach { prayer ->
             val prefs = settings.prefs(prayer)
             // On Friday the Dhuhr congregation IS the Jumu'ah prayer, held at the community jumua
             // time — so the Dhuhr slot's alarm, pre-notice and silence window all key off jumua.
@@ -95,7 +96,9 @@ class AlarmScheduler @Inject constructor(
 
             // Adhan + pre-warning (gated by the notifications master toggle + per-prayer enable).
             if (settings.masterEnabled && prefs.enabled) {
-                if (adhanAt.isAfter(now)) {
+                // Sunrise gets the reminder only. It is not a prayer time to be called to — the
+                // point is that Fajr is about to expire — so no Adhan is ever armed for it.
+                if (prayer.soundsAdhan && adhanAt.isAfter(now)) {
                     schedule(prayer, adhanAt, AlarmType.ADHAN, minutes = 0, sound = settings.sound, playWhenSilent = settings.playWhenSilent, isJumua = isJumua)
                 }
                 // Jumu'ah always gets a fixed 30-min pre-notice; other prayers use the per-prayer value.
@@ -112,6 +115,8 @@ class AlarmScheduler @Inject constructor(
             // (10 min before → 40 min after) as a community default — it only actually takes effect if
             // the user granted Do-Not-Disturb access. Other prayers use the opt-in auto-silence setting.
             val silenceBefore = when {
+                // Never silence the phone for sunrise: there is no congregation to be quiet for.
+                !prayer.soundsAdhan -> null
                 isJumua -> JUMUA_SILENCE_BEFORE_MIN
                 settings.autoSilenceEnabled -> settings.silenceBeforeMinutes
                 else -> null
@@ -205,7 +210,7 @@ class AlarmScheduler @Inject constructor(
     }
 
     private fun cancelAll() {
-        Prayer.OBLIGATORY.forEach { prayer ->
+        Prayer.NOTIFIABLE.forEach { prayer ->
             AlarmType.entries.forEach { type ->
                 // Extras are ignored when matching a PendingIntent for cancellation, so any sound works.
                 alarmManager.cancel(pendingIntent(prayer, type, 0, AdhanSound.DEFAULT, playWhenSilent = false, isJumua = false, silenceUntilMillis = 0L))

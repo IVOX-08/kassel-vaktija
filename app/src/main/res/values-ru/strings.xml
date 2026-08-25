@@ -194,4 +194,6 @@
     <string name="admin_login_entry">Вход для администраторов общины</string>
     <string name="community_pick_town">Для какого города показывать время намаза?</string>
     <string name="action_cancel">Отмена</string>
+    <string name="settings_developer_header">Приложение</string>
+    <string name="settings_sunrise_note">Напоминание перед восходом — тогда истекает время фаджра. Без азана.</string>
 </resources>
