@@ -43,4 +43,8 @@ data class DashboardUiState(
     val donationUrl: String? = null,
     /** How far this community is switched off — drives the notice and hides its branding. */
     val communityStatus: CommunityStatus = CommunityStatus.ACTIVE,
+    /** Logo of the selected community, if one is on file. */
+    val communityLogoUrl: String? = null,
+    /** True for the home community, whose emblem ships inside the app. */
+    val isHomeCommunity: Boolean = true,
 )

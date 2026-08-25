@@ -63,6 +63,7 @@ object CommunityCatalog {
         id = "rosenheim",
         name = "IGBD-Gemeinde Rosenheim",
         address = "Burgfriedstraße 55, 83024 Rosenheim",
+        logoUrl = "https://igbd-rosenheim.de/wp-content/uploads/2024/01/cropped-Logo-IZ-59x59.png",
         locations = listOf(
             CommunityLocation(
                 id = "rosenheim",

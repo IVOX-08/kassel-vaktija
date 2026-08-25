@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.DailyTimes
+import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
 import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
 import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
@@ -65,6 +66,10 @@ class DashboardViewModel @Inject constructor(
             donationUrl = selection?.community?.donationUrl
                 ?.takeIf { selection.community.status.showsCommunityContent },
             communityStatus = selection?.community?.status ?: CommunityStatus.ACTIVE,
+            // Branding goes away with the rest when a community is switched off.
+            communityLogoUrl = selection?.community?.logoUrl
+                ?.takeIf { selection.community.status.showsCommunityContent },
+            isHomeCommunity = selection?.community?.id == CommunityCatalog.KASSEL_ID,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -70,6 +70,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.material.icons.outlined.Mosque
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
@@ -268,7 +271,7 @@ private fun Header(state: DashboardUiState, gregorianDate: String, hijriDate: St
                 modifier = Modifier.weight(1f),
             )
             // Center: community emblem, blended into the page background (like the website logo).
-            BlendedEmblem(modifier = Modifier.height(96.dp))
+            CommunityEmblem(state, modifier = Modifier.height(96.dp))
             // Right: donate → opens PayPal. Hidden entirely while the community is switched off —
             // leaving the button would keep collecting for a community that is no longer listed,
             // and falling back to the old built-in link would send the money to Kassel.
@@ -347,6 +350,34 @@ private fun HeaderSideItem(
  * white backdrop into the grey page colour. In dark mode the emblem already sits on black, so we draw
  * it normally.
  */
+/**
+ * The selected community's emblem.
+ *
+ * Three cases, because showing the wrong coat of arms is worse than showing none: the home
+ * community's emblem ships in the app and gets the blended treatment that matches the website; any
+ * other community shows the logo it filed with us; a community that has not filed one yet gets a
+ * neutral mark rather than borrowing Kassel's.
+ */
+@Composable
+private fun CommunityEmblem(state: DashboardUiState, modifier: Modifier = Modifier) {
+    val logoUrl = state.communityLogoUrl
+    when {
+        state.isHomeCommunity -> BlendedEmblem(modifier)
+        logoUrl != null -> AsyncImage(
+            model = logoUrl,
+            contentDescription = stringResource(R.string.cd_app_logo),
+            contentScale = ContentScale.Fit,
+            modifier = modifier,
+        )
+        else -> Icon(
+            imageVector = Icons.Outlined.Mosque,
+            contentDescription = stringResource(R.string.cd_app_logo),
+            tint = BrandGreen,
+            modifier = modifier,
+        )
+    }
+}
+
 @Composable
 private fun BlendedEmblem(modifier: Modifier = Modifier) {
     val emblem = ImageBitmap.imageResource(R.drawable.logo_community)
