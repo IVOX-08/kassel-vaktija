@@ -20,6 +20,7 @@ object CommunityCatalog {
             id = KASSEL_ID,
             name = "IGBD-Gemeinde Sandžak-Kassel",
             donationUrl = "https://www.paypal.com/donate?business=ikzsandzakkassel@gmail.com",
+            address = "Schwanenweg 13, 34123 Kassel",
             locations = listOf(
                 CommunityLocation(
                     id = "kassel",
@@ -27,7 +28,6 @@ object CommunityCatalog {
                     vaktijaSlug = "kassel",
                     latitude = 51.3127,
                     longitude = 9.4797,
-                    address = "Schwanenweg 13, 34123 Kassel",
                 ),
                 CommunityLocation(
                     id = "hann-muenden",

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -107,12 +108,15 @@ private fun OnboardingIntro(onFinished: () -> Unit) {
     val pager = rememberPagerState(pageCount = { slides.size })
     val scope = rememberCoroutineScope()
 
-    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        TextButton(
-            onClick = onFinished,
-            modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
-        ) { Text(stringResource(R.string.onb_skip)) }
-
+    // safeDrawingPadding: the Activity draws edge-to-edge, so without it this Box starts UNDER the
+    // status bar — which is where the Skip button ended up. It looked misplaced and swallowed every
+    // tap, because the system takes touches in that strip before the app sees them.
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .safeDrawingPadding(),
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -153,6 +157,13 @@ private fun OnboardingIntro(onFinished: () -> Unit) {
                 )
             }
         }
+
+        // Drawn LAST on purpose. As the first child it sat UNDER the pager that fills this Box, and
+        // the pager swallowed the tap — the button looked fine and simply never fired.
+        TextButton(
+            onClick = onFinished,
+            modifier = Modifier.align(Alignment.TopEnd).padding(horizontal = 8.dp, vertical = 4.dp),
+        ) { Text(stringResource(R.string.onb_skip)) }
     }
 }
 

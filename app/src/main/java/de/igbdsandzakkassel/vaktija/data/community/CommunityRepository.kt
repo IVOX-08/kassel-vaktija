@@ -88,6 +88,7 @@ class CommunityRepository @Inject constructor(
             name = name,
             logoUrl = getString("logoUrl"),
             donationUrl = getString("donationUrl"),
+            address = getString("address"),
             locations = locations,
         )
     }

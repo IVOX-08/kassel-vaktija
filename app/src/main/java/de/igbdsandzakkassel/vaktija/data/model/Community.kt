@@ -11,6 +11,12 @@ data class Community(
     val name: String,
     val logoUrl: String? = null,
     val donationUrl: String? = null,
+    /**
+     * The community's mosque. This sits on the COMMUNITY, not on each town: Kassel administers
+     * three towns but has one mosque, so someone whose times are set to Korbach still needs to be
+     * pointed at Schwanenweg 13. A town may override it if a community ever runs a second mosque.
+     */
+    val address: String? = null,
     val locations: List<CommunityLocation> = emptyList(),
     val status: CommunityStatus = CommunityStatus.ACTIVE,
 )
@@ -67,6 +73,7 @@ data class CommunityLocation(
     val vaktijaSlug: String,
     val latitude: Double,
     val longitude: Double,
+    /** Only set when this town has its OWN mosque; otherwise the community's address is used. */
     val address: String? = null,
 )
 

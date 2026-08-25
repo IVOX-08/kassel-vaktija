@@ -57,7 +57,9 @@ class DashboardViewModel @Inject constructor(
         if (times == null) DashboardUiState(loading = true)
         else buildState(times, rules, fresh, LocalDateTime.now()).copy(
             locationName = selection?.location?.name.orEmpty(),
-            locationAddress = selection?.location?.address,
+            // Town address only when that town has its own mosque; otherwise the
+            // community's, so all three Kassel towns point at Schwanenweg 13.
+            locationAddress = selection?.location?.address ?: selection?.community?.address,
             // A suspended community keeps its prayer times but loses its presence, so the donation
             // link goes with the rest of its branding.
             donationUrl = selection?.community?.donationUrl

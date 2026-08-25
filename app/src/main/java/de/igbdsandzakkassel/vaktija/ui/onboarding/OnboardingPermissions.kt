@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -110,6 +111,9 @@ fun OnboardingPermissions(onFinished: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            // Same edge-to-edge trap as the intro: without this the step dots sit under the status
+            // bar and the buttons under the gesture bar.
+            .safeDrawingPadding()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
