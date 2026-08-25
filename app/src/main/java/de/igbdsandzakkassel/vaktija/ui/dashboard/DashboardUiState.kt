@@ -1,6 +1,7 @@
 package de.igbdsandzakkassel.vaktija.ui.dashboard
 
 import androidx.annotation.StringRes
+import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import java.time.LocalTime
 
@@ -40,6 +41,6 @@ data class DashboardUiState(
     val locationAddress: String? = null,
     /** The selected community's donation link. */
     val donationUrl: String? = null,
-    /** False once the head admin switches this community off — surfaced as a banner. */
-    val communityActive: Boolean = true,
+    /** How far this community is switched off — drives the notice and hides its branding. */
+    val communityStatus: CommunityStatus = CommunityStatus.ACTIVE,
 )

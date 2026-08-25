@@ -71,6 +71,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
+import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
@@ -171,7 +172,7 @@ private fun DashboardContent(state: DashboardUiState, modifier: Modifier = Modif
         Header(state, state.gregorianDate, state.hijriDate)
         // Pinned, not a list item: the list auto-scrolls to the next prayer on open, which would
         // carry this notice off the top of the screen exactly when it needs to be read.
-        if (!state.communityActive) {
+        if (state.communityStatus == CommunityStatus.SUSPENDED) {
             InactiveCommunityBanner(modifier = Modifier.padding(horizontal = 16.dp))
         }
         // Pinned above the list, always visible — never hides on touch/scroll.
@@ -268,13 +269,18 @@ private fun Header(state: DashboardUiState, gregorianDate: String, hijriDate: St
             )
             // Center: community emblem, blended into the page background (like the website logo).
             BlendedEmblem(modifier = Modifier.height(96.dp))
-            // Right: donate → opens PayPal.
-            HeaderSideItem(
+            // Right: donate → opens PayPal. Hidden entirely while the community is switched off —
+            // leaving the button would keep collecting for a community that is no longer listed,
+            // and falling back to the old built-in link would send the money to Kassel.
+            val donationUrl = state.donationUrl
+            if (donationUrl == null) {
+                Spacer(Modifier.weight(1f))
+            } else HeaderSideItem(
                 icon = Icons.Filled.Favorite,
                 label = stringResource(R.string.action_donate),
                 emphasized = true,
                 alignment = Alignment.End,
-                onClick = { uriHandler.openUri(state.donationUrl ?: PAYPAL_URL) },
+                onClick = { uriHandler.openUri(donationUrl) },
                 modifier = Modifier.weight(1f),
             )
         }

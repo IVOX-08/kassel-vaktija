@@ -184,6 +184,9 @@
     <string name="community_search_clear">تلاش صاف کریں</string>
     <string name="community_search_empty">کوئی نتیجہ نہیں۔ ہجے دیکھیں یا قریبی شہر آزمائیں۔</string>
     <string name="settings_community_header">جماعت</string>
-    <string name="community_inactive_notice">یہ جماعت فی الحال فعال نہیں ہے۔ آپ ترتیبات میں دوسری جماعت منتخب کر سکتے ہیں۔</string>
+    <string name="community_inactive_notice">یہ جماعت فی الحال فعال نہیں ہے۔ نماز کے اوقات کام کرتے رہیں گے۔ آپ ترتیبات میں دوسری جماعت منتخب کر سکتے ہیں۔</string>
     <string name="community_none_available">اس وقت کوئی جماعت دستیاب نہیں۔ انٹرنیٹ کنکشن چیک کر کے دوبارہ کوشش کریں۔</string>
+    <string name="community_blocked_title">جماعت دستیاب نہیں</string>
+    <string name="community_blocked_body">یہ جماعت فی الحال ایپ میں دستیاب نہیں ہے۔ جاری رکھنے کے لیے دوسری جماعت منتخب کریں۔</string>
+    <string name="community_blocked_action">دوسری جماعت منتخب کریں</string>
 </resources>

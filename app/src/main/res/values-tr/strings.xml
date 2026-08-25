@@ -184,6 +184,9 @@
     <string name="community_search_clear">Aramayı temizle</string>
     <string name="community_search_empty">Sonuç yok. Yazımı kontrol edin veya komşu şehri deneyin.</string>
     <string name="settings_community_header">Cemaat</string>
-    <string name="community_inactive_notice">Bu cemaat şu anda etkin değil. Ayarlar’dan başka bir cemaat seçebilirsiniz.</string>
+    <string name="community_inactive_notice">Bu cemaat şu anda etkin değil. Namaz vakitleri çalışmaya devam ediyor. Ayarlar’dan başka bir cemaat seçebilirsiniz.</string>
     <string name="community_none_available">Şu anda hiçbir cemaat mevcut değil. İnternet bağlantınızı kontrol edip tekrar deneyin.</string>
+    <string name="community_blocked_title">Cemaat kullanılamıyor</string>
+    <string name="community_blocked_body">Bu cemaat şu anda uygulamada mevcut değil. Devam etmek için başka bir cemaat seçin.</string>
+    <string name="community_blocked_action">Başka cemaat seç</string>
 </resources>

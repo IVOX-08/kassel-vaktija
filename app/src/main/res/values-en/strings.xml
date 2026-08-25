@@ -196,6 +196,9 @@
     <string name="community_search_clear">Clear search</string>
     <string name="community_search_empty">No matches. Check the spelling or try a neighbouring town.</string>
     <string name="settings_community_header">Community</string>
-    <string name="community_inactive_notice">This community is currently inactive. You can choose another one in Settings.</string>
+    <string name="community_inactive_notice">This community is currently inactive. Prayer times keep working. You can choose another community in Settings.</string>
     <string name="community_none_available">No communities are available right now. Check your internet connection and try again.</string>
+    <string name="community_blocked_title">Community unavailable</string>
+    <string name="community_blocked_body">This community is currently not available in the app. Choose another one to continue.</string>
+    <string name="community_blocked_action">Choose another community</string>
 </resources>

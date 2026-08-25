@@ -7,6 +7,7 @@ import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.DailyTimes
 import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
+import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
@@ -57,8 +58,11 @@ class DashboardViewModel @Inject constructor(
         else buildState(times, rules, fresh, LocalDateTime.now()).copy(
             locationName = selection?.location?.name.orEmpty(),
             locationAddress = selection?.location?.address,
-            donationUrl = selection?.community?.donationUrl,
-            communityActive = selection?.community?.active ?: true,
+            // A suspended community keeps its prayer times but loses its presence, so the donation
+            // link goes with the rest of its branding.
+            donationUrl = selection?.community?.donationUrl
+                ?.takeIf { selection.community.status.showsCommunityContent },
+            communityStatus = selection?.community?.status ?: CommunityStatus.ACTIVE,
         )
     }.stateIn(
         scope = viewModelScope,

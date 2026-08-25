@@ -12,13 +12,46 @@ data class Community(
     val logoUrl: String? = null,
     val donationUrl: String? = null,
     val locations: List<CommunityLocation> = emptyList(),
-    /**
-     * Whether the community is currently taking part. Set false by the head admin when a community
-     * leaves the programme: it drops out of the picker so nobody new joins it, and anyone already
-     * following it is told, rather than being left wondering why announcements stopped.
-     */
-    val active: Boolean = true,
+    val status: CommunityStatus = CommunityStatus.ACTIVE,
 )
+
+/**
+ * How far a community's listing is switched off. Set by the head admin and reversible at any time —
+ * it is one field on the community document, so restoring a community is the same click as pausing
+ * one.
+ *
+ * Two levels exist because the two reasons are not the same. A community that simply cannot pay
+ * this month should lose its presence, not its members' prayer times; a community that is actively
+ * causing trouble should be gone from the app entirely.
+ */
+enum class CommunityStatus {
+    /** Listed and fully working. */
+    ACTIVE,
+
+    /**
+     * Not paying. Drops out of the picker, loses its logo, donation link, announcements and TV
+     * board — but prayer times keep working. The people praying did not withhold the money, and
+     * the times come from a public website anyway.
+     */
+    SUSPENDED,
+
+    /**
+     * Removed. The app shows a notice instead of the community's content and offers to pick another
+     * one. For communities disrupting the project rather than merely owing for it.
+     */
+    BLOCKED,
+    ;
+
+    val isListed: Boolean get() = this == ACTIVE
+    /** Whether the community's own branding, donations and announcements are shown. */
+    val showsCommunityContent: Boolean get() = this == ACTIVE
+
+    companion object {
+        /** Absent/unknown means active, so a hand-written document never switches itself off. */
+        fun from(raw: String?): CommunityStatus =
+            entries.firstOrNull { it.name.equals(raw, ignoreCase = true) } ?: ACTIVE
+    }
+}
 
 /**
  * A place people actually pray, and the unit prayer times belong to.

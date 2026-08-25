@@ -196,6 +196,9 @@
     <string name="community_search_clear">Suche löschen</string>
     <string name="community_search_empty">Keine Treffer. Prüfen Sie die Schreibweise oder suchen Sie die Nachbarstadt.</string>
     <string name="settings_community_header">Gemeinde</string>
-    <string name="community_inactive_notice">Diese Gemeinde ist derzeit nicht aktiv. In den Einstellungen können Sie eine andere Gemeinde wählen.</string>
+    <string name="community_inactive_notice">Diese Gemeinde ist derzeit nicht aktiv. Die Gebetszeiten laufen weiter. In den Einstellungen können Sie eine andere Gemeinde wählen.</string>
     <string name="community_none_available">Derzeit sind keine Gemeinden verfügbar. Bitte Internetverbindung prüfen und erneut versuchen.</string>
+    <string name="community_blocked_title">Gemeinde nicht verfügbar</string>
+    <string name="community_blocked_body">Diese Gemeinde ist derzeit nicht in der App verfügbar. Wählen Sie eine andere Gemeinde, um fortzufahren.</string>
+    <string name="community_blocked_action">Andere Gemeinde wählen</string>
 </resources>

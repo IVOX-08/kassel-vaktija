@@ -10,12 +10,21 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
+import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
+    communityRepository: CommunityRepository,
 ) : ViewModel() {
+    /** Status of the followed community — decides whether the app renders at all. */
+    val communityStatus: StateFlow<CommunityStatus> = communityRepository.observeSelection()
+        .map { it?.community?.status ?: CommunityStatus.ACTIVE }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CommunityStatus.ACTIVE)
+
     val themeMode: StateFlow<ThemeMode> = settingsRepository.observeThemeMode()
         .stateIn(viewModelScope, SharingStarted.Eagerly, ThemeMode.SYSTEM)
 

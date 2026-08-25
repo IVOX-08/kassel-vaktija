@@ -3,6 +3,7 @@ package de.igbdsandzakkassel.vaktija.data.community
 import com.google.firebase.firestore.FirebaseFirestore
 import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.data.model.CommunityLocation
+import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import de.igbdsandzakkassel.vaktija.data.model.CommunitySelection
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +28,8 @@ class CommunityRepository @Inject constructor(
 ) {
 
     /** Only communities currently taking part — what the picker offers. */
-    fun observeSelectable(): Flow<List<Community>> = observeAll().map { all -> all.filter { it.active } }
+    fun observeSelectable(): Flow<List<Community>> =
+        observeAll().map { all -> all.filter { it.status.isListed } }
 
     /** Every community including switched-off ones; the selection has to resolve against these. */
     fun observeAll(): Flow<List<Community>> = callbackFlow {
@@ -75,9 +77,14 @@ class CommunityRepository @Inject constructor(
         if (locations.isEmpty()) return null
         return Community(
             id = id,
-            // Absent means active: a community document written before this field existed, or by
-            // hand in the console, must not silently switch itself off.
-            active = getBoolean("active") ?: true,
+            // Absent means active: a community document written by hand in the console must not
+            // silently switch itself off. The older boolean is still honoured as "suspended" so a
+            // document written against the first version of this format keeps its meaning.
+            status = when {
+                getString("status") != null -> CommunityStatus.from(getString("status"))
+                getBoolean("active") == false -> CommunityStatus.SUSPENDED
+                else -> CommunityStatus.ACTIVE
+            },
             name = name,
             logoUrl = getString("logoUrl"),
             donationUrl = getString("donationUrl"),

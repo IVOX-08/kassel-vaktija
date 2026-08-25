@@ -33,7 +33,9 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
+import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import de.igbdsandzakkassel.vaktija.ui.KasselApp
+import de.igbdsandzakkassel.vaktija.ui.community.CommunityBlockedScreen
 import de.igbdsandzakkassel.vaktija.ui.onboarding.OnboardingScreen
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
@@ -101,10 +103,14 @@ class MainActivity : AppCompatActivity() {
                 controller.isAppearanceLightNavigationBars = !darkTheme
             }
             val onboardingComplete by mainViewModel.onboardingComplete.collectAsStateWithLifecycle()
+            val communityStatus by mainViewModel.communityStatus.collectAsStateWithLifecycle()
             KasselVaktijaTheme(darkTheme = darkTheme) {
                 when {
                     isTv -> TvDashboardScreen()
                     onboardingComplete == false -> OnboardingScreen(onFinished = mainViewModel::completeOnboarding)
+                    // A blocked community replaces the app rather than degrading inside it: with no
+                    // prayer times left there is no half-working screen worth showing.
+                    communityStatus == CommunityStatus.BLOCKED -> CommunityBlockedScreen()
                     onboardingComplete == true -> KasselApp()
                     else -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
                 }
