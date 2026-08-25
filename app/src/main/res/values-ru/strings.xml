@@ -192,4 +192,6 @@
     <string name="admin_role_head">Главный администратор (все общины)</string>
     <string name="admin_role_community">Администратор: %1$s</string>
     <string name="admin_login_entry">Вход для администраторов общины</string>
+    <string name="community_pick_town">Для какого города показывать время намаза?</string>
+    <string name="action_cancel">Отмена</string>
 </resources>

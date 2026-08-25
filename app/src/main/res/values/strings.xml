@@ -258,4 +258,6 @@
     <string name="admin_role_head">Glavni administrator (svi džemati)</string>
     <string name="admin_role_community">Administrator: %1$s</string>
     <string name="admin_login_entry">Prijava za administratore džemata</string>
+    <string name="community_pick_town">Za koji grad želite namaska vremena?</string>
+    <string name="action_cancel">Odustani</string>
 </resources>

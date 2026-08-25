@@ -74,6 +74,8 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import de.igbdsandzakkassel.vaktija.BuildConfig
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material.icons.outlined.Lock
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
@@ -102,6 +104,7 @@ fun SettingsScreen(
     val selection by viewModel.selection.collectAsStateWithLifecycle()
     val communityRules by viewModel.communityRules.collectAsStateWithLifecycle()
     var showLogin by remember { mutableStateOf(false) }
+    var versionTaps by remember { mutableIntStateOf(0) }
     val savedMsg = stringResource(R.string.admin_saved)
 
     Column(
@@ -368,20 +371,37 @@ fun SettingsScreen(
 
         Spacer(Modifier.height(8.dp))
         SectionHeader(stringResource(R.string.settings_about_header))
-        AboutCard()
+        // The version number keeps its seven-tap gesture as the head admin's own way in — it is
+        // his habit and costs nothing. Community admins get the visible button below, because a
+        // door nobody can find is a support call every time a committee changes.
+        AboutCard(
+            onVersionClick = {
+                if (!isAdmin) {
+                    versionTaps++
+                    if (versionTaps >= 7) {
+                        versionTaps = 0
+                        showLogin = true
+                    }
+                }
+            },
+        )
 
-        // A plain button, not a hidden seven-tap gesture on the version number. That worked while
-        // one person needed it; with an admin in every community, a door nobody can find is a
-        // support call each time a committee changes.
         if (!isAdmin) {
-            TextButton(
+            FilledTonalButton(
                 onClick = { showLogin = true },
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                shape = RoundedCornerShape(16.dp),
+                contentPadding = PaddingValues(vertical = 14.dp),
             ) {
+                Icon(
+                    imageVector = Icons.Outlined.Lock,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                )
                 Text(
                     text = stringResource(R.string.admin_login_entry),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(start = 10.dp),
+                    fontWeight = FontWeight.Medium,
                 )
             }
         }
@@ -419,7 +439,7 @@ private const val DEV_EMAIL = "muhamedgolac311@gmail.com"
 
 /** "About the community" card: name, address (→Maps), e-mail (→mail app), donate (→PayPal), version. */
 @Composable
-private fun AboutCard() {
+private fun AboutCard(onVersionClick: () -> Unit) {
     val context = LocalContext.current
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -463,11 +483,13 @@ private fun AboutCard() {
                 context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$DEV_EMAIL")))
             }
             Spacer(Modifier.height(8.dp))
-            // Tapping the version 7× reveals the hidden admin login.
+            // Tapping the version 7× reveals the admin login — kept as the head admin's own way
+            // in, alongside the visible button that community admins use.
             Text(
                 text = "v${BuildConfig.VERSION_NAME}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.clickable(onClick = onVersionClick),
             )
         }
     }

@@ -29,6 +29,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.igbdsandzakkassel.vaktija.ui.components.SettingsNavRow
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 
 /**
@@ -45,38 +46,20 @@ fun ChangeCommunityPill(
     val selection by viewModel.selection.collectAsStateWithLifecycle()
     var pickerOpen by remember { mutableStateOf(false) }
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable { pickerOpen = true }
-            .padding(horizontal = 14.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            Icons.Outlined.LocationOn,
-            contentDescription = null,
-            tint = BrandGreen,
-            modifier = Modifier.size(22.dp),
-        )
-        Column(modifier = Modifier.padding(start = 12.dp)) {
-            Text(
-                text = selection?.location?.name.orEmpty(),
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
+    SettingsNavRow(
+        title = selection?.location?.name.orEmpty(),
+        subtitle = selection?.community?.name,
+        onClick = { pickerOpen = true },
+        modifier = modifier,
+        leading = {
+            Icon(
+                Icons.Outlined.LocationOn,
+                contentDescription = null,
+                tint = BrandGreen,
+                modifier = Modifier.size(22.dp),
             )
-            Text(
-                text = selection?.community?.name.orEmpty(),
-                style = MaterialTheme.typography.bodySmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
+        },
+    )
 
     if (pickerOpen) {
         Dialog(

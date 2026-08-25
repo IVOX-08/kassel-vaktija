@@ -192,4 +192,6 @@
     <string name="admin_role_head">مرکزی منتظم (تمام جماعتیں)</string>
     <string name="admin_role_community">منتظم: %1$s</string>
     <string name="admin_login_entry">جماعت کے منتظمین کے لیے سائن ان</string>
+    <string name="community_pick_town">آپ کس شہر کے نماز اوقات چاہتے ہیں؟</string>
+    <string name="action_cancel">منسوخ کریں</string>
 </resources>

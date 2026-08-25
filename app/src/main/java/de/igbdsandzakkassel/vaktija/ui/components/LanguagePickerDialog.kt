@@ -112,13 +112,14 @@ fun ChangeLanguagePill(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var show by remember { mutableStateOf(false) }
     var chosen by remember { mutableStateOf<AppLanguage?>(null) }
-    TextButton(onClick = { show = true }, modifier = modifier) {
-        LanguageFlag(LocaleController.current(), width = 24.dp, height = 18.dp)
-        Text(
-            text = stringResource(R.string.action_change_language),
-            modifier = Modifier.padding(start = 8.dp),
-        )
-    }
+    val current = LocaleController.current()
+    SettingsNavRow(
+        title = stringResource(current.displayNameRes),
+        subtitle = stringResource(R.string.action_change_language),
+        onClick = { show = true },
+        modifier = modifier,
+        leading = { LanguageFlag(current, width = 26.dp, height = 19.dp) },
+    )
     if (show) {
         Dialog(
             onDismissRequest = { show = false },

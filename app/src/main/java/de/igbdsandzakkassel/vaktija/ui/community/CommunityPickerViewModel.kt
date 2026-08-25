@@ -34,22 +34,25 @@ class CommunityPickerViewModel @Inject constructor(
     val query: StateFlow<String> = _query.asStateFlow()
 
     /**
-     * Every town of every listed community, flattened — people look for their MOSQUE, not for an
-     * administrative body, and flattening is also what makes the two awkward cases read naturally:
-     * Kassel's three towns appear as three rows under one name, and Berlin's two communities appear
-     * as two rows with the same town but different names.
+     * Communities, not towns.
+     *
+     * A flat list of every town looked tidy with one community, but Berlin runs two separate
+     * communities in the same city — as towns they are two rows both reading "Berlin", telling
+     * apart only by the small print. People belong to a community, so that is what they pick first.
+     *
+     * The filter still matches town names, so typing "Korbach" surfaces the community that runs it
+     * without the user having to know its name.
      */
-    val results: StateFlow<List<MosqueEntry>> =
+    val results: StateFlow<List<Community>> =
         combine(communityRepository.observeSelectable(), _query) { communities, query ->
             val needle = query.fold()
             communities
-                .flatMap { community -> community.locations.map { MosqueEntry(community, it) } }
-                .filter { entry ->
+                .filter { community ->
                     needle.isBlank() ||
-                        entry.location.name.fold().contains(needle) ||
-                        entry.community.name.fold().contains(needle)
+                        community.name.fold().contains(needle) ||
+                        community.locations.any { it.name.fold().contains(needle) }
                 }
-                .sortedWith(compareBy({ it.location.name.fold() }, { it.community.name.fold() }))
+                .sortedBy { it.name.fold() }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     /**
@@ -64,9 +67,9 @@ class CommunityPickerViewModel @Inject constructor(
 
     fun onQueryChange(value: String) { _query.value = value }
 
-    fun select(entry: MosqueEntry, onDone: () -> Unit) {
+    fun select(community: Community, location: CommunityLocation, onDone: () -> Unit) {
         viewModelScope.launch {
-            selectionRepository.select(entry.community.id, entry.location.id)
+            selectionRepository.select(community.id, location.id)
             onDone()
         }
     }

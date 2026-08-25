@@ -192,4 +192,6 @@
     <string name="admin_role_head">المشرف العام (جميع الجماعات)</string>
     <string name="admin_role_community">مشرف: %1$s</string>
     <string name="admin_login_entry">تسجيل دخول مشرفي الجماعة</string>
+    <string name="community_pick_town">مواقيت أي مدينة تريد؟</string>
+    <string name="action_cancel">إلغاء</string>
 </resources>

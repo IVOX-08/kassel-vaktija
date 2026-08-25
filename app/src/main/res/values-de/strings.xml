@@ -204,4 +204,6 @@
     <string name="admin_role_head">Hauptadministrator (alle Gemeinden)</string>
     <string name="admin_role_community">Administrator: %1$s</string>
     <string name="admin_login_entry">Anmeldung für Gemeinde-Administratoren</string>
+    <string name="community_pick_town">Für welche Stadt möchten Sie die Gebetszeiten?</string>
+    <string name="action_cancel">Abbrechen</string>
 </resources>

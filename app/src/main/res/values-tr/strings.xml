@@ -192,4 +192,6 @@
     <string name="admin_role_head">Baş yönetici (tüm cemaatler)</string>
     <string name="admin_role_community">Yönetici: %1$s</string>
     <string name="admin_login_entry">Cemaat yöneticileri için giriş</string>
+    <string name="community_pick_town">Hangi şehrin namaz vakitlerini istiyorsunuz?</string>
+    <string name="action_cancel">İptal</string>
 </resources>

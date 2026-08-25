@@ -204,4 +204,6 @@
     <string name="admin_role_head">Head administrator (all communities)</string>
     <string name="admin_role_community">Administrator: %1$s</string>
     <string name="admin_login_entry">Sign in for community administrators</string>
+    <string name="community_pick_town">Which town do you want prayer times for?</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

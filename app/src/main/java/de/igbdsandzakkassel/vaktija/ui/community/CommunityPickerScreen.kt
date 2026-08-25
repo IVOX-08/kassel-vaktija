@@ -41,6 +41,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import de.igbdsandzakkassel.vaktija.data.model.Community
+import de.igbdsandzakkassel.vaktija.data.model.CommunityLocation
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
@@ -62,6 +69,9 @@ fun CommunityPickerScreen(
     val query by viewModel.query.collectAsStateWithLifecycle()
     val results by viewModel.results.collectAsStateWithLifecycle()
     val loaded by viewModel.loaded.collectAsStateWithLifecycle()
+    // Step two. Null = still choosing a community. A community with a single town never lands here:
+    // asking someone to confirm the only option is a click that teaches them nothing.
+    var expanded by remember { mutableStateOf<Community?>(null) }
 
     Column(
         modifier = modifier
@@ -124,17 +134,83 @@ fun CommunityPickerScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                items(results, key = { "${it.community.id}/${it.location.id}" }) { entry ->
-                    MosqueRow(entry) { viewModel.select(entry, onSelected) }
+                items(results, key = { it.id }) { community ->
+                    CommunityRow(
+                        community = community,
+                        onClick = {
+                            val only = community.locations.singleOrNull()
+                            if (only != null) viewModel.select(community, only, onSelected)
+                            else expanded = community
+                        },
+                    )
                 }
                 item { Spacer(Modifier.height(24.dp)) }
             }
         }
     }
+
+    expanded?.let { community ->
+        LocationSheet(
+            community = community,
+            onDismiss = { expanded = null },
+            onPick = { location ->
+                expanded = null
+                viewModel.select(community, location, onSelected)
+            },
+        )
+    }
+}
+
+/** Step two: which town's times, for a community that covers more than one. */
+@Composable
+private fun LocationSheet(
+    community: Community,
+    onDismiss: () -> Unit,
+    onPick: (CommunityLocation) -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(community.name) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = stringResource(R.string.community_pick_town),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                community.locations.forEach { location ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .clickable { onPick(location) }
+                            .padding(horizontal = 14.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            Icons.Outlined.LocationOn,
+                            contentDescription = null,
+                            tint = BrandGreen,
+                            modifier = Modifier.size(20.dp),
+                        )
+                        Text(
+                            text = location.name,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.padding(start = 10.dp),
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
+        },
+    )
 }
 
 @Composable
-private fun MosqueRow(entry: MosqueEntry, onClick: () -> Unit) {
+private fun CommunityRow(community: Community, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -160,15 +236,17 @@ private fun MosqueRow(entry: MosqueEntry, onClick: () -> Unit) {
         }
         Column(modifier = Modifier.padding(start = 12.dp)) {
             Text(
-                text = entry.location.name,
+                text = community.name,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
-                text = entry.community.name,
+                // The towns this community covers, so someone looking for Korbach can see it is
+                // here without opening the community first.
+                text = community.locations.joinToString(" · ") { it.name },
                 fontSize = 13.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
