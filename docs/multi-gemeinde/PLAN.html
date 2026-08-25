@@ -1,0 +1,538 @@
+<title>84 Gemeinden, eine App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+
+<style>
+  :root {
+    --ground:      #F7F8F5;
+    --surface:     #FFFFFF;
+    --surface-alt: #EFF2EC;
+    --ink:         #14261A;
+    --ink-soft:    #3D4F42;
+    --muted:       #6A7A6E;
+    --line:        #D9DFD5;
+    --green:       #2E7D32;
+    --green-deep:  #1B5E20;
+    --gold:        #B08D2E;
+    --gold-bright: #D4AF37;
+    --flag:        #8C3A1E;
+
+    --measure: 66ch;
+    --step-0: 1.0rem;
+    --step-1: 1.1875rem;
+    --step-2: 1.4375rem;
+    --step-3: 1.875rem;
+    --step-4: 2.625rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0F1511;
+      --surface:     #171F19;
+      --surface-alt: #1E2820;
+      --ink:         #E7EDE6;
+      --ink-soft:    #BAC7BB;
+      --muted:       #8E9E91;
+      --line:        #2C3830;
+      --green:       #6FBF73;
+      --green-deep:  #A5D6A7;
+      --gold:        #D9B84F;
+      --gold-bright: #E8CC72;
+      --flag:        #E0937A;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0F1511;
+    --surface:     #171F19;
+    --surface-alt: #1E2820;
+    --ink:         #E7EDE6;
+    --ink-soft:    #BAC7BB;
+    --muted:       #8E9E91;
+    --line:        #2C3830;
+    --green:       #6FBF73;
+    --green-deep:  #A5D6A7;
+    --gold:        #D9B84F;
+    --gold-bright: #E8CC72;
+    --flag:        #E0937A;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 5vw, 2.5rem) 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  h1, h2, h3 {
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    text-wrap: balance;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  h1 { font-size: var(--step-4); font-weight: 700; letter-spacing: -0.015em; }
+  h2 { font-size: var(--step-3); font-weight: 600; letter-spacing: -0.01em; }
+  h3 { font-size: var(--step-1); font-weight: 600; }
+
+  p, li { max-width: var(--measure); }
+  p { margin: 0; }
+
+  a { color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  code, .mono {
+    font-family: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+    font-size: 0.875em;
+  }
+  code { color: var(--green-deep); background: var(--surface-alt); padding: 0.1em 0.35em; border-radius: 3px; }
+
+  /* ---------- masthead ---------- */
+  header { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .standfirst {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: var(--step-2);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 34ch;
+  }
+
+  .rule { height: 2px; background: var(--gold-bright); border: 0; margin: 0; width: 4rem; }
+
+  /* ---------- verdict ---------- */
+  .verdict {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--green);
+    border-radius: 4px;
+    padding: 1.5rem 1.625rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .verdict strong { color: var(--green-deep); }
+
+  /* ---------- sections ---------- */
+  section { display: flex; flex-direction: column; gap: 1.125rem; }
+
+  .section-head { display: flex; flex-direction: column; gap: 0.5rem; }
+  .section-head hr { height: 1px; background: var(--line); border: 0; margin: 0 0 0.75rem; }
+
+  ul, ol { margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  /* ---------- the two-concepts diagram ---------- */
+  .concepts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+  .concept {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1.25rem 1.375rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .concept .tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .concept p { font-size: 0.9375rem; color: var(--ink-soft); }
+
+  /* ---------- worked examples ---------- */
+  .cases { display: flex; flex-direction: column; gap: 0.75rem; }
+  .case {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 0.25rem 1.25rem;
+    background: var(--surface-alt);
+    border-radius: 4px;
+    padding: 0.875rem 1.125rem;
+    align-items: baseline;
+  }
+  .case dt { font-weight: 600; color: var(--green-deep); }
+  .case dd { margin: 0; font-size: 0.9375rem; color: var(--ink-soft); }
+  @media (max-width: 32rem) {
+    .case { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- tables ---------- */
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    font-variant-numeric: tabular-nums;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.625rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    border-bottom-color: var(--ink-soft);
+  }
+  td:first-child { white-space: nowrap; }
+
+  /* ---------- data model tree ---------- */
+  .tree {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1.25rem 1.375rem;
+    overflow-x: auto;
+  }
+  .tree pre {
+    margin: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.8125rem;
+    line-height: 1.85;
+    color: var(--ink-soft);
+  }
+  .tree .k { color: var(--green-deep); font-weight: 500; }
+  .tree .c { color: var(--muted); }
+
+  /* ---------- phases ---------- */
+  .phases { display: flex; flex-direction: column; gap: 0; counter-reset: phase; }
+  .phase {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    padding: 1.125rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .phase:last-child { border-bottom: 1px solid var(--line); }
+  .phase::before {
+    counter-increment: phase;
+    content: counter(phase);
+    font-family: "Source Serif 4", serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1.1;
+  }
+  .phase h3 { margin-bottom: 0.25rem; }
+  .phase p { font-size: 0.9375rem; color: var(--ink-soft); }
+
+  /* ---------- risk flags ---------- */
+  .flag {
+    border-left: 3px solid var(--flag);
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .flag .label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--flag);
+  }
+
+  /* ---------- decisions ---------- */
+  .decision {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .decision .q { font-weight: 600; }
+  .decision .rec { font-size: 0.9375rem; color: var(--ink-soft); }
+  .decision .rec b { color: var(--green-deep); font-weight: 600; }
+  .decisions { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">IGBD · Vorlage für den Vorstand</div>
+    <h1>84 Gemeinden, eine App</h1>
+    <hr class="rule">
+    <p class="standfirst">Was der Umbau von einer Kasseler App zu einer bundesweiten wirklich bedeutet — und wo die Arbeit tatsächlich liegt.</p>
+  </header>
+
+  <div class="verdict">
+    <p><strong>Kurz: Ja, es ist möglich.</strong> Der technische Weg ist klar und die größte Unbekannte hat sich beim Prüfen aufgelöst — die Gebetszeiten für die anderen Städte sind bereits verfügbar.</p>
+    <p>Die eigentliche Hürde ist nicht das Programmieren. Es ist das Zusammentragen der Daten von 84 Gemeinden und die Frage, wer dauerhaft dafür zuständig ist.</p>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <hr>
+      <h2>Der Kern: Gemeinde und Standort sind zweierlei</h2>
+    </div>
+    <p>Die beiden Beispiele aus der Anfrage widersprechen sich scheinbar — bis man erkennt, dass zwei verschiedene Dinge vermischt werden. Genau diese Trennung trägt das ganze Vorhaben:</p>
+
+    <div class="concepts">
+      <div class="concept">
+        <span class="tag">Gemeinde</span>
+        <h3>Wer verwaltet</h3>
+        <p>Logo, Spendenlink, Nachrichten, Adminzugang. Die Einheit, für die jemand verantwortlich ist.</p>
+      </div>
+      <div class="concept">
+        <span class="tag">Standort</span>
+        <h3>Wo gebetet wird</h3>
+        <p>Adresse, Koordinaten, Gebetszeiten, Ikamet-Versatz, Džuma-Zeit. Die Einheit, die der Nutzer auswählt.</p>
+      </div>
+    </div>
+
+    <p>Eine Gemeinde hat <em>einen oder mehrere</em> Standorte. Damit lösen sich beide Sonderfälle von selbst auf:</p>
+
+    <div class="cases">
+      <dl class="case">
+        <dt>Kassel</dt>
+        <dd>Eine Gemeinde, drei Standorte — Kassel, Hann. Münden, Korbach. Ein Admin, ein Spendenlink, gemeinsame Nachrichten, aber je eigene Gebetszeiten.</dd>
+      </dl>
+      <dl class="case">
+        <dt>Berlin</dt>
+        <dd>Zwei Gemeinden, je ein Standort in derselben Stadt. Getrennte Admins, getrennte Passwörter, getrennte Nachrichten — obwohl die Zeiten identisch sind.</dd>
+      </dl>
+    </div>
+
+    <p>Der Nutzer wählt beim ersten Start seine <em>Moschee</em> aus einer durchsuchbaren Liste. Ob dahinter eine oder zwei Gemeinden in der Stadt stehen, muss er nicht wissen.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <hr>
+      <h2>Die Gebetszeiten — die gute Nachricht</h2>
+    </div>
+    <p>Das war die große Unbekannte: Woher kommen korrekte Zeiten für 84 Städte? Heute liest die App eine einzige Seite, <code>vaktija.eu/kassel</code>.</p>
+    <p>Beim Prüfen stellte sich heraus, dass dieselbe Quelle <strong>2.562 Städte in 16 europäischen Ländern</strong> führt, davon rund 1.300 in Deutschland — jeweils mit Namen, Kürzel und Koordinaten, und in exakt demselben Format.</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Stadt</th><th>Sabah</th><th>Podne</th><th>Akšam</th><th>Jacija</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Kassel</td><td>04:31</td><td>13:30</td><td>20:33</td><td>22:03</td></tr>
+          <tr><td>Hann. Münden</td><td>04:30</td><td>13:29</td><td>20:32</td><td>22:03</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Beide am 25. August abgerufen, beide korrekt. <strong>Der vorhandene Abruf funktioniert für jede dieser Städte — es muss nur der Ortsname in der Adresse austauschbar werden.</strong> Das ist eine kleine Änderung an einer Stelle, kein Neubau.</p>
+
+    <div class="flag">
+      <span class="label">Nicht jede Stadt ist dabei</span>
+      <p>Korbach fehlt in der Quelle. Für solche Fälle gibt es zwei saubere Auswege: die nächstgelegene erfasste Stadt verwenden — für Korbach ist das Brilon in 19 km Entfernung, ein Unterschied von etwa einer Minute — oder die Zeiten aus den Koordinaten berechnen. Die Rechenbibliothek dafür ist bereits in der App, sie erzeugt heute den Monatskalender.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <hr>
+      <h2>Wie die Daten liegen müssen</h2>
+    </div>
+    <p>Heute kennt die Datenbank genau eine Gemeinde: ein Dokument <code>config/community</code> und eine Sammlung <code>news</code>. Das wird zu einer Struktur, in der jede Gemeinde ihren eigenen abgeschlossenen Bereich hat:</p>
+
+    <div class="tree">
+<pre><span class="k">gemeinden/{gemeindeId}</span>
+   name, logoUrl, spendenlink, kontakt
+   │
+   ├── <span class="k">standorte/{standortId}</span>
+   │      name, adresse, koordinaten
+   │      vaktijaOrt          <span class="c">← der Ortsname für den Abruf</span>
+   │      ikametVersatz, fajrIkamet, dzumaZeit
+   │
+   └── <span class="k">nachrichten/{nachrichtId}</span>
+          titel, text, zeitpunkt
+
+<span class="k">admins/{benutzerId}</span>
+   gemeindeId               <span class="c">← wem dieser Zugang gehört</span>
+   rolle</pre>
+    </div>
+
+    <p>Die Sicherheitsregeln der Datenbank prüfen dann bei jedem Schreibvorgang, ob der angemeldete Zugang laut <code>admins</code> zu genau dieser Gemeinde gehört. Ein Berliner Admin kann Kasseler Zeiten technisch nicht anfassen — das wird nicht in der App geprüft, sondern auf dem Server, und lässt sich daher nicht umgehen.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <hr>
+      <h2>Was sich sonst ändern muss</h2>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Bereich</th><th>Heute</th><th>Künftig</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Adminrechte</td>
+            <td>Eine fest eingebaute Kennung im Programmcode</td>
+            <td>Nachschlagen in <code>admins</code>, je Gemeinde ein eigenes Konto mit eigenem Passwort</td>
+          </tr>
+          <tr>
+            <td>Nachrichten</td>
+            <td>Alle Nutzer erhalten alles</td>
+            <td>Ein Kanal je Gemeinde — man bekommt nur die eigenen</td>
+          </tr>
+          <tr>
+            <td>Logos</td>
+            <td>Fest in der App</td>
+            <td>Von einer Adresse geladen, damit eine neue Gemeinde kein App-Update braucht</td>
+          </tr>
+          <tr>
+            <td>Erster Start</td>
+            <td>Sprache → Einleitung</td>
+            <td>Sprache → <strong>Moschee wählen</strong> → Einleitung</td>
+          </tr>
+          <tr>
+            <td>Fernseher</td>
+            <td>Fest auf Kassel</td>
+            <td>Auswahl je Moschee, danach unverändert</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flag">
+      <span class="label">Bestehende Nutzer nicht vergessen</span>
+      <p>Wer die App heute hat, darf nach dem Update nicht plötzlich vor einer leeren Auswahl stehen. Bestehende Installationen werden automatisch Kassel zugeordnet, mit einem einmaligen Hinweis, dass sich die Gemeinde jetzt wechseln lässt.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <hr>
+      <h2>Wo die Arbeit wirklich liegt</h2>
+    </div>
+    <p>Der Programmierteil ist überschaubar und gut abschätzbar. Die folgenden Punkte entscheiden darüber, ob das Vorhaben gelingt — und keiner davon ist technisch.</p>
+
+    <ul>
+      <li><strong>84 Datensätze zusammentragen.</strong> Je Gemeinde: Logo, Anschrift, Koordinaten, Spendenlink, Ikamet-Zeiten, Džuma-Zeit, Ansprechpartner mit E-Mail. Das ist Fleißarbeit und muss von den Gemeinden selbst kommen. Erfahrungsgemäß ist das der Punkt, an dem solche Vorhaben liegenbleiben.</li>
+      <li><strong>Zuständigkeit.</strong> Wer legt die 84 Zugänge an? Wer setzt ein Passwort zurück, wenn ein Vorstand wechselt? Ohne eine benannte Person bleibt das am Entwickler hängen.</li>
+      <li><strong>Verantwortung für Inhalte.</strong> 84 Admins können Nachrichten veröffentlichen. Es braucht jemanden, der im Zweifel etwas löschen kann.</li>
+      <li><strong>Betreuung.</strong> 84 Gemeinden stellen Fragen. Das ist dauerhafter Aufwand, kein einmaliger.</li>
+    </ul>
+
+    <div class="flag">
+      <span class="label">Kosten im Blick behalten</span>
+      <p>Der kostenlose Firebase-Tarif erlaubt 50.000 Lesezugriffe am Tag. Bei einer Handvoll Gemeinden reicht das bequem; bei 84 Gemeinden mit mehreren tausend Nutzern muss man es beobachten. Der Wechsel in den kostenpflichtigen Tarif ist mit einer Ausgabengrenze möglich und läge voraussichtlich im niedrigen einstelligen Bereich pro Monat. Für das Ablegen der Logos empfiehlt sich ohnehin ein kostenloser Webspeicher statt Firebase.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <hr>
+      <h2>Vorgehen in vier Schritten</h2>
+    </div>
+    <p>Die Reihenfolge ist bewusst so gewählt, dass die beiden schwierigen Sonderfälle früh und mit Gemeinden geprüft werden, die ihr selbst erreicht.</p>
+
+    <div class="phases">
+      <div class="phase">
+        <div>
+          <h3>Umbau auf mehrere Gemeinden</h3>
+          <p>Datenstruktur, Auswahl der Moschee beim ersten Start, Gebetszeiten je Standort. Erprobt an Kassel mit Hann. Münden und Korbach — damit ist der Fall „eine Gemeinde, mehrere Städte" abgedeckt, inklusive der fehlenden Stadt.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div>
+          <h3>Rechte und Nachrichten je Gemeinde</h3>
+          <p>Eigene Zugänge, serverseitige Regeln, getrennte Nachrichtenkanäle. Erprobt an den beiden Berliner Gemeinden — damit ist der Fall „zwei Gemeinden, eine Stadt" abgedeckt.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div>
+          <h3>Aufnahme der übrigen Gemeinden</h3>
+          <p>In Gruppen von fünf bis zehn, nicht alle auf einmal. Jede Gruppe bringt Rückfragen, die man in der nächsten schon vermeidet.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div>
+          <h3>Werkzeuge für die Verwaltung</h3>
+          <p>Eine Oberfläche, mit der der Vorstand Gemeinden anlegt, Zugänge vergibt und im Notfall Inhalte entfernt — ohne dass jedes Mal ein Entwickler nötig ist.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <hr>
+      <h2>Was der Vorstand entscheiden muss</h2>
+    </div>
+    <p>Diese Punkte kann niemand außer euch beantworten, und sie blockieren jeweils einen Teil der Arbeit.</p>
+
+    <div class="decisions">
+      <div class="decision">
+        <span class="q">Wie soll die App künftig heißen?</span>
+        <span class="rec">„Kassel Vaktija" passt nicht mehr für 84 Gemeinden. <b>Empfehlung:</b> Umbenennen, solange die Nutzerzahl klein ist. Der Name im Store lässt sich ändern; die technische Kennung der App bleibt bestehen, eine Neuinstallation ist nicht nötig.</span>
+      </div>
+      <div class="decision">
+        <span class="q">Wer trägt die Daten der 84 Gemeinden zusammen?</span>
+        <span class="rec">Der Engpass des ganzen Vorhabens. <b>Empfehlung:</b> Ein Formular vom Vorstand an alle Gemeinden, mit Frist. Ohne verbindliche Rückmeldung startet eine Gemeinde nicht.</span>
+      </div>
+      <div class="decision">
+        <span class="q">Wer verwaltet die Zugänge?</span>
+        <span class="rec"><b>Empfehlung:</b> Eine benannte Person im Vorstand als Hauptverantwortlicher, nicht der Entwickler. Sonst ist jeder Passwortwechsel eine Programmieraufgabe.</span>
+      </div>
+      <div class="decision">
+        <span class="q">Rechnen alle Gemeinden nach derselben Methode?</span>
+        <span class="rec">Die Zeiten stammen aus der bosnischen Tradition. <b>Zu klären:</b> ob einzelne Gemeinden abweichende Ikamet-Regeln haben — das ist einstellbar, muss aber vorher bekannt sein.</span>
+      </div>
+      <div class="decision">
+        <span class="q">Wer darf Nachrichten im Zweifel löschen?</span>
+        <span class="rec"><b>Empfehlung:</b> Ein Oberadmin mit Leserecht auf alle Gemeinden und Löschrecht. Das ist schnell gebaut, muss aber personell besetzt sein.</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Erstellt am 25. August 2026 für den Vorstand der IGBD · Grundlage: Prüfung der bestehenden App
+    „Kassel Vaktija" und der Datenquelle vaktija.eu
+  </footer>
+
+</div>

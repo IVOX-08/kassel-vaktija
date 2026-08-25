@@ -201,4 +201,7 @@
     <string name="community_blocked_title">Community unavailable</string>
     <string name="community_blocked_body">This community is currently not available in the app. Choose another one to continue.</string>
     <string name="community_blocked_action">Choose another community</string>
+    <string name="admin_role_head">Head administrator (all communities)</string>
+    <string name="admin_role_community">Administrator: %1$s</string>
+    <string name="admin_login_entry">Sign in for community administrators</string>
 </resources>

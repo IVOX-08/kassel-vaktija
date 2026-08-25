@@ -8,6 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
+import de.igbdsandzakkassel.vaktija.data.model.AdminRole
+import de.igbdsandzakkassel.vaktija.data.model.CommunitySelection
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
@@ -18,6 +21,7 @@ import de.igbdsandzakkassel.vaktija.service.alarm.AlarmScheduler
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -30,6 +34,7 @@ class SettingsViewModel @Inject constructor(
     private val alarmScheduler: AlarmScheduler,
     private val dndController: DndController,
     private val adminController: AdminController,
+    private val communityRepository: CommunityRepository,
     private val communityRuleProvider: CommunityRuleProvider,
 ) : ViewModel() {
 
@@ -43,13 +48,31 @@ class SettingsViewModel @Inject constructor(
     val newsNotificationsEnabled: StateFlow<Boolean> = settingsRepository.observeNewsNotificationsEnabled()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
 
-    /** True while signed in as the admin → reveals the admin editor. */
-    val isAdmin: StateFlow<Boolean> = adminController.observeIsAdmin()
+    /**
+     * Whether the signed-in account may administer the community currently being viewed.
+     *
+     * Both halves matter: a community admin looking at another community must see no controls, and
+     * the head admin must see them everywhere. The Firestore rules enforce the same condition, so
+     * this only decides what is shown — it is not the thing standing between an account and the
+     * data.
+     */
+    val isAdmin: StateFlow<Boolean> = combine(
+        adminController.observeRole(),
+        communityRepository.observeSelection(),
+    ) { role, selection -> role.canAdminister(selection?.community?.id) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     /** Current community rules (Fajr Iqamah, Jumua, offsets) — what the admin edits. */
     val communityRules: StateFlow<CommunityRules> = communityRuleProvider.observeRules()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CommunityRules.DEFAULT)
+
+    /** The community being viewed — named in the admin header so the scope is never in doubt. */
+    val selection: StateFlow<CommunitySelection?> = communityRepository.observeSelection()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    /** The signed-in account's role — the Settings header names it, so nobody guesses. */
+    val adminRole: StateFlow<AdminRole> = adminController.observeRole()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AdminRole.None)
 
     fun signIn(email: String, password: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {

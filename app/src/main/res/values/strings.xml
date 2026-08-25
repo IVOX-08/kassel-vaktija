@@ -255,4 +255,7 @@
     <string name="community_blocked_title">Džemat nije dostupan</string>
     <string name="community_blocked_body">Ovaj džemat trenutno nije dostupan u aplikaciji. Odaberite drugi džemat da nastavite.</string>
     <string name="community_blocked_action">Odaberi drugi džemat</string>
+    <string name="admin_role_head">Glavni administrator (svi džemati)</string>
+    <string name="admin_role_community">Administrator: %1$s</string>
+    <string name="admin_login_entry">Prijava za administratore džemata</string>
 </resources>

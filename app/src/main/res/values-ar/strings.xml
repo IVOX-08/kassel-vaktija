@@ -189,4 +189,7 @@
     <string name="community_blocked_title">الجماعة غير متاحة</string>
     <string name="community_blocked_body">هذه الجماعة غير متاحة حاليًا في التطبيق. اختر جماعة أخرى للمتابعة.</string>
     <string name="community_blocked_action">اختر جماعة أخرى</string>
+    <string name="admin_role_head">المشرف العام (جميع الجماعات)</string>
+    <string name="admin_role_community">مشرف: %1$s</string>
+    <string name="admin_login_entry">تسجيل دخول مشرفي الجماعة</string>
 </resources>

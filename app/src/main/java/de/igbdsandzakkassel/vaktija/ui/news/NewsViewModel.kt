@@ -7,11 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.media.NewsImageCompressor
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
+import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
 import de.igbdsandzakkassel.vaktija.data.translate.GeminiTranslator
 import de.igbdsandzakkassel.vaktija.data.translate.NewsTranslator
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -26,6 +28,7 @@ class NewsViewModel @Inject constructor(
     private val translator: NewsTranslator,
     private val imageCompressor: NewsImageCompressor,
     adminController: AdminController,
+    private val communityRepository: CommunityRepository,
 ) : ViewModel() {
 
     // Session cache of already-fetched flyer bytes, so scrolling a card back into view doesn't
@@ -37,8 +40,18 @@ class NewsViewModel @Inject constructor(
     val news: StateFlow<List<NewsItem>?> = newsRepository.observeNews()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
-    /** True while signed in as the admin → reveals the post/delete controls. */
-    val isAdmin: StateFlow<Boolean> = adminController.observeIsAdmin()
+    /**
+     * Whether the signed-in account may administer the community currently being viewed.
+     *
+     * Both halves matter: a community admin looking at another community must see no controls, and
+     * the head admin must see them everywhere. The Firestore rules enforce the same condition, so
+     * this only decides what is shown — it is not the thing standing between an account and the
+     * data.
+     */
+    val isAdmin: StateFlow<Boolean> = combine(
+        adminController.observeRole(),
+        communityRepository.observeSelection(),
+    ) { role, selection -> role.canAdminister(selection?.community?.id) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     /**

@@ -189,4 +189,7 @@
     <string name="community_blocked_title">Xhemati nuk është i disponueshëm</string>
     <string name="community_blocked_body">Ky xhemat aktualisht nuk është i disponueshëm në aplikacion. Zgjidhni një tjetër për të vazhduar.</string>
     <string name="community_blocked_action">Zgjidh xhemat tjetër</string>
+    <string name="admin_role_head">Administratori kryesor (të gjitha xhematet)</string>
+    <string name="admin_role_community">Administrator: %1$s</string>
+    <string name="admin_login_entry">Hyrje për administratorët e xhematit</string>
 </resources>

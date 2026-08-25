@@ -189,4 +189,7 @@
     <string name="community_blocked_title">Община недоступна</string>
     <string name="community_blocked_body">Эта община сейчас недоступна в приложении. Выберите другую, чтобы продолжить.</string>
     <string name="community_blocked_action">Выбрать другую общину</string>
+    <string name="admin_role_head">Главный администратор (все общины)</string>
+    <string name="admin_role_community">Администратор: %1$s</string>
+    <string name="admin_login_entry">Вход для администраторов общины</string>
 </resources>

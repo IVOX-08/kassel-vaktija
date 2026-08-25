@@ -189,4 +189,7 @@
     <string name="community_blocked_title">Cemaat kullanılamıyor</string>
     <string name="community_blocked_body">Bu cemaat şu anda uygulamada mevcut değil. Devam etmek için başka bir cemaat seçin.</string>
     <string name="community_blocked_action">Başka cemaat seç</string>
+    <string name="admin_role_head">Baş yönetici (tüm cemaatler)</string>
+    <string name="admin_role_community">Yönetici: %1$s</string>
+    <string name="admin_login_entry">Cemaat yöneticileri için giriş</string>
 </resources>

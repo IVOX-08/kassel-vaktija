@@ -73,6 +73,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import de.igbdsandzakkassel.vaktija.BuildConfig
+import de.igbdsandzakkassel.vaktija.data.model.AdminRole
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
@@ -97,9 +98,10 @@ fun SettingsScreen(
     val notifPermission = rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
 
     val isAdmin by viewModel.isAdmin.collectAsStateWithLifecycle()
+    val adminRole by viewModel.adminRole.collectAsStateWithLifecycle()
+    val selection by viewModel.selection.collectAsStateWithLifecycle()
     val communityRules by viewModel.communityRules.collectAsStateWithLifecycle()
     var showLogin by remember { mutableStateOf(false) }
-    var versionTaps by remember { mutableIntStateOf(0) }
     val savedMsg = stringResource(R.string.admin_saved)
 
     Column(
@@ -110,7 +112,18 @@ fun SettingsScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         if (isAdmin) {
-            SectionHeader(stringResource(R.string.admin_section_header))
+            // Name which community these controls act on. With one community that was obvious; with
+            // eighty-odd it is the difference between editing your own Iqamah and someone else's.
+            SectionHeader(
+                when (val role = adminRole) {
+                    is AdminRole.Head -> stringResource(R.string.admin_role_head)
+                    is AdminRole.Community -> stringResource(
+                        R.string.admin_role_community,
+                        selection?.community?.name ?: role.communityId,
+                    )
+                    AdminRole.None -> stringResource(R.string.admin_section_header)
+                },
+            )
             AdminSection(
                 rules = communityRules,
                 onSave = { edited ->
@@ -355,17 +368,23 @@ fun SettingsScreen(
 
         Spacer(Modifier.height(8.dp))
         SectionHeader(stringResource(R.string.settings_about_header))
-        AboutCard(
-            onVersionClick = {
-                if (!isAdmin) {
-                    versionTaps++
-                    if (versionTaps >= 7) {
-                        versionTaps = 0
-                        showLogin = true
-                    }
-                }
-            },
-        )
+        AboutCard()
+
+        // A plain button, not a hidden seven-tap gesture on the version number. That worked while
+        // one person needed it; with an admin in every community, a door nobody can find is a
+        // support call each time a committee changes.
+        if (!isAdmin) {
+            TextButton(
+                onClick = { showLogin = true },
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.admin_login_entry),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
 
         Spacer(Modifier.height(24.dp))
     }
@@ -400,7 +419,7 @@ private const val DEV_EMAIL = "muhamedgolac311@gmail.com"
 
 /** "About the community" card: name, address (→Maps), e-mail (→mail app), donate (→PayPal), version. */
 @Composable
-private fun AboutCard(onVersionClick: () -> Unit) {
+private fun AboutCard() {
     val context = LocalContext.current
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -449,7 +468,6 @@ private fun AboutCard(onVersionClick: () -> Unit) {
                 text = "v${BuildConfig.VERSION_NAME}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.clickable(onClick = onVersionClick),
             )
         }
     }

@@ -201,4 +201,7 @@
     <string name="community_blocked_title">Gemeinde nicht verfügbar</string>
     <string name="community_blocked_body">Diese Gemeinde ist derzeit nicht in der App verfügbar. Wählen Sie eine andere Gemeinde, um fortzufahren.</string>
     <string name="community_blocked_action">Andere Gemeinde wählen</string>
+    <string name="admin_role_head">Hauptadministrator (alle Gemeinden)</string>
+    <string name="admin_role_community">Administrator: %1$s</string>
+    <string name="admin_login_entry">Anmeldung für Gemeinde-Administratoren</string>
 </resources>
