@@ -39,6 +39,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
@@ -49,14 +51,18 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 /**
- * Qibla compass. The Qibla bearing is the great-circle direction from Kassel to the Kaaba (a fixed
+ * Qibla compass. The bearing is the great-circle direction from the SELECTED mosque to the Kaaba
  * value, since the app is location-specific — no location permission needed). The device's heading
  * comes from the rotation-vector sensor; the dial rotates so the compass keeps pointing at true
  * directions, and a green marker shows where the Qibla is. Align that marker with the gold triangle
  * at the top and the top of the phone faces the Qibla.
  */
 @Composable
-fun QiblaScreen(modifier: Modifier = Modifier) {
+fun QiblaScreen(
+    modifier: Modifier = Modifier,
+    viewModel: QiblaViewModel = hiltViewModel(),
+) {
+    val qiblaBearing by viewModel.bearing.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val sensorManager = remember { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }
     val rotationSensor = remember { sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) }
@@ -102,7 +108,7 @@ fun QiblaScreen(modifier: Modifier = Modifier) {
             onDispose { sensorManager.unregisterListener(listener) }
         }
 
-        val aligned = abs(normalizeSigned(QIBLA_BEARING - azimuth)) < 5f
+        val aligned = abs(normalizeSigned(qiblaBearing - azimuth)) < 5f
 
         Text(
             text = stringResource(R.string.nav_qibla),
@@ -112,13 +118,18 @@ fun QiblaScreen(modifier: Modifier = Modifier) {
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = "${QIBLA_BEARING.roundToInt()}°",
+            text = "${qiblaBearing.roundToInt()}°",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.secondary,
         )
         Spacer(Modifier.height(28.dp))
 
-        CompassDial(azimuth = azimuth, aligned = aligned, modifier = Modifier.size(300.dp))
+        CompassDial(
+            azimuth = azimuth,
+            qiblaBearing = qiblaBearing,
+            aligned = aligned,
+            modifier = Modifier.size(300.dp),
+        )
 
         Spacer(Modifier.height(28.dp))
         Text(
@@ -141,7 +152,7 @@ fun QiblaScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CompassDial(azimuth: Float, aligned: Boolean, modifier: Modifier) {
+private fun CompassDial(azimuth: Float, qiblaBearing: Float, aligned: Boolean, modifier: Modifier) {
     val ringColor = MaterialTheme.colorScheme.outlineVariant
     val onSurface = MaterialTheme.colorScheme.onSurface
     val northColor = Color(0xFFD32F2F)
@@ -194,7 +205,7 @@ private fun CompassDial(azimuth: Float, aligned: Boolean, modifier: Modifier) {
             }
 
             // Qibla marker
-            val qRad = Math.toRadians((QIBLA_BEARING - 90).toDouble())
+            val qRad = Math.toRadians((qiblaBearing - 90).toDouble())
             val tip = Offset(
                 c.x + (r - 24.dp.toPx()) * cos(qRad).toFloat(),
                 c.y + (r - 24.dp.toPx()) * sin(qRad).toFloat(),
@@ -234,18 +245,3 @@ private fun normalizeSigned(deg: Float): Float {
     return d
 }
 
-// Kassel → Kaaba great-circle (initial) bearing. Location-fixed: the app is Kassel-specific, so no
-// runtime location/permission is needed and the value is constant (~136°).
-private const val KASSEL_LAT = 51.3127
-private const val KASSEL_LNG = 9.4797
-
-private val QIBLA_BEARING: Float = run {
-    val kaabaLat = Math.toRadians(21.4225)
-    val kaabaLng = Math.toRadians(39.8262)
-    val lat1 = Math.toRadians(KASSEL_LAT)
-    val lng1 = Math.toRadians(KASSEL_LNG)
-    val dLng = kaabaLng - lng1
-    val y = sin(dLng) * cos(kaabaLat)
-    val x = cos(lat1) * sin(kaabaLat) - sin(lat1) * cos(kaabaLat) * cos(dLng)
-    ((Math.toDegrees(atan2(y, x)) + 360.0) % 360.0).toFloat()
-}
