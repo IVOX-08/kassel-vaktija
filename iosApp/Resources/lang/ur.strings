@@ -122,6 +122,8 @@
 "qibla_hint" = "فون کو سیدھا رکھیں اور گھومیں جب تک تیر اوپر کی طرف اشارہ نہ کرے۔";
 "qibla_facing" = "آپ قبلہ رخ ہیں";
 "qibla_no_sensor" = "اس آلے پر قطب نما سینسر دستیاب نہیں۔";
+"qibla_from_mosque" = "آپ کی مسجد کے مطابق";
+"qibla_from_device" = "آپ کے مقام کے مطابق";
 "settings_autosilence" = "نماز کے دوران فون خاموش کریں";
 "settings_silence_duration" = "دورانیہ";
 "settings_perm_dnd" = "«ڈسٹرب نہ کریں» تک رسائی کی اجازت دیں";

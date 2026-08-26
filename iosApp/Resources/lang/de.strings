@@ -111,6 +111,8 @@
 "qibla_hint" = "Halte das Handy flach und drehe dich, bis der Pfeil nach oben zeigt.";
 "qibla_facing" = "Du schaust Richtung Qibla";
 "qibla_no_sensor" = "Kompass-Sensor auf diesem Gerät nicht verfügbar.";
+"qibla_from_mosque" = "Ausgehend von Ihrer Moschee";
+"qibla_from_device" = "Ausgehend von Ihrem Standort";
 "settings_autosilence" = "Während des Gebets stummschalten";
 "settings_silence_duration" = "Dauer";
 "settings_perm_dnd" = "Zugriff auf „Nicht stören“ erlauben";

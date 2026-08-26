@@ -111,6 +111,8 @@
 "qibla_hint" = "Hold the phone flat and turn until the arrow points up.";
 "qibla_facing" = "You are facing the Qibla";
 "qibla_no_sensor" = "Compass sensor not available on this device.";
+"qibla_from_mosque" = "Based on your mosque";
+"qibla_from_device" = "Based on your location";
 "settings_autosilence" = "Silence phone during prayer";
 "settings_silence_duration" = "Duration";
 "settings_perm_dnd" = "Allow Do Not Disturb access";

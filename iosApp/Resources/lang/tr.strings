@@ -122,6 +122,8 @@
 "qibla_hint" = "Telefonu düz tutun ve ok yukarıyı gösterene kadar dönün.";
 "qibla_facing" = "Kıbleye dönüksünüz";
 "qibla_no_sensor" = "Bu cihazda pusula sensörü bulunmuyor.";
+"qibla_from_mosque" = "Caminize göre";
+"qibla_from_device" = "Konumunuza göre";
 "settings_autosilence" = "Namaz sırasında sessize al";
 "settings_silence_duration" = "Süre";
 "settings_perm_dnd" = "„Rahatsız Etme“ erişimine izin ver";

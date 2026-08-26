@@ -122,6 +122,8 @@
 "qibla_hint" = "Mbaje telefonin horizontalisht dhe rrotullohu derisa shigjeta të tregojë lart.";
 "qibla_facing" = "Je i kthyer nga Kibla";
 "qibla_no_sensor" = "Sensori i busullës nuk është i disponueshëm në këtë pajisje.";
+"qibla_from_mosque" = "Sipas xhamisë suaj";
+"qibla_from_device" = "Sipas vendndodhjes suaj";
 "settings_autosilence" = "Heshtje gjatë namazit";
 "settings_silence_duration" = "Kohëzgjatja";
 "settings_perm_dnd" = "Lejo qasjen te „Mos shqetëso“";

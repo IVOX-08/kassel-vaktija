@@ -122,6 +122,8 @@
 "qibla_hint" = "أمسك الهاتف أفقيًا واستدر حتى يشير السهم إلى الأعلى.";
 "qibla_facing" = "أنت متّجه نحو القبلة";
 "qibla_no_sensor" = "مستشعر البوصلة غير متوفّر على هذا الجهاز.";
+"qibla_from_mosque" = "انطلاقًا من مسجدكم";
+"qibla_from_device" = "انطلاقًا من موقعكم";
 "settings_autosilence" = "كتم الهاتف أثناء الصلاة";
 "settings_silence_duration" = "المدة";
 "settings_perm_dnd" = "السماح بالوصول إلى «عدم الإزعاج»";

@@ -133,6 +133,8 @@
 "qibla_hint" = "Drži telefon vodoravno i okreći se dok strelica ne pokaže prema gore.";
 "qibla_facing" = "Okrenuti ste prema Kibli";
 "qibla_no_sensor" = "Senzor kompasa nije dostupan na ovom uređaju.";
+"qibla_from_mosque" = "Prema vašoj džamiji";
+"qibla_from_device" = "Prema vašem trenutnom položaju";
 "settings_autosilence" = "Utišaj telefon za vrijeme namaza";
 "settings_silence_duration" = "Trajanje";
 "settings_perm_dnd" = "Dozvoli „Ne uznemiravaj“";

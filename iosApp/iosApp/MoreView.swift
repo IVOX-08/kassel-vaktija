@@ -197,20 +197,73 @@ enum TrackerStore {
 
 // MARK: - 5.7 Qibla (fixed bearing from shared + live compass)
 
+/// Kompassdrehung des Geräts und — falls erlaubt — seine ungefähre Position.
+///
+/// Der Standort ist bewusst grob und wird nur im Vordergrund geholt, solange der Kompass offen ist.
+/// Die Richtung zur Kaaba ändert sich über einen Kilometer um weit weniger als ein hundertstel
+/// Grad; eine stadtgenaue Ortung ist also genauso gut wie eine metergenaue — und deutlich leichter
+/// zu rechtfertigen. Die Position verlässt das Gerät nicht.
 final class HeadingModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var heading: Double?
+    /// Ungefähre Position des Geräts, oder nil ohne Berechtigung bzw. ohne Ortung.
+    @Published var coordinate: CLLocationCoordinate2D?
+
     private let manager = CLLocationManager()
-    override init() { super.init(); manager.delegate = self }
-    func start() { if CLLocationManager.headingAvailable() { manager.startUpdatingHeading() } }
-    func stop() { manager.stopUpdatingHeading() }
+
+    override init() {
+        super.init()
+        manager.delegate = self
+        // Stadtgenau reicht — alles Feinere kostet Akku und wäre nicht zu begründen.
+        manager.desiredAccuracy = kCLLocationAccuracyKilometer
+    }
+
+    func start() {
+        if CLLocationManager.headingAvailable() { manager.startUpdatingHeading() }
+        // Die zuletzt bekannte Ortung liegt meist schon vor und kommt sofort, auch im Gebäude.
+        coordinate = manager.location?.coordinate
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse, .authorizedAlways:
+            manager.startUpdatingLocation()
+        default:
+            // Abgelehnt: die Richtung der Moschee bleibt, die Ansicht sagt es dem Nutzer.
+            break
+        }
+    }
+
+    func stop() {
+        manager.stopUpdatingHeading()
+        manager.stopUpdatingLocation()
+    }
+
     func locationManager(_ m: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         heading = newHeading.magneticHeading
+    }
+
+    func locationManager(_ m: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let last = locations.last else { return }
+        coordinate = last.coordinate
+    }
+
+    func locationManagerDidChangeAuthorization(_ m: CLLocationManager) {
+        // Erlaubt der Nutzer erst im Dialog, soll die Richtung ohne Neuöffnen stimmen.
+        if m.authorizationStatus == .authorizedWhenInUse || m.authorizationStatus == .authorizedAlways {
+            m.startUpdatingLocation()
+            coordinate = m.location?.coordinate
+        }
     }
 }
 
 struct QiblaView: View {
     @StateObject private var model = HeadingModel()
-    private let qibla = QiblaKt.qiblaDegrees()
+    /// Vom eigenen Standort, sobald einer vorliegt — sonst von der Moschee. Der feste Wert war
+    /// innerhalb Deutschlands knapp daneben, aber ab Sarajevo oder Istanbul deutlich falsch.
+    private var qibla: Double {
+        guard let c = model.coordinate else { return QiblaKt.qiblaDegrees() }
+        return QiblaKt.qiblaDegrees(latitude: c.latitude, longitude: c.longitude)
+    }
+    private var usingDeviceLocation: Bool { model.coordinate != nil }
     private var aligned: Bool { guard let h = model.heading else { return false }; return abs(angleDiff(qibla, h)) < 5 }
     private func angleDiff(_ a: Double, _ b: Double) -> Double { var d = (a - b).truncatingRemainder(dividingBy: 360); if d > 180 { d -= 360 }; if d < -180 { d += 360 }; return d }
 
@@ -218,6 +271,10 @@ struct QiblaView: View {
         VStack(spacing: 16) {
             Text(L("nav_qibla")).font(.inter(22, .bold)).foregroundColor(.appPrimary)
             Text("\(Int(qibla.rounded()))°").font(.inter(17)).foregroundColor(.appSecondary)
+            // Welche der beiden Quellen gerade gilt — sonst wäre nicht erklärbar, warum die Zahl
+            // unterwegs eine andere ist als zu Hause.
+            Text(L(usingDeviceLocation ? "qibla_from_device" : "qibla_from_mosque"))
+                .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
             ZStack {
                 Circle().stroke(Color.appOnSurfaceVariant.opacity(0.3), lineWidth: 2)
                 // North marker (red)
