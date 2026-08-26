@@ -104,6 +104,9 @@ fun SettingsScreen(
     val isAdmin by viewModel.isAdmin.collectAsStateWithLifecycle()
     val adminRole by viewModel.adminRole.collectAsStateWithLifecycle()
     val canEditTimes by viewModel.canEditTimes.collectAsStateWithLifecycle()
+    val adminCommunityName by viewModel.adminCommunityName.collectAsStateWithLifecycle()
+    val canManageCommunities by viewModel.canManageCommunities.collectAsStateWithLifecycle()
+    val allCommunities by viewModel.allCommunities.collectAsStateWithLifecycle()
     val selection by viewModel.selection.collectAsStateWithLifecycle()
     val communityRules by viewModel.communityRules.collectAsStateWithLifecycle()
     var showLogin by remember { mutableStateOf(false) }
@@ -125,7 +128,7 @@ fun SettingsScreen(
                     is AdminRole.Head -> stringResource(R.string.admin_role_head)
                     is AdminRole.Community -> stringResource(
                         R.string.admin_role_community,
-                        selection?.community?.name ?: role.communityId,
+                        adminCommunityName ?: role.communityId,
                     )
                     AdminRole.None -> stringResource(R.string.admin_section_header)
                 },
@@ -161,6 +164,20 @@ fun SettingsScreen(
                 },
                 onSignOut = viewModel::signOut,
             )
+            // The head admin's actual job: deciding who takes part.
+            if (canManageCommunities) {
+                Text(
+                    text = stringResource(R.string.admin_manage_communities),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(bottom = 6.dp),
+                )
+                CommunityAdminSection(
+                    communities = allCommunities,
+                    onSetStatus = viewModel::setCommunityStatus,
+                )
+                Spacer(Modifier.height(8.dp))
+            }
             // The head admin has no editor, so his sign-out cannot live inside one.
             if (!canEditTimes) {
                 OutlinedButton(

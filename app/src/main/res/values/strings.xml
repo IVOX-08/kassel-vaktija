@@ -269,4 +269,11 @@
     <string name="news_audience_none">Ništa</string>
     <string name="news_audience_confirm_all">Svi džemati</string>
     <string name="news_audience_confirm">Odabrano: %1$d</string>
+    <string name="admin_status_active">Aktivan</string>
+    <string name="admin_status_suspended">Ograničen</string>
+    <string name="admin_status_blocked">Blokiran</string>
+    <string name="admin_status_active_hint">Sve radi normalno.</string>
+    <string name="admin_status_suspended_hint">Nema u izboru, bez logotipa, donacija i obavijesti — namaska vremena i dalje rade.</string>
+    <string name="admin_status_blocked_hint">Aplikacija prikazuje samo obavijest. Reverzibilno.</string>
+    <string name="admin_manage_communities">Džemati</string>
 </resources>

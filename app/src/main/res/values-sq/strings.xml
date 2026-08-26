@@ -203,4 +203,11 @@
     <string name="news_audience_none">Asnjë</string>
     <string name="news_audience_confirm_all">Të gjitha xhematet</string>
     <string name="news_audience_confirm">Të zgjedhura: %1$d</string>
+    <string name="admin_status_active">Aktiv</string>
+    <string name="admin_status_suspended">I kufizuar</string>
+    <string name="admin_status_blocked">I bllokuar</string>
+    <string name="admin_status_active_hint">Gjithçka funksionon normalisht.</string>
+    <string name="admin_status_suspended_hint">Jashtë listës, pa logo, donacione dhe njoftime — kohët e namazit vazhdojnë.</string>
+    <string name="admin_status_blocked_hint">Aplikacioni shfaq vetëm një njoftim. E kthyeshme.</string>
+    <string name="admin_manage_communities">Menaxho xhematet</string>
 </resources>

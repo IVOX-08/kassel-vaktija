@@ -203,4 +203,11 @@
     <string name="news_audience_none">لا شيء</string>
     <string name="news_audience_confirm_all">جميع الجماعات</string>
     <string name="news_audience_confirm">المحدد: %1$d</string>
+    <string name="admin_status_active">نشطة</string>
+    <string name="admin_status_suspended">مقيَّدة</string>
+    <string name="admin_status_blocked">محظورة</string>
+    <string name="admin_status_active_hint">كل شيء يعمل بشكل طبيعي.</string>
+    <string name="admin_status_suspended_hint">خارج القائمة، بلا شعار أو تبرعات أو إعلانات — مواقيت الصلاة تستمر.</string>
+    <string name="admin_status_blocked_hint">يعرض التطبيق إشعارًا فقط. يمكن التراجع.</string>
+    <string name="admin_manage_communities">إدارة الجماعات</string>
 </resources>

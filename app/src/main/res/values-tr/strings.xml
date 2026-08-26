@@ -203,4 +203,11 @@
     <string name="news_audience_none">Hiçbiri</string>
     <string name="news_audience_confirm_all">Tüm cemaatler</string>
     <string name="news_audience_confirm">Seçili: %1$d</string>
+    <string name="admin_status_active">Etkin</string>
+    <string name="admin_status_suspended">Sınırlı</string>
+    <string name="admin_status_blocked">Engelli</string>
+    <string name="admin_status_active_hint">Her şey normal çalışıyor.</string>
+    <string name="admin_status_suspended_hint">Seçimde yok; logo, bağış ve duyurular kapalı — namaz vakitleri çalışmaya devam eder.</string>
+    <string name="admin_status_blocked_hint">Uygulama yalnızca bir bildirim gösterir. Geri alınabilir.</string>
+    <string name="admin_manage_communities">Cemaatleri yönet</string>
 </resources>

@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
 import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
+import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
+import kotlinx.coroutines.flow.map
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
 import de.igbdsandzakkassel.vaktija.data.model.CommunitySelection
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
@@ -72,6 +75,34 @@ class SettingsViewModel @Inject constructor(
         communityRepository.observeSelection(),
     ) { role, selection -> role.canEditTimes(selection?.community?.id) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /**
+     * The name of the community this account administers — NOT the one currently being viewed.
+     *
+     * The header used to print the selected community's name next to "Administrator", so switching
+     * to Rosenheim made a Kassel admin read "Administrator: Rosenheim". That is precisely backwards
+     * from what the label is for.
+     */
+    val adminCommunityName: StateFlow<String?> = combine(
+        adminController.observeRole(),
+        communityRepository.observeAll(),
+    ) { role, all ->
+        (role as? AdminRole.Community)?.let { r ->
+            all.firstOrNull { it.id == r.communityId }?.name ?: r.communityId
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    /** True for the head admin — reveals the community management list. */
+    val canManageCommunities: StateFlow<Boolean> = adminController.observeRole()
+        .map { it.canManageCommunities }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /** Every community, switched-off ones included — the head admin has to see those especially. */
+    val allCommunities: StateFlow<List<Community>> = communityRepository.observeAll()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    fun setCommunityStatus(communityId: String, status: CommunityStatus) =
+        communityRepository.setStatus(communityId, status)
 
     /** Current community rules (Fajr Iqamah, Jumua, offsets) — what the admin edits. */
     val communityRules: StateFlow<CommunityRules> = communityRuleProvider.observeRules()

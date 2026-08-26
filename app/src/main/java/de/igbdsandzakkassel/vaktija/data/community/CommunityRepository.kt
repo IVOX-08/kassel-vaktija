@@ -58,6 +58,19 @@ class CommunityRepository @Inject constructor(
     /** Just the location — what the times/alarm layer needs. */
     fun observeLocation(): Flow<CommunityLocation?> = observeSelection().map { it?.location }
 
+    /**
+     * Set a community's participation status. Head admin only — the Firestore rule enforces that;
+     * this just sends the write.
+     *
+     * Fire-and-forget, like the other admin writes in this app: Firestore commits to the local
+     * cache at once and syncs when there is a connection, whereas awaiting the task would hang
+     * whenever the phone is offline.
+     */
+    fun setStatus(communityId: String, status: CommunityStatus) {
+        firestore.collection(COLLECTION).document(communityId)
+            .update("status", status.name.lowercase())
+    }
+
     private fun com.google.firebase.firestore.DocumentSnapshot.toCommunity(): Community? {
         val name = getString("name") ?: return null
         @Suppress("UNCHECKED_CAST")

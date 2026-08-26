@@ -203,4 +203,11 @@
     <string name="news_audience_none">Никто</string>
     <string name="news_audience_confirm_all">Все общины</string>
     <string name="news_audience_confirm">Выбрано: %1$d</string>
+    <string name="admin_status_active">Активна</string>
+    <string name="admin_status_suspended">Ограничена</string>
+    <string name="admin_status_blocked">Заблокирована</string>
+    <string name="admin_status_active_hint">Всё работает нормально.</string>
+    <string name="admin_status_suspended_hint">Нет в списке, без логотипа, пожертвований и объявлений — время намаза работает.</string>
+    <string name="admin_status_blocked_hint">Приложение показывает только уведомление. Обратимо.</string>
+    <string name="admin_manage_communities">Управление общинами</string>
 </resources>

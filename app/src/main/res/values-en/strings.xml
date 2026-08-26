@@ -215,4 +215,11 @@
     <string name="news_audience_none">None</string>
     <string name="news_audience_confirm_all">All communities</string>
     <string name="news_audience_confirm">Selected: %1$d</string>
+    <string name="admin_status_active">Active</string>
+    <string name="admin_status_suspended">Limited</string>
+    <string name="admin_status_blocked">Blocked</string>
+    <string name="admin_status_active_hint">Everything works normally.</string>
+    <string name="admin_status_suspended_hint">Out of the picker, no logo, donations or announcements — prayer times keep working.</string>
+    <string name="admin_status_blocked_hint">The app shows only a notice. Reversible.</string>
+    <string name="admin_manage_communities">Manage communities</string>
 </resources>

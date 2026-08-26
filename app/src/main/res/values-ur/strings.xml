@@ -203,4 +203,11 @@
     <string name="news_audience_none">کوئی نہیں</string>
     <string name="news_audience_confirm_all">تمام جماعتیں</string>
     <string name="news_audience_confirm">منتخب: %1$d</string>
+    <string name="admin_status_active">فعال</string>
+    <string name="admin_status_suspended">محدود</string>
+    <string name="admin_status_blocked">مسدود</string>
+    <string name="admin_status_active_hint">سب کچھ معمول کے مطابق کام کر رہا ہے۔</string>
+    <string name="admin_status_suspended_hint">فہرست سے باہر، لوگو، عطیات اور اعلانات بند — نماز کے اوقات چلتے رہیں گے۔</string>
+    <string name="admin_status_blocked_hint">ایپ صرف ایک اطلاع دکھاتی ہے۔ واپس کیا جا سکتا ہے۔</string>
+    <string name="admin_manage_communities">جماعتوں کا انتظام</string>
 </resources>

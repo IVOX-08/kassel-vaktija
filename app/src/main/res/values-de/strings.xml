@@ -215,4 +215,11 @@
     <string name="news_audience_none">Keine</string>
     <string name="news_audience_confirm_all">Alle Gemeinden</string>
     <string name="news_audience_confirm">Ausgewählt: %1$d</string>
+    <string name="admin_status_active">Aktiv</string>
+    <string name="admin_status_suspended">Eingeschränkt</string>
+    <string name="admin_status_blocked">Gesperrt</string>
+    <string name="admin_status_active_hint">Alles funktioniert normal.</string>
+    <string name="admin_status_suspended_hint">Nicht in der Auswahl, kein Logo, keine Spenden, keine Mitteilungen — Gebetszeiten laufen weiter.</string>
+    <string name="admin_status_blocked_hint">Die App zeigt nur noch einen Hinweis. Rücknehmbar.</string>
+    <string name="admin_manage_communities">Gemeinden verwalten</string>
 </resources>
