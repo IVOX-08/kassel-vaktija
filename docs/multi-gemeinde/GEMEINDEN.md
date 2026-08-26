@@ -14,18 +14,36 @@ Stattdessen: Die meisten Gemeinden haben eigene Webseiten nach festem Muster (`d
 Startseite auslesen. Drei davon habe ich von Hand nachkorrigiert, weil das Muster den Straßennamen
 verstümmelt hatte.
 
-## ⚠️ Was noch nicht stimmt
+## Namen
 
-**Die Namen sind Platzhalter.** Ich habe „IGBD-Gemeinde \<Stadt\>" eingesetzt. Die echten Namen
-weichen ab — Bremen heißt z. B. „Gemeinde bosnischer Moslems e.V.", Rosenheim „Bosnischer
-Kulturverein e.V.". **Vor der Veröffentlichung durch die echten Namen ersetzen.**
+Die Namen stammen aus den Impressen der Gemeindeseiten, also die eingetragenen Vereinsnamen —
+nicht bloß Stadtnamen. Sie unterscheiden sich deutlich voneinander:
 
-**Logos fehlen komplett.** Kommt mit dem Anschreiben.
+- „Gemeinde bosnischer Moslems e.V. — Džemat Bremen"
+- „Bosniakisch-Deutsche Gemeinde Karlsruhe e.V."
+- „IGBD-Džemat BKC Siegen e.V."
+- „Džemat IKRE Berlin e.V."
+- „IGBD-Gemeinde Böblingen/Sindelfingen e.V." (eine Gemeinde für zwei Städte)
 
-**Iqamah- und Džuma-Zeiten fehlen.** Die kann niemand außer der Gemeinde selbst liefern.
+Das ist genau der Grund, warum Stadtnamen nicht reichen: In Berlin gibt es mehrere Gemeinden, und
+in der Auswahl unterscheiden sie sich nur am Namen.
 
-**Es fehlen Gemeinden.** 19 von rund 76. Nicht gefunden wurden alle ohne eigene Webseite und alle
-mit anderem Adressmuster.
+**Trotzdem gegenlesen lassen.** Ein Impressum ist keine Selbstbezeichnung — manche Gemeinde nennt
+sich im Alltag anders, als sie im Vereinsregister steht. Bei der Rückmeldung auf das Anschreiben
+sollte jede Gemeinde ihren Anzeigenamen bestätigen.
+
+## Iqamah und Džuma
+
+Jeder Eintrag bekommt **Kassels Werte als Ausgangspunkt** (Fajr-Iqamah 05:15, Džuma 15:00,
+Versatz +10/+10/+5/+0). Das ist eine Vorgabe, keine Behauptung — jede Gemeinde bestätigt oder
+korrigiert sie in der Rückmeldung und kann sie danach selbst in der App ändern.
+
+## ⚠️ Was noch fehlt
+
+**Logos** und **Spendenlinks** — bewusst leer gelassen, die lassen sich nicht erraten.
+
+**Gemeinden.** 20 von rund 76. Nicht gefunden wurden alle ohne eigene Webseite und alle mit
+anderem Adressmuster.
 
 ## Was verlässlich ist
 

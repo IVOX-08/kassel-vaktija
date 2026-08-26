@@ -367,10 +367,11 @@ fun SettingsScreen(
         }
 
         Spacer(Modifier.height(8.dp))
-        // Switching community is the head admin's tool only. For everyone else it would be a way
-        // to sit inside a community they do not belong to and read its announcements — and it
-        // would let a mistap silently swap someone's prayer times for another town's.
-        if (adminRole is AdminRole.Head) {
+        // Head admin only in a release build — for an ordinary member this would be a way to sit
+        // inside a community they do not belong to, and a mistap would silently swap their prayer
+        // times for another town's. Always present in a debug build, because switching community is
+        // the single thing that needs checking most often while this is being built.
+        if (adminRole is AdminRole.Head || BuildConfig.DEBUG) {
             SectionHeader(stringResource(R.string.settings_community_header))
             ChangeCommunityPill()
             Spacer(Modifier.height(8.dp))

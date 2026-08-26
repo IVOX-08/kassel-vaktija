@@ -164,6 +164,16 @@ def build(name, address, cities):
         "name": name,
         "address": address,
         "status": "active",
+        # Kassel's values as the starting point for every community, at the owner's instruction.
+        # They are a sensible default rather than a claim: each community confirms or corrects its
+        # own Iqamah and Jumu'ah in the reply to the board's letter, and can edit them in-app
+        # afterwards. Logo and donation link are deliberately absent — those cannot be guessed.
+        "fajrIqamah": "05:15",
+        "jumua": "15:00",
+        "dhuhrOffsetMin": 10,
+        "asrOffsetMin": 10,
+        "maghribOffsetMin": 5,
+        "ishaOffsetMin": 0,
         "locations": [{
             "id": town["slug"],
             "name": town["name"],
