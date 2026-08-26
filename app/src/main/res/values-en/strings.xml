@@ -250,4 +250,8 @@
     <string name="news_sender_federation" translatable="false">IGBD</string>
     <string name="news_like">Like</string>
     <string name="news_dislike">Cannot come</string>
+    <string name="qibla_from_mosque">Based on your mosque</string>
+    <string name="qibla_from_device">Based on your current location</string>
+    <string name="qibla_use_device">Use my location</string>
+    <string name="qibla_use_mosque">Use the mosque</string>
 </resources>

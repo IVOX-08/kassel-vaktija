@@ -238,4 +238,8 @@
     <string name="news_sender_federation" translatable="false">IGBD</string>
     <string name="news_like">پسند</string>
     <string name="news_dislike">نہیں آ سکتا</string>
+    <string name="qibla_from_mosque">آپ کی مسجد کے مطابق</string>
+    <string name="qibla_from_device">آپ کے موجودہ مقام کے مطابق</string>
+    <string name="qibla_use_device">میرا مقام استعمال کریں</string>
+    <string name="qibla_use_mosque">مسجد استعمال کریں</string>
 </resources>

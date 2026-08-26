@@ -17,6 +17,11 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- Qibla while travelling. COARSE only, foreground only, never sent anywhere: the bearing to
+         the Kaaba shifts by far less than a degree over a kilometre, so a city-level fix is as good
+         as a precise one — and it keeps this to a permission people grant without hesitating. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <!-- Auto-silence during prayer: toggle Do Not Disturb (Phase 4). -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 

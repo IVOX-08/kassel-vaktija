@@ -41,6 +41,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.TextButton
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
@@ -63,7 +68,21 @@ fun QiblaScreen(
     viewModel: QiblaViewModel = hiltViewModel(),
 ) {
     val qiblaBearing by viewModel.bearing.collectAsStateWithLifecycle()
+    val usingDeviceLocation by viewModel.usingDeviceLocation.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    // Asked for only when the button is tapped, never on opening the screen: most people pray at
+    // home, where the mosque's bearing is already right, and a permission prompt out of nowhere is
+    // the kind of thing that makes people distrust an app.
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) {
+            QiblaLocation.lastKnown(context)?.let { (lat, lon) ->
+                viewModel.useDeviceLocation(lat, lon)
+            }
+        }
+    }
     val sensorManager = remember { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }
     val rotationSensor = remember { sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) }
 
@@ -122,7 +141,38 @@ fun QiblaScreen(
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.secondary,
         )
-        Spacer(Modifier.height(28.dp))
+        // Say what the reading is based on. A compass that is silently pointing from a mosque
+        // 1500 km away is worse than one that admits it.
+        Text(
+            text = stringResource(
+                if (usingDeviceLocation) R.string.qibla_from_device
+                else R.string.qibla_from_mosque,
+            ),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.height(8.dp))
+        TextButton(
+            onClick = {
+                if (usingDeviceLocation) {
+                    viewModel.useMosqueLocation()
+                } else if (QiblaLocation.hasPermission(context)) {
+                    QiblaLocation.lastKnown(context)?.let { (lat, lon) ->
+                        viewModel.useDeviceLocation(lat, lon)
+                    }
+                } else {
+                    permissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                }
+            },
+        ) {
+            Text(
+                stringResource(
+                    if (usingDeviceLocation) R.string.qibla_use_mosque
+                    else R.string.qibla_use_device,
+                ),
+            )
+        }
+        Spacer(Modifier.height(20.dp))
 
         CompassDial(
             azimuth = azimuth,

@@ -238,4 +238,8 @@
     <string name="news_sender_federation" translatable="false">IGBD</string>
     <string name="news_like">Нравится</string>
     <string name="news_dislike">Не смогу прийти</string>
+    <string name="qibla_from_mosque">По вашей мечети</string>
+    <string name="qibla_from_device">По вашему текущему местоположению</string>
+    <string name="qibla_use_device">Использовать моё местоположение</string>
+    <string name="qibla_use_mosque">Использовать мечеть</string>
 </resources>

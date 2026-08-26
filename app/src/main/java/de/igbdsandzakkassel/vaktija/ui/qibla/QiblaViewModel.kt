@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -25,12 +27,37 @@ class QiblaViewModel @Inject constructor(
     communityRepository: CommunityRepository,
 ) : ViewModel() {
 
-    val bearing: StateFlow<Float> = communityRepository.observeLocation()
-        .map { location ->
-            if (location == null) KASSEL_FALLBACK
-            else bearingToKaaba(location.latitude, location.longitude)
+    /** Set when the reading is based on the device's own position rather than the mosque. */
+    private val _deviceFix = MutableStateFlow<Pair<Double, Double>?>(null)
+
+    /** True while the bearing comes from where the phone actually is. */
+    val usingDeviceLocation: StateFlow<Boolean> = _deviceFix
+        .map { it != null }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    val bearing: StateFlow<Float> = combine(
+        communityRepository.observeLocation(),
+        _deviceFix,
+    ) { mosque, fix ->
+        when {
+            // Where the phone is wins: someone travelling is the whole reason this exists. Within
+            // Germany the difference is a degree or two, but Novi Pazar is 7 degrees off Kassel and
+            // Istanbul is 21 — far enough to line a row up wrong.
+            fix != null -> bearingToKaaba(fix.first, fix.second)
+            mosque != null -> bearingToKaaba(mosque.latitude, mosque.longitude)
+            else -> KASSEL_FALLBACK
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), KASSEL_FALLBACK)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), KASSEL_FALLBACK)
+
+    /** Called once permission is in hand; a null fix simply leaves the mosque bearing in place. */
+    fun useDeviceLocation(latitude: Double, longitude: Double) {
+        _deviceFix.value = latitude to longitude
+    }
+
+    /** Back to the mosque's bearing. */
+    fun useMosqueLocation() {
+        _deviceFix.value = null
+    }
 
     private companion object {
         const val KAABA_LAT = 21.4225

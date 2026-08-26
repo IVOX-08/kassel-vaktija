@@ -238,4 +238,8 @@
     <string name="news_sender_federation" translatable="false">IGBD</string>
     <string name="news_like">Pëlqej</string>
     <string name="news_dislike">Nuk mund të vij</string>
+    <string name="qibla_from_mosque">Sipas xhamisë suaj</string>
+    <string name="qibla_from_device">Sipas vendndodhjes suaj</string>
+    <string name="qibla_use_device">Përdor vendndodhjen time</string>
+    <string name="qibla_use_mosque">Përdor xhaminë</string>
 </resources>

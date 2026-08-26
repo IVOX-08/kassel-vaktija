@@ -238,4 +238,8 @@
     <string name="news_sender_federation" translatable="false">IGBD</string>
     <string name="news_like">Beğen</string>
     <string name="news_dislike">Gelemiyorum</string>
+    <string name="qibla_from_mosque">Camiinize göre</string>
+    <string name="qibla_from_device">Bulunduğunuz yere göre</string>
+    <string name="qibla_use_device">Konumumu kullan</string>
+    <string name="qibla_use_mosque">Camiyi kullan</string>
 </resources>
