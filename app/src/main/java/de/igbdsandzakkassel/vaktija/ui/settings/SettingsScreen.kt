@@ -192,6 +192,23 @@ fun SettingsScreen(
                     communities = allCommunities,
                     onSetStatus = viewModel::setCommunityStatus,
                 )
+                if (BuildConfig.DEBUG) {
+                    // One-off: pushes the bundled catalogue into Firestore so twenty communities
+                    // with nested town lists do not have to be typed into the console by hand.
+                    val importedMsg = stringResource(R.string.admin_import_done)
+                    OutlinedButton(
+                        onClick = {
+                            viewModel.importCommunities { count ->
+                                Toast.makeText(
+                                    context,
+                                    importedMsg.format(count),
+                                    Toast.LENGTH_LONG,
+                                ).show()
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    ) { Text(stringResource(R.string.admin_import_communities)) }
+                }
                 Spacer(Modifier.height(8.dp))
             }
             // The head admin has no editor, so his sign-out cannot live inside one.

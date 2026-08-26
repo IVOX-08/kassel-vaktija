@@ -242,4 +242,6 @@
     <string name="qibla_from_device">По вашему текущему местоположению</string>
     <string name="qibla_use_device">Использовать моё местоположение</string>
     <string name="qibla_use_mosque">Использовать мечеть</string>
+    <string name="admin_import_communities">Импортировать общины в базу</string>
+    <string name="admin_import_done">Записано общин: %1$d.</string>
 </resources>

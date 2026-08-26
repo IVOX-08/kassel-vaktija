@@ -115,6 +115,11 @@ class SettingsViewModel @Inject constructor(
     fun setCommunityStatus(communityId: String, status: CommunityStatus) =
         communityRepository.setStatus(communityId, status)
 
+    /** One-off seeding of the Firestore catalogue from the bundled list. Debug builds only. */
+    fun importCommunities(onDone: (Int) -> Unit) {
+        viewModelScope.launch { onDone(communityRepository.importSeed()) }
+    }
+
     /** Current community rules (Fajr Iqamah, Jumua, offsets) — what the admin edits. */
     val communityRules: StateFlow<CommunityRules> = communityRuleProvider.observeRules()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CommunityRules.DEFAULT)

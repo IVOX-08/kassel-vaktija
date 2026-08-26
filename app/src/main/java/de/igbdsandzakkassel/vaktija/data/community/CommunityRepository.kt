@@ -1,6 +1,8 @@
 package de.igbdsandzakkassel.vaktija.data.community
 
 import com.google.firebase.firestore.FirebaseFirestore
+import de.igbdsandzakkassel.vaktija.BuildConfig
+import kotlinx.coroutines.tasks.await
 import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.data.model.CommunityLocation
 import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
@@ -69,6 +71,47 @@ class CommunityRepository @Inject constructor(
     fun setStatus(communityId: String, status: CommunityStatus) {
         firestore.collection(COLLECTION).document(communityId)
             .update("status", status.name.lowercase())
+    }
+
+    /**
+     * One-off: writes the bundled catalogue into Firestore.
+     *
+     * Twenty communities, each with a nested list of towns, is an hour of error-prone typing in the
+     * console — and the data already exists in the app. `set` with merge so a document that has
+     * since gained a logo, a donation link or a status is not flattened back to the seed.
+     *
+     * Debug builds only. In a release this would let a mishap overwrite the live catalogue with
+     * whatever happened to be compiled in.
+     */
+    suspend fun importSeed(): Int {
+        if (!BuildConfig.DEBUG) return 0
+        var written = 0
+        CommunityCatalog.SEED.forEach { community ->
+            val data = mutableMapOf<String, Any>(
+                "name" to community.name,
+                "locations" to community.locations.map { location ->
+                    mapOf(
+                        "id" to location.id,
+                        "name" to location.name,
+                        "vaktijaSlug" to location.vaktijaSlug,
+                        "latitude" to location.latitude,
+                        "longitude" to location.longitude,
+                    )
+                },
+            )
+            community.address?.let { data["address"] = it }
+            community.email?.let { data["email"] = it }
+            community.donationUrl?.let { data["donationUrl"] = it }
+            community.logoUrl?.let { data["logoUrl"] = it }
+            community.imamName?.let { data["imamName"] = it }
+            community.imamPhone?.let { data["imamPhone"] = it }
+            runCatching {
+                firestore.collection(COLLECTION).document(community.id)
+                    .set(data, com.google.firebase.firestore.SetOptions.merge()).await()
+                written++
+            }
+        }
+        return written
     }
 
     private fun com.google.firebase.firestore.DocumentSnapshot.toCommunity(): Community? {

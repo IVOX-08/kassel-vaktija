@@ -242,4 +242,6 @@
     <string name="qibla_from_device">Sipas vendndodhjes suaj</string>
     <string name="qibla_use_device">Përdor vendndodhjen time</string>
     <string name="qibla_use_mosque">Përdor xhaminë</string>
+    <string name="admin_import_communities">Importo xhematet në bazë</string>
+    <string name="admin_import_done">%1$d xhemate u shkruan.</string>
 </resources>

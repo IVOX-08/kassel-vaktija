@@ -254,4 +254,6 @@
     <string name="qibla_from_device">Based on your current location</string>
     <string name="qibla_use_device">Use my location</string>
     <string name="qibla_use_mosque">Use the mosque</string>
+    <string name="admin_import_communities">Import communities into the database</string>
+    <string name="admin_import_done">%1$d communities written.</string>
 </resources>

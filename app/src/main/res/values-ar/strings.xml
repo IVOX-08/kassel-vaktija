@@ -242,4 +242,6 @@
     <string name="qibla_from_device">بناءً على موقعك الحالي</string>
     <string name="qibla_use_device">استخدم موقعي</string>
     <string name="qibla_use_mosque">استخدم المسجد</string>
+    <string name="admin_import_communities">استيراد الجماعات إلى قاعدة البيانات</string>
+    <string name="admin_import_done">تمت كتابة %1$d جماعة.</string>
 </resources>

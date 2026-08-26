@@ -242,4 +242,6 @@
     <string name="qibla_from_device">Bulunduğunuz yere göre</string>
     <string name="qibla_use_device">Konumumu kullan</string>
     <string name="qibla_use_mosque">Camiyi kullan</string>
+    <string name="admin_import_communities">Cemaatleri veritabanına aktar</string>
+    <string name="admin_import_done">%1$d cemaat yazıldı.</string>
 </resources>

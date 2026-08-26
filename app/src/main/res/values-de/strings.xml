@@ -254,4 +254,6 @@
     <string name="qibla_from_device">Ausgehend von Ihrem Standort</string>
     <string name="qibla_use_device">Meinen Standort verwenden</string>
     <string name="qibla_use_mosque">Moschee verwenden</string>
+    <string name="admin_import_communities">Gemeinden in die Datenbank übertragen</string>
+    <string name="admin_import_done">%1$d Gemeinden geschrieben.</string>
 </resources>

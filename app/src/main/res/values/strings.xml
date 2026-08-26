@@ -308,4 +308,6 @@
     <string name="qibla_from_device">Prema vašem trenutnom položaju</string>
     <string name="qibla_use_device">Koristi moj položaj</string>
     <string name="qibla_use_mosque">Koristi džamiju</string>
+    <string name="admin_import_communities">Prenesi džemate u bazu</string>
+    <string name="admin_import_done">%1$d džemata upisano.</string>
 </resources>
