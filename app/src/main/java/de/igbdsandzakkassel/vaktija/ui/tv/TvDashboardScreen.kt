@@ -10,6 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -84,10 +92,14 @@ private val CARD_SHAPE = RoundedCornerShape(20.dp)
 private val GERMAN: Locale = Locale.GERMAN
 private val BOSNIAN: Locale = Locale.forLanguageTag("bs")
 private const val BOARD_SWITCH_MS = 5_000L
+
 private const val CROSSFADE_MS = 700
 
 @Composable
-fun TvDashboardScreen(modifier: Modifier = Modifier) {
+fun TvDashboardScreen(
+    modifier: Modifier = Modifier,
+    onChangeCommunity: () -> Unit = {},
+) {
     val viewModel: DashboardViewModel = hiltViewModel()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -118,10 +130,29 @@ fun TvDashboardScreen(modifier: Modifier = Modifier) {
         }
     }
 
+    // The way back to the community picker. A long press rather than a tap of OK: the board hangs
+    // in a public room for years, and a remote knocked off a shelf must not be able to swap the
+    // mosque's prayer times for another town's.
+    val boardFocus = remember { FocusRequester() }
+    LaunchedEffect(Unit) { runCatching { boardFocus.requestFocus() } }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(PageBackgroundLight)
+            .focusRequester(boardFocus)
+            .focusable()
+            .onPreviewKeyEvent { event ->
+                val isOk = event.key == Key.DirectionCenter || event.key == Key.Enter
+                // repeatCount covers remotes whose key events never carry the long-press flag.
+                val held = event.nativeKeyEvent.isLongPress || event.nativeKeyEvent.repeatCount >= 12
+                if (isOk && held && event.type == KeyEventType.KeyDown) {
+                    onChangeCommunity()
+                    true
+                } else {
+                    false
+                }
+            }
             .padding(horizontal = 36.dp, vertical = 22.dp), // overscan-safe margin
     ) {
         if (state.loading) {

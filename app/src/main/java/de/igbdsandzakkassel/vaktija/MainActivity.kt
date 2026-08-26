@@ -42,7 +42,7 @@ import androidx.lifecycle.lifecycleScope
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
 import de.igbdsandzakkassel.vaktija.ui.theme.KasselVaktijaTheme
-import de.igbdsandzakkassel.vaktija.ui.tv.TvDashboardScreen
+import de.igbdsandzakkassel.vaktija.ui.tv.TvRoot
 import kotlinx.coroutines.launch
 
 /**
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
             val communityStatus by mainViewModel.communityStatus.collectAsStateWithLifecycle()
             KasselVaktijaTheme(darkTheme = darkTheme) {
                 when {
-                    isTv -> TvDashboardScreen()
+                    isTv -> TvRoot()
                     onboardingComplete == false -> OnboardingScreen(onFinished = mainViewModel::completeOnboarding)
                     // A blocked community replaces the app rather than degrading inside it: with no
                     // prayer times left there is no half-working screen worth showing.
