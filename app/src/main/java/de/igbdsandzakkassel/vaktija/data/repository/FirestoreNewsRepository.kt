@@ -65,7 +65,13 @@ class FirestoreNewsRepository @Inject constructor(
             combine(
                 if (communityId == null) flowOf(emptyList()) else observeCollection(newsOf(communityId), false),
                 observeCollection(broadcasts, true),
-            ) { own, all -> (own + all).sortedByDescending { it.createdAt } }
+            ) { own, all ->
+                // Filtered here rather than in the query: "addressed to everyone" is stored as an
+                // empty list, which no array_contains query can express, and the number of
+                // federation announcements is small enough that the client can decide.
+                (own + all.filter { it.reaches(communityId) })
+                    .sortedByDescending { it.createdAt }
+            }
         }
 
     private fun observeCollection(
@@ -82,7 +88,9 @@ class FirestoreNewsRepository @Inject constructor(
         val communityId = communityRepository.observeSelection().first()?.community?.id
         val own = if (communityId == null) emptyList() else
             newsOf(communityId).get().await().documents.mapNotNull { it.toNewsItem(false) }
-        val all = broadcasts.get().await().documents.mapNotNull { it.toNewsItem(true) }
+        val all = broadcasts.get().await().documents
+            .mapNotNull { it.toNewsItem(true) }
+            .filter { it.reaches(communityId) }
         (own + all).sortedByDescending { it.createdAt }
     }.getOrNull()
 
@@ -92,6 +100,7 @@ class FirestoreNewsRepository @Inject constructor(
         sourceLang: String,
         imageJpeg: ByteArray?,
         broadcast: Boolean,
+        audience: List<String>,
     ) {
         val communityId = communityRepository.observeSelection().first()?.community?.id
         if (!broadcast && communityId == null) return
@@ -119,6 +128,7 @@ class FirestoreNewsRepository @Inject constructor(
                 "sourceLang" to sourceLang,
                 "createdAt" to System.currentTimeMillis(),
                 "hasImage" to (imageJpeg != null),
+                "audience" to if (broadcast) audience else emptyList(),
             ),
         )
     }
@@ -160,6 +170,7 @@ class FirestoreNewsRepository @Inject constructor(
             createdAt = getLong("createdAt") ?: 0L,
             hasImage = getBoolean("hasImage") ?: false,
             isBroadcast = broadcast,
+            audience = (get("audience") as? List<*>)?.filterIsInstance<String>().orEmpty(),
         )
     }
 

@@ -198,4 +198,9 @@
     <string name="settings_sunrise_note">Güneş doğmadan önce hatırlatma — sabah namazının vakti o zaman çıkar. Ezan yok.</string>
     <string name="news_broadcast_all">Tüm cemaatlere gönder</string>
     <string name="news_broadcast_hint">Uygulamanın tüm kullanıcıları görür, sadece sizin cemaatiniz değil.</string>
+    <string name="news_audience_title">Bunu kim alsın?</string>
+    <string name="news_audience_all">Tümü</string>
+    <string name="news_audience_none">Hiçbiri</string>
+    <string name="news_audience_confirm_all">Tüm cemaatler</string>
+    <string name="news_audience_confirm">Seçili: %1$d</string>
 </resources>

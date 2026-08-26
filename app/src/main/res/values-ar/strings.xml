@@ -198,4 +198,9 @@
     <string name="settings_sunrise_note">تذكير قبل الشروق، حين ينتهي وقت الفجر. بدون أذان.</string>
     <string name="news_broadcast_all">إرسال إلى جميع الجماعات</string>
     <string name="news_broadcast_hint">سيراه كل مستخدمي التطبيق، وليس جماعتك فقط.</string>
+    <string name="news_audience_title">من يتلقى هذا؟</string>
+    <string name="news_audience_all">الكل</string>
+    <string name="news_audience_none">لا شيء</string>
+    <string name="news_audience_confirm_all">جميع الجماعات</string>
+    <string name="news_audience_confirm">المحدد: %1$d</string>
 </resources>

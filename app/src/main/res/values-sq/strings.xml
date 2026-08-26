@@ -198,4 +198,9 @@
     <string name="settings_sunrise_note">Kujtesë para lindjes së diellit — atëherë mbaron koha e sabahut. Pa ezan.</string>
     <string name="news_broadcast_all">Dërgo të gjitha xhemateve</string>
     <string name="news_broadcast_hint">E shohin të gjithë përdoruesit e aplikacionit, jo vetëm xhemati juaj.</string>
+    <string name="news_audience_title">Kush e merr këtë?</string>
+    <string name="news_audience_all">Të gjitha</string>
+    <string name="news_audience_none">Asnjë</string>
+    <string name="news_audience_confirm_all">Të gjitha xhematet</string>
+    <string name="news_audience_confirm">Të zgjedhura: %1$d</string>
 </resources>

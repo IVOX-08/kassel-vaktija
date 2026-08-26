@@ -29,8 +29,10 @@ interface NewsRepository {
         bodyByLang: Map<String, String>,
         sourceLang: String,
         imageJpeg: ByteArray? = null,
-        /** True publishes to EVERY community (head admin only); false to the selected one. */
+        /** True publishes to communities (head admin only); false to the selected one. */
         broadcast: Boolean = false,
+        /** Recipients of a broadcast; empty means every community. */
+        audience: List<String> = emptyList(),
     )
 
     /** Admin-only: remove an announcement (and its attached image, if any). */

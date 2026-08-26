@@ -26,7 +26,20 @@ data class NewsItem(
      * has to go.
      */
     val isBroadcast: Boolean = false,
+    /**
+     * Which communities a broadcast is addressed to. **Empty means everyone** — that is the common
+     * case and keeps older announcements, written before this existed, reaching everyone rather
+     * than silently reaching nobody.
+     *
+     * Only meaningful for a broadcast; a community's own announcement is already addressed by where
+     * it is stored.
+     */
+    val audience: List<String> = emptyList(),
 ) {
+    /** Whether this item should be shown to a member of [communityId]. */
+    fun reaches(communityId: String?): Boolean =
+        !isBroadcast || audience.isEmpty() || (communityId != null && communityId in audience)
+
     /** Title in [lang], falling back to the source language, then any available text. */
     fun title(lang: String): String = pick(titleByLang, lang)
 

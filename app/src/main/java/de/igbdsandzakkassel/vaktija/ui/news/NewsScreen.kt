@@ -73,6 +73,7 @@ import coil.compose.AsyncImage
 import androidx.compose.material3.Switch
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
+import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import java.time.Instant
 import java.time.ZoneId
@@ -90,6 +91,7 @@ fun NewsScreen(
     val canBroadcast by viewModel.canBroadcast.collectAsStateWithLifecycle()
     val broadcastOnly by viewModel.broadcastOnly.collectAsStateWithLifecycle()
     val deleteCtx by viewModel.deleteContext.collectAsStateWithLifecycle()
+    val allCommunities by viewModel.allCommunities.collectAsStateWithLifecycle()
     // The user's selected app language — each announcement is shown in this language.
     val locales = LocalConfiguration.current.locales
     val lang = if (locales.isEmpty) LocaleController.current().tag else locales[0].language
@@ -175,8 +177,9 @@ fun NewsScreen(
             onDismiss = { showCompose = false },
             canBroadcast = canBroadcast,
             broadcastOnly = broadcastOnly,
-            onPost = { title, body, imageUri, broadcast, cb ->
-                viewModel.postNews(title, body, imageUri, broadcast) { outcome ->
+            communities = allCommunities,
+            onPost = { title, body, imageUri, broadcast, audience, cb ->
+                viewModel.postNews(title, body, imageUri, broadcast, audience) { outcome ->
                     when {
                         !outcome.ok ->
                             Toast.makeText(context, failMsg, Toast.LENGTH_LONG).show()
@@ -398,7 +401,8 @@ private fun FullScreenImageViewer(
 @Composable
 private fun ComposeNewsDialog(
     onDismiss: () -> Unit,
-    onPost: (String, String, Uri?, Boolean, (Boolean) -> Unit) -> Unit,
+    onPost: (String, String, Uri?, Boolean, List<String>, (Boolean) -> Unit) -> Unit,
+    communities: List<Community> = emptyList(),
     canBroadcast: Boolean = false,
     broadcastOnly: Boolean = false,
 ) {
@@ -407,6 +411,8 @@ private fun ComposeNewsDialog(
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var loading by remember { mutableStateOf(false) }
     var broadcast by remember { mutableStateOf(broadcastOnly) }
+    var audience by remember { mutableStateOf(emptyList<String>()) }
+    var audienceOpen by remember { mutableStateOf(false) }
     // System photo picker (no storage permission needed; available on every supported API level).
     val pickImage = rememberLauncherForActivityResult(
         ActivityResultContracts.PickVisualMedia(),
@@ -510,6 +516,19 @@ private fun ComposeNewsDialog(
                         )
                     }
                 }
+                // Recipient picker: only meaningful once the announcement leaves one community.
+                if (broadcast) {
+                    OutlinedButton(
+                        onClick = { audienceOpen = true },
+                        enabled = !loading,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            if (audience.isEmpty()) stringResource(R.string.news_audience_confirm_all)
+                            else stringResource(R.string.news_audience_confirm, audience.size),
+                        )
+                    }
+                }
                 if (loading) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -530,7 +549,7 @@ private fun ComposeNewsDialog(
                 enabled = !loading && title.isNotBlank(),
                 onClick = {
                     loading = true
-                    onPost(title, body, imageUri, broadcast) { loading = false }
+                    onPost(title, body, imageUri, broadcast, audience) { loading = false }
                 },
             ) { Text(stringResource(R.string.news_post)) }
         },
@@ -540,6 +559,15 @@ private fun ComposeNewsDialog(
             }
         },
     )
+
+    if (audienceOpen) {
+        AudiencePickerDialog(
+            communities = communities,
+            selected = audience,
+            onDismiss = { audienceOpen = false },
+            onConfirm = { audience = it; audienceOpen = false },
+        )
+    }
 }
 
 // Keep announcements well within ML Kit's translate limits and Firestore's 1 MB document size

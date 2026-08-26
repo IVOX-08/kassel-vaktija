@@ -198,4 +198,9 @@
     <string name="settings_sunrise_note">طلوعِ آفتاب سے پہلے یاد دہانی — تب فجر کا وقت ختم ہو جاتا ہے۔ اذان کے بغیر۔</string>
     <string name="news_broadcast_all">تمام جماعتوں کو بھیجیں</string>
     <string name="news_broadcast_hint">ایپ کے تمام صارفین دیکھیں گے، صرف آپ کی جماعت نہیں۔</string>
+    <string name="news_audience_title">یہ کون وصول کرے؟</string>
+    <string name="news_audience_all">سب</string>
+    <string name="news_audience_none">کوئی نہیں</string>
+    <string name="news_audience_confirm_all">تمام جماعتیں</string>
+    <string name="news_audience_confirm">منتخب: %1$d</string>
 </resources>

@@ -9,6 +9,7 @@ import de.igbdsandzakkassel.vaktija.data.media.NewsImageCompressor
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
+import de.igbdsandzakkassel.vaktija.data.model.Community
 import kotlinx.coroutines.flow.map
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
@@ -57,6 +58,10 @@ class NewsViewModel @Inject constructor(
     /** Whether this account may remove [item] — its own community's, or its own broadcast. */
     fun canDelete(item: NewsItem, role: AdminRole, communityId: String?): Boolean =
         if (item.isBroadcast) role.canBroadcast else role.canPostNews(communityId)
+
+    /** Every listed community — the recipient list the head admin picks from. */
+    val allCommunities: StateFlow<List<Community>> = communityRepository.observeSelectable()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     /** Role + selected community, for the per-item delete check. */
     val deleteContext: StateFlow<Pair<AdminRole, String?>> = combine(
@@ -108,6 +113,7 @@ class NewsViewModel @Inject constructor(
         body: String,
         imageUri: Uri?,
         broadcast: Boolean,
+        audience: List<String>,
         onResult: (PostOutcome) -> Unit,
     ) {
         val fallbackLang = LocaleController.current().tag
@@ -128,6 +134,7 @@ class NewsViewModel @Inject constructor(
                     sourceLang = translated.sourceLang,
                     imageJpeg = imageJpeg,
                     broadcast = broadcast,
+                    audience = audience,
                 )
                 translated.failedLangs to imageDropped
             }

@@ -264,4 +264,9 @@
     <string name="settings_sunrise_note">Podsjetnik prije izlaska sunca — vrijeme sabaha tada ističe. Bez ezana.</string>
     <string name="news_broadcast_all">Poslati svim džematima</string>
     <string name="news_broadcast_hint">Vidjet će svi korisnici aplikacije, ne samo vaš džemat.</string>
+    <string name="news_audience_title">Ko prima obavijest?</string>
+    <string name="news_audience_all">Sve</string>
+    <string name="news_audience_none">Ništa</string>
+    <string name="news_audience_confirm_all">Svi džemati</string>
+    <string name="news_audience_confirm">Odabrano: %1$d</string>
 </resources>
