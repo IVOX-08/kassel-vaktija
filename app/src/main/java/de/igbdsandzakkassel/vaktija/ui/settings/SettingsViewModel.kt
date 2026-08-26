@@ -162,12 +162,6 @@ class SettingsViewModel @Inject constructor(
 
     fun signOut() = adminController.signOut()
 
-    /** Debug builds only: swap the stand-in role so both sides can be tried without Firestore. */
-    fun setDebugRole(head: Boolean) {
-        adminController.debugRole =
-            if (head) AdminRole.Head
-            else AdminRole.Community(CommunityCatalog.KASSEL_ID)
-    }
 
     fun saveRules(rules: CommunityRules, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {

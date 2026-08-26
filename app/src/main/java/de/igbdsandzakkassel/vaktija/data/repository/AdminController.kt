@@ -49,35 +49,12 @@ class AdminController @Inject constructor(
                     AdminRole.from(
                         role = snapshot?.getString("role"),
                         communityId = snapshot?.getString("communityId"),
-                    ).orDebugFallback(uid),
+                    ),
                 )
             }
         awaitClose { registration.remove() }
     }
 
-    /**
-     * Debug builds only: stand in for a missing `admins` document so the admin screens can be
-     * worked on before Firestore is populated.
-     *
-     * Which role it stands in as is chosen in Settings, because the two roles must be testable
-     * SEPARATELY — the first version of this always returned Head, which silently made every
-     * sign-in a head admin and made the community role impossible to try at all.
-     *
-     * Release builds get no shortcut: there an account has exactly the rights its document grants.
-     */
-    private fun AdminRole.orDebugFallback(uid: String): AdminRole {
-        if (this != AdminRole.None || !BuildConfig.DEBUG || uid != BuildConfig.ADMIN_UID) return this
-        if (auth.currentUser?.isAnonymous == true) return this
-        return debugRole
-    }
-
-    /** The stand-in role used while Firestore has no admins collection. Debug builds only. */
-    var debugRole: AdminRole = AdminRole.Community(CommunityCatalog.KASSEL_ID)
-        set(value) {
-            field = value
-            // Nudge the listeners so the UI re-reads the role without a sign-out/in cycle.
-            auth.currentUser?.let { auth.updateCurrentUser(it) }
-        }
 
     /**
      * Signs in and reports what happened.
@@ -97,7 +74,6 @@ class AdminController @Inject constructor(
             .user?.uid ?: error("Sign-in returned no account")
         val document = firestore.collection(COLLECTION).document(uid).get().await()
         val role = AdminRole.from(document.getString("role"), document.getString("communityId"))
-            .orDebugFallback(uid)
         when {
             role == AdminRole.None -> {
                 auth.signOut()
