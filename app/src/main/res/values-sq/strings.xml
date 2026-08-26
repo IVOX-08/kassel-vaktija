@@ -195,7 +195,7 @@
     <string name="community_pick_town">Për cilin qytet dëshironi kohët e namazit?</string>
     <string name="action_cancel">Anulo</string>
     <string name="settings_developer_header">Aplikacioni</string>
-    <string name="settings_sunrise_note">Kujtesë para lindjes së diellit — atëherë mbaron koha e sabahut. Pa ezan.</string>
+    <string name="settings_sunrise_note">Kujtesë para lindjes së diellit — atherë mbaron koha e sabahut.</string>
     <string name="news_broadcast_all">Dërgo të gjitha xhemateve</string>
     <string name="news_broadcast_hint">E shohin të gjithë përdoruesit e aplikacionit, jo vetëm xhemati juaj.</string>
     <string name="news_audience_title">Kush e merr këtë?</string>

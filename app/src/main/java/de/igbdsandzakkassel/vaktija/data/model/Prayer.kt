@@ -30,7 +30,13 @@ enum class Prayer(@param:StringRes val labelRes: Int, val hasIqamah: Boolean) {
         // the settings list expects to find it.
         val NOTIFIABLE = entries.toList()
 
-        /** Whether this entry may sound the Adhan. Sunrise never does — nobody calls it. */
-        val Prayer.soundsAdhan: Boolean get() = this != SUNRISE
+        /**
+         * Whether the phone should go quiet around this time for the congregation.
+         *
+         * Every entry sounds the Adhan, sunrise included. Sunrise still does NOT silence the
+         * phone: there is no gathering to be quiet for, and switching someone's ringer off at
+         * sunrise would be a surprise nobody asked for.
+         */
+        val Prayer.silencesForCongregation: Boolean get() = this != SUNRISE
     }
 }

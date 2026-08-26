@@ -8,7 +8,7 @@ import android.os.Build
 import androidx.core.content.getSystemService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
-import de.igbdsandzakkassel.vaktija.data.model.Prayer.Companion.soundsAdhan
+import de.igbdsandzakkassel.vaktija.data.model.Prayer.Companion.silencesForCongregation
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
@@ -96,9 +96,7 @@ class AlarmScheduler @Inject constructor(
 
             // Adhan + pre-warning (gated by the notifications master toggle + per-prayer enable).
             if (settings.masterEnabled && prefs.enabled) {
-                // Sunrise gets the reminder only. It is not a prayer time to be called to — the
-                // point is that Fajr is about to expire — so no Adhan is ever armed for it.
-                if (prayer.soundsAdhan && adhanAt.isAfter(now)) {
+                if (adhanAt.isAfter(now)) {
                     schedule(prayer, adhanAt, AlarmType.ADHAN, minutes = 0, sound = settings.sound, playWhenSilent = settings.playWhenSilent, isJumua = isJumua)
                 }
                 // Jumu'ah always gets a fixed 30-min pre-notice; other prayers use the per-prayer value.
@@ -116,7 +114,7 @@ class AlarmScheduler @Inject constructor(
             // the user granted Do-Not-Disturb access. Other prayers use the opt-in auto-silence setting.
             val silenceBefore = when {
                 // Never silence the phone for sunrise: there is no congregation to be quiet for.
-                !prayer.soundsAdhan -> null
+                !prayer.silencesForCongregation -> null
                 isJumua -> JUMUA_SILENCE_BEFORE_MIN
                 settings.autoSilenceEnabled -> settings.silenceBeforeMinutes
                 else -> null

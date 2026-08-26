@@ -106,12 +106,40 @@ class CommunityRepository @Inject constructor(
             community.imamName?.let { data["imamName"] = it }
             community.imamPhone?.let { data["imamPhone"] = it }
             runCatching {
-                firestore.collection(COLLECTION).document(community.id)
-                    .set(data, com.google.firebase.firestore.SetOptions.merge()).await()
+                val document = firestore.collection(COLLECTION).document(community.id)
+                document.set(data, com.google.firebase.firestore.SetOptions.merge()).await()
+                seedRules(document, community.id)
                 written++
             }
         }
         return written
+    }
+
+    /**
+     * Writes the community's starting Iqamah and Jumu'ah — but only if it has none yet.
+     *
+     * Re-running the import must never undo an admin's edits: a community that has since set its
+     * real Jumu'ah would otherwise be silently pushed back to Kassel's 15:00, and nobody would see
+     * it happen until people arrived at the wrong time.
+     */
+    private suspend fun seedRules(
+        document: com.google.firebase.firestore.DocumentReference,
+        communityId: String,
+    ) {
+        val rules = CommunityCatalog.SEED_RULES[communityId] ?: return
+        val ref = document.collection(CONFIG).document(RULES)
+        if (ref.get().await().exists()) return
+        ref.set(
+            mapOf(
+                "fajrIqamah" to rules.fajrIqamah.toString(),
+                "jumua" to rules.jumua.toString(),
+                "dhuhrOffsetMin" to rules.dhuhrOffsetMin,
+                "asrOffsetMin" to rules.asrOffsetMin,
+                "maghribOffsetMin" to rules.maghribOffsetMin,
+                "ishaOffsetMin" to rules.ishaOffsetMin,
+                "updatedAt" to System.currentTimeMillis(),
+            ),
+        ).await()
     }
 
     private fun com.google.firebase.firestore.DocumentSnapshot.toCommunity(): Community? {
@@ -154,5 +182,7 @@ class CommunityRepository @Inject constructor(
 
     private companion object {
         const val COLLECTION = "communities"
+        const val CONFIG = "config"
+        const val RULES = "rules"
     }
 }

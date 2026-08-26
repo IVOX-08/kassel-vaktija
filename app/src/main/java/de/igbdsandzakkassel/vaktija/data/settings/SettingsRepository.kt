@@ -38,15 +38,14 @@ class SettingsRepository @Inject constructor(
             perPrayer = Prayer.NOTIFIABLE.associateWith { prayer ->
                 val isSunrise = prayer == Prayer.SUNRISE
                 PrayerAlarmPrefs(
-                    // Sunrise defaults OFF: it is a reminder that Fajr is ending, wanted by the
-                    // members who pray on their way to work and an unexplained early alarm for
-                    // everyone else.
+                    // Sunrise defaults OFF: it now sounds the Adhan like the rest, and an
+                    // unrequested call to prayer at first light would wake people who never
+                    // asked for it. Whoever wants it turns it on.
                     enabled = prefs[enabledKey(prayer)] ?: !isSunrise,
                     // Coerce legacy/invalid values (e.g. a previously-saved 30) to a valid option.
-                    preWarnMinutes = coercePreWarn(
-                        prefs[preWarnKey(prayer)] ?: if (isSunrise) SUNRISE_DEFAULT_WARN else 0,
-                        isSunrise,
-                    ),
+                    // No pre-notice by default any more: the Adhan itself marks the moment, so a
+                    // standing 15-minute warning would just be a second alert nobody chose.
+                    preWarnMinutes = coercePreWarn(prefs[preWarnKey(prayer)] ?: 0, isSunrise),
                 )
             },
         )
@@ -189,7 +188,6 @@ class SettingsRepository @Inject constructor(
 
     private companion object {
         /** Fifteen minutes before sunrise — inside the 10-30 window members asked for. */
-        const val SUNRISE_DEFAULT_WARN = 15
 
         val MASTER_ENABLED = booleanPreferencesKey("master_enabled")
         val SOUND = stringPreferencesKey("adhan_sound")

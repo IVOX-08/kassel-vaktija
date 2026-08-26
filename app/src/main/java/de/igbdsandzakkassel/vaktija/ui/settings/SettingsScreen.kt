@@ -81,7 +81,7 @@ import androidx.compose.material.icons.outlined.Lock
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
-import de.igbdsandzakkassel.vaktija.data.model.Prayer.Companion.soundsAdhan
+
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.PrayerAlarmPrefs
@@ -288,9 +288,9 @@ fun SettingsScreen(
                 PrayerSettingCard(
                     prayer = prayer,
                     prefs = settings.prefs(prayer),
-                    // Sunrise is a reminder that Fajr is ending, never a call to prayer: it offers
-                    // minutes-before only, and the note under it says what it is for.
-                    reminderOnly = !prayer.soundsAdhan,
+                    // Sunrise sounds the Adhan like the rest; the note under it stays, because
+                    // what makes sunrise worth a reminder is that Fajr expires there.
+                    isSunrise = prayer == Prayer.SUNRISE,
                     onToggle = { viewModel.setPrayerEnabled(prayer, it) },
                     onSelectMinutes = { viewModel.setPreWarn(prayer, it) },
                 )
@@ -894,7 +894,7 @@ private fun PrayerSettingCard(
     prefs: PrayerAlarmPrefs,
     onToggle: (Boolean) -> Unit,
     onSelectMinutes: (Int) -> Unit,
-    reminderOnly: Boolean = false,
+    isSunrise: Boolean = false,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -914,7 +914,7 @@ private fun PrayerSettingCard(
                     PreWarnSelector(
                         preWarnMinutes = prefs.preWarnMinutes,
                         onSelectMinutes = onSelectMinutes,
-                        options = if (reminderOnly) AlarmSettings.SUNRISE_WARN_OPTIONS
+                        options = if (isSunrise) AlarmSettings.SUNRISE_WARN_OPTIONS
                         else AlarmSettings.PRE_WARN_OPTIONS,
                     )
                     Spacer(Modifier.width(8.dp))
@@ -922,7 +922,7 @@ private fun PrayerSettingCard(
                 // Per-prayer on/off — e.g. turn Dhuhr off while at work/school.
                 Switch(checked = prefs.enabled, onCheckedChange = onToggle)
             }
-            if (reminderOnly) {
+            if (isSunrise) {
                 Text(
                     text = stringResource(R.string.settings_sunrise_note),
                     style = MaterialTheme.typography.bodySmall,

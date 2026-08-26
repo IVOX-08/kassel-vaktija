@@ -207,7 +207,7 @@
     <string name="community_pick_town">Für welche Stadt möchten Sie die Gebetszeiten?</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="settings_developer_header">App</string>
-    <string name="settings_sunrise_note">Erinnerung vor Sonnenaufgang — dann endet die Zeit für das Morgengebet. Ohne Adhan.</string>
+    <string name="settings_sunrise_note">Erinnerung vor Sonnenaufgang — dann endet die Zeit für das Morgengebet.</string>
     <string name="news_broadcast_all">An alle Gemeinden senden</string>
     <string name="news_broadcast_hint">Sehen alle Nutzer der App, nicht nur Ihre Gemeinde.</string>
     <string name="news_audience_title">Wer bekommt die Mitteilung?</string>
