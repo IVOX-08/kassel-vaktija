@@ -1,0 +1,976 @@
+<title>Zwanzig Gemeinden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+  :root {
+    --ground:      #F1F4F0;
+    --surface:     #FFFFFF;
+    --surface-alt: #E8EDE7;
+    --ink:         #14231A;
+    --ink-soft:    #4A5C51;
+    --ink-faint:   #74857B;
+    --rule:        #D3DCD2;
+    --accent:      #1B5E20;
+    --accent-soft: #2E7D32;
+    --gold:        #8A6608;
+    --gold-bg:     #FAF3DF;
+    --gold-rule:   #D8BE6B;
+    --alarm:       #9E3323;
+    --alarm-bg:    #FBEDEA;
+    --alarm-rule:  #DCA093;
+    --code-bg:     #ECF1EB;
+
+    --measure: 66ch;
+    --shadow: 0 1px 2px rgba(20, 35, 26, .06), 0 8px 24px rgba(20, 35, 26, .05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0F1512;
+      --surface:     #161E19;
+      --surface-alt: #1D2721;
+      --ink:         #E3EAE3;
+      --ink-soft:    #A9B8AD;
+      --ink-faint:   #7C8C81;
+      --rule:        #2A362E;
+      --accent:      #86C48A;
+      --accent-soft: #6FAF74;
+      --gold:        #D9BC6E;
+      --gold-bg:     #221E12;
+      --gold-rule:   #5E4E22;
+      --alarm:       #E79484;
+      --alarm-bg:    #241512;
+      --alarm-rule:  #5E2B21;
+      --code-bg:     #1B241E;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0F1512;
+    --surface:     #161E19;
+    --surface-alt: #1D2721;
+    --ink:         #E3EAE3;
+    --ink-soft:    #A9B8AD;
+    --ink-faint:   #7C8C81;
+    --rule:        #2A362E;
+    --accent:      #86C48A;
+    --accent-soft: #6FAF74;
+    --gold:        #D9BC6E;
+    --gold-bg:     #221E12;
+    --gold-rule:   #5E4E22;
+    --alarm:       #E79484;
+    --alarm-bg:    #241512;
+    --alarm-rule:  #5E2B21;
+    --code-bg:     #1B241E;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+    display: grid;
+    grid-template-columns: 232px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* ---------- Kopf ---------- */
+
+  header.masthead {
+    grid-column: 1 / -1;
+    padding: 72px 0 40px;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 48px;
+  }
+  .eyebrow {
+    font-size: 12.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gold);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: Literata, Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    font-size: clamp(38px, 6vw, 62px);
+    line-height: 1.06;
+    letter-spacing: -.015em;
+    margin: 0 0 20px;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  .standfirst {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0;
+  }
+  .stamp {
+    margin-top: 26px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- Inhaltsverzeichnis ---------- */
+
+  nav.toc {
+    position: sticky;
+    top: 28px;
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+  nav.toc h2 {
+    font-family: "Source Sans 3", sans-serif;
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin: 0 0 14px;
+  }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  nav.toc a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 2px solid var(--rule);
+    padding-left: 12px;
+    display: block;
+    transition: color .15s, border-color .15s;
+  }
+  nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); border-left-color: var(--accent); }
+
+  /* ---------- Abschnitte ---------- */
+
+  main { min-width: 0; }
+  section { margin-bottom: 64px; scroll-margin-top: 24px; }
+
+  h2.sec {
+    font-family: Literata, Georgia, serif;
+    font-size: clamp(26px, 3.4vw, 34px);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -.012em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  .sec-kicker {
+    font-size: 12px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 6px;
+  }
+  h3 {
+    font-family: Literata, Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 34px 0 8px;
+    color: var(--ink);
+  }
+  p { max-width: var(--measure); margin: 0 0 16px; }
+  p.lede { font-size: 18.5px; color: var(--ink-soft); }
+  ul, ol.body { max-width: var(--measure); padding-left: 22px; margin: 0 0 18px; }
+  li { margin-bottom: 7px; }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+
+  code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .875em;
+    background: var(--code-bg);
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 0 0 20px;
+  }
+  pre code { background: none; padding: 0; font-size: 13.5px; line-height: 1.65; }
+
+  /* ---------- Warum-Kasten: das tragende Element ---------- */
+
+  .warum {
+    background: var(--gold-bg);
+    border-left: 3px solid var(--gold-rule);
+    border-radius: 0 5px 5px 0;
+    padding: 16px 20px 4px;
+    margin: 0 0 22px;
+    max-width: var(--measure);
+  }
+  .warum > .label {
+    font-family: Literata, Georgia, serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .warum p { margin-bottom: 12px; color: var(--ink); max-width: none; }
+
+  .achtung {
+    background: var(--alarm-bg);
+    border-left: 3px solid var(--alarm-rule);
+    border-radius: 0 5px 5px 0;
+    padding: 16px 20px 4px;
+    margin: 0 0 22px;
+    max-width: var(--measure);
+  }
+  .achtung > .label {
+    font-family: Literata, Georgia, serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--alarm);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .achtung p { margin-bottom: 12px; max-width: none; }
+
+  /* ---------- Tabellen ---------- */
+
+  .tablewrap { overflow-x: auto; margin: 0 0 22px; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 480px;
+    font-size: 15.5px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+  }
+  th, td {
+    text-align: left;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-size: 11.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    background: var(--surface-alt);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td code { font-size: 13px; }
+
+  /* ---------- Karten für die Funktionsliste ---------- */
+
+  .karten {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 14px;
+    margin: 0 0 24px;
+  }
+  .karte {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 7px;
+    padding: 17px 19px;
+    box-shadow: var(--shadow);
+  }
+  .karte h4 {
+    font-family: Literata, Georgia, serif;
+    font-size: 16.5px;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .karte p { font-size: 15px; color: var(--ink-soft); margin: 0; max-width: none; }
+
+  /* ---------- Status-Pillen ---------- */
+
+  .pille {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    padding: 2px 9px;
+    border-radius: 100px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+  .p-aktiv    { color: var(--accent); }
+  .p-gesperrt { color: var(--gold); }
+  .p-blockiert{ color: var(--alarm); }
+
+  /* ---------- Fußzeile ---------- */
+
+  footer {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    font-size: 14.5px;
+    color: var(--ink-faint);
+  }
+  footer p { max-width: var(--measure); }
+
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: 1fr; gap: 0; }
+    nav.toc { position: static; margin-bottom: 44px; padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
+    nav.toc ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px 18px; }
+    header.masthead { padding-top: 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Kassel Vaktija · Umbau der App</p>
+    <h1>Zwanzig Gemeinden</h1>
+    <p class="standfirst">
+      Aus einer App für eine Moschee ist eine App für zwanzig geworden. Dieses Dokument erklärt,
+      was gebaut wurde, wie es zusammenhängt — und bei jeder Entscheidung, warum sie so und
+      nicht anders gefallen ist.
+    </p>
+    <p class="stamp">Stand: 26. August 2026 · Firebase-Projekt <code>kassel-vaktija</code> · Zweig <code>android</code></p>
+  </header>
+
+  <nav class="toc">
+    <h2>Inhalt</h2>
+    <ol>
+      <li><a href="#ausgang">Der Ausgangspunkt</a></li>
+      <li><a href="#modell">Gemeinde, Ort, Nutzer</a></li>
+      <li><a href="#rollen">Wer darf was</a></li>
+      <li><a href="#zugang">Wie ein Zugang entsteht</a></li>
+      <li><a href="#datenbank">Die Datenbank</a></li>
+      <li><a href="#regeln">Die Sicherheitsregeln</a></li>
+      <li><a href="#abschalten">Abschalten und zurückholen</a></li>
+      <li><a href="#neu">Was neu dazukam</a></li>
+      <li><a href="#fernseher">Der Fernseher</a></li>
+      <li><a href="#gefahren">Drei echte Gefahren</a></li>
+      <li><a href="#offen">Was noch offen ist</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="ausgang">
+      <p class="sec-kicker">Ausgangslage</p>
+      <h2 class="sec">Der Ausgangspunkt</h2>
+
+      <p class="lede">
+        Die App war für <strong>eine</strong> Gemeinde gebaut: die IGBD-Gemeinde Sandžak-Kassel.
+        Alles war fest verdrahtet — eine Moschee, ein Logo, ein Spendenlink, ein Satz Iqamah-Zeiten,
+        ein Administrator.
+      </p>
+
+      <p>
+        Der Vorstand will die App jetzt für alle IGBD-Gemeinden öffnen, als bezahlten Dienst:
+        Anmeldegebühr, danach ein monatlicher Beitrag. Der Besitzer bleibt Entwickler und ist
+        zugleich Hauptadministrator des Verbands.
+      </p>
+
+      <p>
+        Das ist kein Anbau an das Bestehende, sondern ein Umbau am Fundament. Jede Stelle, an der
+        die App früher „die Gemeinde“ sagte, muss jetzt „<em>diese</em> Gemeinde“ sagen — und jede
+        Stelle, an der jemand etwas ändern durfte, muss fragen: <em>bei welcher Gemeinde?</em>
+      </p>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="modell">
+      <p class="sec-kicker">Grundbegriffe</p>
+      <h2 class="sec">Gemeinde, Ort, Nutzer</h2>
+
+      <p>Drei Begriffe tragen den ganzen Umbau. Sie sauber zu trennen war die erste Entscheidung.</p>
+
+      <div class="karten">
+        <div class="karte">
+          <h4>Die Gemeinde</h4>
+          <p>Der eingetragene Verein. Hat einen Namen, eine Anschrift, ein Logo, einen Spendenlink
+             und genau einen Administrator-Zugang.</p>
+        </div>
+        <div class="karte">
+          <h4>Der Ort</h4>
+          <p>Die Stadt, aus der die Gebetszeiten kommen. Eine Gemeinde kann mehrere betreuen —
+             Kassel etwa Kassel, Hann. Münden und Korbach.</p>
+        </div>
+        <div class="karte">
+          <h4>Der Nutzer</h4>
+          <p>Wählt beim ersten Start erst die Sprache, dann die Gemeinde, dann — falls es mehrere
+             gibt — den Ort. Danach nie wieder.</p>
+        </div>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum Gemeinde und Ort getrennt?</span>
+        <p>
+          Weil beides auseinanderfällt. Kassel betreut drei Städte mit <strong>unterschiedlichen
+          Gebetszeiten</strong> — Sonnenaufgang in Korbach ist nicht Sonnenaufgang in Kassel.
+          Wären Gemeinde und Ort dasselbe, müssten daraus drei Gemeinden werden, jede mit eigenem
+          Zugang, eigener Rechnung und eigenem Logo. Der Vorstand in Kassel müsste sich dreimal
+          anmelden, um dreimal dieselbe Nachricht zu schreiben.
+        </p>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum wählt man zuerst die Gemeinde und nicht die Stadt?</span>
+        <p>
+          In Berlin gibt es <strong>zwei getrennte Gemeinden</strong>. Eine Liste von Städten
+          hätte dort zwei Zeilen mit demselben Wort „Berlin“ — unterscheidbar nur am Kleingedruckten.
+          Menschen gehören aber zu einer Gemeinde, nicht zu einem Punkt auf der Landkarte. Also
+          steht die Gemeinde oben. Die Suche findet trotzdem Städte: wer „Korbach“ tippt, bekommt
+          die Gemeinde, die Korbach betreut, ohne ihren Namen kennen zu müssen.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="rollen">
+      <p class="sec-kicker">Rechte</p>
+      <h2 class="sec">Wer darf was</h2>
+
+      <p>Es gibt genau zwei Rollen. Sie sind <strong>keine Rangfolge</strong> — das ist der wichtigste Punkt dieses Abschnitts.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Handlung</th><th>Hauptadministrator</th><th>Gemeinde-Administrator</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Gebetszeiten &amp; Iqamah ändern</td><td>nein</td><td>ja — nur bei der eigenen Gemeinde</td></tr>
+            <tr><td>Beiträge schreiben</td><td>nein</td><td>ja — nur bei der eigenen Gemeinde</td></tr>
+            <tr><td>Rundnachricht an mehrere Gemeinden</td><td>ja</td><td>nein</td></tr>
+            <tr><td>Gemeinde sperren oder blockieren</td><td>ja</td><td>nein</td></tr>
+            <tr><td>Zugänge vergeben und entziehen</td><td>ja</td><td>nein</td></tr>
+            <tr><td>Alle Beiträge mitlesen</td><td>ja</td><td>nur die eigenen</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum darf der Hauptadministrator keine Gebetszeiten ändern?</span>
+        <p>
+          Weil Gebetszeiten Verantwortung der Gemeinde sind, nicht des Verbands. Wenn der
+          Hauptadministrator die Jumu'ah-Zeit von Nürnberg verstellen könnte — versehentlich,
+          weil er gerade Nürnberg angezeigt bekommt — stünde dort eine Zeit, die kein Nürnberger
+          je bestätigt hat. Die Leute kämen zur falschen Stunde, und es sähe aus, als hätte die
+          Nürnberger Gemeinde das selbst so veröffentlicht.
+        </p>
+        <p>
+          Deshalb ist die Rechteprüfung nicht „ist er höher gestellt?“, sondern
+          <strong>„ist das seine Gemeinde?“</strong> — und für den Hauptadministrator lautet die
+          Antwort bei jeder Gemeinde: nein. Seine Macht liegt woanders: er kann senden und
+          abschalten.
+        </p>
+      </div>
+
+      <h3>Der Administrator wird unsichtbar, wenn er woanders schaut</h3>
+      <p>
+        Sieht sich ein Gemeinde-Administrator eine fremde Gemeinde an, verschwindet jeder Hinweis
+        darauf, dass er Administrator ist. Keine Knöpfe, keine Zeile im Kopf. Kehrt er zu seiner
+        eigenen zurück, ist alles wieder da — ohne neue Anmeldung.
+      </p>
+
+      <div class="warum">
+        <span class="label">Warum verschwindet der Hinweis vollständig?</span>
+        <p>
+          Ein ausgegrauter Knopf ist eine Einladung, ihn zu drücken. Steht bei einer fremden
+          Gemeinde „Administrator“ im Kopf, glaubt der Mensch, er sei dort zuständig — und wundert
+          sich, warum nichts geht. Was nicht erlaubt ist, soll gar nicht erst zu sehen sein.
+        </p>
+      </div>
+
+      <h3>Anmeldung bei der falschen Gemeinde wird gemeldet</h3>
+      <p>
+        Meldet sich jemand mit gültigem Passwort bei einer Gemeinde an, zu der sein Zugang nicht
+        gehört, bekommt der Hauptadministrator eine Meldung: wer, wo, wann. Der Versuch selbst
+        wird abgewiesen.
+      </p>
+
+      <div class="warum">
+        <span class="label">Warum nur bei richtigem Passwort?</span>
+        <p>
+          Ein falsches Passwort ist ein Vertipper. Ein <em>richtiges</em> Passwort an der falschen
+          Stelle ist etwas anderes: entweder hat jemand die Gemeinde verwechselt, oder das Passwort
+          ist weitergegeben worden. Nur das ist eine Meldung wert. Würde jeder Fehlversuch gemeldet,
+          ginge die eine wichtige Meldung im Rauschen unter.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="zugang">
+      <p class="sec-kicker">Verwaltung</p>
+      <h2 class="sec">Wie ein Zugang entsteht</h2>
+
+      <p>
+        Ein Zugang besteht aus <strong>zwei Teilen</strong>. Wer nur den ersten hat, kommt nicht
+        hinein — auch mit richtigem Passwort nicht.
+      </p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Schritt</th><th>Wo</th><th>Ergebnis</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Das Login</strong></td>
+              <td>Firebase-Konsole → Authentication → Add user</td>
+              <td>E-Mail und Passwort der Gemeinde. Es entsteht eine <code>UID</code>.</td>
+            </tr>
+            <tr>
+              <td><strong>2. Die Rolle</strong></td>
+              <td>Firestore → Sammlung <code>admins</code></td>
+              <td>Dokument mit dieser UID als Kennung, darin <code>role</code> und <code>communityId</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre><code>admins/{UID}
+  role:        "community"
+  communityId: "igbd-gemeinde-sandzak-kassel"
+
+admins/{UID}
+  role:        "head"          ← kein communityId, gilt für alle</code></pre>
+
+      <div class="warum">
+        <span class="label">Warum zwei Teile statt einem?</span>
+        <p>
+          Weil die beiden Fragen verschieden sind: <em>Bist du es wirklich?</em> beantwortet das
+          Passwort. <em>Was darfst du?</em> beantwortet der Rolleneintrag. Trennt man sie, kann man
+          jemandem die Rechte entziehen, ohne ihm das Passwort wegzunehmen — <strong>Dokument in
+          <code>admins</code> löschen, fertig</strong>. Beim nächsten Versuch meldet die App den
+          Zugang ab. Wechselt ein Gemeindevorstand, ist das eine Sache von zehn Sekunden.
+        </p>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum steht das in der Datenbank und nicht in der App?</span>
+        <p>
+          Früher stand die Administrator-Kennung fest im App-Code. Das hieß: jeder neue Zugang
+          hätte eine neue Version im Play Store gebraucht, mit Prüfung und Wartezeit. Bei zwanzig
+          zahlenden Gemeinden ist das unhaltbar. Jetzt ist ein neuer Zugang ein Eintrag in der
+          Konsole und gilt sofort — auf allen Geräten.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="datenbank">
+      <p class="sec-kicker">Aufbau</p>
+      <h2 class="sec">Die Datenbank</h2>
+
+      <p>Der größte Eingriff: die Gebetszeiten sind umgezogen.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Was</th><th>Vorher</th><th>Jetzt</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Iqamah &amp; Jumu'ah</td>
+              <td><code>config/community</code></td>
+              <td><code>communities/{id}/config/rules</code></td>
+            </tr>
+            <tr>
+              <td>Beiträge</td>
+              <td><code>news/{id}</code></td>
+              <td><code>communities/{id}/news/{id}</code></td>
+            </tr>
+            <tr>
+              <td>Verzeichnis der Gemeinden</td>
+              <td>— gab es nicht —</td>
+              <td><code>communities/{id}</code></td>
+            </tr>
+            <tr>
+              <td>Rundnachrichten</td>
+              <td>— gab es nicht —</td>
+              <td><code>broadcasts/{id}</code></td>
+            </tr>
+            <tr>
+              <td>Rollen</td>
+              <td>fest im App-Code</td>
+              <td><code>admins/{uid}</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum mussten die Zeiten unbedingt umziehen?</span>
+        <p>
+          Hätte man sie stehen lassen, würden sich <strong>alle zwanzig Gemeinden Kassels
+          Zeiten teilen</strong>. Ändert Kassel seine Jumu'ah auf 14:00, ändert sie sich in Ulm,
+          Aachen und Berlin gleich mit. Und niemand hätte es gesehen: auf dem Bildschirm steht der
+          Name der eigenen Gemeinde über einer fremden Zeit.
+        </p>
+        <p>
+          Das war der gefährlichste Fehler im ganzen Umbau, weil er still gewesen wäre. Kein
+          Absturz, keine Fehlermeldung — nur Menschen, die zur falschen Stunde in einem leeren
+          Gebetsraum stehen.
+        </p>
+      </div>
+
+      <h3>Der vollständige Aufbau</h3>
+      <pre><code>communities/{id}                          Verzeichnis: Name, Anschrift, Orte,
+                                          Logo, Spendenlink, Status
+communities/{id}/config/rules             Iqamah + Jumu'ah dieser Gemeinde
+communities/{id}/news/{id}                Beiträge dieser Gemeinde
+communities/{id}/news/{id}/reactions/{uid}  wer wie reagiert hat
+communities/{id}/news_images/{id}         Bilder zu Beiträgen
+
+broadcasts/{id}                           Rundnachrichten des Hauptadmins
+broadcasts/{id}/reactions/{uid}
+broadcast_images/{id}
+
+admins/{uid}                              Rollen
+admin_alerts/{id}                         gemeldete Fehlanmeldungen
+events/{id}                               Veranstaltungen (von der iOS-App)
+
+config/community                          ALT — nur noch für Version 1.1.3
+news/{id}                                 ALT — dito</code></pre>
+
+      <div class="warum">
+        <span class="label">Warum liegt der Gemeindekatalog in der Datenbank und nicht in der App?</span>
+        <p>
+          Weil Gemeinden für die Aufnahme bezahlen. Eine neue Gemeinde aufzunehmen darf nicht
+          bedeuten, eine App-Version zu bauen und auf Googles Prüfung zu warten. In der App liegt
+          nur eine <strong>Notfallliste</strong> mit den bekannten zwanzig — damit der allererste
+          Start ohne Netz keine leere Auswahl zeigt. Sobald die Datenbank antwortet, ersetzt sie
+          diese Liste vollständig.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="regeln">
+      <p class="sec-kicker">Sicherheit</p>
+      <h2 class="sec">Die Sicherheitsregeln</h2>
+
+      <p>
+        Die Regeln laufen auf Googles Servern, nicht in der App. Das ist der entscheidende Punkt:
+        <strong>sie lassen sich nicht umgehen</strong>, auch nicht von jemandem, der die App
+        auseinandernimmt. Was die App an Knöpfen zeigt, ist Bequemlichkeit. Die Absicherung ist dort.
+      </p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Bereich</th><th>Lesen</th><th>Schreiben</th></tr></thead>
+          <tbody>
+            <tr><td>Gemeinden, Gebetszeiten, Beiträge, Veranstaltungen</td><td>alle</td><td>nur der zuständige Administrator</td></tr>
+            <tr><td>Reaktionen (Herz/Daumen)</td><td>alle</td><td>jeder — aber nur den eigenen Eintrag</td></tr>
+            <tr><td><code>admins</code></td><td>nur der eigene Eintrag</td><td>Hauptadministrator</td></tr>
+            <tr><td><code>admin_alerts</code></td><td>Hauptadministrator</td><td>jeder Angemeldete darf melden</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Geprüft: Ein Schreibversuch von außen, ohne Anmeldung, auf Kassels Jumu'ah-Zeit und auf einen Beitrag im Namen der Gemeinde — beide abgewiesen mit <code>PERMISSION_DENIED</code>.</p>
+
+      <div class="warum">
+        <span class="label">Warum darf jeder alles lesen?</span>
+        <p>
+          Weil Gebetszeiten für alle da sind. Wer die App nicht installiert hat, soll trotzdem
+          nachsehen können, wann in Kassel Jumu'ah ist. Und die Auswahl muss die Gemeindeliste
+          zeigen können, <em>bevor</em> jemand eine Gemeinde gewählt hat.
+        </p>
+        <p>
+          Das lässt sich auch nicht sinnvoll abdichten: Jeder Nutzer darf jede Gemeinde wählen,
+          sonst wäre die App für Reisende nutzlos. Echte Abschottung bräuchte einen Login pro
+          Gemeinde für jeden einzelnen Menschen — dann kann aber niemand mehr einfach nachschauen.
+          Das wäre eine andere App.
+        </p>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum darf ein normaler Leser am Beitrag überhaupt etwas ändern?</span>
+        <p>
+          Wegen der Zähler. Drückt jemand auf das Herz, muss <code>likeCount</code> am Beitrag
+          hochgehen. Die Regel erlaubt deshalb genau eine Art von Änderung: eine, die
+          <strong>ausschließlich</strong> die beiden Zählerfelder anfasst. Text, Bild und
+          Empfängerliste bleiben unantastbar. Wer versucht, unter dem Deckmantel einer Reaktion
+          den Text zu ändern, wird abgewiesen.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="abschalten">
+      <p class="sec-kicker">Steuerung</p>
+      <h2 class="sec">Abschalten und zurückholen</h2>
+
+      <p>
+        Eine Gemeinde, die nicht mehr zahlt, ist etwas anderes als eine, die Ärger macht. Deshalb
+        gibt es zwei Stufen — beide jederzeit umkehrbar, beide nur durch den Hauptadministrator.
+      </p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Status</th><th>Was passiert</th><th>Gedacht für</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="pille p-aktiv">aktiv</span></td>
+              <td>Alles sichtbar: Auswahl, Logo, Beiträge, Spendenlink.</td>
+              <td>der Normalfall</td>
+            </tr>
+            <tr>
+              <td><span class="pille p-gesperrt">gesperrt</span></td>
+              <td>Verschwindet aus der Auswahl. Wer sie gewählt hat, behält die Gebetszeiten — aber Logo, Beiträge und Spendenknopf sind weg.</td>
+              <td>Beitrag nicht bezahlt</td>
+            </tr>
+            <tr>
+              <td><span class="pille p-blockiert">blockiert</span></td>
+              <td>Ganz weg. Die App zeigt einen Hinweis statt der Gemeinde.</td>
+              <td>schwerwiegender Verstoß</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum behält eine gesperrte Gemeinde die Gebetszeiten?</span>
+        <p>
+          Weil der Streit zwischen dem Verband und einem Vorstand nicht auf dem Rücken der Betenden
+          ausgetragen wird. Jemand, der seit einem Jahr nach dieser App betet, hat mit dem
+          Mitgliedsbeitrag nichts zu tun. Er verliert das Aushängeschild der Gemeinde — nicht die
+          Zeit für das Morgengebet.
+        </p>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum verschwindet der Spendenknopf sofort?</span>
+        <p>
+          Beim Bauen fiel auf: der Knopf blieb stehen und fiel auf Kassels PayPal zurück. Eine
+          gesperrte Gemeinde hätte also weiter Knöpfe gezeigt, die Geld an <em>jemand anderen</em>
+          schicken. Das ist kein Schönheitsfehler, das ist ein Vertrauensbruch. Jetzt ist der Knopf
+          vollständig weg, statt auf irgendetwas zurückzufallen.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="neu">
+      <p class="sec-kicker">Funktionen</p>
+      <h2 class="sec">Was neu dazukam</h2>
+
+      <div class="karten">
+        <div class="karte">
+          <h4>Rundnachrichten mit Empfängerauswahl</h4>
+          <p>Der Hauptadministrator hakt an, welche Gemeinden eine Mitteilung erreicht — mit
+             Suchfeld und „alle auswählen“. Keine Auswahl bedeutet: alle, auch die, die später
+             dazukommen.</p>
+        </div>
+        <div class="karte">
+          <h4>Absenderzeile</h4>
+          <p>Unter jedem Beitrag steht, wer ihn geschickt hat, mit rundem Logo. Sonst wüsste
+             niemand, ob die Nachricht aus der eigenen Moschee oder vom Verband kommt.</p>
+        </div>
+        <div class="karte">
+          <h4>Herz und Daumen</h4>
+          <p>„Wer kommt mit?“ lässt sich beantworten, ohne zu schreiben. Jedes Gerät bekommt still
+             eine anonyme Kennung, damit eine Reaktion zurückgenommen werden kann.</p>
+        </div>
+        <div class="karte">
+          <h4>Qibla folgt dem Standort</h4>
+          <p>Der feste Winkel stimmte nur zu Hause. Jetzt darf die App den groben Standort nutzen —
+             stadtgenau reicht, wird nirgendwohin gesendet.</p>
+        </div>
+        <div class="karte">
+          <h4>Zakat-Rechner</h4>
+          <p>Rechnet, was eingegeben wird: 2,5 % über dem Nisab. Holt bewusst keinen Goldpreis aus
+             dem Netz — ein falscher Nisab erzeugt still eine falsche Pflicht.</p>
+        </div>
+        <div class="karte">
+          <h4>Adhan beim Sonnenaufgang</h4>
+          <p>Wird jetzt gespielt; der Zusatz „ohne Adhan“ ist in allen acht Sprachen raus. Bleibt
+             ausgeschaltet, bis jemand ihn einschaltet.</p>
+        </div>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum bedeutet „keine Auswahl“ bei einer Rundnachricht <em>alle</em>?</span>
+        <p>
+          Weil eine feste Empfängerliste die Zukunft ausschließt. Wäre „an alle“ als Liste aller
+          zwanzig gespeichert, bekäme die einundzwanzigste Gemeinde diese Mitteilung nie zu sehen —
+          obwohl sie ausdrücklich an alle ging. Eine leere Liste heißt „an alle, die es gibt“, und
+          das gilt auch morgen noch.
+        </p>
+      </div>
+
+      <div class="warum">
+        <span class="label">Warum bleibt der Sonnenaufgangs-Adhan standardmäßig aus?</span>
+        <p>
+          Weil er sonst bei jedem, der ihn nie wollte, plötzlich bei Tagesanbruch losginge. Wer
+          ihn will, schaltet ihn ein. Das Telefon wird beim Sonnenaufgang außerdem weiterhin nicht
+          stummgeschaltet — dort ist keine Gemeinschaft, für die man leise sein müsste.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="fernseher">
+      <p class="sec-kicker">Moscheetafel</p>
+      <h2 class="sec">Der Fernseher</h2>
+
+      <p>
+        Der Fernseher in der Moschee ist ein Sonderfall: Er läuft wochenlang durch, wird mit einer
+        Fernbedienung bedient und hat keine Tastatur.
+      </p>
+
+      <h3>Gemeindeauswahl beim ersten Start</h3>
+      <p>
+        Der Fernseher übersprang bisher die gesamte Einrichtung und hätte damit in <em>jeder</em>
+        Moschee Kassel gezeigt. Jetzt fragt er beim ersten Aufhängen nach der Gemeinde — und, wo
+        eine Gemeinde mehrere Orte betreut, nach dem Ort. Große Zeilen, erste Zeile schon markiert,
+        kein Suchfeld. Eine Tafel, die schon läuft, wird nach dem Update nicht gefragt.
+      </p>
+
+      <div class="warum">
+        <span class="label">Warum ändert man die Gemeinde durch <em>Halten</em> von OK?</span>
+        <p>
+          Ein kurzer Druck wäre zu leicht. Die Tafel hängt jahrelang in einem öffentlichen Raum;
+          eine heruntergefallene Fernbedienung darf die Gebetszeiten der Moschee nicht gegen die
+          einer anderen Stadt tauschen. Fünf kurze Drücke wurden geprüft — die Tafel bleibt stehen.
+        </p>
+      </div>
+
+      <h3>Warum die Tafel nie neu gestartet werden muss</h3>
+      <p>
+        Alle übrigen Auslöser zum Nachladen hängen an einem Programmstart — auf dem Fernseher
+        passiert der genau einmal. Um Mitternacht bemerkte die Tafel zwar den neuen Tag, holte die
+        neuen Zeiten aber nie. Sie stand auf den Zahlen von gestern, bis jemand die App von Hand
+        beendete.
+      </p>
+      <p>
+        Jetzt läuft ein Wächter dauerhaft mit: Sobald für den heutigen Tag keine Zeiten vorliegen,
+        holt er sie — nach 30 Sekunden, dann 1, 2, 5 Minuten, dann alle 10 Minuten, bis es klappt.
+      </p>
+
+      <div class="warum">
+        <span class="label">Warum die wachsenden Abstände?</span>
+        <p>
+          Wegen des Moschee-WLANs. Steht es um 00:05 noch nicht, wäre ein einzelner Versuch
+          verloren und die Tafel zeigte den ganzen Morgen alte Zeiten an einer öffentlichen Wand.
+          Kurze Abstände am Anfang holen eine kurze Störung binnen einer Minute auf; lange Abstände
+          danach machen aus einem längeren Ausfall keine Dauerbelastung.
+        </p>
+      </div>
+
+      <p>
+        Iqamah-Änderungen brauchen gar keinen Umweg: Die Tafel hört live auf die Datenbank. Wird am
+        Handy die Jumu'ah-Zeit geändert, steht sie <strong>binnen Sekunden</strong> auf dem Fernseher.
+      </p>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="gefahren">
+      <p class="sec-kicker">Vorsicht</p>
+      <h2 class="sec">Drei echte Gefahren</h2>
+
+      <div class="achtung">
+        <span class="label">1 · <code>config/community</code> nicht löschen</span>
+        <p>
+          Die im Play Store veröffentlichte Version 1.1.3 liest die Gebetszeiten noch von dort.
+          Wird das Dokument gelöscht, verlieren alle bestehenden Installationen ihre Iqamah-Zeiten.
+          Es darf erst weg, wenn niemand mehr die alte Version benutzt.
+        </p>
+        <p>
+          Bis zur nächsten Veröffentlichung müssen Kassels Zeiten <strong>an beiden Stellen</strong>
+          gepflegt werden, falls sie sich ändern.
+        </p>
+      </div>
+
+      <div class="achtung">
+        <span class="label">2 · Die Kennung des Hauptadministrators nicht herabstufen</span>
+        <p>
+          <code>1a7xqRgIYDR0RZqa3KghBlz98PK2</code> ist der Hauptadministrator. Wird daraus
+          <code>role: "community"</code>, gehen Gemeindeverwaltung, Rundnachrichten und das Recht,
+          überhaupt Zugänge zu vergeben, verloren — auch das Recht, den Fehler in der App wieder
+          rückgängig zu machen. Reparieren ginge dann nur noch von Hand in der Firebase-Konsole,
+          weil die Konsole die Regeln umgeht.
+        </p>
+      </div>
+
+      <div class="achtung">
+        <span class="label">3 · Keiner Gemeinde Vertraulichkeit versprechen</span>
+        <p>
+          Beiträge erreichen in der App nur die eigene Gemeinde — aber wer die Adresse der Datenbank
+          kennt, kann sie abrufen, ohne die App zu benutzen. Diese Adresse steht im Klartext in der
+          App-Datei; eine APK ist eine ZIP-Datei, die jeder entpacken kann.
+        </p>
+        <p>
+          Der richtige Satz lautet: <em>Beiträge erreichen nur die eigene Gemeinde, aber es ist ein
+          Aushang am schwarzen Brett, kein verschlossener Brief.</em> Namen, Telefonnummern und
+          Beträge gehören nicht hinein.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════ -->
+    <section id="offen">
+      <p class="sec-kicker">Stand</p>
+      <h2 class="sec">Was noch offen ist</h2>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Punkt</th><th>Warum es wichtig ist</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>19 Gemeinden auf „gesperrt“ setzen</strong></td>
+              <td>Sie stehen auf aktiv und tragen Kassels Zeiten. Vor der nächsten Veröffentlichung muss das geregelt sein — sonst zeigt die App fremde Gebetszeiten im Namen von Gemeinden, die nichts zugesagt haben.</td>
+            </tr>
+            <tr>
+              <td><strong>Iqamah, Jumu'ah und Logos einsammeln</strong></td>
+              <td>Alle 19 haben bisher Kassels Zeiten als Platzhalter. Die echten Werte kann nur die jeweilige Gemeinde liefern.</td>
+            </tr>
+            <tr>
+              <td><strong>Namen bestätigen lassen</strong></td>
+              <td>Sie stammen aus den Impressen der Webseiten, nicht von der IGBD. Bei zahlenden Gemeinden muss der Name stimmen.</td>
+            </tr>
+            <tr>
+              <td><strong><code>events</code> auf Android</strong></td>
+              <td>Die Sammlung kommt von der iOS-App; die Android-App kennt sie nicht. Sollen Veranstaltungen auf beiden Seiten erscheinen, fehlt das noch.</td>
+            </tr>
+            <tr>
+              <td><strong>Zakat-Rechner</strong></td>
+              <td>Steht zur Entscheidung — bleibt drin oder fliegt raus.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>
+      Kassel Vaktija · Umbau auf zwanzig Gemeinden · Stand 26. August 2026.
+      Die technischen Einzelheiten stehen in <code>docs/multi-gemeinde/</code> —
+      <code>FIRESTORE-REGELN.md</code> für den vollständigen Regelsatz,
+      <code>FUER-DIE-IOS-APP.md</code> für die Mac-Seite,
+      <code>communities.json</code> für die Gemeindedaten.
+    </p>
+  </footer>
+
+</div>
