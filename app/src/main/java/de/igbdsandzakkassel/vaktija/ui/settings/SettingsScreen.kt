@@ -135,26 +135,6 @@ fun SettingsScreen(
                     AdminRole.None -> stringResource(R.string.admin_section_header)
                 },
             )
-            if (BuildConfig.DEBUG) {
-                // Test aid, debug builds only: Firestore has no admins collection yet, so this
-                // decides which role the stand-in account plays. Both have to be reachable — as
-                // head admin you must NOT see the prayer-time editor, and that is the thing most
-                // worth checking.
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                ) {
-                    Text(
-                        text = "TEST: Hauptadmin statt Gemeinde-Admin",
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.weight(1f),
-                    )
-                    Switch(
-                        checked = adminRole is AdminRole.Head,
-                        onCheckedChange = viewModel::setDebugRole,
-                    )
-                }
-            }
             // The prayer-time editor belongs to the community's own admin. A head admin gets the
             // section (sign-out, and in debug the role switch) but not this.
             if (canEditTimes) AdminSection(

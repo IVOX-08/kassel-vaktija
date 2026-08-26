@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
@@ -43,19 +45,19 @@ import de.igbdsandzakkassel.vaktija.ui.onboarding.InAppLanguagePicker
 fun LanguageFlag(
     language: AppLanguage,
     modifier: Modifier = Modifier,
-    width: Dp = 32.dp,
-    height: Dp = 24.dp,
+    size: Dp = 32.dp,
 ) {
-    val shape = RoundedCornerShape(3.dp)
+    // Round, and Crop rather than Fit: a flag letterboxed inside a circle leaves grey wedges above
+    // and below, which looks like a rendering fault rather than a design. Cropping the sides of a
+    // 3:2 flag keeps the circle full and still shows the part people recognise.
     Image(
         painter = painterResource(language.flagRes),
         contentDescription = null,
-        contentScale = ContentScale.Fit,
+        contentScale = ContentScale.Crop,
         modifier = modifier
-            .width(width)
-            .height(height)
-            .clip(shape)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape),
+            .size(size)
+            .clip(CircleShape)
+            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape),
     )
 }
 
@@ -118,7 +120,7 @@ fun ChangeLanguagePill(modifier: Modifier = Modifier) {
         subtitle = stringResource(R.string.action_change_language),
         onClick = { show = true },
         modifier = modifier,
-        leading = { LanguageFlag(current, width = 26.dp, height = 19.dp) },
+        leading = { LanguageFlag(current, size = 28.dp) },
     )
     if (show) {
         Dialog(

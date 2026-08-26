@@ -214,4 +214,26 @@
     <string name="admin_alerts_header">محاولات تسجيل الدخول</string>
     <string name="admin_alert_wrong_community">حاول %1$s تسجيل الدخول لدى %2$s.</string>
     <string name="admin_alert_dismiss">تم</string>
+    <string name="library_zakat">الزكاة</string>
+    <string name="zakat_intro">أدخل ممتلكاتك. يحسب التطبيق 2.5 % عند تجاوز النصاب.</string>
+    <string name="zakat_assets">الممتلكات</string>
+    <string name="zakat_cash">النقد</string>
+    <string name="zakat_bank">المال في البنك</string>
+    <string name="zakat_gold">الذهب والفضة (القيمة)</string>
+    <string name="zakat_business">البضائع</string>
+    <string name="zakat_receivable">الديون لك</string>
+    <string name="zakat_deductions">الخصومات</string>
+    <string name="zakat_debts">الديون عليك</string>
+    <string name="zakat_nisab">النصاب</string>
+    <string name="zakat_nisab_value">قيمة النصاب</string>
+    <string name="zakat_nisab_hint">اسأل إمامك عن قيمة النصاب الحالية — فهي تعتمد على سعر الذهب أو الفضة.</string>
+    <string name="zakat_total_assets">إجمالي الممتلكات</string>
+    <string name="zakat_net">صافي الممتلكات</string>
+    <string name="zakat_due">الزكاة (2.5 %)</string>
+    <string name="zakat_enter_nisab">أدخل النصاب لمعرفة الوجوب.</string>
+    <string name="zakat_above_nisab">أنت فوق النصاب — الزكاة واجبة.</string>
+    <string name="zakat_below_nisab">أنت دون النصاب — لا زكاة عليك.</string>
+    <string name="zakat_disclaimer">هذه أداة حساب وليست فتوى. اسأل إمامك عن حالتك.</string>
+    <string name="news_sent_by">أرسلها %1$s</string>
+    <string name="news_sender_federation" translatable="false">IGBD</string>
 </resources>

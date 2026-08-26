@@ -214,4 +214,26 @@
     <string name="admin_alerts_header">Попытки входа</string>
     <string name="admin_alert_wrong_community">%1$s пытался войти в %2$s.</string>
     <string name="admin_alert_dismiss">Готово</string>
+    <string name="library_zakat">Закят</string>
+    <string name="zakat_intro">Введите своё имущество. Приложение считает 2,5 %, если вы превысили нисаб.</string>
+    <string name="zakat_assets">Имущество</string>
+    <string name="zakat_cash">Наличные</string>
+    <string name="zakat_bank">Деньги на счёте</string>
+    <string name="zakat_gold">Золото и серебро (стоимость)</string>
+    <string name="zakat_business">Товар</string>
+    <string name="zakat_receivable">Долги вам</string>
+    <string name="zakat_deductions">Вычеты</string>
+    <string name="zakat_debts">Долги</string>
+    <string name="zakat_nisab">Нисаб</string>
+    <string name="zakat_nisab_value">Величина нисаба</string>
+    <string name="zakat_nisab_hint">Спросите своего имама о текущем нисабе — он зависит от цены золота или серебра.</string>
+    <string name="zakat_total_assets">Всего имущества</string>
+    <string name="zakat_net">Чистое имущество</string>
+    <string name="zakat_due">Закят (2,5 %)</string>
+    <string name="zakat_enter_nisab">Введите нисаб, чтобы увидеть обязанность.</string>
+    <string name="zakat_above_nisab">Вы выше нисаба — закят обязателен.</string>
+    <string name="zakat_below_nisab">Вы ниже нисаба — закят не обязателен.</string>
+    <string name="zakat_disclaimer">Это расчётная помощь, а не фетва. По своему случаю спросите имама.</string>
+    <string name="news_sent_by">Отправил: %1$s</string>
+    <string name="news_sender_federation" translatable="false">IGBD</string>
 </resources>

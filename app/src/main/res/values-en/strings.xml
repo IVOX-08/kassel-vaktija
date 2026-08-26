@@ -154,7 +154,7 @@
     <string name="admin_password">Password</string>
     <string name="admin_sign_in">Sign in</string>
     <string name="admin_sign_out">Sign out</string>
-    <string name="admin_login_failed">Sign-in failed</string>
+    <string name="admin_login_failed">Wrong e-mail or password. Please check your details.</string>
     <string name="admin_save">Save</string>
     <string name="admin_saved">Saved</string>
     <!-- Notification sound options -->
@@ -226,4 +226,26 @@
     <string name="admin_alerts_header">Sign-in attempts</string>
     <string name="admin_alert_wrong_community">%1$s tried to sign in at %2$s.</string>
     <string name="admin_alert_dismiss">Dismiss</string>
+    <string name="library_zakat">Zakat</string>
+    <string name="zakat_intro">Enter your assets. The app applies 2.5 % once you pass the nisab.</string>
+    <string name="zakat_assets">Assets</string>
+    <string name="zakat_cash">Cash</string>
+    <string name="zakat_bank">Money in the bank</string>
+    <string name="zakat_gold">Gold and silver (value)</string>
+    <string name="zakat_business">Stock and goods</string>
+    <string name="zakat_receivable">Money owed to you</string>
+    <string name="zakat_deductions">Deductions</string>
+    <string name="zakat_debts">Debts</string>
+    <string name="zakat_nisab">Nisab</string>
+    <string name="zakat_nisab_value">Nisab value</string>
+    <string name="zakat_nisab_hint">Ask your imam for the current nisab — it depends on the gold or silver price.</string>
+    <string name="zakat_total_assets">Total assets</string>
+    <string name="zakat_net">Net assets</string>
+    <string name="zakat_due">Zakat (2.5 %)</string>
+    <string name="zakat_enter_nisab">Enter the nisab to see the obligation.</string>
+    <string name="zakat_above_nisab">You are above the nisab — zakat is due.</string>
+    <string name="zakat_below_nisab">You are below the nisab — no zakat is due.</string>
+    <string name="zakat_disclaimer">This is a calculation aid, not a fatwa. Ask your imam about your own case.</string>
+    <string name="news_sent_by">Sent by %1$s</string>
+    <string name="news_sender_federation" translatable="false">IGBD</string>
 </resources>

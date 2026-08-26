@@ -35,6 +35,17 @@ data class NewsItem(
      * it is stored.
      */
     val audience: List<String> = emptyList(),
+    /**
+     * Which community posted this; null for a federation announcement.
+     *
+     * Only the id is kept. The name and logo are looked up against the live catalogue when the card
+     * is drawn, so a community that renames itself or files a new logo does not leave its old posts
+     * signed with the previous one.
+     */
+    val communityId: String? = null,
+    /** How many readers reacted, kept on the document so the list needs no extra reads. */
+    val likeCount: Int = 0,
+    val dislikeCount: Int = 0,
 ) {
     /** Whether this item should be shown to a member of [communityId]. */
     fun reaches(communityId: String?): Boolean =

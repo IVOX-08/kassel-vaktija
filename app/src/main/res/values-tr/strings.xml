@@ -214,4 +214,26 @@
     <string name="admin_alerts_header">Giriş denemeleri</string>
     <string name="admin_alert_wrong_community">%1$s, %2$s cemaatinde giriş yapmayı denedi.</string>
     <string name="admin_alert_dismiss">Tamam</string>
+    <string name="library_zakat">Zekât</string>
+    <string name="zakat_intro">Varlıklarınızı girin. Nisabı aşarsanız uygulama %2,5 hesaplar.</string>
+    <string name="zakat_assets">Varlıklar</string>
+    <string name="zakat_cash">Nakit</string>
+    <string name="zakat_bank">Bankadaki para</string>
+    <string name="zakat_gold">Altın ve gümüş (değer)</string>
+    <string name="zakat_business">Ticari mal</string>
+    <string name="zakat_receivable">Alacaklar</string>
+    <string name="zakat_deductions">Düşülecekler</string>
+    <string name="zakat_debts">Borçlar</string>
+    <string name="zakat_nisab">Nisap</string>
+    <string name="zakat_nisab_value">Nisap değeri</string>
+    <string name="zakat_nisab_hint">Güncel nisap için imamınıza sorun — altın veya gümüş fiyatına bağlıdır.</string>
+    <string name="zakat_total_assets">Toplam varlık</string>
+    <string name="zakat_net">Net varlık</string>
+    <string name="zakat_due">Zekât (%2,5)</string>
+    <string name="zakat_enter_nisab">Yükümlülüğü görmek için nisabı girin.</string>
+    <string name="zakat_above_nisab">Nisabın üzerindesiniz — zekât gerekir.</string>
+    <string name="zakat_below_nisab">Nisabın altındasınız — zekât gerekmez.</string>
+    <string name="zakat_disclaimer">Bu bir hesaplama yardımıdır, fetva değildir. Kendi durumunuz için imamınıza sorun.</string>
+    <string name="news_sent_by">Gönderen: %1$s</string>
+    <string name="news_sender_federation" translatable="false">IGBD</string>
 </resources>

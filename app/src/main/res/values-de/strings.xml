@@ -154,7 +154,7 @@
     <string name="admin_password">Passwort</string>
     <string name="admin_sign_in">Anmelden</string>
     <string name="admin_sign_out">Abmelden</string>
-    <string name="admin_login_failed">Anmeldung fehlgeschlagen</string>
+    <string name="admin_login_failed">E-Mail oder Passwort falsch. Bitte überprüfen Sie Ihre Daten.</string>
     <string name="admin_save">Speichern</string>
     <string name="admin_saved">Gespeichert</string>
     <!-- Notification sound options -->
@@ -226,4 +226,26 @@
     <string name="admin_alerts_header">Anmeldeversuche</string>
     <string name="admin_alert_wrong_community">%1$s hat versucht, sich bei %2$s anzumelden.</string>
     <string name="admin_alert_dismiss">Erledigt</string>
+    <string name="library_zakat">Zakat</string>
+    <string name="zakat_intro">Tragen Sie Ihr Vermögen ein. Die App rechnet 2,5 %, sobald Sie den Nisab überschreiten.</string>
+    <string name="zakat_assets">Vermögen</string>
+    <string name="zakat_cash">Bargeld</string>
+    <string name="zakat_bank">Guthaben auf dem Konto</string>
+    <string name="zakat_gold">Gold und Silber (Wert)</string>
+    <string name="zakat_business">Warenbestand</string>
+    <string name="zakat_receivable">Forderungen</string>
+    <string name="zakat_deductions">Abzüge</string>
+    <string name="zakat_debts">Schulden</string>
+    <string name="zakat_nisab">Nisab</string>
+    <string name="zakat_nisab_value">Wert des Nisab</string>
+    <string name="zakat_nisab_hint">Fragen Sie Ihren Imam nach dem aktuellen Nisab — er hängt vom Gold- bzw. Silberpreis ab.</string>
+    <string name="zakat_total_assets">Vermögen gesamt</string>
+    <string name="zakat_net">Nettovermögen</string>
+    <string name="zakat_due">Zakat (2,5 %)</string>
+    <string name="zakat_enter_nisab">Tragen Sie den Nisab ein, um die Pflicht zu sehen.</string>
+    <string name="zakat_above_nisab">Sie liegen über dem Nisab — Zakat ist fällig.</string>
+    <string name="zakat_below_nisab">Sie liegen unter dem Nisab — es fällt kein Zakat an.</string>
+    <string name="zakat_disclaimer">Dies ist eine Rechenhilfe, keine Fatwa. Fragen Sie für Ihren Fall Ihren Imam.</string>
+    <string name="news_sent_by">Gesendet von %1$s</string>
+    <string name="news_sender_federation" translatable="false">IGBD</string>
 </resources>

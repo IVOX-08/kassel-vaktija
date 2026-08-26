@@ -214,7 +214,7 @@
     <string name="admin_password">Lozinka</string>
     <string name="admin_sign_in">Prijava</string>
     <string name="admin_sign_out">Odjava</string>
-    <string name="admin_login_failed">Prijava nije uspjela</string>
+    <string name="admin_login_failed">Pogrešna e-mail adresa ili lozinka. Provjerite podatke.</string>
     <string name="admin_save">Sačuvaj</string>
     <string name="admin_saved">Sačuvano</string>
     <!-- Community announcements (news) notifications -->
@@ -280,4 +280,26 @@
     <string name="admin_alerts_header">Pokušaji prijave</string>
     <string name="admin_alert_wrong_community">%1$s se pokušao prijaviti kod %2$s.</string>
     <string name="admin_alert_dismiss">U redu</string>
+    <string name="library_zakat">Zekat</string>
+    <string name="zakat_intro">Unesite svoju imovinu. Aplikacija računa 2,5 % ako pređete nisab.</string>
+    <string name="zakat_assets">Imovina</string>
+    <string name="zakat_cash">Gotovina</string>
+    <string name="zakat_bank">Novac na računu</string>
+    <string name="zakat_gold">Zlato i srebro (vrijednost)</string>
+    <string name="zakat_business">Roba i zalihe</string>
+    <string name="zakat_receivable">Potraživanja</string>
+    <string name="zakat_deductions">Odbici</string>
+    <string name="zakat_debts">Dugovi</string>
+    <string name="zakat_nisab">Nisab</string>
+    <string name="zakat_nisab_value">Vrijednost nisaba</string>
+    <string name="zakat_nisab_hint">Pitajte svog imama za trenutnu vrijednost nisaba — ovisi o cijeni zlata odnosno srebra.</string>
+    <string name="zakat_total_assets">Ukupna imovina</string>
+    <string name="zakat_net">Neto imovina</string>
+    <string name="zakat_due">Zekat (2,5 %)</string>
+    <string name="zakat_enter_nisab">Unesite nisab da biste vidjeli obavezu.</string>
+    <string name="zakat_above_nisab">Iznad ste nisaba — zekat je obavezan.</string>
+    <string name="zakat_below_nisab">Ispod ste nisaba — zekat nije obavezan.</string>
+    <string name="zakat_disclaimer">Ovo je pomoćni račun, a ne fetva. Za svoj slučaj pitajte imama.</string>
+    <string name="news_sent_by">Poslao: %1$s</string>
+    <string name="news_sender_federation" translatable="false">IGBD</string>
 </resources>

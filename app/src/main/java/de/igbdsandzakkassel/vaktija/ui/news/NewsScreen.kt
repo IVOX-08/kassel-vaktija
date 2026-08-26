@@ -71,6 +71,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import androidx.compose.material3.Switch
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.Community
@@ -165,6 +169,8 @@ fun NewsScreen(
                         onDelete = { pendingDelete = item },
                         loadImage = viewModel::loadImage,
                         onImageClick = { viewerImage = it },
+                        senderName = allCommunities.firstOrNull { it.id == item.communityId }?.name,
+                        senderLogoUrl = allCommunities.firstOrNull { it.id == item.communityId }?.logoUrl,
                     )
                 }
                 item { Spacer(Modifier.height(12.dp)) }
@@ -223,6 +229,48 @@ fun NewsScreen(
     }
 }
 
+/** Circular logo plus "Gesendet von …" — the community's own, or the federation's for a broadcast. */
+@Composable
+private fun SenderLine(item: NewsItem, senderName: String?, senderLogoUrl: String?) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .size(34.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
+            contentAlignment = Alignment.Center,
+        ) {
+            when {
+                // A federation notice is signed with the app's own emblem, which is the IGBD one.
+                item.isBroadcast || senderLogoUrl == null -> Image(
+                    painter = painterResource(R.drawable.logo_emblem),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(34.dp).clip(CircleShape),
+                )
+                else -> AsyncImage(
+                    model = senderLogoUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(34.dp).clip(CircleShape),
+                )
+            }
+        }
+        Text(
+            text = stringResource(
+                R.string.news_sent_by,
+                senderName ?: stringResource(R.string.news_sender_federation),
+            ),
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(start = 10.dp),
+        )
+    }
+}
+
 @Composable
 private fun NewsCard(
     item: NewsItem,
@@ -231,10 +279,16 @@ private fun NewsCard(
     onDelete: () -> Unit,
     loadImage: suspend (NewsItem) -> ByteArray?,
     onImageClick: (ByteArray) -> Unit,
+    senderName: String? = null,
+    senderLogoUrl: String? = null,
 ) {
     val body = item.body(lang)
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
+            // Who this is from, above the headline. With one community it was obvious; now a
+            // federation notice and the mosque down the road sit in the same list.
+            SenderLine(item = item, senderName = senderName, senderLogoUrl = senderLogoUrl)
+            Spacer(Modifier.height(10.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = item.title(lang),

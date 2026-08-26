@@ -129,6 +129,9 @@ class FirestoreNewsRepository @Inject constructor(
                 "createdAt" to System.currentTimeMillis(),
                 "hasImage" to (imageJpeg != null),
                 "audience" to if (broadcast) audience else emptyList(),
+                "communityId" to if (broadcast) null else communityId,
+                "likeCount" to 0,
+                "dislikeCount" to 0,
             ),
         )
     }
@@ -171,6 +174,9 @@ class FirestoreNewsRepository @Inject constructor(
             hasImage = getBoolean("hasImage") ?: false,
             isBroadcast = broadcast,
             audience = (get("audience") as? List<*>)?.filterIsInstance<String>().orEmpty(),
+            communityId = getString("communityId"),
+            likeCount = (getLong("likeCount") ?: 0L).toInt(),
+            dislikeCount = (getLong("dislikeCount") ?: 0L).toInt(),
         )
     }
 
