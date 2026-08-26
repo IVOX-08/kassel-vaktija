@@ -14,6 +14,7 @@ import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import de.igbdsandzakkassel.vaktija.core.device.isTelevision
 import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
+import de.igbdsandzakkassel.vaktija.data.repository.SessionManager
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PushTopicSubscriber
 import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
@@ -38,6 +39,9 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
     @Inject
     lateinit var pushTopicSubscriber: PushTopicSubscriber
 
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
@@ -52,6 +56,8 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         // federation-wide one. No-op until a Cloud Function publishes to them (needs the Firebase
         // Blaze plan); until then the polling check below is the fallback.
         pushTopicSubscriber.start()
+        // Gives every install an identity so a reaction can belong to someone.
+        sessionManager.start()
         schedulePrayerTimesRefresh()
         // No-billing fallback for announcement/Iqamah notifications: poll every ~15 min (plus the
         // on-wake check at each prayer alarm). Replaced by instant FCM push once Blaze is enabled.

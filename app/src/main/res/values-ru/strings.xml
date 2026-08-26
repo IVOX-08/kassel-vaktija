@@ -236,4 +236,6 @@
     <string name="zakat_disclaimer">Это расчётная помощь, а не фетва. По своему случаю спросите имама.</string>
     <string name="news_sent_by">Отправил: %1$s</string>
     <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_like">Нравится</string>
+    <string name="news_dislike">Не смогу прийти</string>
 </resources>

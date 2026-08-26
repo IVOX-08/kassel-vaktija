@@ -236,4 +236,6 @@
     <string name="zakat_disclaimer">هذه أداة حساب وليست فتوى. اسأل إمامك عن حالتك.</string>
     <string name="news_sent_by">أرسلها %1$s</string>
     <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_like">إعجاب</string>
+    <string name="news_dislike">لا أستطيع الحضور</string>
 </resources>

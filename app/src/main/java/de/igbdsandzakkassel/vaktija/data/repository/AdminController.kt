@@ -67,6 +67,7 @@ class AdminController @Inject constructor(
      */
     private fun AdminRole.orDebugFallback(uid: String): AdminRole {
         if (this != AdminRole.None || !BuildConfig.DEBUG || uid != BuildConfig.ADMIN_UID) return this
+        if (auth.currentUser?.isAnonymous == true) return this
         return debugRole
     }
 

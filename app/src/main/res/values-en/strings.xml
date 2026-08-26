@@ -248,4 +248,6 @@
     <string name="zakat_disclaimer">This is a calculation aid, not a fatwa. Ask your imam about your own case.</string>
     <string name="news_sent_by">Sent by %1$s</string>
     <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_like">Like</string>
+    <string name="news_dislike">Cannot come</string>
 </resources>

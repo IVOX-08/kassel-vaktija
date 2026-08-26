@@ -302,4 +302,6 @@
     <string name="zakat_disclaimer">Ovo je pomoćni račun, a ne fetva. Za svoj slučaj pitajte imama.</string>
     <string name="news_sent_by">Poslao: %1$s</string>
     <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_like">Sviđa mi se</string>
+    <string name="news_dislike">Ne mogu doći</string>
 </resources>

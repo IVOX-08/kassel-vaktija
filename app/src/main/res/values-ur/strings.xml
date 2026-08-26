@@ -236,4 +236,6 @@
     <string name="zakat_disclaimer">یہ حساب میں مدد ہے، فتویٰ نہیں۔ اپنے معاملے کے لیے امام سے پوچھیں۔</string>
     <string name="news_sent_by">بھیجا گیا: %1$s</string>
     <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_like">پسند</string>
+    <string name="news_dislike">نہیں آ سکتا</string>
 </resources>

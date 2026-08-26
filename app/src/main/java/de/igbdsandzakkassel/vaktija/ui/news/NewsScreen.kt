@@ -75,6 +75,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.ThumbDown
+import de.igbdsandzakkassel.vaktija.data.model.Reaction
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.Community
@@ -171,6 +177,8 @@ fun NewsScreen(
                         onImageClick = { viewerImage = it },
                         senderName = allCommunities.firstOrNull { it.id == item.communityId }?.name,
                         senderLogoUrl = allCommunities.firstOrNull { it.id == item.communityId }?.logoUrl,
+                        observeMyReaction = viewModel::observeMyReaction,
+                        onReact = viewModel::react,
                     )
                 }
                 item { Spacer(Modifier.height(12.dp)) }
@@ -229,6 +237,84 @@ fun NewsScreen(
     }
 }
 
+/**
+ * Like / dislike, the show of hands a community asks for ("tap the heart if you are coming").
+ *
+ * The chosen side fills in and the count moves immediately — Firestore applies the write locally
+ * before it reaches the server, so this stays responsive with no connection. Tapping the same side
+ * again takes the answer back, because someone whose plans change has to be able to say so.
+ */
+@Composable
+private fun ReactionRow(
+    item: NewsItem,
+    mine: Reaction?,
+    onReact: (Reaction) -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = Modifier.padding(top = 10.dp),
+    ) {
+        ReactionButton(
+            selected = mine == Reaction.LIKE,
+            count = item.likeCount,
+            selectedIcon = Icons.Filled.Favorite,
+            plainIcon = Icons.Outlined.FavoriteBorder,
+            tint = BrandGreen,
+            contentDescription = stringResource(R.string.news_like),
+            onClick = { onReact(Reaction.LIKE) },
+        )
+        ReactionButton(
+            selected = mine == Reaction.DISLIKE,
+            count = item.dislikeCount,
+            selectedIcon = Icons.Filled.ThumbDown,
+            plainIcon = Icons.Outlined.ThumbDown,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            contentDescription = stringResource(R.string.news_dislike),
+            onClick = { onReact(Reaction.DISLIKE) },
+        )
+    }
+}
+
+@Composable
+private fun ReactionButton(
+    selected: Boolean,
+    count: Int,
+    selectedIcon: androidx.compose.ui.graphics.vector.ImageVector,
+    plainIcon: androidx.compose.ui.graphics.vector.ImageVector,
+    tint: androidx.compose.ui.graphics.Color,
+    contentDescription: String,
+    onClick: () -> Unit,
+) {
+    val active = if (selected) tint else MaterialTheme.colorScheme.onSurfaceVariant
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(
+                if (selected) tint.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surfaceVariant,
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 7.dp),
+    ) {
+        Icon(
+            imageVector = if (selected) selectedIcon else plainIcon,
+            contentDescription = contentDescription,
+            tint = active,
+            modifier = Modifier.size(18.dp),
+        )
+        if (count > 0) {
+            Text(
+                text = count.toString(),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Medium,
+                color = active,
+                modifier = Modifier.padding(start = 6.dp),
+            )
+        }
+    }
+}
+
 /** Circular logo plus "Gesendet von …" — the community's own, or the federation's for a broadcast. */
 @Composable
 private fun SenderLine(item: NewsItem, senderName: String?, senderLogoUrl: String?) {
@@ -281,8 +367,11 @@ private fun NewsCard(
     onImageClick: (ByteArray) -> Unit,
     senderName: String? = null,
     senderLogoUrl: String? = null,
+    observeMyReaction: (NewsItem) -> kotlinx.coroutines.flow.Flow<Reaction?>,
+    onReact: (NewsItem, Reaction) -> Unit,
 ) {
     val body = item.body(lang)
+    val myReaction by observeMyReaction(item).collectAsStateWithLifecycle(initialValue = null)
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Who this is from, above the headline. With one community it was obvious; now a
@@ -360,6 +449,7 @@ private fun NewsCard(
                     }
                     FlyerState.Unavailable -> Unit
                 }
+                ReactionRow(item = item, mine = myReaction, onReact = { onReact(item, it) })
             }
         }
     }

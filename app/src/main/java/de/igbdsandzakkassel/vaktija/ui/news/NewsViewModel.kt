@@ -11,6 +11,8 @@ import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
 import de.igbdsandzakkassel.vaktija.data.model.Community
 import kotlinx.coroutines.flow.map
+import de.igbdsandzakkassel.vaktija.data.model.Reaction
+import de.igbdsandzakkassel.vaktija.data.repository.NewsReactionRepository
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.NewsRepository
 import de.igbdsandzakkassel.vaktija.data.translate.GeminiTranslator
@@ -32,6 +34,7 @@ class NewsViewModel @Inject constructor(
     private val imageCompressor: NewsImageCompressor,
     private val adminController: AdminController,
     private val communityRepository: CommunityRepository,
+    private val reactionRepository: NewsReactionRepository,
 ) : ViewModel() {
 
     // Session cache of already-fetched flyer bytes, so scrolling a card back into view doesn't
@@ -58,6 +61,13 @@ class NewsViewModel @Inject constructor(
     /** Whether this account may remove [item] — its own community's, or its own broadcast. */
     fun canDelete(item: NewsItem, role: AdminRole, communityId: String?): Boolean =
         if (item.isBroadcast) role.canBroadcast else role.canPostNews(communityId)
+
+    /** What this device chose for each announcement it has seen this session. */
+    fun observeMyReaction(item: NewsItem) = reactionRepository.observeMyReaction(item)
+
+    fun react(item: NewsItem, choice: Reaction) {
+        viewModelScope.launch { runCatching { reactionRepository.react(item, choice) } }
+    }
 
     /** Every listed community — the recipient list the head admin picks from. */
     val allCommunities: StateFlow<List<Community>> = communityRepository.observeSelectable()

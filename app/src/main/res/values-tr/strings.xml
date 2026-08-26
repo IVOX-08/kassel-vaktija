@@ -236,4 +236,6 @@
     <string name="zakat_disclaimer">Bu bir hesaplama yardımıdır, fetva değildir. Kendi durumunuz için imamınıza sorun.</string>
     <string name="news_sent_by">Gönderen: %1$s</string>
     <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_like">Beğen</string>
+    <string name="news_dislike">Gelemiyorum</string>
 </resources>

@@ -248,4 +248,6 @@
     <string name="zakat_disclaimer">Dies ist eine Rechenhilfe, keine Fatwa. Fragen Sie für Ihren Fall Ihren Imam.</string>
     <string name="news_sent_by">Gesendet von %1$s</string>
     <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_like">Gefällt mir</string>
+    <string name="news_dislike">Kann nicht kommen</string>
 </resources>
