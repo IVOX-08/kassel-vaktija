@@ -31,6 +31,15 @@ service cloud.firestore {
                  && adminDoc().communityId == communityId);
     }
 
+    // Eine Änderung, die AUSSCHLIESSLICH die beiden Reaktionszähler anfasst.
+    // Damit darf jeder Leser das Herz drücken, ohne den Beitrag selbst ändern zu können:
+    // Text, Bild und Empfänger bleiben für alle ausser dem Admin unantastbar.
+    function onlyReactionCounts() {
+      return signedIn()
+             && request.resource.data.diff(resource.data).affectedKeys()
+                  .hasOnly(['likeCount', 'dislikeCount']);
+    }
+
     // Gemeindeverzeichnis: jeder darf lesen (auch wer noch keine Gemeinde gewählt hat).
     // Anlegen, ändern und abschalten darf NUR der Hauptadministrator.
     match /communities/{communityId} {
@@ -38,16 +47,27 @@ service cloud.firestore {
       allow write: if isHead();
     }
 
-    // Nachrichten, Bilder und Einstellungen einer Gemeinde:
-    // lesen alle, schreiben nur der Admin GENAU DIESER Gemeinde (oder der Hauptadministrator).
+    // Nachrichten einer Gemeinde: lesen alle, schreiben nur der Admin GENAU DIESER Gemeinde
+    // (oder der Hauptadministrator). Ausgenommen die Reaktionszähler — siehe oben.
     match /communities/{communityId}/news/{newsId} {
       allow read: if true;
-      allow write: if administers(communityId);
+      allow create, delete: if administers(communityId);
+      allow update: if administers(communityId) || onlyReactionCounts();
     }
+
+    // Wer wie reagiert hat. Jeder darf nur SEINEN EIGENEN Eintrag setzen und zurücknehmen —
+    // die Dokument-ID ist die Kennung des Geräts, und die muss mit dem Absender übereinstimmen.
+    match /communities/{communityId}/news/{newsId}/reactions/{uid} {
+      allow read: if true;
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
+
     match /communities/{communityId}/news_images/{imageId} {
       allow read: if true;
       allow write: if administers(communityId);
     }
+
+    // Iqamah und Jumu'ah der Gemeinde.
     match /communities/{communityId}/config/{docId} {
       allow read: if true;
       allow write: if administers(communityId);
@@ -72,15 +92,27 @@ service cloud.firestore {
     // Verbandsweite Mitteilungen des Hauptadministrators an alle Nutzer.
     match /broadcasts/{docId} {
       allow read: if true;
-      allow write: if isHead();
+      allow create, delete: if isHead();
+      allow update: if isHead() || onlyReactionCounts();
+    }
+    match /broadcasts/{docId}/reactions/{uid} {
+      allow read: if true;
+      allow write: if signedIn() && request.auth.uid == uid;
     }
     match /broadcast_images/{imageId} {
       allow read: if true;
       allow write: if isHead();
     }
 
+    // Veranstaltungen. Wird von der iOS-App geschrieben; die Android-App liest sie noch nicht.
+    // Schreibrecht wie bisher: nur der Hauptadministrator.
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isHead();
+    }
+
     // Alter Aufbau aus der Ein-Gemeinde-Zeit. Bleibt lesbar, damit Installationen, die noch nicht
-    // aktualisiert haben, weiterlaufen. Nach dem Umzug der Daten löschen.
+    // aktualisiert haben, weiterlaufen. Erst löschen, wenn niemand mehr die alte Version benutzt.
     match /config/{docId} {
       allow read: if true;
       allow write: if isHead();
@@ -92,6 +124,25 @@ service cloud.firestore {
   }
 }
 ```
+
+---
+
+## Was diese Regeln gegenüber der alten ändern
+
+Die bisherige Regel liess **nur eine einzige Kennung** schreiben — die des Besitzers. Das war
+sicher, aber zu eng:
+
+- Der Vorstandszugang der Gemeinde Kassel konnte **nichts** bearbeiten, obwohl er die Rolle hat.
+- Jeder künftige Gemeindeadmin wäre ebenso ausgesperrt gewesen.
+- **Herz und Daumen funktionierten nicht.** Jeder Tipp wurde stillschweigend abgelehnt, ohne dass
+  in der App etwas darauf hingedeutet hätte.
+
+Gleichzeitig bleibt alles gesperrt, was gesperrt sein muss: kein Nicht-Admin kann eine Gemeinde
+anlegen, eine Gebetszeit ändern oder einen Beitrag schreiben.
+
+⚠️ **Lesen bleibt für alle offen.** Das ist Absicht — Gebetszeiten sollen alle sehen können, auch
+wer die App gar nicht benutzt. Es heisst aber auch: Beiträge einer Gemeinde sind für jeden abrufbar,
+der die Adresse der Datenbank kennt. Sag keiner Gemeinde zu, ihre Beiträge seien vertraulich.
 
 ---
 
@@ -113,9 +164,9 @@ niemand rein — auch nicht mit gültigem Passwort.
 | Feld | Typ | Wert |
 |---|---|---|
 | `role` | string | `community` |
-| `communityId` | string | `sandzak-kassel` |
+| `communityId` | string | die Kennung aus dem Verzeichnis, z. B. `igbd-gemeinde-sandzak-kassel` |
 
-**Für dich als Hauptadministrator:**
+**Für den Hauptadministrator:**
 
 | Feld | Typ | Wert |
 |---|---|---|
@@ -125,16 +176,15 @@ niemand rein — auch nicht mit gültigem Passwort.
 
 ---
 
-## Deine Aufteilung
+## Stand der Konten
 
 | Konto | Rolle | Wer hat es |
 |---|---|---|
-| bisheriger Zugang `1a7xqRgIYDR0RZqa3KghBlz98PK2` | `community` → `sandzak-kassel` | der Vorstand |
-| neues Konto, das du anlegst | `head` | du |
+| `1a7xqRgIYDR0RZqa3KghBlz98PK2` | `head` | der Besitzer |
+| `Vpalzb0gitTTLUQDFYPLcbIbFXG3` | `community` → `igbd-gemeinde-sandzak-kassel` | der Vorstand Kassel |
 
-⚠️ **Reihenfolge beachten:** Lege **zuerst** deinen Hauptadmin-Eintrag an, **danach** veröffentliche
-die Regeln. Sonst darf niemand mehr in `admins` schreiben — auch du nicht — und du müsstest die
-Regeln vorübergehend wieder lockern, um wieder hineinzukommen.
+Beide sind angelegt und geprüft. Für jede weitere Gemeinde kommt ein Konto nach demselben Muster
+dazu — aber erst, wenn die Gemeinde zugesagt hat.
 
 ---
 
