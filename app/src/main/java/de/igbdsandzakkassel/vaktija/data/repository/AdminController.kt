@@ -2,6 +2,7 @@ package de.igbdsandzakkassel.vaktija.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import de.igbdsandzakkassel.vaktija.BuildConfig
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -46,11 +47,26 @@ class AdminController @Inject constructor(
                     AdminRole.from(
                         role = snapshot?.getString("role"),
                         communityId = snapshot?.getString("communityId"),
-                    ),
+                    ).orDebugFallback(uid),
                 )
             }
         awaitClose { registration.remove() }
     }
+
+    /**
+     * Debug builds only: treat the original single-admin UID as head admin when Firestore has no
+     * `admins` document for it.
+     *
+     * Without this the admin screens cannot be opened at all until the collection exists, which
+     * blocks testing everything behind them. Release builds get no such shortcut — there, an
+     * account has exactly the rights its admins document grants, and none without one.
+     */
+    private fun AdminRole.orDebugFallback(uid: String): AdminRole =
+        if (this == AdminRole.None && BuildConfig.DEBUG && uid == BuildConfig.ADMIN_UID) {
+            AdminRole.Head
+        } else {
+            this
+        }
 
     /**
      * Signs in and reports the role. An account with no admin document is signed out again rather
@@ -61,6 +77,7 @@ class AdminController @Inject constructor(
             .user?.uid ?: error("Sign-in returned no account")
         val document = firestore.collection(COLLECTION).document(uid).get().await()
         val role = AdminRole.from(document.getString("role"), document.getString("communityId"))
+            .orDebugFallback(uid)
         if (role == AdminRole.None) {
             auth.signOut()
             error("This account has no admin rights")

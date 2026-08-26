@@ -525,7 +525,7 @@
   }
  },
  {
-  "id": "sandzak-kassel",
+  "id": "igbd-gemeinde-sandzak-kassel",
   "name": "IGBD-Gemeinde Sandžak-Kassel",
   "address": "Schwanenweg 13, 34123 Kassel",
   "status": "active",
@@ -540,8 +540,22 @@
     "id": "kassel",
     "name": "Kassel",
     "vaktijaSlug": "kassel",
-    "latitude": 51.309318,
-    "longitude": 9.513169
+    "latitude": 51.3093,
+    "longitude": 9.5132
+   },
+   {
+    "id": "hann-muenden",
+    "name": "Hann. Münden",
+    "vaktijaSlug": "hann-munden",
+    "latitude": 51.4194,
+    "longitude": 9.6524
+   },
+   {
+    "id": "korbach",
+    "name": "Korbach",
+    "vaktijaSlug": "brilon",
+    "latitude": 51.2761,
+    "longitude": 8.8735
    }
   ],
   "_check": {
@@ -557,7 +571,9 @@
     "Akšam": "20:31",
     "Jacija": "22:01"
    }
-  }
+  },
+  "email": "vorstand@igbdsandzakkassel.de",
+  "donationUrl": "https://www.paypal.com/donate?business=ikzsandzakkassel@gmail.com"
  },
  {
   "id": "ulm-e-v",

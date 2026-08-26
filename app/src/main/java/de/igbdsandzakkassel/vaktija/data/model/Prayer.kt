@@ -25,7 +25,10 @@ enum class Prayer(@param:StringRes val labelRes: Int, val hasIqamah: Boolean) {
          * beforehand on their way to work. A reminder before sunrise is a reminder that Fajr is
          * about to run out.
          */
-        val NOTIFIABLE = OBLIGATORY + SUNRISE
+        // entries, not OBLIGATORY + SUNRISE: that appended sunrise after Isha, while it belongs
+        // between Fajr and Dhuhr — which is where the enum already has it, and where anyone reading
+        // the settings list expects to find it.
+        val NOTIFIABLE = entries.toList()
 
         /** Whether this entry may sound the Adhan. Sunrise never does — nobody calls it. */
         val Prayer.soundsAdhan: Boolean get() = this != SUNRISE
