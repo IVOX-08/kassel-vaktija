@@ -42,10 +42,6 @@ android {
         // res/xml/locales_config.xml. Adding a new values-XX/ should "just work".
         resourceConfigurations += listOf("bs", "de", "ar", "tr", "sq", "en", "ur", "ru")
 
-        // Admin's Firebase Auth UID. Used to show admin tools to the right person; the real
-        // protection is the Firestore security rule on the server, which checks this same UID.
-        buildConfigField("String", "ADMIN_UID", "\"1a7xqRgIYDR0RZqa3KghBlz98PK2\"")
-
         // Gemini API key for high-quality announcement translation (admin device only, at post time).
         // Supplied via gitignored gemini.properties; empty → ML Kit fallback.
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
