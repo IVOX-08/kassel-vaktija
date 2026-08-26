@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
 import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
 import de.igbdsandzakkassel.vaktija.data.model.CommunitySelection
@@ -49,17 +50,27 @@ class SettingsViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
 
     /**
-     * Whether the signed-in account may administer the community currently being viewed.
-     *
-     * Both halves matter: a community admin looking at another community must see no controls, and
-     * the head admin must see them everywhere. The Firestore rules enforce the same condition, so
-     * this only decides what is shown — it is not the thing standing between an account and the
-     * data.
+     * Whether to show the admin section at all — true for any signed-in admin, so a head admin
+     * still gets his sign-out and (in debug) the role switch. What he may DO inside it is a
+     * separate question, answered by [canEditTimes].
      */
     val isAdmin: StateFlow<Boolean> = combine(
         adminController.observeRole(),
         communityRepository.observeSelection(),
-    ) { role, selection -> role.canAdminister(selection?.community?.id) }
+    ) { role, _ -> role.isAdmin }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /**
+     * Whether this account may edit THIS community's prayer times.
+     *
+     * Deliberately false for the head admin: Iqamah and Jumu'ah are the community's own religious
+     * decision, and the operator of the programme has no business changing them. The Firestore
+     * rules enforce the same — this only decides what is shown.
+     */
+    val canEditTimes: StateFlow<Boolean> = combine(
+        adminController.observeRole(),
+        communityRepository.observeSelection(),
+    ) { role, selection -> role.canEditTimes(selection?.community?.id) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     /** Current community rules (Fajr Iqamah, Jumua, offsets) — what the admin edits. */
@@ -81,6 +92,13 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun signOut() = adminController.signOut()
+
+    /** Debug builds only: swap the stand-in role so both sides can be tried without Firestore. */
+    fun setDebugRole(head: Boolean) {
+        adminController.debugRole =
+            if (head) AdminRole.Head
+            else AdminRole.Community(CommunityCatalog.KASSEL_ID)
+    }
 
     fun saveRules(rules: CommunityRules, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {

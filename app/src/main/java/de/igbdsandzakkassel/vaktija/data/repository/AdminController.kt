@@ -3,6 +3,7 @@ package de.igbdsandzakkassel.vaktija.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import de.igbdsandzakkassel.vaktija.BuildConfig
+import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -54,18 +55,26 @@ class AdminController @Inject constructor(
     }
 
     /**
-     * Debug builds only: treat the original single-admin UID as head admin when Firestore has no
-     * `admins` document for it.
+     * Debug builds only: stand in for a missing `admins` document so the admin screens can be
+     * worked on before Firestore is populated.
      *
-     * Without this the admin screens cannot be opened at all until the collection exists, which
-     * blocks testing everything behind them. Release builds get no such shortcut — there, an
-     * account has exactly the rights its admins document grants, and none without one.
+     * Which role it stands in as is chosen in Settings, because the two roles must be testable
+     * SEPARATELY — the first version of this always returned Head, which silently made every
+     * sign-in a head admin and made the community role impossible to try at all.
+     *
+     * Release builds get no shortcut: there an account has exactly the rights its document grants.
      */
-    private fun AdminRole.orDebugFallback(uid: String): AdminRole =
-        if (this == AdminRole.None && BuildConfig.DEBUG && uid == BuildConfig.ADMIN_UID) {
-            AdminRole.Head
-        } else {
-            this
+    private fun AdminRole.orDebugFallback(uid: String): AdminRole {
+        if (this != AdminRole.None || !BuildConfig.DEBUG || uid != BuildConfig.ADMIN_UID) return this
+        return debugRole
+    }
+
+    /** The stand-in role used while Firestore has no admins collection. Debug builds only. */
+    var debugRole: AdminRole = AdminRole.Community(CommunityCatalog.KASSEL_ID)
+        set(value) {
+            field = value
+            // Nudge the listeners so the UI re-reads the role without a sign-out/in cycle.
+            auth.currentUser?.let { auth.updateCurrentUser(it) }
         }
 
     /**

@@ -88,6 +88,8 @@ fun NewsScreen(
     val news by viewModel.news.collectAsStateWithLifecycle()
     val isAdmin by viewModel.isAdmin.collectAsStateWithLifecycle()
     val canBroadcast by viewModel.canBroadcast.collectAsStateWithLifecycle()
+    val broadcastOnly by viewModel.broadcastOnly.collectAsStateWithLifecycle()
+    val deleteCtx by viewModel.deleteContext.collectAsStateWithLifecycle()
     // The user's selected app language — each announcement is shown in this language.
     val locales = LocalConfiguration.current.locales
     val lang = if (locales.isEmpty) LocaleController.current().tag else locales[0].language
@@ -157,7 +159,7 @@ fun NewsScreen(
                     NewsCard(
                         item = item,
                         lang = lang,
-                        canDelete = isAdmin,
+                        canDelete = viewModel.canDelete(item, deleteCtx.first, deleteCtx.second),
                         onDelete = { pendingDelete = item },
                         loadImage = viewModel::loadImage,
                         onImageClick = { viewerImage = it },
@@ -172,6 +174,7 @@ fun NewsScreen(
         ComposeNewsDialog(
             onDismiss = { showCompose = false },
             canBroadcast = canBroadcast,
+            broadcastOnly = broadcastOnly,
             onPost = { title, body, imageUri, broadcast, cb ->
                 viewModel.postNews(title, body, imageUri, broadcast) { outcome ->
                     when {
@@ -397,12 +400,13 @@ private fun ComposeNewsDialog(
     onDismiss: () -> Unit,
     onPost: (String, String, Uri?, Boolean, (Boolean) -> Unit) -> Unit,
     canBroadcast: Boolean = false,
+    broadcastOnly: Boolean = false,
 ) {
     var title by remember { mutableStateOf("") }
     var body by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var loading by remember { mutableStateOf(false) }
-    var broadcast by remember { mutableStateOf(false) }
+    var broadcast by remember { mutableStateOf(broadcastOnly) }
     // System photo picker (no storage permission needed; available on every supported API level).
     val pickImage = rememberLauncherForActivityResult(
         ActivityResultContracts.PickVisualMedia(),
@@ -474,9 +478,16 @@ private fun ComposeNewsDialog(
                         Text(stringResource(R.string.news_add_image))
                     }
                 }
-                // Only the head admin sees this. Off by default, deliberately: reaching every
-                // community in Germany should be a decision, not the setting you forgot to change.
-                if (canBroadcast) {
+                // A head admin who cannot post for a community has nothing to choose — he is told
+                // where it goes. Everyone else who CAN broadcast gets the switch, off by default:
+                // reaching every community should be a decision, not a forgotten setting.
+                if (broadcastOnly) {
+                    Text(
+                        text = stringResource(R.string.news_broadcast_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                } else if (canBroadcast) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth(),

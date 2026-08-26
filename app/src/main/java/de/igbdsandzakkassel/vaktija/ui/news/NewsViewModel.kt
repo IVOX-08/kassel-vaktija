@@ -40,8 +40,30 @@ class NewsViewModel @Inject constructor(
 
     /** True only for the head admin — the one account allowed to reach every community. */
     val canBroadcast: StateFlow<Boolean> = adminController.observeRole()
-        .map { it == AdminRole.Head }
+        .map { it.canBroadcast }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /**
+     * The head admin can ONLY broadcast: he has no business posting in a community's name. So for
+     * him the switch is not a choice, and the dialog says where the announcement is going instead
+     * of offering an option that does not exist.
+     */
+    val broadcastOnly: StateFlow<Boolean> = combine(
+        adminController.observeRole(),
+        communityRepository.observeSelection(),
+    ) { role, selection -> role.canBroadcast && !role.canPostNews(selection?.community?.id) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /** Whether this account may remove [item] — its own community's, or its own broadcast. */
+    fun canDelete(item: NewsItem, role: AdminRole, communityId: String?): Boolean =
+        if (item.isBroadcast) role.canBroadcast else role.canPostNews(communityId)
+
+    /** Role + selected community, for the per-item delete check. */
+    val deleteContext: StateFlow<Pair<AdminRole, String?>> = combine(
+        adminController.observeRole(),
+        communityRepository.observeSelection(),
+    ) { role, selection -> role to selection?.community?.id }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AdminRole.None to null)
 
     /** Newest-first announcements; null while the first snapshot is still loading. */
     val news: StateFlow<List<NewsItem>?> = newsRepository.observeNews()
@@ -58,7 +80,11 @@ class NewsViewModel @Inject constructor(
     val isAdmin: StateFlow<Boolean> = combine(
         adminController.observeRole(),
         communityRepository.observeSelection(),
-    ) { role, selection -> role.canAdminister(selection?.community?.id) }
+    ) { role, selection ->
+        // Either you run this community, or you are the head admin with a federation-wide notice
+        // to send. Both need the composer; they write to different places.
+        role.canPostNews(selection?.community?.id) || role.canBroadcast
+    }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     /**
