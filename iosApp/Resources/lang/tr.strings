@@ -131,6 +131,7 @@
 "about_dev_promo" = "Uygulama veya web sitesi mi istiyorsunuz? Arayın:";
 "about_dev_email" = "veya e-posta yazın:";
 "news_empty" = "Henüz duyuru yok.";
+"news_broadcast" = "Birlik";
 "news_add" = "Yeni duyuru";
 "news_add_image" = "Görsel ekle";
 "news_remove_image" = "Görseli kaldır";

@@ -120,6 +120,7 @@
 "about_dev_promo" = "App oder Website gewünscht? Anrufen:";
 "about_dev_email" = "oder E-Mail schreiben:";
 "news_empty" = "Noch keine Mitteilungen.";
+"news_broadcast" = "Verband";
 "news_add" = "Neue Mitteilung";
 "news_add_image" = "Bild hinzufügen";
 "news_remove_image" = "Bild entfernen";

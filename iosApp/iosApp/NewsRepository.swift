@@ -1,14 +1,33 @@
 import Foundation
 import FirebaseCore
+import FirebaseAuth
 import FirebaseFirestore
 
 // Community announcements, read from the SAME Firestore project as Android (`kassel-vaktija`).
-// The field shapes are fixed by the live backend — see docs/ios/FIREBASE-HANDOFF.md. Do not rename
-// anything here: the Android app in the Play Store writes these documents.
+// Die Feldnamen sind vom laufenden Backend vorgegeben — nichts hier umbenennen, die Android-App
+// im Play Store schreibt dieselben Dokumente. Siehe docs/multi-gemeinde/FUER-DIE-IOS-APP.md.
+//
+// Seit dem Umbau auf zwanzig Gemeinden gibt es ZWEI Quellen:
+//   communities/{id}/news  — die Beiträge dieser Gemeinde
+//   broadcasts             — verbandsweite Mitteilungen des Hauptadministrators
+// Beide erscheinen in einer gemeinsamen Liste, nach Datum sortiert.
+
+/// Herz oder Daumen. Der gespeicherte Wert ist kleingeschrieben, so schreibt es Android.
+enum Reaction: String {
+    case like, dislike
+
+    static func from(_ raw: String?) -> Reaction? {
+        guard let raw else { return nil }
+        return Reaction(rawValue: raw)
+    }
+}
 
 /// One announcement. Mirrors the Kotlin `NewsItem`.
 struct NewsItem: Identifiable {
+    /// Die Firestore-Dokument-ID, wie auf Android. Bild und Löschen hängen daran.
     let id: String
+    /// Verbandsweite Mitteilung statt Beitrag dieser Gemeinde — entscheidet über den Pfad.
+    let isBroadcast: Bool
     let titleByLang: [String: String]
     let bodyByLang: [String: String]
     /// Language the admin actually wrote in — the fallback when the reader's language is missing.
@@ -16,6 +35,8 @@ struct NewsItem: Identifiable {
     /// Epoch MILLIseconds (Android writes `System.currentTimeMillis()`), not seconds.
     let createdAt: Int64
     let hasImage: Bool
+    let likeCount: Int
+    let dislikeCount: Int
 
     func title(_ lang: String) -> String { Self.pick(titleByLang, lang, sourceLang) }
     func body(_ lang: String) -> String { Self.pick(bodyByLang, lang, sourceLang) }
@@ -33,50 +54,143 @@ struct NewsItem: Identifiable {
 final class NewsStore: ObservableObject {
     /// nil = still loading; [] = genuinely empty (or offline with an empty cache).
     @Published private(set) var items: [NewsItem]?
+    /// Was dieses Gerät bei welchem Beitrag gewählt hat, für den gedrückten Zustand der Knöpfe.
+    @Published private(set) var myReactions: [String: Reaction] = [:]
 
-    private var listener: ListenerRegistration?
+    private var newsListener: ListenerRegistration?
+    private var broadcastListener: ListenerRegistration?
+    /// Die beiden Quellen kommen getrennt an; gemischt wird erst beim Zusammenbauen der Liste.
+    private var communityItems: [NewsItem] = []
+    private var broadcastItems: [NewsItem] = []
     /// Flyers already fetched this session. They are only loaded when a card scrolls into view.
     private var imageCache: [String: Data] = [:]
 
-    deinit { listener?.remove() }
+    deinit {
+        newsListener?.remove()
+        broadcastListener?.remove()
+    }
 
     /// Live feed, newest first. Firestore serves the local cache first, so this works offline.
     func start() {
-        guard listener == nil, FirebaseApp.app() != nil else { return }
-        listener = Firestore.firestore().collection("news")
+        guard newsListener == nil, FirebaseApp.app() != nil else { return }
+        newsListener = Community.news
             .order(by: "createdAt", descending: true)
             .addSnapshotListener { [weak self] snapshot, _ in
                 guard let snapshot else { return }
-                self?.items = snapshot.documents.map(Self.item)
+                Task { @MainActor in
+                    self?.communityItems = snapshot.documents.map { Self.item($0, isBroadcast: false) }
+                    self?.merge()
+                }
+            }
+        broadcastListener = Community.broadcasts
+            .order(by: "createdAt", descending: true)
+            .addSnapshotListener { [weak self] snapshot, _ in
+                // Fehlt die Sammlung oder verbietet eine Regel den Zugriff, bleibt es einfach bei
+                // den Beiträgen der Gemeinde — kein Grund, die Liste leer zu lassen.
+                guard let snapshot else { return }
+                Task { @MainActor in
+                    self?.broadcastItems = snapshot.documents.map { Self.item($0, isBroadcast: true) }
+                    self?.merge()
+                }
             }
     }
 
     func stop() {
-        listener?.remove()
-        listener = nil
+        newsListener?.remove()
+        newsListener = nil
+        broadcastListener?.remove()
+        broadcastListener = nil
     }
 
-    private static func item(_ doc: QueryDocumentSnapshot) -> NewsItem {
+    private func merge() {
+        items = (communityItems + broadcastItems).sorted { $0.createdAt > $1.createdAt }
+        Task { await loadMyReactions() }
+    }
+
+    private static func item(_ doc: QueryDocumentSnapshot, isBroadcast: Bool) -> NewsItem {
         let d = doc.data()
         return NewsItem(
             id: doc.documentID,
+            isBroadcast: isBroadcast,
             titleByLang: d["title"] as? [String: String] ?? [:],
             bodyByLang: d["body"] as? [String: String] ?? [:],
             sourceLang: d["sourceLang"] as? String ?? "bs",
             createdAt: (d["createdAt"] as? NSNumber)?.int64Value ?? 0,
-            hasImage: d["hasImage"] as? Bool ?? false
+            hasImage: d["hasImage"] as? Bool ?? false,
+            likeCount: (d["likeCount"] as? NSNumber)?.intValue ?? 0,
+            dislikeCount: (d["dislikeCount"] as? NSNumber)?.intValue ?? 0
         )
     }
 
-    /// The flyer for an announcement: a Base64 JPEG in `news_images/{sameId}`. Returns nil when it
-    /// can't be loaded (offline, or never uploaded) so the UI can drop the slot instead of spinning.
-    func image(_ id: String) async -> Data? {
-        if let cached = imageCache[id] { return cached }
+    // MARK: Reaktionen
+
+    /// Das Elterndokument, an dem die Summen hängen.
+    private func parent(_ item: NewsItem) -> DocumentReference {
+        item.isBroadcast ? Community.broadcasts.document(item.id) : Community.news.document(item.id)
+    }
+
+    /// Einmal pro Feed-Aktualisierung: was hat dieses Gerät bei welchem Beitrag gewählt.
+    /// Ein Lesevorgang je Beitrag — die Liste ist kurz, und ein Listener pro Karte wäre teurer.
+    private func loadMyReactions() async {
+        guard let uid = Auth.auth().currentUser?.uid, let items else { return }
+        var found: [String: Reaction] = [:]
+        for item in items {
+            let ref = parent(item).collection("reactions").document(uid)
+            if let snap = try? await ref.getDocument(),
+               let value = Reaction.from(snap.data()?["value"] as? String) {
+                found[item.id] = value
+            }
+        }
+        myReactions = found
+    }
+
+    /// Setzt, wechselt oder nimmt eine Reaktion zurück — dieselbe Logik wie Android.
+    ///
+    /// Die Summen können von den Einzeleinträgen abweichen, wenn ein Schreibvorgang scheitert und
+    /// der andere durchgeht. Das ist bewusst hingenommen: es ist ein Stimmungsbild, keine Abrechnung.
+    /// Exakt wäre nur mit einer Cloud Function zu haben, und die braucht den kostenpflichtigen Tarif.
+    func react(_ item: NewsItem, _ choice: Reaction) async {
+        guard FirebaseApp.app() != nil, let uid = Auth.auth().currentUser?.uid else { return }
+        let parentRef = parent(item)
+        let myRef = parentRef.collection("reactions").document(uid)
+        let previous = myReactions[item.id]
+
+        var deltas: [String: Any] = [:]
+        func bump(_ reaction: Reaction, _ by: Int) {
+            let field = reaction == .like ? "likeCount" : "dislikeCount"
+            deltas[field] = FieldValue.increment(Int64(by))
+        }
+
+        if previous == choice {
+            // Derselbe Knopf noch einmal: Reaktion zurücknehmen.
+            try? await myRef.delete()
+            bump(choice, -1)
+            myReactions[item.id] = nil
+        } else {
+            try? await myRef.setData(["value": choice.rawValue])
+            if let previous { bump(previous, -1) }
+            bump(choice, 1)
+            myReactions[item.id] = choice
+        }
+        // Wie die übrigen Schreibvorgänge nicht abgewartet: Firestore rechnet lokal sofort, damit
+        // die Zahl unter dem Finger springt, auch ohne Verbindung.
+        parentRef.updateData(deltas) { _ in }
+    }
+
+    // MARK: Bild
+
+    /// The flyer for an announcement: a Base64 JPEG next to the post. Returns nil when it can't be
+    /// loaded (offline, or never uploaded) so the UI can drop the slot instead of spinning.
+    func image(_ item: NewsItem) async -> Data? {
+        if let cached = imageCache[item.id] { return cached }
         guard FirebaseApp.app() != nil else { return nil }
-        guard let doc = try? await Firestore.firestore().collection("news_images").document(id).getDocument(),
+        let ref = item.isBroadcast
+            ? Community.broadcastImages.document(item.id)
+            : Community.newsImages.document(item.id)
+        guard let doc = try? await ref.getDocument(),
               let base64 = doc.data()?["data"] as? String,
               let bytes = Data(base64Encoded: base64) else { return nil }
-        imageCache[id] = bytes
+        imageCache[item.id] = bytes
         return bytes
     }
 }

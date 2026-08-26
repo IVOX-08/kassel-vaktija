@@ -131,6 +131,7 @@
 "about_dev_promo" = "Doni një aplikacion ose faqe interneti? Telefononi:";
 "about_dev_email" = "ose shkruani një email:";
 "news_empty" = "Ende nuk ka njoftime.";
+"news_broadcast" = "Bashkimi";
 "news_add" = "Njoftim i ri";
 "news_add_image" = "Shto fotografi";
 "news_remove_image" = "Hiq fotografinë";

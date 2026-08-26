@@ -29,8 +29,12 @@ struct NewsView: View {
                         LazyVStack(spacing: 12) {
                             ForEach(list) { item in
                                 NewsCard(item: item, canDelete: admin.isAdmin,
+                                         myReaction: store.myReactions[item.id],
                                          loadImage: store.image,
                                          onImageTap: { viewerImage = $0 },
+                                         onReact: { choice in
+                                             Task { await store.react(item, choice) }
+                                         },
                                          onDelete: { pendingDelete = item })
                             }
                         }
@@ -74,8 +78,10 @@ struct NewsView: View {
 private struct NewsCard: View {
     let item: NewsItem
     let canDelete: Bool
-    let loadImage: (String) async -> Data?
+    let myReaction: Reaction?
+    let loadImage: (NewsItem) async -> Data?
     let onImageTap: (Data) -> Void
+    let onReact: (Reaction) -> Void
     let onDelete: () -> Void
 
     @State private var flyer: Data?
@@ -107,12 +113,47 @@ private struct NewsCard: View {
             if item.hasImage {
                 flyerSlot
             }
+            reactionRow
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
         .background(Color.appSurface)
         .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
         .shadow(color: .black.opacity(0.06), radius: 3, y: 1)
+    }
+
+    /// Herz und Daumen wie auf Android: derselbe Knopf noch einmal nimmt die Reaktion zurück.
+    /// Die Zahl bewegt sich sofort, weil Firestore die Erhöhung lokal rechnet.
+    private var reactionRow: some View {
+        HStack(spacing: 16) {
+            reactionButton(.like, filled: "heart.fill", hollow: "heart", count: item.likeCount)
+            reactionButton(.dislike, filled: "hand.thumbsdown.fill", hollow: "hand.thumbsdown",
+                           count: item.dislikeCount)
+            Spacer()
+            if item.isBroadcast {
+                // Verbandsweit statt aus der eigenen Gemeinde — sonst wäre nicht erkennbar, warum
+                // eine Mitteilung auftaucht, die der eigene Vorstand nie geschrieben hat.
+                Text(L("news_broadcast"))
+                    .font(.inter(11, .semibold)).foregroundColor(.brandGreen)
+                    .padding(.horizontal, 8).padding(.vertical, 3)
+                    .background(Color.brandGreen.opacity(0.12))
+                    .clipShape(Capsule())
+            }
+        }
+        .padding(.top, 2)
+    }
+
+    private func reactionButton(_ choice: Reaction, filled: String, hollow: String,
+                                count: Int) -> some View {
+        let chosen = myReaction == choice
+        return Button { onReact(choice) } label: {
+            HStack(spacing: 5) {
+                Image(systemName: chosen ? filled : hollow).font(.system(size: 15))
+                if count > 0 { Text("\(count)").font(.inter(13)) }
+            }
+            .foregroundColor(chosen ? .brandGreen : .appOnSurfaceVariant)
+        }
+        .buttonStyle(.plain)
     }
 
     // Fetched only once this card is on screen. If it can't be loaded the slot disappears rather
@@ -129,7 +170,7 @@ private struct NewsCard: View {
                 .aspectRatio(16.0 / 9.0, contentMode: .fit)
                 .overlay(ProgressView().tint(.brandGreen))
                 .task {
-                    flyer = await loadImage(item.id)
+                    flyer = await loadImage(item)
                     flyerLoaded = true
                 }
         }

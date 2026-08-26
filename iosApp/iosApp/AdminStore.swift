@@ -28,6 +28,27 @@ final class AdminStore: ObservableObject {
         // Firebase restores the session across launches, so a signed-in admin stays signed in.
         handle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
             Task { @MainActor in self?.isAdmin = user?.uid == Self.adminUID }
+            Self.ensureSignedIn()
+        }
+        Self.ensureSignedIn()
+    }
+
+    /// Sorgt dafür, dass das Gerät immer eine Firebase-Identität hat, und meldet es sonst anonym an
+    /// — wie `SessionManager` auf Android.
+    ///
+    /// Grund sind die Reaktionen: Ein Herz muss jemandem gehören, sonst könnte dasselbe Gerät
+    /// hundertmal tippen und nichts ließe sich zurücknehmen. Der Nutzer merkt davon nichts, es gibt
+    /// keine Anmeldung zu sehen. Läuft auch nach dem Abmelden eines Admins wieder an, damit die
+    /// Reaktionsknöpfe nicht ohne sichtbaren Grund tot sind.
+    private static func ensureSignedIn() {
+        guard FirebaseApp.app() != nil, Auth.auth().currentUser == nil else { return }
+        Auth.auth().signInAnonymously { _, error in
+            if let error {
+                // Wahrscheinlichste Ursache: anonyme Anmeldung ist in der Firebase-Konsole nicht
+                // freigeschaltet. Alles andere funktioniert weiter, nur die Reaktionen bleiben
+                // stumm — eine Protokollzeile wert, kein Absturz und keine Meldung an den Nutzer.
+                NSLog("[Auth] Anonyme Anmeldung fehlgeschlagen, Reaktionen nicht verfügbar: \(error.localizedDescription)")
+            }
         }
     }
 
@@ -67,7 +88,7 @@ final class AdminStore: ObservableObject {
 
     // MARK: - Writes (admin only; rejected server-side otherwise)
 
-    /// Saves the community rules the whole community reads (`config/community`).
+    /// Saves the community rules the whole community reads (`communities/{id}/config/rules`).
     func saveRule(_ rule: CommunityRule) async -> Bool {
         guard FirebaseApp.app() != nil else { return false }
         var data: [String: Any] = [
@@ -88,7 +109,7 @@ final class AdminStore: ObservableObject {
             data["bajramTime"] = FieldValue.delete()
         }
         do {
-            try await Firestore.firestore().collection("config").document("community")
+            try await Community.rules
                 .setData(data, merge: true)
             return true
         } catch {
@@ -102,7 +123,7 @@ final class AdminStore: ObservableObject {
                   sourceLang: String, imageJPEG: Data?) async -> Bool {
         guard FirebaseApp.app() != nil else { return false }
         let db = Firestore.firestore()
-        let doc = db.collection("news").document()
+        let doc = Community.news.document()
         do {
             try await doc.setData([
                 "title": titleByLang,
@@ -112,7 +133,7 @@ final class AdminStore: ObservableObject {
                 "hasImage": imageJPEG != nil,
             ])
             if let imageJPEG {
-                try await db.collection("news_images").document(doc.documentID)
+                try await Community.newsImages.document(doc.documentID)
                     .setData(["data": imageJPEG.base64EncodedString()])
             }
             return true
@@ -127,8 +148,8 @@ final class AdminStore: ObservableObject {
         guard FirebaseApp.app() != nil else { return false }
         let db = Firestore.firestore()
         do {
-            try await db.collection("news").document(id).delete()
-            try? await db.collection("news_images").document(id).delete()
+            try await Community.news.document(id).delete()
+            try? await Community.newsImages.document(id).delete()
             return true
         } catch {
             return false

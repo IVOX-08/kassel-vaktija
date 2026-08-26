@@ -131,6 +131,7 @@
 "about_dev_promo" = "ایپ یا ویب سائٹ چاہیے؟ کال کریں:";
 "about_dev_email" = "یا ای میل کریں:";
 "news_empty" = "ابھی کوئی اعلان نہیں۔";
+"news_broadcast" = "یونین";
 "news_add" = "نیا اعلان";
 "news_add_image" = "تصویر شامل کریں";
 "news_remove_image" = "تصویر ہٹائیں";

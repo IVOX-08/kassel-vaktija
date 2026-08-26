@@ -142,6 +142,7 @@
 "about_dev_promo" = "Želite aplikaciju ili web stranicu? Nazovite:";
 "about_dev_email" = "ili pišite e-mail:";
 "news_empty" = "Trenutno nema obavijesti.";
+"news_broadcast" = "Savez";
 "news_add" = "Nova obavijest";
 "news_add_image" = "Dodaj sliku";
 "news_remove_image" = "Ukloni sliku";

@@ -4,7 +4,8 @@ import FirebaseFirestore
 
 // The community-set rules the board edits from the admin area: Fajr Iqamah, Jumua, the per-prayer
 // Iqamah offsets and the announced Eid prayer. Backed by the SAME Firestore document Android reads
-// (`config/community`) — field names are fixed by the live backend, see docs/ios/FIREBASE-HANDOFF.md.
+// — seit dem Umbau auf zwanzig Gemeinden ist das `communities/{id}/config/rules` statt
+// `config/community`. Feldnamen bleiben unverändert, siehe docs/multi-gemeinde/FUER-DIE-IOS-APP.md.
 //
 // Cached in UserDefaults so a cold start offline still shows the board's values rather than
 // snapping back to the built-in defaults.
@@ -51,7 +52,7 @@ final class CommunityRuleStore: ObservableObject {
     /// Live document — the board's edit reaches open apps without a restart.
     func start() {
         guard listener == nil, FirebaseApp.app() != nil else { return }
-        listener = Firestore.firestore().collection("config").document("community")
+        listener = Community.rules
             .addSnapshotListener { [weak self] snapshot, _ in
                 guard let data = snapshot?.data() else { return }
                 let parsed = Self.parse(data)

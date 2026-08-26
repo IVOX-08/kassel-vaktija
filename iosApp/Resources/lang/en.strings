@@ -120,6 +120,7 @@
 "about_dev_promo" = "Want an app or website? Call:";
 "about_dev_email" = "or write an email:";
 "news_empty" = "No announcements yet.";
+"news_broadcast" = "Union";
 "news_add" = "New announcement";
 "news_add_image" = "Add image";
 "news_remove_image" = "Remove image";

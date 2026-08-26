@@ -131,6 +131,7 @@
 "about_dev_promo" = "تريد تطبيقًا أو موقعًا إلكترونيًا؟ اتصل:";
 "about_dev_email" = "أو راسلنا عبر البريد الإلكتروني:";
 "news_empty" = "لا توجد إعلانات بعد.";
+"news_broadcast" = "الاتحاد";
 "news_add" = "إعلان جديد";
 "news_add_image" = "إضافة صورة";
 "news_remove_image" = "إزالة الصورة";
