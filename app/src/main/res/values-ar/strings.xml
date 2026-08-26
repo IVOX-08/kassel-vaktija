@@ -210,4 +210,8 @@
     <string name="admin_status_suspended_hint">خارج القائمة، بلا شعار أو تبرعات أو إعلانات — مواقيت الصلاة تستمر.</string>
     <string name="admin_status_blocked_hint">يعرض التطبيق إشعارًا فقط. يمكن التراجع.</string>
     <string name="admin_manage_communities">إدارة الجماعات</string>
+    <string name="admin_wrong_community">هذا الحساب يخص جماعة أخرى. انتقل إلى جماعتك لإدارتها.</string>
+    <string name="admin_alerts_header">محاولات تسجيل الدخول</string>
+    <string name="admin_alert_wrong_community">حاول %1$s تسجيل الدخول لدى %2$s.</string>
+    <string name="admin_alert_dismiss">تم</string>
 </resources>

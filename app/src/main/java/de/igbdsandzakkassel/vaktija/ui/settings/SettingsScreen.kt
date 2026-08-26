@@ -74,6 +74,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import de.igbdsandzakkassel.vaktija.BuildConfig
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
+import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.model.CommunitySelection
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material.icons.outlined.Lock
@@ -107,6 +108,7 @@ fun SettingsScreen(
     val adminCommunityName by viewModel.adminCommunityName.collectAsStateWithLifecycle()
     val canManageCommunities by viewModel.canManageCommunities.collectAsStateWithLifecycle()
     val allCommunities by viewModel.allCommunities.collectAsStateWithLifecycle()
+    val adminAlerts by viewModel.adminAlerts.collectAsStateWithLifecycle()
     val selection by viewModel.selection.collectAsStateWithLifecycle()
     val communityRules by viewModel.communityRules.collectAsStateWithLifecycle()
     var showLogin by remember { mutableStateOf(false) }
@@ -164,6 +166,40 @@ fun SettingsScreen(
                 },
                 onSignOut = viewModel::signOut,
             )
+            // Reported sign-ins on the wrong community. Above the community list on purpose:
+            // it is the thing the head admin would otherwise never think to go looking for.
+            if (canManageCommunities && adminAlerts.isNotEmpty()) {
+                Text(
+                    text = stringResource(R.string.admin_alerts_header),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(bottom = 6.dp),
+                )
+                adminAlerts.forEach { alert ->
+                    val own = allCommunities.firstOrNull { it.id == alert.ownCommunityId }?.name
+                        ?: alert.ownCommunityId
+                    val tried = allCommunities.firstOrNull { it.id == alert.attemptedCommunityId }?.name
+                        ?: alert.attemptedCommunityId
+                    Card(modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth().padding(12.dp),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.admin_alert_wrong_community, own, tried),
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.weight(1f),
+                            )
+                            TextButton(onClick = { viewModel.dismissAlert(alert.id) }) {
+                                Text(stringResource(R.string.admin_alert_dismiss))
+                            }
+                        }
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+
             // The head admin's actual job: deciding who takes part.
             if (canManageCommunities) {
                 Text(
@@ -700,11 +736,12 @@ private fun StepperRow(label: String, value: String, onMinus: () -> Unit, onPlus
 @Composable
 private fun AdminLoginDialog(
     onDismiss: () -> Unit,
-    onSignIn: (String, String, (Boolean) -> Unit) -> Unit,
+    onSignIn: (String, String, (AdminController.SignInResult) -> Unit) -> Unit,
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
+    var wrongCommunity by remember { mutableStateOf(false) }
     var loading by remember { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -726,6 +763,13 @@ private fun AdminLoginDialog(
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
+                if (wrongCommunity) {
+                    Text(
+                        text = stringResource(R.string.admin_wrong_community),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
                 if (error) {
                     Text(
                         text = stringResource(R.string.admin_login_failed),
@@ -741,9 +785,16 @@ private fun AdminLoginDialog(
                 onClick = {
                     loading = true
                     error = false
-                    onSignIn(email, password) { ok ->
+                    onSignIn(email, password) { result ->
                         loading = false
-                        if (ok) onDismiss() else error = true
+                        when (result) {
+                            is AdminController.SignInResult.Success -> onDismiss()
+                            // A real admin, just not here. Say so plainly instead of showing the
+                            // same "wrong password" as a typo would — otherwise the person resets
+                            // a password that was never the problem.
+                            is AdminController.SignInResult.WrongCommunity -> wrongCommunity = true
+                            else -> error = true
+                        }
                     }
                 },
             ) { Text(stringResource(R.string.admin_sign_in)) }

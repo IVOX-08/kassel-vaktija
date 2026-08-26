@@ -15,6 +15,11 @@ import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import kotlinx.coroutines.flow.map
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
 import de.igbdsandzakkassel.vaktija.data.model.CommunitySelection
+import de.igbdsandzakkassel.vaktija.data.model.AdminAlert
+import de.igbdsandzakkassel.vaktija.data.repository.AdminAlertRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
@@ -31,6 +36,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -39,6 +45,7 @@ class SettingsViewModel @Inject constructor(
     private val dndController: DndController,
     private val adminController: AdminController,
     private val communityRepository: CommunityRepository,
+    private val alertRepository: AdminAlertRepository,
     private val communityRuleProvider: CommunityRuleProvider,
 ) : ViewModel() {
 
@@ -53,14 +60,18 @@ class SettingsViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
 
     /**
-     * Whether to show the admin section at all — true for any signed-in admin, so a head admin
-     * still gets his sign-out and (in debug) the role switch. What he may DO inside it is a
-     * separate question, answered by [canEditTimes].
+     * Whether to show the admin section at all: only where this account actually administers
+     * something. A community admin viewing another community sees no trace of being an admin.
      */
     val isAdmin: StateFlow<Boolean> = combine(
         adminController.observeRole(),
         communityRepository.observeSelection(),
-    ) { role, _ -> role.isAdmin }
+    ) { role, selection ->
+        // Signed in, but looking at a community you do not run: show nothing at all. The account
+        // stays signed in — walking back to your own community must not mean logging in again —
+        // but while you are elsewhere you are simply a member like anyone else.
+        role.canEditTimes(selection?.community?.id) || role.canManageCommunities
+    }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     /**
@@ -116,9 +127,31 @@ class SettingsViewModel @Inject constructor(
     val adminRole: StateFlow<AdminRole> = adminController.observeRole()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AdminRole.None)
 
-    fun signIn(email: String, password: String, onResult: (Boolean) -> Unit) {
+    /** Alerts for the head admin — an admin account used on someone else's community. */
+    val adminAlerts: StateFlow<List<AdminAlert>> = adminController.observeRole()
+        .flatMapLatest { role ->
+            if (role.canManageCommunities) alertRepository.observeAlerts() else flowOf(emptyList())
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    fun dismissAlert(id: String) = alertRepository.dismiss(id)
+
+    fun signIn(email: String, password: String, onResult: (AdminController.SignInResult) -> Unit) {
         viewModelScope.launch {
-            onResult(adminController.signIn(email, password).isSuccess)
+            val viewing = communityRepository.observeSelection().first()?.community?.id
+            val result = adminController.signIn(email, password, viewing)
+            // An admin account used on someone else's community is the thing the head admin asked
+            // to hear about. Recorded here, where both halves are known.
+            if (result is AdminController.SignInResult.WrongCommunity) {
+                adminController.currentUid()?.let { uid ->
+                    alertRepository.recordWrongCommunityLogin(
+                        uid = uid,
+                        ownCommunityId = result.ownCommunityId,
+                        attemptedCommunityId = result.attemptedCommunityId,
+                    )
+                }
+            }
+            onResult(result)
         }
     }
 

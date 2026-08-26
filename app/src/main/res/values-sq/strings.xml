@@ -210,4 +210,8 @@
     <string name="admin_status_suspended_hint">Jashtë listës, pa logo, donacione dhe njoftime — kohët e namazit vazhdojnë.</string>
     <string name="admin_status_blocked_hint">Aplikacioni shfaq vetëm një njoftim. E kthyeshme.</string>
     <string name="admin_manage_communities">Menaxho xhematet</string>
+    <string name="admin_wrong_community">Kjo llogari i përket një xhemati tjetër. Kaloni te xhemati juaj për ta administruar.</string>
+    <string name="admin_alerts_header">Përpjekje hyrjeje</string>
+    <string name="admin_alert_wrong_community">%1$s u përpoq të hyjë te %2$s.</string>
+    <string name="admin_alert_dismiss">Në rregull</string>
 </resources>

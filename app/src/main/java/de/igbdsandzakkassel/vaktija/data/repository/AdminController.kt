@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import de.igbdsandzakkassel.vaktija.BuildConfig
 import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
 import de.igbdsandzakkassel.vaktija.data.model.AdminRole
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -78,23 +79,59 @@ class AdminController @Inject constructor(
         }
 
     /**
-     * Signs in and reports the role. An account with no admin document is signed out again rather
-     * than left dangling — it has no business holding a session in this app.
+     * Signs in and reports what happened.
+     *
+     * "Wrong community" is deliberately a distinct outcome from "wrong password": the account is
+     * genuine, it simply administers somewhere else. Telling the person that plainly saves a round
+     * of confused password resets — and it is also the moment worth reporting to the head admin,
+     * since an admin's credentials being tried on another community is exactly what he asked to
+     * hear about.
      */
-    suspend fun signIn(email: String, password: String): Result<AdminRole> = runCatching {
+    suspend fun signIn(
+        email: String,
+        password: String,
+        viewingCommunityId: String?,
+    ): SignInResult = try {
         val uid = auth.signInWithEmailAndPassword(email.trim(), password).await()
             .user?.uid ?: error("Sign-in returned no account")
         val document = firestore.collection(COLLECTION).document(uid).get().await()
         val role = AdminRole.from(document.getString("role"), document.getString("communityId"))
             .orDebugFallback(uid)
-        if (role == AdminRole.None) {
-            auth.signOut()
-            error("This account has no admin rights")
+        when {
+            role == AdminRole.None -> {
+                auth.signOut()
+                SignInResult.NoRights
+            }
+            role is AdminRole.Community && viewingCommunityId != null &&
+                role.communityId != viewingCommunityId -> {
+                // The session is KEPT: this account is a valid admin, just not here. Walking back
+                // to their own community has to work without signing in again.
+                SignInResult.WrongCommunity(role.communityId, viewingCommunityId)
+            }
+            else -> SignInResult.Success(role)
         }
-        role
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        SignInResult.Failed(e)
+    }
+
+    /** Outcome of an admin sign-in attempt. */
+    sealed interface SignInResult {
+        data class Success(val role: AdminRole) : SignInResult
+        /** Valid admin account, but for a different community. Session is kept. */
+        data class WrongCommunity(val ownCommunityId: String, val attemptedCommunityId: String) :
+            SignInResult
+        /** Authenticated, but the account has no admin document at all. Signed back out. */
+        data object NoRights : SignInResult
+        /** Wrong credentials, no network, etc. */
+        data class Failed(val cause: Throwable) : SignInResult
     }
 
     fun signOut() = auth.signOut()
+
+    /** The signed-in account, for attributing an alert to it. */
+    fun currentUid(): String? = auth.currentUser?.uid
 
     private companion object {
         const val COLLECTION = "admins"

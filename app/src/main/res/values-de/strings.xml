@@ -222,4 +222,8 @@
     <string name="admin_status_suspended_hint">Nicht in der Auswahl, kein Logo, keine Spenden, keine Mitteilungen — Gebetszeiten laufen weiter.</string>
     <string name="admin_status_blocked_hint">Die App zeigt nur noch einen Hinweis. Rücknehmbar.</string>
     <string name="admin_manage_communities">Gemeinden verwalten</string>
+    <string name="admin_wrong_community">Dieser Zugang gehört zu einer anderen Gemeinde. Wechseln Sie zu Ihrer Gemeinde, um sie zu verwalten.</string>
+    <string name="admin_alerts_header">Anmeldeversuche</string>
+    <string name="admin_alert_wrong_community">%1$s hat versucht, sich bei %2$s anzumelden.</string>
+    <string name="admin_alert_dismiss">Erledigt</string>
 </resources>

@@ -210,4 +210,8 @@
     <string name="admin_status_suspended_hint">Нет в списке, без логотипа, пожертвований и объявлений — время намаза работает.</string>
     <string name="admin_status_blocked_hint">Приложение показывает только уведомление. Обратимо.</string>
     <string name="admin_manage_communities">Управление общинами</string>
+    <string name="admin_wrong_community">Эта учётная запись принадлежит другой общине. Перейдите к своей, чтобы управлять ею.</string>
+    <string name="admin_alerts_header">Попытки входа</string>
+    <string name="admin_alert_wrong_community">%1$s пытался войти в %2$s.</string>
+    <string name="admin_alert_dismiss">Готово</string>
 </resources>

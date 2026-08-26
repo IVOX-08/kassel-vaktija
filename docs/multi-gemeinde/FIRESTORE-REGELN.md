@@ -60,6 +60,15 @@ service cloud.firestore {
       allow write: if isHead();
     }
 
+    // Gemeldete Anmeldeversuche bei einer fremden Gemeinde.
+    // Schreiben darf jeder angemeldete Admin — das Gerät, das den Versuch macht, ist das einzige,
+    // das beide Seiten kennt. Lesen und löschen darf nur der Hauptadministrator.
+    match /admin_alerts/{alertId} {
+      allow create: if signedIn();
+      allow read, delete: if isHead();
+      allow update: if false;
+    }
+
     // Verbandsweite Mitteilungen des Hauptadministrators an alle Nutzer.
     match /broadcasts/{docId} {
       allow read: if true;

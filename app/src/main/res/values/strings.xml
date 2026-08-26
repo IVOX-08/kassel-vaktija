@@ -276,4 +276,8 @@
     <string name="admin_status_suspended_hint">Nema u izboru, bez logotipa, donacija i obavijesti — namaska vremena i dalje rade.</string>
     <string name="admin_status_blocked_hint">Aplikacija prikazuje samo obavijest. Reverzibilno.</string>
     <string name="admin_manage_communities">Džemati</string>
+    <string name="admin_wrong_community">Ovaj pristup pripada drugom džematu. Vratite se na svoj džemat da biste upravljali.</string>
+    <string name="admin_alerts_header">Pokušaji prijave</string>
+    <string name="admin_alert_wrong_community">%1$s se pokušao prijaviti kod %2$s.</string>
+    <string name="admin_alert_dismiss">U redu</string>
 </resources>
