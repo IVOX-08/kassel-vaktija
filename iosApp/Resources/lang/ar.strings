@@ -132,6 +132,9 @@
 "about_dev_email" = "أو راسلنا عبر البريد الإلكتروني:";
 "news_empty" = "لا توجد إعلانات بعد.";
 "news_broadcast" = "الاتحاد";
+"news_add_broadcast" = "إعلان لجميع الجماعات";
+"admin_wrong_community" = "هذا الحساب يدير جماعة أخرى (%@).";
+"admin_no_rights" = "هذا الحساب ليس لديه صلاحيات إدارية.";
 "news_add" = "إعلان جديد";
 "news_add_image" = "إضافة صورة";
 "news_remove_image" = "إزالة الصورة";

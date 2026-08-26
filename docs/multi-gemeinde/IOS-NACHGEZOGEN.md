@@ -25,22 +25,36 @@ Zeichenketten in vier. Beim nächsten Umzug ist nur diese eine anzufassen.
 - **Anonyme Anmeldung** beim Start, wie `SessionManager` auf Android. Ohne sie gehört ein Herz
   niemandem und ließe sich nicht zurücknehmen.
 
-## Was die Android-Seite noch tun muss
+## Korrektur einer falschen Anweisung
 
-⚠️ **Die Admin-Kennung der iOS-App braucht einen Eintrag unter `admins/{uid}`:**
+Eine frühere Fassung dieses Dokuments forderte, `admins/1a7xqRgIYDR0RZqa3KghBlz98PK2` auf
+`role: "community"` zu setzen. **Das war falsch und hätte Schaden angerichtet.**
 
-```
-admins/1a7xqRgIYDR0RZqa3KghBlz98PK2
-  role: "community"
-  communityId: "igbd-gemeinde-sandzak-kassel"
-```
+Diese Kennung gehört dem Besitzer und trägt `role: "head"`. Sie herabzustufen hätte ihm
+Gemeindeverwaltung, Rundnachrichten und das Recht genommen, Zugänge zu vergeben — also auch das
+Recht, den Fehler rückgängig zu machen. Der Schluss kam daher, dass die alte iOS-Regel nur diese
+eine Kennung schreiben ließ; daraus wurde fälschlich ein Gemeinde-Konto abgeleitet.
 
-Ohne diesen Eintrag bekommt der Vorstand beim Posten vom iPhone `PERMISSION_DENIED` — die Regeln
-sind seit dem 26. August scharf, die iOS-App hatte vorher als einzige Kennung Schreibrecht.
+Ebenso falsch war die Annahme, der Vorstand könne vom iPhone aus nicht mehr posten. Das Konto ist
+nicht blockiert, es hat mehr Rechte als vorher.
 
-⚠️ **Anonyme Anmeldung muss in der Firebase-Konsole aktiviert sein**
-(Authentication → Sign-in method). Ist sie es nicht, funktioniert alles weiter — nur die
-Reaktionsknöpfe bleiben wirkungslos.
+**An bestehenden Einträgen ist nichts zu ändern.** Der Vorstand hat mit
+`Vpalzb0gitTTLUQDFYPLcbIbFXG3` bereits eine eigene Kennung.
+
+## Welches Konto die iOS-App benutzt
+
+Keins fest — **das war das eigentliche Problem.** Die App hatte `1a7xq…` im Code stehen und meldete
+jedes andere Konto sofort wieder ab. Der Vorstand hätte sich mit seiner eigenen Kennung **nicht**
+anmelden können, obwohl der Server ihn längst zulässt.
+
+Das ist jetzt behoben: Die App liest die Rolle aus `admins/{uid}`, genau wie die Android-App seit
+„Drop the hard-coded ADMIN_UID". Ein neuer Eintrag wird also nicht gebraucht — jedes Konto, das die
+Android-Seite anlegt, funktioniert auf iOS ohne App-Änderung.
+
+## events
+
+Die iOS-App schreibt **nichts** nach `events`. Die einzigen Treffer im Code sind `eventSchedule`
+aus dem JSON-LD von vaktija.eu — etwas völlig anderes. Kein Handlungsbedarf.
 
 ## Bewusst nicht gebaut
 

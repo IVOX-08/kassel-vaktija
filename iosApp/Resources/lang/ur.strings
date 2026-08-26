@@ -132,6 +132,9 @@
 "about_dev_email" = "یا ای میل کریں:";
 "news_empty" = "ابھی کوئی اعلان نہیں۔";
 "news_broadcast" = "یونین";
+"news_add_broadcast" = "تمام جماعتوں کے لیے اعلان";
+"admin_wrong_community" = "یہ اکاؤنٹ دوسری جماعت کا منتظم ہے (%@)۔";
+"admin_no_rights" = "اس اکاؤنٹ کے پاس منتظم کے اختیارات نہیں ہیں۔";
 "news_add" = "نیا اعلان";
 "news_add_image" = "تصویر شامل کریں";
 "news_remove_image" = "تصویر ہٹائیں";

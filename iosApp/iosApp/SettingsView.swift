@@ -41,7 +41,9 @@ struct SettingsView: View {
                     if !notifGranted { permissionsSection }
                     languageSection
                     // Only visible once the board's account is signed in (via the 7-tap gate below).
-                    if admin.isAdmin { AdminSection() }
+                    // Nur der Admin DIESER Gemeinde. Der Hauptadministrator sieht den Editor
+                    // bewusst nicht — die Iqamah ist die Entscheidung der Gemeinde, nicht seine.
+                    if admin.canEditTimes { AdminSection() }
                     AboutCard()
                 }
                 .padding(16)

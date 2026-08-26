@@ -6,6 +6,7 @@ import SwiftUI
 struct NewsView: View {
     @StateObject private var store = NewsStore()
     @ObservedObject private var admin = AdminStore.shared
+    @State private var showBroadcast = false
     @State private var viewerImage: Data?
     @State private var showCompose = false
     @State private var pendingDelete: NewsItem?
@@ -28,7 +29,7 @@ struct NewsView: View {
                     ScrollView {
                         LazyVStack(spacing: 12) {
                             ForEach(list) { item in
-                                NewsCard(item: item, canDelete: admin.isAdmin,
+                                NewsCard(item: item, canDelete: admin.canPostNews && !item.isBroadcast,
                                          myReaction: store.myReactions[item.id],
                                          loadImage: store.image,
                                          onImageTap: { viewerImage = $0 },
@@ -43,7 +44,19 @@ struct NewsView: View {
                 }
             }
             .safeAreaInset(edge: .top) {
-                if admin.isAdmin {
+                if admin.canBroadcast {
+                    // Der Hauptadministrator schreibt an ALLE Gemeinden, nicht an diese eine.
+                    // Er darf hier bewusst keinen Gemeindebeitrag verfassen.
+                    Button { showBroadcast = true } label: {
+                        Label(L("news_add_broadcast"), systemImage: "megaphone")
+                            .font(.inter(15, .semibold)).foregroundColor(.white)
+                            .frame(maxWidth: .infinity).padding(.vertical, 12)
+                            .background(Color.brandGreen)
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    }
+                    .padding(.horizontal, 16).padding(.bottom, 8)
+                }
+                if admin.canPostNews {
                     Button { showCompose = true } label: {
                         Label(L("news_add"), systemImage: "plus")
                             .font(.inter(15, .semibold)).foregroundColor(.white)
@@ -63,6 +76,7 @@ struct NewsView: View {
             FullScreenImageViewer(data: data) { viewerImage = nil }
         }
         .sheet(isPresented: $showCompose) { NewsComposeView() }
+        .sheet(isPresented: $showBroadcast) { NewsComposeView(broadcast: true) }
         .confirmationDialog(L("news_delete_confirm"), isPresented: deleteDialog, titleVisibility: .visible) {
             Button(L("news_delete"), role: .destructive) {
                 if let id = pendingDelete?.id {

@@ -132,6 +132,9 @@
 "about_dev_email" = "ose shkruani një email:";
 "news_empty" = "Ende nuk ka njoftime.";
 "news_broadcast" = "Bashkimi";
+"news_add_broadcast" = "Njoftim për të gjitha xhematet";
+"admin_wrong_community" = "Kjo llogari administron një xhemat tjetër (%@).";
+"admin_no_rights" = "Kjo llogari nuk ka të drejta administratori.";
 "news_add" = "Njoftim i ri";
 "news_add_image" = "Shto fotografi";
 "news_remove_image" = "Hiq fotografinë";

@@ -132,6 +132,9 @@
 "about_dev_email" = "veya e-posta yazın:";
 "news_empty" = "Henüz duyuru yok.";
 "news_broadcast" = "Birlik";
+"news_add_broadcast" = "Tüm cemaatlere duyuru";
+"admin_wrong_community" = "Bu hesap başka bir cemaati yönetiyor (%@).";
+"admin_no_rights" = "Bu hesabın yönetici yetkisi yok.";
 "news_add" = "Yeni duyuru";
 "news_add_image" = "Görsel ekle";
 "news_remove_image" = "Görseli kaldır";

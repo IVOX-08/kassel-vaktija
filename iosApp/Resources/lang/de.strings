@@ -121,6 +121,9 @@
 "about_dev_email" = "oder E-Mail schreiben:";
 "news_empty" = "Noch keine Mitteilungen.";
 "news_broadcast" = "Verband";
+"news_add_broadcast" = "Mitteilung an alle Gemeinden";
+"admin_wrong_community" = "Dieses Konto verwaltet eine andere Gemeinde (%@).";
+"admin_no_rights" = "Dieses Konto hat keine Verwaltungsrechte.";
 "news_add" = "Neue Mitteilung";
 "news_add_image" = "Bild hinzufügen";
 "news_remove_image" = "Bild entfernen";

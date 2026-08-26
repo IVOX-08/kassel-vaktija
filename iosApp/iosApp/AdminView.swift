@@ -63,12 +63,23 @@ struct AdminLoginSheet: View {
         busy = true
         errorText = nil
         // Trailing spaces from autocomplete/paste are a common cause of "but I typed it right".
-        let reason = await admin.signIn(
+        let outcome = await admin.signIn(
             email: email.trimmingCharacters(in: .whitespacesAndNewlines),
             password: password
         )
         busy = false
-        if reason == nil { dismiss() } else { errorText = reason }
+        switch outcome {
+        case .success:
+            dismiss()
+        case .wrongCommunity(let own, _):
+            // Das Konto ist echt, verwaltet aber eine andere Gemeinde. Angemeldet bleibt es
+            // trotzdem — der Weg zurück zur eigenen Gemeinde darf keine neue Anmeldung kosten.
+            errorText = String(format: L("admin_wrong_community"), own)
+        case .noRights:
+            errorText = L("admin_no_rights")
+        case .failed(let reason):
+            errorText = reason
+        }
     }
 
 }

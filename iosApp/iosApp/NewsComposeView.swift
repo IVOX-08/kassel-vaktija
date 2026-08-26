@@ -8,6 +8,9 @@ import PhotosUI
 // A failed translation must never block the imam: the post still goes out in the language it was
 // written in, with a warning.
 struct NewsComposeView: View {
+    /// Verbandsweite Mitteilung des Hauptadministrators statt Beitrag dieser Gemeinde.
+    var broadcast = false
+
     @Environment(\.dismiss) private var dismiss
 
     @State private var title = ""
@@ -102,7 +105,8 @@ struct NewsComposeView: View {
         if !body_.isEmpty { bodies[source] = body_ }
 
         let ok = await AdminStore.shared.postNews(
-            titleByLang: titles, bodyByLang: bodies, sourceLang: source, imageJPEG: imageData
+            titleByLang: titles, bodyByLang: bodies, sourceLang: source, imageJPEG: imageData,
+            broadcast: broadcast
         )
         busy = false
 

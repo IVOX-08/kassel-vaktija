@@ -143,6 +143,9 @@
 "about_dev_email" = "ili pišite e-mail:";
 "news_empty" = "Trenutno nema obavijesti.";
 "news_broadcast" = "Savez";
+"news_add_broadcast" = "Obavijest svim džematima";
+"admin_wrong_community" = "Ovaj račun vodi drugi džemat (%@).";
+"admin_no_rights" = "Ovaj račun nema administratorska prava.";
 "news_add" = "Nova obavijest";
 "news_add_image" = "Dodaj sliku";
 "news_remove_image" = "Ukloni sliku";
