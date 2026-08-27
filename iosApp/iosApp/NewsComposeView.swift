@@ -10,6 +10,9 @@ import PhotosUI
 struct NewsComposeView: View {
     /// Verbandsweite Mitteilung des Hauptadministrators statt Beitrag dieser Gemeinde.
     var broadcast = false
+    /// Empfängerkreis, nur bei verbandsweiten Mitteilungen. Leer = alle Gemeinden.
+    @State private var audience: Set<String> = []
+    @State private var showAudience = false
 
     @Environment(\.dismiss) private var dismiss
 
@@ -45,11 +48,30 @@ struct NewsComposeView: View {
                         }
                     }
                 }
+                if broadcast {
+                    Section {
+                        Button { showAudience = true } label: {
+                            HStack {
+                                Label(L("broadcast_audience_title"), systemImage: "person.2.fill")
+                                Spacer()
+                                Text(audience.isEmpty
+                                     ? L("broadcast_audience_everyone")
+                                     : String(format: L("broadcast_audience_count"), audience.count))
+                                    .font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+                            }
+                        }
+                    } footer: {
+                        Text(L("broadcast_hint")).font(.inter(12))
+                    }
+                }
                 if let warning {
                     Section { Text(warning).font(.inter(13)).foregroundColor(.qiblaRed) }
                 }
             }
-            .navigationTitle(L("news_add"))
+            .sheet(isPresented: $showAudience) {
+                AudiencePickerView(selection: $audience) {}
+            }
+            .navigationTitle(broadcast ? L("news_add_broadcast") : L("news_add"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -106,7 +128,7 @@ struct NewsComposeView: View {
 
         let ok = await AdminStore.shared.postNews(
             titleByLang: titles, bodyByLang: bodies, sourceLang: source, imageJPEG: imageData,
-            broadcast: broadcast
+            broadcast: broadcast, audience: Array(audience)
         )
         busy = false
 

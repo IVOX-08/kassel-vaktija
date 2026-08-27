@@ -218,3 +218,9 @@
 "community_status_active_hint" = "Active: Everything works normally.";
 "community_status_suspended_hint" = "Restricted: Not in the picker, no logo, no donations, no announcements — prayer times keep working.";
 "community_status_blocked_hint" = "Blocked: The app shows only a notice. Reversible.";
+"broadcast_audience_title" = "Who receives this?";
+"broadcast_audience_all" = "All";
+"broadcast_audience_everyone" = "All communities";
+"broadcast_audience_count" = "%d selected";
+"broadcast_hint" = "Seen by every user of the app, not only your community.";
+"action_confirm" = "Apply";

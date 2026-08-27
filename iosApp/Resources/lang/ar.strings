@@ -215,3 +215,9 @@
 "community_status_active_hint" = "نشِط: كل شيء يعمل بشكل طبيعي.";
 "community_status_suspended_hint" = "مقيَّد: غير موجود في الاختيار، بلا شعار، بلا تبرعات، بلا إعلانات — مواقيت الصلاة تستمر.";
 "community_status_blocked_hint" = "محظور: يعرض التطبيق إشعارًا فقط. قابل للتراجع.";
+"broadcast_audience_title" = "من يتلقى الإعلان؟";
+"broadcast_audience_all" = "الكل";
+"broadcast_audience_everyone" = "جميع الجماعات";
+"broadcast_audience_count" = "%d محددة";
+"broadcast_hint" = "يراه جميع مستخدمي التطبيق، وليس جماعتكم فقط.";
+"action_confirm" = "تطبيق";

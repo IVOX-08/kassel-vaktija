@@ -215,3 +215,9 @@
 "community_status_active_hint" = "فعال: سب کچھ معمول کے مطابق کام کرتا ہے۔";
 "community_status_suspended_hint" = "محدود: انتخاب میں نہیں، لوگو نہیں، عطیات نہیں، اعلانات نہیں — نماز کے اوقات چلتے رہتے ہیں۔";
 "community_status_blocked_hint" = "بند: ایپ صرف ایک اطلاع دکھاتی ہے۔ واپس لیا جا سکتا ہے۔";
+"broadcast_audience_title" = "اعلان کون وصول کرے گا؟";
+"broadcast_audience_all" = "سب";
+"broadcast_audience_everyone" = "تمام جماعتیں";
+"broadcast_audience_count" = "%d منتخب";
+"broadcast_hint" = "ایپ کے تمام صارفین دیکھیں گے، صرف آپ کی جماعت نہیں۔";
+"action_confirm" = "لاگو کریں";

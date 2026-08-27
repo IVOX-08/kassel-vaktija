@@ -218,3 +218,9 @@
 "community_status_active_hint" = "Aktiv: Alles funktioniert normal.";
 "community_status_suspended_hint" = "Eingeschränkt: Nicht in der Auswahl, kein Logo, keine Spenden, keine Mitteilungen — Gebetszeiten laufen weiter.";
 "community_status_blocked_hint" = "Gesperrt: Die App zeigt nur noch einen Hinweis. Rücknehmbar.";
+"broadcast_audience_title" = "Wer bekommt die Mitteilung?";
+"broadcast_audience_all" = "Alle";
+"broadcast_audience_everyone" = "Alle Gemeinden";
+"broadcast_audience_count" = "%d ausgewählt";
+"broadcast_hint" = "Sehen alle Nutzer der App, nicht nur Ihre Gemeinde.";
+"action_confirm" = "Übernehmen";

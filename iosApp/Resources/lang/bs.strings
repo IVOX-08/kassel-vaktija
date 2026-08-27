@@ -235,3 +235,9 @@
 "community_status_active_hint" = "Aktivan: Sve radi normalno.";
 "community_status_suspended_hint" = "Ograničen: Nije u izboru, bez logotipa, bez donacija, bez obavijesti — vaktovi i dalje rade.";
 "community_status_blocked_hint" = "Blokiran: Aplikacija prikazuje samo obavijest. Može se poništiti.";
+"broadcast_audience_title" = "Ko prima obavijest?";
+"broadcast_audience_all" = "Svi";
+"broadcast_audience_everyone" = "Svi džemati";
+"broadcast_audience_count" = "%d izabrano";
+"broadcast_hint" = "Vide svi korisnici aplikacije, ne samo vaš džemat.";
+"action_confirm" = "Potvrdi";

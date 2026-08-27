@@ -215,3 +215,9 @@
 "community_status_active_hint" = "Aktif: Her şey normal çalışıyor.";
 "community_status_suspended_hint" = "Kısıtlı: Seçimde yok, logo yok, bağış yok, duyuru yok — namaz vakitleri çalışmaya devam eder.";
 "community_status_blocked_hint" = "Engelli: Uygulama yalnızca bir uyarı gösterir. Geri alınabilir.";
+"broadcast_audience_title" = "Duyuruyu kim alacak?";
+"broadcast_audience_all" = "Tümü";
+"broadcast_audience_everyone" = "Tüm cemaatler";
+"broadcast_audience_count" = "%d seçildi";
+"broadcast_hint" = "Uygulamanın tüm kullanıcıları görür, sadece cemaatiniz değil.";
+"action_confirm" = "Uygula";

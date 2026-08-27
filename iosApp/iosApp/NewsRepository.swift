@@ -37,6 +37,13 @@ struct NewsItem: Identifiable {
     let hasImage: Bool
     let likeCount: Int
     let dislikeCount: Int
+    /// Empfängerkreis einer verbandsweiten Mitteilung. **Leer heißt alle.**
+    let audience: [String]
+
+    /// Ob diese Mitteilung die gewählte Gemeinde erreicht.
+    func reaches(_ communityId: String) -> Bool {
+        audience.isEmpty || audience.contains(communityId)
+    }
 
     func title(_ lang: String) -> String { Self.pick(titleByLang, lang, sourceLang) }
     func body(_ lang: String) -> String { Self.pick(bodyByLang, lang, sourceLang) }
@@ -103,7 +110,11 @@ final class NewsStore: ObservableObject {
     }
 
     private func merge() {
-        items = (communityItems + broadcastItems).sorted { $0.createdAt > $1.createdAt }
+        // Hier gefiltert statt in der Abfrage: „an alle" steht als leere Liste, und das lässt sich
+        // mit keiner array-contains-Abfrage ausdrücken. Verbandsweite Mitteilungen sind wenige
+        // genug, dass der Client entscheiden kann.
+        let reaching = broadcastItems.filter { $0.reaches(Community.id) }
+        items = (communityItems + reaching).sorted { $0.createdAt > $1.createdAt }
         Task { await loadMyReactions() }
     }
 
@@ -118,7 +129,8 @@ final class NewsStore: ObservableObject {
             createdAt: (d["createdAt"] as? NSNumber)?.int64Value ?? 0,
             hasImage: d["hasImage"] as? Bool ?? false,
             likeCount: (d["likeCount"] as? NSNumber)?.intValue ?? 0,
-            dislikeCount: (d["dislikeCount"] as? NSNumber)?.intValue ?? 0
+            dislikeCount: (d["dislikeCount"] as? NSNumber)?.intValue ?? 0,
+            audience: d["audience"] as? [String] ?? []
         )
     }
 

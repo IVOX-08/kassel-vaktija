@@ -215,3 +215,9 @@
 "community_status_active_hint" = "Aktiv: Gjithçka funksionon normalisht.";
 "community_status_suspended_hint" = "I kufizuar: Jo në zgjedhje, pa logo, pa donacione, pa njoftime — kohët e namazit vazhdojnë.";
 "community_status_blocked_hint" = "I bllokuar: Aplikacioni shfaq vetëm një njoftim. I kthyeshëm.";
+"broadcast_audience_title" = "Kush e merr njoftimin?";
+"broadcast_audience_all" = "Të gjithë";
+"broadcast_audience_everyone" = "Të gjitha xhematet";
+"broadcast_audience_count" = "%d të zgjedhura";
+"broadcast_hint" = "E shohin të gjithë përdoruesit e aplikacionit, jo vetëm xhemati juaj.";
+"action_confirm" = "Zbato";

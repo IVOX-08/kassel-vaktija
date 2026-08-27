@@ -232,20 +232,28 @@ final class AdminStore: ObservableObject {
     ///
     /// `broadcast` schreibt stattdessen nach `broadcasts` — die Mitteilung des Hauptadministrators
     /// an alle Gemeinden. Die Regeln lassen das nur für `role: 'head'` zu.
+    /// `audience` gilt nur für verbandsweite Mitteilungen: leer heißt alle Gemeinden.
     func postNews(titleByLang: [String: String], bodyByLang: [String: String],
-                  sourceLang: String, imageJPEG: Data?, broadcast: Bool = false) async -> Bool {
+                  sourceLang: String, imageJPEG: Data?, broadcast: Bool = false,
+                  audience: [String] = []) async -> Bool {
         guard FirebaseApp.app() != nil else { return false }
         let collection = broadcast ? Community.broadcasts : Community.news
         let images = broadcast ? Community.broadcastImages : Community.newsImages
         let doc = collection.document()
         do {
-            try await doc.setData([
+            // Feldnamen und Vorbelegungen wie auf Android — beide Apps lesen dieselben Dokumente.
+            var data: [String: Any] = [
                 "title": titleByLang,
                 "body": bodyByLang,
                 "sourceLang": sourceLang,
                 "createdAt": Int64(Date().timeIntervalSince1970 * 1000),
                 "hasImage": imageJPEG != nil,
-            ])
+                "audience": broadcast ? audience : [],
+                "likeCount": 0,
+                "dislikeCount": 0,
+            ]
+            if !broadcast { data["communityId"] = Community.id }
+            try await doc.setData(data)
             if let imageJPEG {
                 try await images.document(doc.documentID)
                     .setData(["data": imageJPEG.base64EncodedString()])

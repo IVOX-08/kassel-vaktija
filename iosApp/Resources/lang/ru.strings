@@ -215,3 +215,9 @@
 "community_status_active_hint" = "Активна: Всё работает нормально.";
 "community_status_suspended_hint" = "Ограничена: Нет в выборе, без логотипа, без пожертвований, без объявлений — время молитв продолжает работать.";
 "community_status_blocked_hint" = "Заблокирована: Приложение показывает только уведомление. Обратимо.";
+"broadcast_audience_title" = "Кто получит объявление?";
+"broadcast_audience_all" = "Все";
+"broadcast_audience_everyone" = "Все общины";
+"broadcast_audience_count" = "Выбрано: %d";
+"broadcast_hint" = "Видят все пользователи приложения, не только ваша община.";
+"action_confirm" = "Применить";
