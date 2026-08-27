@@ -201,3 +201,9 @@
 "zakat_above_nisab" = "You are above the nisab — zakat is due.";
 "zakat_below_nisab" = "You are below the nisab — no zakat is due.";
 "zakat_disclaimer" = "This is a calculation aid, not a fatwa. Ask your imam about your own case.";
+"community_section_header" = "Community";
+"community_picker_title" = "Choose community";
+"community_search_hint" = "Search city or community";
+"community_none_found" = "No community found.";
+"community_none_selected" = "No community selected";
+"action_change_community" = "Change community";

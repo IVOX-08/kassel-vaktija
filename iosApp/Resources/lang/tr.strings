@@ -198,3 +198,9 @@
 "zakat_above_nisab" = "Nisabın üzerindesiniz — zekât gerekir.";
 "zakat_below_nisab" = "Nisabın altındasınız — zekât gerekmez.";
 "zakat_disclaimer" = "Bu bir hesaplama yardımıdır, fetva değildir. Kendi durumunuz için imamınıza sorun.";
+"community_section_header" = "Cemaat";
+"community_picker_title" = "Cemaat seçin";
+"community_search_hint" = "Şehir veya cemaat ara";
+"community_none_found" = "Cemaat bulunamadı.";
+"community_none_selected" = "Cemaat seçilmedi";
+"action_change_community" = "Cemaati değiştir";

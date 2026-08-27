@@ -198,3 +198,9 @@
 "zakat_above_nisab" = "Вы выше нисаба — закят обязателен.";
 "zakat_below_nisab" = "Вы ниже нисаба — закят не обязателен.";
 "zakat_disclaimer" = "Это расчётная помощь, а не фетва. По своему случаю спросите имама.";
+"community_section_header" = "Община";
+"community_picker_title" = "Выберите общину";
+"community_search_hint" = "Поиск города или общины";
+"community_none_found" = "Община не найдена.";
+"community_none_selected" = "Община не выбрана";
+"action_change_community" = "Сменить общину";

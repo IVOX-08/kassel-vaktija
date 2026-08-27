@@ -18,6 +18,8 @@ struct SettingsView: View {
     @AppStorage("weekly_reminder") private var weekly = true
 
     @ObservedObject private var admin = AdminStore.shared
+    @ObservedObject private var catalog = CommunityCatalog.shared
+    @State private var showCommunityPicker = false
     @State private var showLangPicker = false
     @State private var notifGranted = true
     @StateObject private var store = PrayerStore()
@@ -34,6 +36,7 @@ struct SettingsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
+                    communitySection
                     designSection
                     prayerNotifSection
                     autoMuteSection
@@ -54,7 +57,8 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .tint(.brandGreen)
-        .onAppear { refreshAuth(); admin.start() }
+        .sheet(isPresented: $showCommunityPicker) { CommunityPickerView() }
+        .onAppear { refreshAuth(); admin.start(); catalog.start() }
         .onChange(of: master) { _ in rearm() }
         .onChange(of: soundRaw) { _ in rearm() }
         .fullScreenCover(isPresented: $showLangPicker) {
@@ -71,6 +75,35 @@ struct SettingsView: View {
     }
 
     // 6.1 Design
+    /// Die eigene Gemeinde — steht ganz oben, weil daran alles hängt: Gebetszeiten, Mitteilungen,
+    /// Adresse und Logo. Wer die falsche gewählt hat, sieht überall die falschen Zahlen.
+    private var communitySection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SettingHeader(L("community_section_header"))
+            SettingCard {
+                Button { showCommunityPicker = true } label: {
+                    HStack(spacing: 12) {
+                        Image(systemName: "mappin.and.ellipse")
+                            .font(.system(size: 17)).foregroundColor(.brandGreen)
+                            .frame(width: 34, height: 34)
+                            .background(Color.brandGreen.opacity(0.12)).clipShape(Circle())
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(catalog.selectedLocation?.name ?? L("community_none_selected"))
+                                .font(.inter(16, .semibold)).foregroundColor(.appPrimary)
+                            Text(catalog.selected?.name ?? L("action_change_community"))
+                                .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .multilineTextAlignment(.leading)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 13)).foregroundColor(.appOnSurfaceVariant)
+                    }
+                }
+            }
+        }
+    }
+
     private var designSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             SettingHeader(L("settings_theme_header"))

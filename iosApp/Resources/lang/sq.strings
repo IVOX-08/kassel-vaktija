@@ -198,3 +198,9 @@
 "zakat_above_nisab" = "Jeni mbi nisab — zekati është i detyrueshëm.";
 "zakat_below_nisab" = "Jeni nën nisab — zekati nuk është i detyrueshëm.";
 "zakat_disclaimer" = "Kjo është një ndihmë llogaritëse, jo fetva. Për rastin tuaj pyesni imamin.";
+"community_section_header" = "Xhemati";
+"community_picker_title" = "Zgjidhni xhematin";
+"community_search_hint" = "Kërko qytet ose xhemat";
+"community_none_found" = "Nuk u gjet asnjë xhemat.";
+"community_none_selected" = "Nuk është zgjedhur xhemat";
+"action_change_community" = "Ndrysho xhematin";

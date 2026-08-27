@@ -198,3 +198,9 @@
 "zakat_above_nisab" = "آپ نصاب سے اوپر ہیں — زکات واجب ہے۔";
 "zakat_below_nisab" = "آپ نصاب سے نیچے ہیں — زکات واجب نہیں۔";
 "zakat_disclaimer" = "یہ حساب میں مدد ہے، فتویٰ نہیں۔ اپنے معاملے کے لیے امام سے پوچھیں۔";
+"community_section_header" = "جماعت";
+"community_picker_title" = "جماعت منتخب کریں";
+"community_search_hint" = "شہر یا جماعت تلاش کریں";
+"community_none_found" = "کوئی جماعت نہیں ملی۔";
+"community_none_selected" = "کوئی جماعت منتخب نہیں";
+"action_change_community" = "جماعت تبدیل کریں";

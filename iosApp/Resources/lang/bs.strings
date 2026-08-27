@@ -218,3 +218,9 @@
 "zakat_above_nisab" = "Iznad ste nisaba — zekat je obavezan.";
 "zakat_below_nisab" = "Ispod ste nisaba — zekat nije obavezan.";
 "zakat_disclaimer" = "Ovo je pomoćni račun, a ne fetva. Za svoj slučaj pitajte imama.";
+"community_section_header" = "Džemat";
+"community_picker_title" = "Izaberite džemat";
+"community_search_hint" = "Pretraži grad ili džemat";
+"community_none_found" = "Nije pronađen nijedan džemat.";
+"community_none_selected" = "Nije izabran džemat";
+"action_change_community" = "Promijeni džemat";

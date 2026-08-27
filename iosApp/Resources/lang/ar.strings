@@ -198,3 +198,9 @@
 "zakat_above_nisab" = "أنت فوق النصاب — الزكاة واجبة.";
 "zakat_below_nisab" = "أنت دون النصاب — لا زكاة عليك.";
 "zakat_disclaimer" = "هذه أداة حساب وليست فتوى. اسأل إمامك عن حالتك.";
+"community_section_header" = "الجماعة";
+"community_picker_title" = "اختر الجماعة";
+"community_search_hint" = "ابحث عن مدينة أو جماعة";
+"community_none_found" = "لم يتم العثور على جماعة.";
+"community_none_selected" = "لم يتم اختيار جماعة";
+"action_change_community" = "تغيير الجماعة";

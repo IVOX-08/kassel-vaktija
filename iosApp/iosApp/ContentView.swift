@@ -42,10 +42,10 @@ struct ContentView: View {
     private var header: some View {
         VStack(spacing: 6) {
             HStack(alignment: .top, spacing: 6) {
-                linkBlock(url: mapsURL) {
+                linkBlock(url: mapsURLForSelection) {
                     VStack(spacing: 3) {
                         Image(systemName: "mappin.and.ellipse").font(.system(size: 22)).foregroundColor(.appPrimary)
-                        Text("Schwanenweg 13\n34123 Kassel").font(.inter(11, .medium)).foregroundColor(.appPrimary).multilineTextAlignment(.center)
+                        Text(headerAddress).font(.inter(11, .medium)).foregroundColor(.appPrimary).multilineTextAlignment(.center)
                     }.frame(maxWidth: .infinity)
                 }
                 Image(uiImage: logoImage).resizable().scaledToFit().frame(height: 96)
@@ -61,6 +61,27 @@ struct ContentView: View {
             Text(hijri).font(.inter(13)).foregroundColor(.appOnSurfaceVariant.opacity(0.7))
         }
         .padding(.top, 4)
+    }
+
+    /// Adresse der GEWÄHLTEN Gemeinde. Ohne Adresse im Verzeichnis bleibt der Ortsname stehen —
+    /// besser als eine fremde Adresse unter dem eigenen Gemeindenamen.
+    private var headerAddress: String {
+        let catalog = CommunityCatalog.shared
+        if let address = catalog.selected?.address, !address.isEmpty {
+            // "Schwanenweg 13, 34123 Kassel" -> zwei Zeilen, wie bisher gesetzt.
+            return address.replacingOccurrences(of: ", ", with: "\n")
+        }
+        return catalog.selectedLocation?.name ?? ""
+    }
+
+    /// Karten-Link auf die gewählte Gemeinde statt fest auf Kassel.
+    private var mapsURLForSelection: URL? {
+        let catalog = CommunityCatalog.shared
+        let query = catalog.selected?.address ?? catalog.selectedLocation?.name ?? ""
+        guard !query.isEmpty,
+              let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        else { return nil }
+        return URL(string: "https://www.google.com/maps/search/?api=1&query=\(encoded)")
     }
 
     private var logoImage: UIImage {

@@ -201,3 +201,9 @@
 "zakat_above_nisab" = "Sie liegen über dem Nisab — Zakat ist fällig.";
 "zakat_below_nisab" = "Sie liegen unter dem Nisab — es fällt kein Zakat an.";
 "zakat_disclaimer" = "Dies ist eine Rechenhilfe, keine Fatwa. Fragen Sie für Ihren Fall Ihren Imam.";
+"community_section_header" = "Gemeinde";
+"community_picker_title" = "Gemeinde wählen";
+"community_search_hint" = "Stadt oder Gemeinde suchen";
+"community_none_found" = "Keine Gemeinde gefunden.";
+"community_none_selected" = "Keine Gemeinde gewählt";
+"action_change_community" = "Gemeinde ändern";
