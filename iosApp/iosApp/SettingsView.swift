@@ -47,6 +47,8 @@ struct SettingsView: View {
                     // Nur der Admin DIESER Gemeinde. Der Hauptadministrator sieht den Editor
                     // bewusst nicht — die Iqamah ist die Entscheidung der Gemeinde, nicht seine.
                     if admin.canEditTimes { AdminSection() }
+                    // Der Hauptadministrator sieht statt des Zeiten-Editors die Verwaltung.
+                    if admin.canBroadcast { HeadAdminSection() }
                     DeveloperCard()
                     AboutCard()
                 }
@@ -386,7 +388,9 @@ private struct AboutCard: View {
 
 // MARK: - Shared building blocks
 
-private struct SettingHeader: View {
+// Nicht mehr privat: HeadAdminView nutzt dieselben Bausteine, damit die
+// Verwaltung nicht anders aussieht als der Rest der Einstellungen.
+struct SettingHeader: View {
     let text: String
     init(_ text: String) { self.text = text }
     var body: some View {
@@ -394,7 +398,7 @@ private struct SettingHeader: View {
     }
 }
 
-private struct SettingCard<Content: View>: View {
+struct SettingCard<Content: View>: View {
     @ViewBuilder let content: Content
     var body: some View {
         VStack(alignment: .leading, spacing: 10) { content }

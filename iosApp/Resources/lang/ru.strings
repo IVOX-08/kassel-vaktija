@@ -204,3 +204,14 @@
 "community_none_found" = "Община не найдена.";
 "community_none_selected" = "Община не выбрана";
 "action_change_community" = "Сменить общину";
+"news_sent_by_union" = "Отправлено IGBD";
+"news_sent_by" = "Отправлено: %@";
+"admin_section_header_named" = "Администратор: %@";
+"admin_head_header" = "Главный администратор (все общины)";
+"admin_manage_communities" = "Управление общинами";
+"community_status_active" = "Активна";
+"community_status_suspended" = "Ограничена";
+"community_status_blocked" = "Заблокирована";
+"community_status_active_hint" = "Активна: Всё работает нормально.";
+"community_status_suspended_hint" = "Ограничена: Нет в выборе, без логотипа, без пожертвований, без объявлений — время молитв продолжает работать.";
+"community_status_blocked_hint" = "Заблокирована: Приложение показывает только уведомление. Обратимо.";

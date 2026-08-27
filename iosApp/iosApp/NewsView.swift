@@ -105,6 +105,7 @@ private struct NewsCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            senderRow
             HStack(alignment: .top) {
                 Text(item.title(lang)).font(.inter(17, .bold)).foregroundColor(.brandGreen)
                 if canDelete {
@@ -136,6 +137,25 @@ private struct NewsCard: View {
         .shadow(color: .black.opacity(0.06), radius: 3, y: 1)
     }
 
+    /// Wer die Mitteilung geschickt hat, mit Wappen — wie auf Android.
+    ///
+    /// Ohne diese Zeile wäre nicht erklärbar, warum in der Liste der eigenen Gemeinde plötzlich
+    /// etwas steht, das der eigene Vorstand nie geschrieben hat.
+    private var senderRow: some View {
+        HStack(spacing: 8) {
+            Image(systemName: item.isBroadcast ? "building.2.fill" : "moon.stars.fill")
+                .font(.system(size: 14)).foregroundColor(.brandGreen)
+                .frame(width: 26, height: 26)
+                .background(Color.brandGreen.opacity(0.12)).clipShape(Circle())
+            Text(item.isBroadcast
+                 ? L("news_sent_by_union")
+                 : String(format: L("news_sent_by"), CommunityCatalog.shared.selected?.name ?? ""))
+                .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                .lineLimit(2)
+            Spacer()
+        }
+    }
+
     /// Herz und Daumen wie auf Android: derselbe Knopf noch einmal nimmt die Reaktion zurück.
     /// Die Zahl bewegt sich sofort, weil Firestore die Erhöhung lokal rechnet.
     private var reactionRow: some View {
@@ -144,15 +164,6 @@ private struct NewsCard: View {
             reactionButton(.dislike, filled: "hand.thumbsdown.fill", hollow: "hand.thumbsdown",
                            count: item.dislikeCount)
             Spacer()
-            if item.isBroadcast {
-                // Verbandsweit statt aus der eigenen Gemeinde — sonst wäre nicht erkennbar, warum
-                // eine Mitteilung auftaucht, die der eigene Vorstand nie geschrieben hat.
-                Text(L("news_broadcast"))
-                    .font(.inter(11, .semibold)).foregroundColor(.brandGreen)
-                    .padding(.horizontal, 8).padding(.vertical, 3)
-                    .background(Color.brandGreen.opacity(0.12))
-                    .clipShape(Capsule())
-            }
         }
         .padding(.top, 2)
     }

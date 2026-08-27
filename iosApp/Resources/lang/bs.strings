@@ -224,3 +224,14 @@
 "community_none_found" = "Nije pronađen nijedan džemat.";
 "community_none_selected" = "Nije izabran džemat";
 "action_change_community" = "Promijeni džemat";
+"news_sent_by_union" = "Poslao IGBD";
+"news_sent_by" = "Poslao %@";
+"admin_section_header_named" = "Administrator: %@";
+"admin_head_header" = "Glavni administrator (svi džemati)";
+"admin_manage_communities" = "Upravljanje džematima";
+"community_status_active" = "Aktivan";
+"community_status_suspended" = "Ograničen";
+"community_status_blocked" = "Blokiran";
+"community_status_active_hint" = "Aktivan: Sve radi normalno.";
+"community_status_suspended_hint" = "Ograničen: Nije u izboru, bez logotipa, bez donacija, bez obavijesti — vaktovi i dalje rade.";
+"community_status_blocked_hint" = "Blokiran: Aplikacija prikazuje samo obavijest. Može se poništiti.";

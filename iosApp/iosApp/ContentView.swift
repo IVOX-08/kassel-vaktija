@@ -48,8 +48,7 @@ struct ContentView: View {
                         Text(headerAddress).font(.inter(11, .medium)).foregroundColor(.appPrimary).multilineTextAlignment(.center)
                     }.frame(maxWidth: .infinity)
                 }
-                Image(uiImage: logoImage).resizable().scaledToFit().frame(height: 96)
-                    .blendMode(scheme == .dark ? .normal : .multiply) // white emblem box blends into #F4F4F4
+                communityEmblem.frame(height: 96)
                 linkBlock(url: donateURL) {
                     VStack(spacing: 3) {
                         Image(systemName: "heart.fill").font(.system(size: 30)).foregroundColor(.appPrimary)
@@ -82,6 +81,46 @@ struct ContentView: View {
               let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         else { return nil }
         return URL(string: "https://www.google.com/maps/search/?api=1&query=\(encoded)")
+    }
+
+    /// Das Wappen der gewählten Gemeinde.
+    ///
+    /// Dieselbe Regel wie auf Android, und sie ist wichtig: Wer noch kein Logo hinterlegt hat,
+    /// bekommt ein neutrales Zeichen — NICHT Kassels Wappen geliehen. Ein fremdes Wappen über den
+    /// eigenen Gebetszeiten wäre schlimmer als gar keins.
+    @ViewBuilder private var communityEmblem: some View {
+        if isHomeCommunity {
+            Image(uiImage: logoImage).resizable().scaledToFit()
+                .blendMode(scheme == .dark ? .normal : .multiply) // white emblem box blends into #F4F4F4
+        } else if let url = communityLogoURL {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image): image.resizable().scaledToFit()
+                // Beim Laden und beim Fehlschlag dasselbe neutrale Zeichen — ein leerer Platz
+                // liesse die Kopfzeile bei jedem Start springen.
+                default: neutralEmblem
+                }
+            }
+        } else {
+            neutralEmblem
+        }
+    }
+
+    private var neutralEmblem: some View {
+        Image(systemName: "moon.stars.fill")
+            .resizable().scaledToFit()
+            .foregroundColor(.brandGreen)
+            .padding(12)
+    }
+
+    /// Kassel ist die Heimatgemeinde dieser App — nur sie hat ihr Wappen im Paket.
+    private var isHomeCommunity: Bool {
+        CommunitySelection.communityId == CommunitySelection.fallbackCommunityId
+    }
+
+    private var communityLogoURL: URL? {
+        guard let raw = CommunityCatalog.shared.selected?.logoUrl, !raw.isEmpty else { return nil }
+        return URL(string: raw)
     }
 
     private var logoImage: UIImage {

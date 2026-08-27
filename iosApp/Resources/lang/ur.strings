@@ -204,3 +204,14 @@
 "community_none_found" = "کوئی جماعت نہیں ملی۔";
 "community_none_selected" = "کوئی جماعت منتخب نہیں";
 "action_change_community" = "جماعت تبدیل کریں";
+"news_sent_by_union" = "IGBD کی طرف سے";
+"news_sent_by" = "%@ کی طرف سے";
+"admin_section_header_named" = "منتظم: %@";
+"admin_head_header" = "مرکزی منتظم (تمام جماعتیں)";
+"admin_manage_communities" = "جماعتوں کا انتظام";
+"community_status_active" = "فعال";
+"community_status_suspended" = "محدود";
+"community_status_blocked" = "بند";
+"community_status_active_hint" = "فعال: سب کچھ معمول کے مطابق کام کرتا ہے۔";
+"community_status_suspended_hint" = "محدود: انتخاب میں نہیں، لوگو نہیں، عطیات نہیں، اعلانات نہیں — نماز کے اوقات چلتے رہتے ہیں۔";
+"community_status_blocked_hint" = "بند: ایپ صرف ایک اطلاع دکھاتی ہے۔ واپس لیا جا سکتا ہے۔";

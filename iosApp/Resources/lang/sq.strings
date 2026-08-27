@@ -204,3 +204,14 @@
 "community_none_found" = "Nuk u gjet asnjë xhemat.";
 "community_none_selected" = "Nuk është zgjedhur xhemat";
 "action_change_community" = "Ndrysho xhematin";
+"news_sent_by_union" = "Dërguar nga IGBD";
+"news_sent_by" = "Dërguar nga %@";
+"admin_section_header_named" = "Administratori: %@";
+"admin_head_header" = "Administratori kryesor (të gjitha xhematet)";
+"admin_manage_communities" = "Menaxho xhematet";
+"community_status_active" = "Aktiv";
+"community_status_suspended" = "I kufizuar";
+"community_status_blocked" = "I bllokuar";
+"community_status_active_hint" = "Aktiv: Gjithçka funksionon normalisht.";
+"community_status_suspended_hint" = "I kufizuar: Jo në zgjedhje, pa logo, pa donacione, pa njoftime — kohët e namazit vazhdojnë.";
+"community_status_blocked_hint" = "I bllokuar: Aplikacioni shfaq vetëm një njoftim. I kthyeshëm.";

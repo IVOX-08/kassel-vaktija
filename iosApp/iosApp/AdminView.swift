@@ -96,7 +96,10 @@ struct AdminSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(L("admin_section_header"))
+            // Benennt die Gemeinde, wie auf Android. Wer mehrere verwaltet oder zwischen ihnen
+            // wechselt, muss sehen, wessen Zeiten er gerade ändert.
+            Text(String(format: L("admin_section_header_named"),
+                        CommunityCatalog.shared.selected?.name ?? ""))
                 .font(.inter(13, .semibold)).foregroundColor(.appSecondary)
                 .padding(.leading, 4)
             VStack(alignment: .leading, spacing: 10) {

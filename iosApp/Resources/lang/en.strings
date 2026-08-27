@@ -207,3 +207,14 @@
 "community_none_found" = "No community found.";
 "community_none_selected" = "No community selected";
 "action_change_community" = "Change community";
+"news_sent_by_union" = "Sent by IGBD";
+"news_sent_by" = "Sent by %@";
+"admin_section_header_named" = "Administrator: %@";
+"admin_head_header" = "Head administrator (all communities)";
+"admin_manage_communities" = "Manage communities";
+"community_status_active" = "Active";
+"community_status_suspended" = "Restricted";
+"community_status_blocked" = "Blocked";
+"community_status_active_hint" = "Active: Everything works normally.";
+"community_status_suspended_hint" = "Restricted: Not in the picker, no logo, no donations, no announcements — prayer times keep working.";
+"community_status_blocked_hint" = "Blocked: The app shows only a notice. Reversible.";

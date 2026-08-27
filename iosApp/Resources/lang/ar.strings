@@ -204,3 +204,14 @@
 "community_none_found" = "لم يتم العثور على جماعة.";
 "community_none_selected" = "لم يتم اختيار جماعة";
 "action_change_community" = "تغيير الجماعة";
+"news_sent_by_union" = "أرسلها IGBD";
+"news_sent_by" = "أرسلها %@";
+"admin_section_header_named" = "المشرف: %@";
+"admin_head_header" = "المشرف العام (جميع الجماعات)";
+"admin_manage_communities" = "إدارة الجماعات";
+"community_status_active" = "نشِط";
+"community_status_suspended" = "مقيَّد";
+"community_status_blocked" = "محظور";
+"community_status_active_hint" = "نشِط: كل شيء يعمل بشكل طبيعي.";
+"community_status_suspended_hint" = "مقيَّد: غير موجود في الاختيار، بلا شعار، بلا تبرعات، بلا إعلانات — مواقيت الصلاة تستمر.";
+"community_status_blocked_hint" = "محظور: يعرض التطبيق إشعارًا فقط. قابل للتراجع.";

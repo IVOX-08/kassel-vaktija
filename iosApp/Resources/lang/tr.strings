@@ -204,3 +204,14 @@
 "community_none_found" = "Cemaat bulunamadı.";
 "community_none_selected" = "Cemaat seçilmedi";
 "action_change_community" = "Cemaati değiştir";
+"news_sent_by_union" = "IGBD tarafından gönderildi";
+"news_sent_by" = "%@ tarafından gönderildi";
+"admin_section_header_named" = "Yönetici: %@";
+"admin_head_header" = "Baş yönetici (tüm cemaatler)";
+"admin_manage_communities" = "Cemaatleri yönet";
+"community_status_active" = "Aktif";
+"community_status_suspended" = "Kısıtlı";
+"community_status_blocked" = "Engelli";
+"community_status_active_hint" = "Aktif: Her şey normal çalışıyor.";
+"community_status_suspended_hint" = "Kısıtlı: Seçimde yok, logo yok, bağış yok, duyuru yok — namaz vakitleri çalışmaya devam eder.";
+"community_status_blocked_hint" = "Engelli: Uygulama yalnızca bir uyarı gösterir. Geri alınabilir.";

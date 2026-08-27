@@ -207,3 +207,14 @@
 "community_none_found" = "Keine Gemeinde gefunden.";
 "community_none_selected" = "Keine Gemeinde gewählt";
 "action_change_community" = "Gemeinde ändern";
+"news_sent_by_union" = "Gesendet von IGBD";
+"news_sent_by" = "Gesendet von %@";
+"admin_section_header_named" = "Administrator: %@";
+"admin_head_header" = "Hauptadministrator (alle Gemeinden)";
+"admin_manage_communities" = "Gemeinden verwalten";
+"community_status_active" = "Aktiv";
+"community_status_suspended" = "Eingeschränkt";
+"community_status_blocked" = "Gesperrt";
+"community_status_active_hint" = "Aktiv: Alles funktioniert normal.";
+"community_status_suspended_hint" = "Eingeschränkt: Nicht in der Auswahl, kein Logo, keine Spenden, keine Mitteilungen — Gebetszeiten laufen weiter.";
+"community_status_blocked_hint" = "Gesperrt: Die App zeigt nur noch einen Hinweis. Rücknehmbar.";
