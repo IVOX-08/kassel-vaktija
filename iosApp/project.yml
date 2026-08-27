@@ -29,6 +29,9 @@ targets:
       - path: Resources/audio
       - path: Resources/lang
         type: folder
+      # Verzeichnis der Gemeinden. Flach eingebunden, damit Bundle.main.url es ohne
+      # Unterordner findet; beim Start wird aus Firestore nachgeladen.
+      - path: Resources/communities
     info:
       path: iosApp/Info.plist
       properties:

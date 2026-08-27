@@ -44,6 +44,7 @@ struct SettingsView: View {
                     // Nur der Admin DIESER Gemeinde. Der Hauptadministrator sieht den Editor
                     // bewusst nicht — die Iqamah ist die Entscheidung der Gemeinde, nicht seine.
                     if admin.canEditTimes { AdminSection() }
+                    DeveloperCard()
                     AboutCard()
                 }
                 .padding(16)
@@ -109,7 +110,9 @@ struct SettingsView: View {
             }
             if master {
                 ForEach(SettingsView.prayers, id: \.0) { key, nameKey in
-                    PrayerNotifCard(title: L(nameKey), key: key, onChange: rearm)
+                    PrayerNotifCard(title: L(nameKey), key: key,
+                                    hint: key == "sunrise" ? L("settings_sunrise_hint") : nil,
+                                    onChange: rearm)
                 }
                 Button {
                     SoundPlayer.shared.play(sound.file, ext: sound.ext)
@@ -172,9 +175,16 @@ struct SettingsView: View {
             SettingHeader(L("language_picker_title"))
             SettingCard {
                 Button { showLangPicker = true } label: {
-                    HStack(spacing: 8) {
-                        FlagThumb(pngName: langForTag(Localization.shared.lang).flagPng)
-                        Text(L("action_change_language")).font(.inter(15, .medium)).foregroundColor(.appPrimary)
+                    HStack(spacing: 12) {
+                        FlagCircle(pngName: langForTag(Localization.shared.lang).flagPng)
+                        VStack(alignment: .leading, spacing: 1) {
+                            // Der eigene Name der Sprache, nicht übersetzt — wer versehentlich auf
+                            // Urdu gestellt hat, erkennt „Deutsch" wieder, „جرمن" nicht.
+                            Text(langForTag(Localization.shared.lang).endonym)
+                                .font(.inter(16, .semibold)).foregroundColor(.appPrimary)
+                            Text(L("action_change_language"))
+                                .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                        }
                         Spacer()
                         Image(systemName: "chevron.right").font(.system(size: 13)).foregroundColor(.appOnSurfaceVariant)
                     }
@@ -200,7 +210,11 @@ struct SettingsView: View {
 
     // prayer key (for @AppStorage) + localization key for the name
     static let prayers: [(String, String)] = [
-        ("fajr", "prayer_fajr"), ("dhuhr", "prayer_dhuhr"), ("asr", "prayer_asr"),
+        ("fajr", "prayer_fajr"),
+        // Kein Gebet, sondern das Ende der Zeit für das Morgengebet — steht deshalb direkt
+        // dahinter, wie auf Android.
+        ("sunrise", "prayer_sunrise"),
+        ("dhuhr", "prayer_dhuhr"), ("asr", "prayer_asr"),
         ("maghrib", "prayer_maghrib"), ("isha", "prayer_isha"),
     ]
     static let muteMins: [(String, String)] = [("5", "5"), ("10", "10"), ("15", "15"), ("20", "20"), ("30", "30")]
@@ -211,18 +225,22 @@ private func minutesLabel(_ v: Int) -> String { String(format: L("settings_minut
 // One prayer's notification card: a switch (default on) and — when on — a pre-warning pill (0/5/10/15/30).
 private struct PrayerNotifCard: View {
     let title: String
+    /// Erklärt die Zeile, wenn sie nicht selbsterklärend ist — beim Sonnenaufgang muss dastehen,
+    /// dass dann die Zeit für das Morgengebet endet, sonst wirkt die Erinnerung willkürlich.
+    let hint: String?
     let onChange: () -> Void
     @AppStorage private var enabled: Bool
     @AppStorage private var warn: Int
 
-    init(title: String, key: String, onChange: @escaping () -> Void) {
+    init(title: String, key: String, hint: String? = nil, onChange: @escaping () -> Void) {
         self.title = title
+        self.hint = hint
         self.onChange = onChange
         _enabled = AppStorage(wrappedValue: true, "pn_\(key)")
         _warn = AppStorage(wrappedValue: 0, "pw_\(key)")
     }
 
-    private let warnValues = [0, 5, 10, 15, 30]
+    private let warnValues = [0, 5, 10, 15, 20, 25, 30]
 
     var body: some View {
         SettingCard {
@@ -239,9 +257,47 @@ private struct PrayerNotifCard: View {
                     } label: { PillLabel(minutesLabel(warn)) }
                 }
             }
+            if let hint {
+                Text(hint).font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .onChange(of: enabled) { _ in onChange() }
         .onChange(of: warn) { _ in onChange() }
+    }
+}
+
+/// Kontakt zum Entwickler — bewusst eine EIGENE Karte über „Über uns".
+///
+/// Vorher standen die beiden Zeilen mitten zwischen Adresse, Spenden und Imam der Gemeinde. Wer
+/// die Gemeinde erreichen wollte, landete bei der Telefonnummer des Entwicklers. Zwei Absender,
+/// zwei Karten.
+private struct DeveloperCard: View {
+    @Environment(\.openURL) private var openURL
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SettingHeader(L("settings_app_header"))
+            SettingCard {
+                row("phone.fill", "\(L("about_dev_promo"))\n0176 6188 7123") { open("tel:017661887123") }
+                row("envelope", "\(L("about_dev_email"))\nmuhamedgolac311@gmail.com") { open("mailto:muhamedgolac311@gmail.com") }
+            }
+        }
+    }
+
+    private func open(_ s: String) { if let u = URL(string: s) { openURL(u) } }
+
+    private func row(_ icon: String, _ text: String, _ action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: icon).font(.system(size: 15)).foregroundColor(.brandGreen).frame(width: 22)
+                Text(text).font(.inter(15)).foregroundColor(.appOnSurface)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -269,8 +325,6 @@ private struct AboutCard: View {
                 row("envelope.fill", "vorstand@igbdsandzakkassel.de") { open("mailto:vorstand@igbdsandzakkassel.de") }
                 row("heart.fill", L("action_donate")) { open(donate) }
                 row("person.fill", "\(L("about_imam")): Alen Golac\n0176 3037 2402") { open("tel:017630372402") }
-                row("phone.fill", "\(L("about_dev_promo"))\n0176 6188 7123") { open("tel:017661887123") }
-                row("envelope", "\(L("about_dev_email"))\nmuhamedgolac311@gmail.com") { open("mailto:muhamedgolac311@gmail.com") }
                 Divider()
                 Text("v\(version)")
                     .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)

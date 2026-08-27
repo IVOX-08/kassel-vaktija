@@ -44,6 +44,27 @@ struct FlagThumb: View {
     }
 }
 
+/// Runde Flagge für die Zeile in den Einstellungen — wie auf Android. In der großen Sprachauswahl
+/// bleiben die Flaggen rechteckig: dort sind sie das Motiv, hier nur ein Abzeichen neben Text.
+///
+/// `scaledToFill` statt `resizable()` allein, sonst würde das 4:3-Bild im Kreis gestaucht.
+struct FlagCircle: View {
+    let pngName: String
+    var size: CGFloat = 34
+    var body: some View {
+        Group {
+            if let img = flagUIImage(pngName) {
+                Image(uiImage: img).resizable().scaledToFill()
+            } else {
+                Color.gray
+            }
+        }
+        .frame(width: size, height: size)
+        .clipShape(Circle())
+        .overlay(Circle().stroke(Color.appOnSurfaceVariant.opacity(0.35), lineWidth: 1))
+    }
+}
+
 private func lerpColor(_ a: Color, _ b: Color, _ t: Double) -> Color {
     let ua = UIColor(a), ub = UIColor(b)
     var r1: CGFloat = 0, g1: CGFloat = 0, b1: CGFloat = 0, a1: CGFloat = 0

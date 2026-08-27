@@ -60,7 +60,15 @@ enum PrayerModel {
 
 // Fetches + parses the vaktija.eu JSON-LD.
 enum VaktijaEuSource {
-    static let url = URL(string: "https://vaktija.eu/kassel")!
+    /// Der Ort der GEWÄHLTEN Gemeinde, nicht mehr fest Kassel.
+    ///
+    /// Das ist die heikelste Stelle des Umbaus auf zwanzig Gemeinden: Bliebe hier `kassel`
+    /// stehen, während die Auswahl eine andere Gemeinde zeigt, sähe der Nutzer den richtigen
+    /// Gemeindenamen über Kassels Gebetszeiten. Nichts wirkt kaputt, niemand meldet es, und
+    /// gebetet wird trotzdem zur falschen Zeit.
+    static var url: URL {
+        URL(string: "https://vaktija.eu/\(CommunitySelection.vaktijaSlug)")!
+    }
     static let userAgent =
         "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36 KasselVaktija"
 

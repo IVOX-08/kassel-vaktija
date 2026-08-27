@@ -62,17 +62,22 @@ enum NotificationScheduler {
                 guard enabled else { continue }
                 let warn = d.integer(forKey: "pw_\(key)")
 
-                // Adhan itself
+                // Der Sonnenaufgang ist kein Gebetsruf: dort endet die Zeit für das Morgengebet.
+                // „Zeit für Sonnenaufgang" wäre schlicht falsch.
+                let isSunrise = key == "sunrise"
                 schedule(id: "adhan_\(key)_\(dayOffset)",
-                         title: String(format: L("notif_adhan_title"), L(nameKey)),
-                         body: L("notif_adhan_text"),
+                         title: isSunrise ? L("notif_sunrise_title")
+                                          : String(format: L("notif_adhan_title"), L(nameKey)),
+                         body: isSunrise ? L("notif_sunrise_text") : L("notif_adhan_text"),
                          minutes: minutes, dayOffset: dayOffset, sound: sound)
 
                 // Optional pre-warning
                 if warn > 0 {
                     schedule(id: "warn_\(key)_\(dayOffset)",
-                             title: String(format: L("notif_prewarn_title"), L(nameKey), warn),
-                             body: L("notif_adhan_text"),
+                             title: isSunrise
+                                 ? String(format: L("notif_sunrise_prewarn_title"), warn)
+                                 : String(format: L("notif_prewarn_title"), L(nameKey), warn),
+                             body: isSunrise ? L("notif_sunrise_text") : L("notif_adhan_text"),
                              minutes: minutes - warn, dayOffset: dayOffset, sound: sound)
                 }
             }
@@ -84,6 +89,7 @@ enum NotificationScheduler {
     private static func prayerList(_ t: DayTimes) -> [(String, String, Int)] {
         [
             ("fajr", "prayer_fajr", t.fajr),
+            ("sunrise", "prayer_sunrise", t.sunrise),
             ("dhuhr", "prayer_dhuhr", t.dhuhr),
             ("asr", "prayer_asr", t.asr),
             ("maghrib", "prayer_maghrib", t.maghrib),

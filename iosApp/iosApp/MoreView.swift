@@ -15,6 +15,7 @@ struct MoreView: View {
             Item(title: L("library_tasbih"), icon: "target", dest: AnyView(TasbihView())),
             Item(title: L("library_tracker"), icon: "checkmark.circle", dest: AnyView(TrackerView())),
             Item(title: L("library_ramadan"), icon: "moon.fill", dest: AnyView(RamadanView())),
+            Item(title: L("library_zakat"), icon: "plusminus.circle", dest: AnyView(ZakatView())),
             Item(title: L("nav_qibla"), icon: "safari", dest: AnyView(QiblaView())),
         ]
     }

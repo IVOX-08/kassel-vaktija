@@ -38,6 +38,12 @@ struct CalendarView: View {
                 Button { monthOffset -= 1 } label: { Image(systemName: "chevron.left").font(.system(size: 18, weight: .semibold)) }
                 Spacer()
                 Text(monthLabel).font(.inter(22, .bold)).foregroundColor(.appPrimary)
+                // Nur sichtbar, wenn man woanders ist — im laufenden Monat wäre der Knopf
+                // wirkungslos und würde die Überschrift nur aus der Mitte schieben.
+                if monthOffset != 0 {
+                    Button(L("calendar_today")) { monthOffset = 0 }
+                        .font(.inter(15, .semibold)).foregroundColor(.brandGreen)
+                }
                 Spacer()
                 Button { monthOffset += 1 } label: { Image(systemName: "chevron.right").font(.system(size: 18, weight: .semibold)) }
             }

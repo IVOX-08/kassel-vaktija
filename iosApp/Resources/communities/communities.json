@@ -1,0 +1,718 @@
+[
+ {
+  "id": "bosniakisch-deutsche-gemeinde-karlsruhe-e-v",
+  "name": "Bosniakisch-Deutsche Gemeinde Karlsruhe e.V.",
+  "address": "Pfalzbahnstraße 4, 76187 Karlsruhe",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "karlsruhe",
+    "name": "Karlsruhe",
+    "vaktijaSlug": "karlsruhe",
+    "latitude": 49.026653,
+    "longitude": 8.341525
+   }
+  ],
+  "_check": {
+   "geocoded_as": "4, Pfalzbahnstraße, Alt-Knielingen, Knielingen, Karlsruhe, Baden-Württemberg, 76187, Deutschland",
+   "town_distance_km": 5.0,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:41",
+    "Izlazak Sunca": "06:26",
+    "Podne": "13:33",
+    "Ikindija": "17:22",
+    "Akšam": "20:30",
+    "Jacija": "22:00"
+   }
+  }
+ },
+ {
+  "id": "dzemat-essen-e-v",
+  "name": "Džemat Essen e.V.",
+  "address": "Rahmstraße 253, 45326 Essen",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "essen",
+    "name": "Essen",
+    "vaktijaSlug": "essen",
+    "latitude": 51.496402,
+    "longitude": 7.018705
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Kulturzentrum Dzemat e.V., 253, Rahmstraße, Altenessen-Süd, Altenessen, Stadtbezirk V, Essen, Nordrhein-Westfalen, 45326, Deutschland",
+   "town_distance_km": 4.6,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:42",
+    "Izlazak Sunca": "06:27",
+    "Podne": "13:39",
+    "Ikindija": "17:28",
+    "Akšam": "20:40",
+    "Jacija": "22:10"
+   }
+  }
+ },
+ {
+  "id": "dzemat-ikre-berlin-e-v",
+  "name": "Džemat IKRE Berlin e.V.",
+  "address": "Ollenhauerstraße 15, 13403 Berlin",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "berlin",
+    "name": "Berlin",
+    "vaktijaSlug": "berlin",
+    "latitude": 52.566752,
+    "longitude": 13.329335
+   }
+  ],
+  "_check": {
+   "geocoded_as": "15, Ollenhauerstraße, Reinickendorf, Berlin, 13403, Deutschland",
+   "town_distance_km": 7.3,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:15",
+    "Izlazak Sunca": "06:00",
+    "Podne": "13:13",
+    "Ikindija": "17:02",
+    "Akšam": "20:17",
+    "Jacija": "21:47"
+   }
+  }
+ },
+ {
+  "id": "gemeinde-bosnischer-moslems-e-v-dzemat-bremen",
+  "name": "Gemeinde bosnischer Moslems e.V. — Džemat Bremen",
+  "address": "Schiffbauerweg 4, 28237 Bremen",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "bremen",
+    "name": "Bremen",
+    "vaktijaSlug": "bremen",
+    "latitude": 53.113772,
+    "longitude": 8.750703
+   }
+  ],
+  "_check": {
+   "geocoded_as": "4, Schiffbauerweg, Industriehäfen, Häfen, Bremen-Mitte, Bremen, 28237, Deutschland",
+   "town_distance_km": 5.1,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:31",
+    "Izlazak Sunca": "06:16",
+    "Podne": "13:32",
+    "Ikindija": "17:20",
+    "Akšam": "20:35",
+    "Jacija": "22:05"
+   }
+  }
+ },
+ {
+  "id": "dzemat-bkc-siegen-e-v",
+  "name": "IGBD-Džemat BKC Siegen e.V.",
+  "address": "Obere Kaiserstraße 6, 57078 Siegen",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "siegen",
+    "name": "Siegen",
+    "vaktijaSlug": "siegen",
+    "latitude": 50.918402,
+    "longitude": 8.014279
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Haus der Vereine, 6, Obere Kaiserstraße, Deutsche Edelstahlwerke, Geisweid, Niedersetzen, Siegen, Kreis Siegen-Wittgenstein, Nordrhein-Westfalen, 57078, Deutschland",
+   "town_distance_km": 4.9,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:39",
+    "Izlazak Sunca": "06:24",
+    "Podne": "13:35",
+    "Ikindija": "17:24",
+    "Akšam": "20:36",
+    "Jacija": "22:06"
+   }
+  }
+ },
+ {
+  "id": "boeblingen-sindelfingen-e-v",
+  "name": "IGBD-Gemeinde Böblingen/Sindelfingen e.V.",
+  "address": "Max-Eyth-Straße 4, 71065 Sindelfingen",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "sindelfingen",
+    "name": "Sindelfingen",
+    "vaktijaSlug": "sindelfingen",
+    "latitude": 48.697492,
+    "longitude": 9.005919
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Bosnische Moschee Böblingen/Sindelfingen, 4, Max-Eyth-Straße, Am Hirnach, Sindelfingen (Stadt), Sindelfingen, Landkreis Böblingen, Baden-Württemberg, 71065, Deutschland",
+   "town_distance_km": 1.8,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:40",
+    "Izlazak Sunca": "06:25",
+    "Podne": "13:31",
+    "Ikindija": "17:19",
+    "Akšam": "20:27",
+    "Jacija": "21:57"
+   }
+  }
+ },
+ {
+  "id": "duisburg-e-v",
+  "name": "IGBD-Gemeinde Duisburg e.V.",
+  "address": "Ziethenstraße 49, 47169 Duisburg",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "duisburg",
+    "name": "Duisburg",
+    "vaktijaSlug": "duisburg",
+    "latitude": 51.514294,
+    "longitude": 6.758057
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Bosnische Moschee - Islamisches Kulturzentrum e.V., 49, Ziethenstraße, Fahrn, Walsum, Duisburg, Nordrhein-Westfalen, 47169, Deutschland",
+   "town_distance_km": 8.9,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:44",
+    "Izlazak Sunca": "06:29",
+    "Podne": "13:40",
+    "Ikindija": "17:28",
+    "Akšam": "20:41",
+    "Jacija": "22:11"
+   }
+  }
+ },
+ {
+  "id": "hagen-e-v",
+  "name": "IGBD-Gemeinde Hagen e.V.",
+  "address": "Augustastraße 22, 58089 Hagen",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "hagen",
+    "name": "Hagen",
+    "vaktijaSlug": "hagen",
+    "latitude": 51.357705,
+    "longitude": 7.460284
+   }
+  ],
+  "_check": {
+   "geocoded_as": "22, Augustastraße, Philippshöhe, Wehringhausen, Hagen-Mitte, Hagen, Nordrhein-Westfalen, 58089, Deutschland",
+   "town_distance_km": 1.0,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:41",
+    "Izlazak Sunca": "06:26",
+    "Podne": "13:37",
+    "Ikindija": "17:25",
+    "Akšam": "20:37",
+    "Jacija": "22:07"
+   }
+  }
+ },
+ {
+  "id": "hannover-e-v",
+  "name": "IGBD-Gemeinde Hannover e.V.",
+  "address": "Varrelheidering 4, 30659 Hannover",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "hannover",
+    "name": "Hannover",
+    "vaktijaSlug": "hannover",
+    "latitude": 52.425764,
+    "longitude": 9.826992
+   }
+  ],
+  "_check": {
+   "geocoded_as": "4, Varrelheidering, Lahe, Bothfeld-Vahrenheide, Hannover, Region Hannover, Niedersachsen, 30659, Deutschland",
+   "town_distance_km": 8.5,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:29",
+    "Izlazak Sunca": "06:10",
+    "Podne": "13:28",
+    "Ikindija": "17:20",
+    "Akšam": "20:36",
+    "Jacija": "22:06"
+   }
+  }
+ },
+ {
+  "id": "mainz-e-v",
+  "name": "IGBD-Gemeinde Mainz e.V.",
+  "address": "Curiestraße 15a, 55129 Mainz",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "mainz",
+    "name": "Mainz",
+    "vaktijaSlug": "mainz",
+    "latitude": 49.970457,
+    "longitude": 8.266303
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Bosnische Moschee, 15A, Curiestraße, Margraf-Fischer-Siedlung, Hechtsheim, Mainz, Rheinland-Pfalz, 55129, Deutschland",
+   "town_distance_km": 2.8,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:41",
+    "Izlazak Sunca": "06:25",
+    "Podne": "13:33",
+    "Ikindija": "17:22",
+    "Akšam": "20:33",
+    "Jacija": "22:03"
+   }
+  }
+ },
+ {
+  "id": "mannheim-e-v",
+  "name": "IGBD-Gemeinde Mannheim e.V.",
+  "address": "Neonstraße 5, 68199 Mannheim",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "mannheim",
+    "name": "Mannheim",
+    "vaktijaSlug": "mannheim",
+    "latitude": 49.460997,
+    "longitude": 8.494575
+   }
+  ],
+  "_check": {
+   "geocoded_as": "5, Neonstraße, Neckarau, Mannheim, Baden-Württemberg, 68199, Deutschland",
+   "town_distance_km": 3.6,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:40",
+    "Izlazak Sunca": "06:25",
+    "Podne": "13:33",
+    "Ikindija": "17:22",
+    "Akšam": "20:31",
+    "Jacija": "22:01"
+   }
+  }
+ },
+ {
+  "id": "nuernberg-e-v",
+  "name": "IGBD-Gemeinde Nürnberg e.V.",
+  "address": "Turnerheimstraße 48, 90441 Nürnberg",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "nuernberg",
+    "name": "Nürnberg",
+    "vaktijaSlug": "nuernberg",
+    "latitude": 49.428317,
+    "longitude": 11.045981
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Turnerheimstraße, Hohe Marter, Südwestliche Außenstadt, Nürnberg, Bayern, 90441, Deutschland",
+   "town_distance_km": 3.5,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:30",
+    "Izlazak Sunca": "06:15",
+    "Podne": "13:23",
+    "Ikindija": "17:11",
+    "Akšam": "20:20",
+    "Jacija": "21:50"
+   }
+  }
+ },
+ {
+  "id": "oberhausen-e-v",
+  "name": "IGBD-Gemeinde Oberhausen e.V.",
+  "address": "Fahnhorststraße 32, 46117 Oberhausen",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "oberhausen",
+    "name": "Oberhausen",
+    "vaktijaSlug": "oberhausen",
+    "latitude": 51.501748,
+    "longitude": 6.870051
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Bosnische Moschee Oberhausen, 32, Fahnhorststraße, Eisenheim, Osterfeld-Heide, Osterfeld, Oberhausen, Nordrhein-Westfalen, 46117, Deutschland",
+   "town_distance_km": 3.8,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:43",
+    "Izlazak Sunca": "06:28",
+    "Podne": "13:40",
+    "Ikindija": "17:28",
+    "Akšam": "20:41",
+    "Jacija": "22:11"
+   }
+  }
+ },
+ {
+  "id": "offenburg-e-v",
+  "name": "IGBD-Gemeinde Offenburg e.V.",
+  "address": "Okenstraße 73, 77652 Offenburg",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "hohberg",
+    "name": "Höhberg",
+    "vaktijaSlug": "hohberg",
+    "latitude": 48.480668,
+    "longitude": 7.945542
+   }
+  ],
+  "_check": {
+   "geocoded_as": "73, Okenstraße, Offenburg, VVG der Stadt Offenburg, Ortenaukreis, Baden-Württemberg, 77652, Deutschland",
+   "town_distance_km": 6.8,
+   "town_matched_by": "Nähe",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:43",
+    "Izlazak Sunca": "06:28",
+    "Podne": "13:35",
+    "Ikindija": "17:25",
+    "Akšam": "20:33",
+    "Jacija": "22:02"
+   }
+  }
+ },
+ {
+  "id": "rosenheim-e-v",
+  "name": "IGBD-Gemeinde Rosenheim e.V.",
+  "address": "Burgfriedstraße 55, 83024 Rosenheim",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "rosenheim",
+    "name": "Rosenheim",
+    "vaktijaSlug": "rosenheim",
+    "latitude": 47.866545,
+    "longitude": 12.113048
+   }
+  ],
+  "_check": {
+   "geocoded_as": "55, Burgfriedstraße, Hausstätt, Mitterfeld, Westerndorf St. Peter, Rosenheim, Bayern, 83024, Deutschland",
+   "town_distance_km": 1.7,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:28",
+    "Izlazak Sunca": "06:13",
+    "Podne": "13:19",
+    "Ikindija": "17:07",
+    "Akšam": "20:14",
+    "Jacija": "21:44"
+   }
+  }
+ },
+ {
+  "id": "igbd-gemeinde-sandzak-kassel",
+  "name": "IGBD-Gemeinde Sandžak-Kassel",
+  "address": "Schwanenweg 13, 34123 Kassel",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "kassel",
+    "name": "Kassel",
+    "vaktijaSlug": "kassel",
+    "latitude": 51.3093,
+    "longitude": 9.5132
+   },
+   {
+    "id": "hann-muenden",
+    "name": "Hann. Münden",
+    "vaktijaSlug": "hann-munden",
+    "latitude": 51.4194,
+    "longitude": 9.6524
+   },
+   {
+    "id": "korbach",
+    "name": "Korbach",
+    "vaktijaSlug": "brilon",
+    "latitude": 51.2761,
+    "longitude": 8.8735
+   }
+  ],
+  "_check": {
+   "geocoded_as": "13, Schwanenweg, Unterneustadt, Kassel, Hessen, 34123, Deutschland",
+   "town_distance_km": 2.4,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:32",
+    "Izlazak Sunca": "06:17",
+    "Podne": "13:29",
+    "Ikindija": "17:18",
+    "Akšam": "20:31",
+    "Jacija": "22:01"
+   }
+  },
+  "email": "vorstand@igbdsandzakkassel.de",
+  "donationUrl": "https://www.paypal.com/donate?business=ikzsandzakkassel@gmail.com"
+ },
+ {
+  "id": "ulm-e-v",
+  "name": "IGBD-Gemeinde Ulm e.V.",
+  "address": "Auchertwiesenweg 21, 89081 Ulm",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "ulm",
+    "name": "Ulm",
+    "vaktijaSlug": "ulm",
+    "latitude": 48.400763,
+    "longitude": 9.951982
+   }
+  ],
+  "_check": {
+   "geocoded_as": "21, Auchertwiesenweg, Söflingen, Ulm, Baden-Württemberg, 89081, Deutschland",
+   "town_distance_km": 2.6,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:37",
+    "Izlazak Sunca": "06:22",
+    "Podne": "13:27",
+    "Ikindija": "17:14",
+    "Akšam": "20:21",
+    "Jacija": "21:51"
+   }
+  }
+ },
+ {
+  "id": "witten-e-v",
+  "name": "IGBD-Gemeinde Witten e.V.",
+  "address": "Breite Straße 5, 58452 Witten",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "witten",
+    "name": "Witten",
+    "vaktijaSlug": "witten",
+    "latitude": 51.438767,
+    "longitude": 7.329269
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Breite Straße, Breddeviertel, Witten-Mitte, Witten, Ennepe-Ruhr-Kreis, Nordrhein-Westfalen, 58452, Deutschland",
+   "town_distance_km": 0.8,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:42",
+    "Izlazak Sunca": "06:27",
+    "Podne": "13:38",
+    "Ikindija": "17:25",
+    "Akšam": "20:37",
+    "Jacija": "22:07"
+   }
+  }
+ },
+ {
+  "id": "wuppertal-e-v",
+  "name": "IGBD-Gemeinde Wuppertal e.V.",
+  "address": "Uellendahler Straße 6A, 42107 Wuppertal",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "wuppertal",
+    "name": "Wuppertal",
+    "vaktijaSlug": "wuppertal",
+    "latitude": 51.269046,
+    "longitude": 7.148558
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Uellendahler Straße, Ostersbaum, Gemarkung Elberfeld, Elberfeld, Wuppertal, Nordrhein-Westfalen, 42107, Deutschland",
+   "town_distance_km": 1.4,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:43",
+    "Izlazak Sunca": "06:28",
+    "Podne": "13:38",
+    "Ikindija": "17:27",
+    "Akšam": "20:38",
+    "Jacija": "22:08"
+   }
+  }
+ },
+ {
+  "id": "islamische-gemeinschaft-bih-aachen",
+  "name": "Islamische Gemeinschaft „BiH\" Aachen",
+  "address": "Josefstraße 158, 52080 Aachen",
+  "status": "active",
+  "fajrIqamah": "05:15",
+  "jumua": "15:00",
+  "dhuhrOffsetMin": 10,
+  "asrOffsetMin": 10,
+  "maghribOffsetMin": 5,
+  "ishaOffsetMin": 0,
+  "locations": [
+   {
+    "id": "aachen",
+    "name": "Aachen",
+    "vaktijaSlug": "aachen",
+    "latitude": 50.784228,
+    "longitude": 6.154374
+   }
+  ],
+  "_check": {
+   "geocoded_as": "Bosnische Moschee Aachen (Dzemat Aachen), 158, Josefstraße, Nirm, Eilendorf, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52080, Deutschland",
+   "town_distance_km": 5.1,
+   "town_matched_by": "Name",
+   "times_ok": true,
+   "sample_times": {
+    "Sabah": "04:49",
+    "Izlazak Sunca": "06:34",
+    "Podne": "13:43",
+    "Ikindija": "17:30",
+    "Akšam": "20:41",
+    "Jacija": "22:11"
+   }
+  }
+ }
+]
