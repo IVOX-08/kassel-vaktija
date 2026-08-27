@@ -222,3 +222,5 @@
 "broadcast_hint" = "E shohin të gjithë përdoruesit e aplikacionit, jo vetëm xhemati juaj.";
 "action_confirm" = "Zbato";
 "settings_community_header" = "Xhemati";
+"admin_login_community" = "Hyrje për administratorët e xhematit";
+"admin_login_head_title" = "Hyrja e administratorit kryesor";

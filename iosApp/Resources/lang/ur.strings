@@ -222,3 +222,5 @@
 "broadcast_hint" = "ایپ کے تمام صارفین دیکھیں گے، صرف آپ کی جماعت نہیں۔";
 "action_confirm" = "لاگو کریں";
 "settings_community_header" = "جماعت";
+"admin_login_community" = "جماعتی منتظمین کے لیے لاگ ان";
+"admin_login_head_title" = "مرکزی منتظم لاگ ان";

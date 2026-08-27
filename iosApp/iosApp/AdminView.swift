@@ -5,6 +5,11 @@ import SwiftUI
 // community rules every phone reads. Writes are enforced server-side by the Firestore rules.
 
 struct AdminLoginSheet: View {
+    /// Nur für die Überschrift: Die Anmeldung selbst ist dieselbe, die Rolle entscheidet der
+    /// Eintrag unter `admins/{uid}`. Ein Gemeinde-Vorstand, der hier den versteckten Zugang
+    /// erwischt, kommt trotzdem an seine eigene Gemeinde — und umgekehrt.
+    var headAdmin = false
+
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var admin = AdminStore.shared
 
@@ -48,7 +53,7 @@ struct AdminLoginSheet: View {
                     .disabled(busy || email.isEmpty || password.isEmpty)
                 }
             }
-            .navigationTitle(L("admin_login_title"))
+            .navigationTitle(headAdmin ? L("admin_login_head_title") : L("admin_login_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

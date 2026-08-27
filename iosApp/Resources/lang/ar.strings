@@ -222,3 +222,5 @@
 "broadcast_hint" = "يراه جميع مستخدمي التطبيق، وليس جماعتكم فقط.";
 "action_confirm" = "تطبيق";
 "settings_community_header" = "الجماعة";
+"admin_login_community" = "تسجيل الدخول لمشرفي الجماعات";
+"admin_login_head_title" = "تسجيل دخول المشرف العام";

@@ -225,3 +225,5 @@
 "broadcast_hint" = "Sehen alle Nutzer der App, nicht nur Ihre Gemeinde.";
 "action_confirm" = "Übernehmen";
 "settings_community_header" = "Gemeinde";
+"admin_login_community" = "Anmeldung für Gemeinde-Administratoren";
+"admin_login_head_title" = "Anmeldung Hauptadministrator";

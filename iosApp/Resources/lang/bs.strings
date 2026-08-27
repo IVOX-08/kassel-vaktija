@@ -242,3 +242,5 @@
 "broadcast_hint" = "Vide svi korisnici aplikacije, ne samo vaš džemat.";
 "action_confirm" = "Potvrdi";
 "settings_community_header" = "Džemat";
+"admin_login_community" = "Prijava za administratore džemata";
+"admin_login_head_title" = "Prijava glavnog administratora";

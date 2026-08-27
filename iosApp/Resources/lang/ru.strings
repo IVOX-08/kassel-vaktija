@@ -222,3 +222,5 @@
 "broadcast_hint" = "Видят все пользователи приложения, не только ваша община.";
 "action_confirm" = "Применить";
 "settings_community_header" = "Община";
+"admin_login_community" = "Вход для администраторов общин";
+"admin_login_head_title" = "Вход главного администратора";

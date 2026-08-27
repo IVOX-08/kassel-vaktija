@@ -222,3 +222,5 @@
 "broadcast_hint" = "Uygulamanın tüm kullanıcıları görür, sadece cemaatiniz değil.";
 "action_confirm" = "Uygula";
 "settings_community_header" = "Cemaat";
+"admin_login_community" = "Cemaat yöneticileri için giriş";
+"admin_login_head_title" = "Baş yönetici girişi";

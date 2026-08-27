@@ -345,7 +345,8 @@ private struct DeveloperCard: View {
 private struct AboutCard: View {
     @Environment(\.openURL) private var openURL
     @State private var versionTaps = 0
-    @State private var showAdmin = false
+    @State private var showCommunityLogin = false
+    @State private var showHeadLogin = false
 
     private let maps = "https://www.google.com/maps/search/?api=1&query=Schwanenweg+13%2C+34123+Kassel"
     private let donate = "https://www.paypal.com/donate/?business=ikzsandzakkassel@gmail.com&currency_code=EUR"
@@ -365,16 +366,38 @@ private struct AboutCard: View {
                 row("envelope.fill", "vorstand@igbdsandzakkassel.de") { open("mailto:vorstand@igbdsandzakkassel.de") }
                 row("heart.fill", L("action_donate")) { open(donate) }
                 row("person.fill", "\(L("about_imam")): Alen Golac\n0176 3037 2402") { open("tel:017630372402") }
-                Divider()
-                Text("v\(version)")
-                    .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
-                    .onTapGesture {
-                        versionTaps += 1
-                        if versionTaps >= 7 { showAdmin = true; versionTaps = 0 }
-                    }
             }
+
+            // Sichtbar für alle Gemeinden: hier meldet sich der Vorstand einer Gemeinde an.
+            // Ein Vorstand, der die App zum ersten Mal bekommt, kann nicht wissen, dass er
+            // irgendwo siebenmal tippen müsste.
+            Button { showCommunityLogin = true } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "lock.fill").font(.system(size: 14))
+                    Text(L("admin_login_community"))
+                        .font(.inter(15, .medium))
+                }
+                .foregroundColor(.appOnSurface)
+                .frame(maxWidth: .infinity).padding(.vertical, 14)
+                .background(Color.moreCard)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
+            }
+            .padding(.top, 4)
+
+            // Der Zugang des Hauptadministrators bleibt versteckt: sieben Tipps auf die
+            // Versionsnummer. Er steht allein und zentriert, wie auf Android.
+            Text("v\(version)")
+                .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .contentShape(Rectangle())
+                .padding(.top, 8)
+                .onTapGesture {
+                    versionTaps += 1
+                    if versionTaps >= 7 { showHeadLogin = true; versionTaps = 0 }
+                }
         }
-        .sheet(isPresented: $showAdmin) { AdminLoginSheet() }
+        .sheet(isPresented: $showCommunityLogin) { AdminLoginSheet(headAdmin: false) }
+        .sheet(isPresented: $showHeadLogin) { AdminLoginSheet(headAdmin: true) }
     }
 
     private func row(_ icon: String, _ text: String, action: @escaping () -> Void) -> some View {

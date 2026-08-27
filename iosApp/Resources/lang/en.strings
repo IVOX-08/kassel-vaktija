@@ -225,3 +225,5 @@
 "broadcast_hint" = "Seen by every user of the app, not only your community.";
 "action_confirm" = "Apply";
 "settings_community_header" = "Community";
+"admin_login_community" = "Sign in for community administrators";
+"admin_login_head_title" = "Head administrator sign-in";
