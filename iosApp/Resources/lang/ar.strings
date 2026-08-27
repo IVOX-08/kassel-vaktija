@@ -221,3 +221,4 @@
 "broadcast_audience_count" = "%d محددة";
 "broadcast_hint" = "يراه جميع مستخدمي التطبيق، وليس جماعتكم فقط.";
 "action_confirm" = "تطبيق";
+"settings_community_header" = "الجماعة";

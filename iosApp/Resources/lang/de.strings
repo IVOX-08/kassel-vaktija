@@ -224,3 +224,4 @@
 "broadcast_audience_count" = "%d ausgewählt";
 "broadcast_hint" = "Sehen alle Nutzer der App, nicht nur Ihre Gemeinde.";
 "action_confirm" = "Übernehmen";
+"settings_community_header" = "Gemeinde";

@@ -221,3 +221,4 @@
 "broadcast_audience_count" = "%d seçildi";
 "broadcast_hint" = "Uygulamanın tüm kullanıcıları görür, sadece cemaatiniz değil.";
 "action_confirm" = "Uygula";
+"settings_community_header" = "Cemaat";

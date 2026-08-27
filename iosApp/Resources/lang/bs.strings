@@ -241,3 +241,4 @@
 "broadcast_audience_count" = "%d izabrano";
 "broadcast_hint" = "Vide svi korisnici aplikacije, ne samo vaš džemat.";
 "action_confirm" = "Potvrdi";
+"settings_community_header" = "Džemat";

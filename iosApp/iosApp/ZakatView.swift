@@ -107,15 +107,22 @@ struct ZakatView: View {
         .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
     }
 
+    /// Gefiltert wird beim Tippen, nicht erst beim Rechnen — sonst könnte im Feld etwas stehen,
+    /// das die Rechnung still als null liest. Komma ist erlaubt, so schreibt man Beträge hier.
     private func field(_ label: String, _ value: Binding<String>) -> some View {
-        HStack {
+        let filtered = Binding<String>(
+            get: { value.wrappedValue },
+            set: { value.wrappedValue = $0.filter { $0.isNumber || $0 == "." || $0 == "," } }
+        )
+        return HStack {
             Text(label).font(.inter(15)).foregroundColor(.appOnSurface)
             Spacer(minLength: 12)
-            TextField("0", text: value)
+            TextField("0", text: filtered)
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
                 .font(.inter(15, .medium))
-                .frame(maxWidth: 120)
+                .frame(maxWidth: 110)
+            Text("€").font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
         }
     }
 
@@ -129,18 +136,35 @@ struct ZakatView: View {
 
     // MARK: Zahlen
 
-    /// Nimmt Komma wie Punkt an — auf einer deutschen Tastatur tippt man „12,50", auf einer
-    /// englischen „12.50", und beide meinen dasselbe.
+    /// Nimmt „1.234,50" wie „1234.50" an — die Leute tippen, was ihre Tastatur anbietet.
+    ///
+    /// Regel: Das ZULETZT stehende Trennzeichen ist das Dezimaltrennzeichen, alle davor sind
+    /// Tausendertrennzeichen. Damit stimmen „1.234,50", „1,234.50", „1234.50" und „1234,50".
+    ///
+    /// Bewusst NICHT wie die Android-Vorlage: die entfernt erst alle Punkte und liest „1234.50"
+    /// deshalb als 123450 — hundertfach zu viel, und damit eine hundertfach zu hohe Zakat, ohne
+    /// dass irgendetwas kaputt aussieht. Gemeldet, damit es dort behoben wird.
+    ///
+    /// Bleibt eine Unschärfe: Ein alleinstehendes „1.234" wird als 1,234 gelesen, nicht als 1234.
+    /// Auf dem Ziffernblock tippt kaum jemand Tausenderpunkte, und hier lieber zu klein als
+    /// tausendfach zu groß.
     private static func amount(_ raw: String) -> Double {
-        Double(raw.replacingOccurrences(of: ",", with: ".")
-                  .trimmingCharacters(in: .whitespaces)) ?? 0
+        let t = raw.trimmingCharacters(in: .whitespaces)
+        guard let lastSeparator = t.lastIndex(where: { $0 == "." || $0 == "," }) else {
+            return Double(t) ?? 0
+        }
+        let whole = t[t.startIndex..<lastSeparator].filter(\.isNumber)
+        let fraction = t[t.index(after: lastSeparator)...].filter(\.isNumber)
+        return Double("\(whole).\(fraction)") ?? 0
     }
 
     private static func euro(_ v: Double) -> String {
         let f = NumberFormatter()
         f.numberStyle = .currency
         f.currencyCode = "EUR"
-        f.locale = Locale(identifier: Localization.shared.lang == "de" ? "de_DE" : "de_DE")
+        // Fest deutsch wie Locale.GERMANY auf Android: die Beträge sind Euro in Deutschland,
+        // unabhängig davon, in welcher Sprache jemand die App liest.
+        f.locale = Locale(identifier: "de_DE")
         return f.string(from: NSNumber(value: v)) ?? "0"
     }
 }

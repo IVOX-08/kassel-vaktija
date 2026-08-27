@@ -224,3 +224,4 @@
 "broadcast_audience_count" = "%d selected";
 "broadcast_hint" = "Seen by every user of the app, not only your community.";
 "action_confirm" = "Apply";
+"settings_community_header" = "Community";

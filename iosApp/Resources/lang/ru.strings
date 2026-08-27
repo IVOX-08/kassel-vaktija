@@ -221,3 +221,4 @@
 "broadcast_audience_count" = "Выбрано: %d";
 "broadcast_hint" = "Видят все пользователи приложения, не только ваша община.";
 "action_confirm" = "Применить";
+"settings_community_header" = "Община";

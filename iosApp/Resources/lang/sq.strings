@@ -221,3 +221,4 @@
 "broadcast_audience_count" = "%d të zgjedhura";
 "broadcast_hint" = "E shohin të gjithë përdoruesit e aplikacionit, jo vetëm xhemati juaj.";
 "action_confirm" = "Zbato";
+"settings_community_header" = "Xhemati";

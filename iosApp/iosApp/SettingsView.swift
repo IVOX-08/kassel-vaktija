@@ -36,19 +36,24 @@ struct SettingsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    communitySection
-                    designSection
-                    prayerNotifSection
-                    autoMuteSection
-                    announcementsSection
-                    if !notifGranted { permissionsSection }
-                    languageSection
+                    // Reihenfolge wie auf Android — die Apps sollen sich gleich anfuehlen.
                     // Only visible once the board's account is signed in (via the 7-tap gate below).
                     // Nur der Admin DIESER Gemeinde. Der Hauptadministrator sieht den Editor
                     // bewusst nicht — die Iqamah ist die Entscheidung der Gemeinde, nicht seine.
                     if admin.canEditTimes { AdminSection() }
                     // Der Hauptadministrator sieht statt des Zeiten-Editors die Verwaltung.
                     if admin.canBroadcast { HeadAdminSection() }
+                    designSection
+                    prayerNotifSection
+                    autoMuteSection
+                    announcementsSection
+                    if !notifGranted { permissionsSection }
+                    // Gemeinde und Sprache stehen zusammen unten: beides wird einmal im Leben der
+                    // Installation gewählt und danach nie wieder angefasst. Der oberste Platz
+                    // gehört dem, was man oft braucht — und ein Fehlgriff bei der Gemeinde hiesse,
+                    // dass das Telefon still die Gebetszeiten einer anderen Stadt anzeigt.
+                    communitySection
+                    languageSection
                     DeveloperCard()
                     AboutCard()
                 }
@@ -81,7 +86,7 @@ struct SettingsView: View {
     /// Adresse und Logo. Wer die falsche gewählt hat, sieht überall die falschen Zahlen.
     private var communitySection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SettingHeader(L("community_section_header"))
+            SettingHeader(L("settings_community_header"))
             SettingCard {
                 Button { showCommunityPicker = true } label: {
                     HStack(spacing: 12) {
