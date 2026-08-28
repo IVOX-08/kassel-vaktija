@@ -26,7 +26,6 @@ class SettingsRepository @Inject constructor(
 
     fun observe(): Flow<AlarmSettings> = store.data.map { prefs ->
         AlarmSettings(
-            masterEnabled = prefs[MASTER_ENABLED] ?: true,
             sound = AdhanSound.fromName(prefs[SOUND]),
             playWhenSilent = prefs[PLAY_WHEN_SILENT] ?: false,
             autoSilenceEnabled = prefs[AUTO_SILENCE] ?: false,
@@ -49,10 +48,6 @@ class SettingsRepository @Inject constructor(
                 )
             },
         )
-    }
-
-    suspend fun setMasterEnabled(enabled: Boolean) {
-        store.edit { it[MASTER_ENABLED] = enabled }
     }
 
     /** The sound/vibration mode played when a prayer time arrives. */
@@ -123,6 +118,15 @@ class SettingsRepository @Inject constructor(
     /** One-shot read for background checks (worker/receiver). */
     suspend fun getNewsNotificationsEnabled(): Boolean = store.data.first()[NEWS_NOTIFS] ?: true
 
+    /** The tone announcements arrive with. */
+    fun observeNewsSound(): Flow<NewsSound> = store.data.map { NewsSound.fromName(it[NEWS_SOUND]) }
+
+    suspend fun getNewsSound(): NewsSound = NewsSound.fromName(store.data.first()[NEWS_SOUND])
+
+    suspend fun setNewsSound(sound: NewsSound) {
+        store.edit { it[NEWS_SOUND] = sound.name }
+    }
+
     /** createdAt (epoch millis) of the newest announcement we've already notified about. */
     suspend fun getLastNotifiedNewsMillis(): Long? = store.data.first()[LAST_NEWS_MILLIS]
 
@@ -189,7 +193,6 @@ class SettingsRepository @Inject constructor(
     private companion object {
         /** Fifteen minutes before sunrise — inside the 10-30 window members asked for. */
 
-        val MASTER_ENABLED = booleanPreferencesKey("master_enabled")
         val SOUND = stringPreferencesKey("adhan_sound")
         val PLAY_WHEN_SILENT = booleanPreferencesKey("play_when_silent")
         val AUTO_SILENCE = booleanPreferencesKey("auto_silence")
@@ -201,6 +204,7 @@ class SettingsRepository @Inject constructor(
         val ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")
         val CALIBRATION = stringPreferencesKey("month_calibration")
         val NEWS_NOTIFS = booleanPreferencesKey("news_notifs_enabled")
+        val NEWS_SOUND = stringPreferencesKey("news_sound")
         val LAST_NEWS_MILLIS = longPreferencesKey("last_notified_news_millis")
         val LAST_CONFIG_MILLIS = longPreferencesKey("last_seen_config_millis")
         val DND_ACTIVE_UNTIL = longPreferencesKey("dnd_active_until")

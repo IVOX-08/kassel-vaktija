@@ -328,4 +328,9 @@
     <string name="quran_tajweed">Tedžvid</string>
     <string name="quran_smaller">Manje</string>
     <string name="quran_larger">Veće</string>
+    <string name="sound_bell">Zvono</string>
+    <string name="sound_gong">Gong</string>
+    <string name="sound_soft">Tihi ton</string>
+    <string name="sound_announcement">Standardni ton</string>
+    <string name="settings_news_sound">Ton obavijesti</string>
 </resources>

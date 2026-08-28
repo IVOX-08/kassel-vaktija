@@ -274,4 +274,9 @@
     <string name="quran_tajweed">Tajweed</string>
     <string name="quran_smaller">Smaller</string>
     <string name="quran_larger">Larger</string>
+    <string name="sound_bell">Bell</string>
+    <string name="sound_gong">Gong</string>
+    <string name="sound_soft">Soft tone</string>
+    <string name="sound_announcement">Default tone</string>
+    <string name="settings_news_sound">Announcement tone</string>
 </resources>

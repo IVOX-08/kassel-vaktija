@@ -262,4 +262,9 @@
     <string name="quran_tajweed">Таджвид</string>
     <string name="quran_smaller">Меньше</string>
     <string name="quran_larger">Больше</string>
+    <string name="sound_bell">Колокол</string>
+    <string name="sound_gong">Гонг</string>
+    <string name="sound_soft">Тихий сигнал</string>
+    <string name="sound_announcement">Стандартный сигнал</string>
+    <string name="settings_news_sound">Сигнал сообщений</string>
 </resources>

@@ -15,6 +15,12 @@ enum class AdhanSound(
 ) {
     SHORT_ADHAN(R.string.sound_short_adhan, "adhan_short"),
     CHIME(R.string.sound_chime, "chime"),
+
+    // Plain tones for people who cannot let the Adhan play — at work, at school, on a ward. They
+    // still want to know the time has come; what they cannot have is a recitation out loud.
+    BELL(R.string.sound_bell, "tone_bell"),
+    GONG(R.string.sound_gong, "tone_gong"),
+    SOFT(R.string.sound_soft, "tone_soft"),
     ;
 
     companion object {
@@ -34,7 +40,7 @@ data class PrayerAlarmPrefs(
 
 /** All alarm-related settings (per-prayer enable + pre-warning; global master toggle + sound). */
 data class AlarmSettings(
-    val masterEnabled: Boolean = true,
+
     val sound: AdhanSound = AdhanSound.DEFAULT,
     /**
      * Whether to play the Adhan out loud even when the phone's ringer is on silent/vibrate. Off by

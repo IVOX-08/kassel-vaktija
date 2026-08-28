@@ -95,8 +95,9 @@ class AlarmScheduler @Inject constructor(
                 if (isJumua) LocalDateTime.of(today, rules.jumua)
                 else LocalDateTime.of(today, times.adhan(prayer))
 
-            // Adhan + pre-warning (gated by the notifications master toggle + per-prayer enable).
-            if (settings.masterEnabled && prefs.enabled) {
+            // Adhan + pre-warning, per prayer. There is no master switch any more: whoever wants
+            // a particular prayer silent turns that prayer off.
+            if (prefs.enabled) {
                 if (adhanAt.isAfter(now)) {
                     schedule(prayer, adhanAt, AlarmType.ADHAN, minutes = 0, sound = settings.sound, playWhenSilent = settings.playWhenSilent, isJumua = isJumua)
                 }

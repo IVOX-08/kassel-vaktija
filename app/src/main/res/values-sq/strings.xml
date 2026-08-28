@@ -262,4 +262,9 @@
     <string name="quran_tajweed">Texhvid</string>
     <string name="quran_smaller">Më e vogël</string>
     <string name="quran_larger">Më e madhe</string>
+    <string name="sound_bell">Kambana</string>
+    <string name="sound_gong">Gong</string>
+    <string name="sound_soft">Ton i butë</string>
+    <string name="sound_announcement">Toni standard</string>
+    <string name="settings_news_sound">Toni i njoftimeve</string>
 </resources>

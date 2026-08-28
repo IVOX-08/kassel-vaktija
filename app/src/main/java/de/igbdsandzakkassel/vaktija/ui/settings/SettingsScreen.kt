@@ -83,6 +83,7 @@ import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
+import de.igbdsandzakkassel.vaktija.data.settings.NewsSound
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.PrayerAlarmPrefs
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
@@ -99,6 +100,7 @@ fun SettingsScreen(
     val settings by viewModel.settings.collectAsStateWithLifecycle()
     val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
     val newsNotifsEnabled by viewModel.newsNotificationsEnabled.collectAsStateWithLifecycle()
+    val newsSound by viewModel.newsSound.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val notifPermission = rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
 
@@ -235,26 +237,11 @@ fun SettingsScreen(
 
         SectionHeader(stringResource(R.string.settings_notifications_header))
 
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(R.string.settings_master_toggle),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.weight(1f),
-                )
-                Switch(
-                    checked = settings.masterEnabled,
-                    onCheckedChange = viewModel::setMasterEnabled,
-                )
-            }
-        }
-
-        if (settings.masterEnabled) {
+        // No single on/off switch any more. It was one tap to silence everything — prayer
+        // times, the community's announcements and the tracker's question alike — and people who
+        // pressed it once to get through a meeting rarely found their way back. What remains are
+        // the switches below, which turn off exactly one thing at a time.
+        run {
             SoundSelectorCard(
                 selected = settings.sound,
                 onSelect = viewModel::setSound,
@@ -383,6 +370,10 @@ fun SettingsScreen(
                 )
             }
         }
+
+        // Its own tone, separate from the Adhan's: the two are heard in different situations, and
+        // telling them apart without looking is the point.
+        NewsSoundCard(selected = newsSound, onSelect = viewModel::setNewsSound)
 
         Card(modifier = Modifier.fillMaxWidth()) {
             Row(
@@ -837,6 +828,57 @@ private fun SectionHeader(text: String) {
  * Notification-sound picker: a labelled row with a dropdown pill (full Adhan / short Adhan / chime /
  * vibrate only). Mirrors the per-prayer alert pill. "Test" (below) previews the current choice.
  */
+@Composable
+private fun NewsSoundCard(
+    selected: NewsSound,
+    onSelect: (NewsSound) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.settings_news_sound),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
+            )
+            Box {
+                OutlinedButton(
+                    onClick = { expanded = true },
+                    contentPadding = PaddingValues(start = 16.dp, end = 10.dp, top = 8.dp, bottom = 8.dp),
+                ) {
+                    Text(stringResource(selected.labelRes))
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = null,
+                        modifier = Modifier.padding(start = 4.dp),
+                    )
+                }
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    NewsSound.entries.forEach { sound ->
+                        DropdownMenuItem(
+                            text = { Text(stringResource(sound.labelRes)) },
+                            onClick = {
+                                onSelect(sound)
+                                expanded = false
+                            },
+                            trailingIcon = {
+                                if (sound == selected) {
+                                    Icon(Icons.Filled.Check, contentDescription = null)
+                                }
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun SoundSelectorCard(
     selected: AdhanSound,

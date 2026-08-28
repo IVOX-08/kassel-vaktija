@@ -23,6 +23,8 @@ import kotlinx.coroutines.flow.flowOf
 import de.igbdsandzakkassel.vaktija.data.repository.AdminController
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.settings.AdhanSound
+import de.igbdsandzakkassel.vaktija.data.settings.NewsSound
+import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
@@ -174,9 +176,6 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch { settingsRepository.setThemeMode(mode) }
     }
 
-    fun setMasterEnabled(enabled: Boolean) = applyThenReschedule {
-        settingsRepository.setMasterEnabled(enabled)
-    }
 
     fun setSound(sound: AdhanSound) = applyThenReschedule {
         settingsRepository.setSound(sound)
@@ -185,6 +184,16 @@ class SettingsViewModel @Inject constructor(
     /** Whether the Adhan should play out loud even when the phone is on silent/vibrate. */
     fun setPlayWhenSilent(enabled: Boolean) = applyThenReschedule {
         settingsRepository.setPlayWhenSilent(enabled)
+    }
+
+    val newsSound: StateFlow<NewsSound> = settingsRepository.observeNewsSound()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), NewsSound.DEFAULT_SOUND)
+
+    fun setNewsSound(sound: NewsSound) {
+        viewModelScope.launch {
+            settingsRepository.setNewsSound(sound)
+            NewsNotifier.useSound(context, sound)
+        }
     }
 
     fun setNewsNotificationsEnabled(enabled: Boolean) {

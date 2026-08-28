@@ -262,4 +262,9 @@
     <string name="quran_tajweed">التجويد</string>
     <string name="quran_smaller">أصغر</string>
     <string name="quran_larger">أكبر</string>
+    <string name="sound_bell">جرس</string>
+    <string name="sound_gong">غوнغ</string>
+    <string name="sound_soft">نغمة هادئة</string>
+    <string name="sound_announcement">النغمة الافتراضية</string>
+    <string name="settings_news_sound">نغمة الإعلانات</string>
 </resources>

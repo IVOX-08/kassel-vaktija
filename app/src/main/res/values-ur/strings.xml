@@ -262,4 +262,9 @@
     <string name="quran_tajweed">تجوید</string>
     <string name="quran_smaller">چھوٹا</string>
     <string name="quran_larger">بڑا</string>
+    <string name="sound_bell">گھنٹی</string>
+    <string name="sound_gong">گونگ</string>
+    <string name="sound_soft">نرم آواز</string>
+    <string name="sound_announcement">طے شدہ آواز</string>
+    <string name="settings_news_sound">اعلان کی آواز</string>
 </resources>

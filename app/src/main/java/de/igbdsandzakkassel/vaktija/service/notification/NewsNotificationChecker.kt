@@ -50,6 +50,8 @@ class NewsNotificationChecker @Inject constructor(
         }
         if (newest.createdAt <= lastNotified) return // nothing new since last time
 
+        // A worker process may have started without the Application's collector having run yet.
+        NewsNotifier.useSound(context, settingsRepository.getNewsSound())
         NewsNotifier.post(context, newest, currentLang(context))
         settingsRepository.setLastNotifiedNewsMillis(watermark)
     }

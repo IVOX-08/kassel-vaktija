@@ -274,4 +274,9 @@
     <string name="quran_tajweed">Tadschwid</string>
     <string name="quran_smaller">Kleiner</string>
     <string name="quran_larger">Größer</string>
+    <string name="sound_bell">Glocke</string>
+    <string name="sound_gong">Gong</string>
+    <string name="sound_soft">Leiser Ton</string>
+    <string name="sound_announcement">Standardton</string>
+    <string name="settings_news_sound">Ton für Mitteilungen</string>
 </resources>

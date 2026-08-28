@@ -18,7 +18,12 @@ import de.igbdsandzakkassel.vaktija.data.repository.SessionManager
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PushTopicSubscriber
 import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
+import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.service.tracker.TrackerNotifier
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import de.igbdsandzakkassel.vaktija.service.work.StaleTimesWatcher
 import de.igbdsandzakkassel.vaktija.service.work.VaktijaRefreshWorker
 import java.util.concurrent.TimeUnit
@@ -43,6 +48,9 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
     @Inject
     lateinit var sessionManager: SessionManager
 
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
@@ -52,7 +60,11 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         super.onCreate()
         installTvCrashRecovery()
         PrayerNotifier.ensureChannels(this)
-        NewsNotifier.ensureChannel(this)
+        // Follows the chosen announcement tone for the life of the process: a change has to take
+        // effect on the next announcement, not on the next reinstall.
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            settingsRepository.observeNewsSound().collect { NewsNotifier.useSound(this@KasselVaktijaApp, it) }
+        }
         TrackerNotifier.ensureChannel(this)
         // Subscribe for instant announcement pushes: one channel per community plus the
         // federation-wide one. No-op until a Cloud Function publishes to them (needs the Firebase

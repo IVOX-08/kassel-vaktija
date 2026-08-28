@@ -14,6 +14,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import de.igbdsandzakkassel.vaktija.MainActivity
 import de.igbdsandzakkassel.vaktija.R
+import de.igbdsandzakkassel.vaktija.data.settings.NewsSound
 import de.igbdsandzakkassel.vaktija.data.model.NewsItem
 import java.util.Locale
 
@@ -37,12 +38,28 @@ object NewsNotifier {
     /** Short, light double-buzz — distinct from the Adhan channel's firmer pattern. */
     private val NEWS_VIBRATION = longArrayOf(0, 180, 120, 180)
 
-    fun ensureChannel(context: Context) {
+    /**
+     * The tone in force. Kept here because announcements are posted from three different places —
+     * a worker, a push message and a config check — and threading the setting through all of them
+     * would mean any path that forgot it would quietly post on the wrong channel.
+     */
+    @Volatile
+    private var current: NewsSound = NewsSound.DEFAULT_SOUND
+
+    /** Called when the setting is read or changed. */
+    fun useSound(context: Context, sound: NewsSound) {
+        current = sound
+        ensureChannel(context, sound)
+    }
+
+    fun ensureChannel(context: Context, sound: NewsSound = current) {
         val manager = context.getSystemService<NotificationManager>() ?: return
-        // Drop the previous channel (old tone) so only the current one remains.
+        // Drop the previous channels (old tones) so only the current ones remain.
         runCatching { manager.deleteNotificationChannel(CHANNEL_NEWS_OLD) }
+        runCatching { manager.deleteNotificationChannel(CHANNEL_NEWS) }
+        val raw = context.resources.getIdentifier(sound.rawResName, "raw", context.packageName)
         val channel = NotificationChannel(
-            CHANNEL_NEWS,
+            sound.channelId,
             context.getString(R.string.notif_channel_news),
             NotificationManager.IMPORTANCE_HIGH,
         ).apply {
@@ -51,10 +68,7 @@ object NewsNotifier {
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build()
-            setSound(
-                Uri.parse("android.resource://${context.packageName}/${R.raw.announcement}"),
-                attrs,
-            )
+            setSound(Uri.parse("android.resource://${context.packageName}/$raw"), attrs)
             enableVibration(true)
             vibrationPattern = NEWS_VIBRATION
         }
@@ -63,14 +77,14 @@ object NewsNotifier {
 
     /** Post an announcement notification, localized to [lang] (the user's selected app language). */
     fun post(context: Context, item: NewsItem, lang: String) {
-        ensureChannel(context)
+        ensureChannel(context, current)
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
 
         // Fallback title must be localized too — the raw context resolves the SYSTEM locale on a
         // background wake (Android 8-12), which would mix a Bosnian title with a translated body.
         val title = item.title(lang).ifBlank { localized(context, lang).getString(R.string.news_add) }
         val body = item.body(lang)
-        val notification = NotificationCompat.Builder(context, CHANNEL_NEWS)
+        val notification = NotificationCompat.Builder(context, current.channelId)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.logo_notification))
             .setContentTitle(title)
@@ -86,11 +100,11 @@ object NewsNotifier {
 
     /** Post a raw announcement notification from plain strings (used by instant FCM pushes). */
     fun postRaw(context: Context, title: String, body: String) {
-        ensureChannel(context)
+        ensureChannel(context, current)
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
         val fallbackCtx = de.igbdsandzakkassel.vaktija.core.locale.LocaleController.persistedTag(context)
             ?.let { localized(context, it) } ?: context
-        val notification = NotificationCompat.Builder(context, CHANNEL_NEWS)
+        val notification = NotificationCompat.Builder(context, current.channelId)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.logo_notification))
             .setContentTitle(title.ifBlank { fallbackCtx.getString(R.string.news_add) })
@@ -106,13 +120,13 @@ object NewsNotifier {
 
     /** Post a "prayer/Iqamah times were updated" notification, localized to [lang]. */
     fun postConfigUpdate(context: Context, lang: String) {
-        ensureChannel(context)
+        ensureChannel(context, current)
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
 
         val loc = localized(context, lang)
         val title = loc.getString(R.string.notif_config_title)
         val body = loc.getString(R.string.notif_config_body)
-        val notification = NotificationCompat.Builder(context, CHANNEL_NEWS)
+        val notification = NotificationCompat.Builder(context, current.channelId)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.logo_notification))
             .setContentTitle(title)

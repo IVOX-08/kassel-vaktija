@@ -262,4 +262,9 @@
     <string name="quran_tajweed">Tecvid</string>
     <string name="quran_smaller">Küçült</string>
     <string name="quran_larger">Büyüt</string>
+    <string name="sound_bell">Çan</string>
+    <string name="sound_gong">Gong</string>
+    <string name="sound_soft">Yumuşak ton</string>
+    <string name="sound_announcement">Varsayılan ton</string>
+    <string name="settings_news_sound">Duyuru sesi</string>
 </resources>
