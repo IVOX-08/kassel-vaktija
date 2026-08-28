@@ -244,4 +244,18 @@
     <string name="qibla_use_mosque">Përdor xhaminë</string>
     <string name="admin_import_communities">Importo xhematet në bazë</string>
     <string name="admin_import_done">%1$d xhemate u shkruan.</string>
+    <string name="notif_channel_tracker">Ndjekja e namazit</string>
+    <string name="notif_channel_tracker_desc">Pyet pas çdo namazi nëse e ke falur.</string>
+    <string name="tracker_ask_title">A e fale %1$s?</string>
+    <string name="tracker_ask_text">Përgjigju para se të hyjë namazi tjetër.</string>
+    <string name="action_yes">Po</string>
+    <string name="action_no">Jo</string>
+    <string name="tracker_rule_explained">Çdo namaz mund të konfirmohet vetëm brenda kohës së vet — nga ikameti deri te ezani i radhës, ndërsa sabahu vetëm deri në lindjen e diellit. Një namaz i humbur e kthen flakën në 0.</string>
+    <string name="tracker_reward_progress">%1$d nga %2$d ditë deri te dhurata e xhamisë</string>
+    <string name="tracker_reward_reached">30 ditë të plotësuara — merr dhuratën në xhami.</string>
+    <string name="tracker_state_prayed">Falur</string>
+    <string name="tracker_state_not_prayed">Jo i falur</string>
+    <string name="tracker_state_missed">I humbur — koha ka kaluar</string>
+    <string name="tracker_state_open">Tani e mundur — deri në %1$s</string>
+    <string name="tracker_state_upcoming">Nga %1$s</string>
 </resources>

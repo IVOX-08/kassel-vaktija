@@ -244,4 +244,18 @@
     <string name="qibla_use_mosque">Camiyi kullan</string>
     <string name="admin_import_communities">Cemaatleri veritabanına aktar</string>
     <string name="admin_import_done">%1$d cemaat yazıldı.</string>
+    <string name="notif_channel_tracker">Namaz takibi</string>
+    <string name="notif_channel_tracker_desc">Her namazdan sonra kılıp kılmadığınızı sorar.</string>
+    <string name="tracker_ask_title">%1$s namazını kıldın mı?</string>
+    <string name="tracker_ask_text">Bir sonraki namaz girmeden önce cevapla.</string>
+    <string name="action_yes">Evet</string>
+    <string name="action_no">Hayır</string>
+    <string name="tracker_rule_explained">Her namaz yalnızca kendi vakti içinde onaylanabilir — kametten bir sonraki ezana kadar, sabah namazı ise yalnızca güneş doğana kadar. Kaçırılan bir namaz alevi sıfırlar.</string>
+    <string name="tracker_reward_progress">Cami hediyesine: %1$d / %2$d gün</string>
+    <string name="tracker_reward_reached">30 gün tamamlandı — hediyeni camiden al.</string>
+    <string name="tracker_state_prayed">Kılındı</string>
+    <string name="tracker_state_not_prayed">Kılınmadı</string>
+    <string name="tracker_state_missed">Kaçırıldı — vakit doldu</string>
+    <string name="tracker_state_open">Şimdi mümkün — saat %1$s kadar</string>
+    <string name="tracker_state_upcoming">Saat %1$s itibaren</string>
 </resources>

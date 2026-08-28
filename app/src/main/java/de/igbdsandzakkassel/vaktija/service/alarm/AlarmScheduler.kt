@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.core.content.getSystemService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.domain.PrayerWindows
 import de.igbdsandzakkassel.vaktija.data.model.Prayer.Companion.silencesForCongregation
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
@@ -106,6 +107,17 @@ class AlarmScheduler @Inject constructor(
                     if (warnAt.isAfter(now)) {
                         schedule(prayer, warnAt, AlarmType.PREWARN, minutes = preWarn, sound = settings.sound, isJumua = isJumua)
                     }
+                }
+            }
+
+            // The tracker's question, armed at the Iqamah — the moment the congregation prays,
+            // and the moment the answer becomes true. It is NOT tied to the Adhan toggles: someone
+            // who silenced the call to prayer because they are at work is exactly the person the
+            // streak is for.
+            if (prayer in Prayer.OBLIGATORY) {
+                val askAt = PrayerWindows.windowFor(prayer, today, times, rules).opensAt
+                if (askAt.isAfter(now)) {
+                    schedule(prayer, askAt, AlarmType.TRACKER_ASK, minutes = 0, sound = settings.sound, isJumua = isJumua)
                 }
             }
 
@@ -283,10 +295,11 @@ class AlarmScheduler @Inject constructor(
         PREWARN(PrayerAlarmReceiver.ACTION_PREWARN),
         SILENCE_START(PrayerAlarmReceiver.ACTION_SILENCE_START),
         SILENCE_END(PrayerAlarmReceiver.ACTION_SILENCE_END),
+        TRACKER_ASK(PrayerAlarmReceiver.ACTION_TRACKER_ASK),
     }
 
     private companion object {
-        // Unique request code, far above prayer alarm codes. Prayer codes = prayer.ordinal*4+type;
+        // Unique request code, far above prayer alarm codes. Prayer codes = prayer.ordinal * types + type;
         // the Prayer enum includes SUNRISE so the obligatory ordinals reach ISHA=5 → max 5*4+3 = 23.
         const val WEEKLY_REMINDER_REQUEST = 9100
         const val DAY_ROLLOVER_REQUEST = 9200

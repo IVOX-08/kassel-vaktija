@@ -1,70 +1,75 @@
 package de.igbdsandzakkassel.vaktija.ui.tracker
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.RadioButtonUnchecked
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
-import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-private val PRAYERS = listOf(
-    R.string.prayer_fajr to 0,
-    R.string.prayer_dhuhr to 1,
-    R.string.prayer_asr to 2,
-    R.string.prayer_maghrib to 3,
-    R.string.prayer_isha to 4,
-)
-private const val ALL_DONE = 0b11111 // all 5 prayers
+private val HM: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 /**
- * Private, on-device prayer tracker: check off the five daily prayers; a streak of consecutive
- * complete days gently motivates. Stored per day as a 5-bit mask in SharedPreferences — nothing
- * leaves the phone.
+ * The prayer tracker.
+ *
+ * Each prayer can be answered only while its own time is running — from the Iqamah until the next
+ * Adhan, and for Fajr only until sunrise. That is what makes the streak mean something: it cannot
+ * be filled in at the end of the day from memory, and Fajr in particular has to be answered before
+ * the sun is up.
+ *
+ * Everything stays on this phone.
  */
 @Composable
 fun PrayerTrackerScreen(modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-    val prefs = remember { context.getSharedPreferences("tracker_prefs", Context.MODE_PRIVATE) }
-    val today = remember { LocalDate.now() }
-    val todayKey = "d_$today"
-    var mask by rememberSaveable { mutableIntStateOf(prefs.getInt(todayKey, 0)) }
+    val viewModel: TrackerViewModel = hiltViewModel()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(mask) { prefs.edit().putInt(todayKey, mask).apply() }
-
-    val doneCount = Integer.bitCount(mask)
-    val streak = remember(mask) { computeStreak(prefs, today, mask) }
+    if (state.loading) {
+        Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
 
     Column(
         modifier = modifier
@@ -73,40 +78,7 @@ fun PrayerTrackerScreen(modifier: Modifier = Modifier) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        // Streak + today's progress.
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = BrandGreen.copy(alpha = 0.12f)),
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 18.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text("🔥", fontSize = 40.sp)
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "$streak",
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = BrandGreen,
-                    )
-                    Text(
-                        text = stringResource(R.string.tracker_streak),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Text(
-                    text = "$doneCount / 5",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (mask == ALL_DONE) BrandGold else MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
+        StreakCard(streak = state.streak, prayedToday = state.prayedToday)
 
         Text(
             text = stringResource(R.string.tracker_today),
@@ -115,41 +87,151 @@ fun PrayerTrackerScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(top = 4.dp, start = 4.dp),
         )
 
-        PRAYERS.forEach { (labelRes, bit) ->
-            val done = mask and (1 shl bit) != 0
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { mask = mask xor (1 shl bit) }
-                        .padding(horizontal = 16.dp, vertical = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(14.dp),
-                ) {
-                    Icon(
-                        imageVector = if (done) Icons.Filled.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
-                        contentDescription = null,
-                        tint = if (done) BrandGreen else MaterialTheme.colorScheme.outline,
-                        modifier = Modifier.size(28.dp),
+        state.rows.forEach { row ->
+            PrayerRow(
+                row = row,
+                onAnswer = { prayed -> viewModel.answer(row.prayer, prayed) },
+            )
+        }
+
+        Text(
+            text = stringResource(R.string.tracker_rule_explained),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp, start = 4.dp, end = 4.dp),
+        )
+    }
+}
+
+@Composable
+private fun StreakCard(streak: Int, prayedToday: Int) {
+    val reached = streak >= REWARD_DAYS
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (reached) BrandGold.copy(alpha = 0.16f) else BrandGreen.copy(alpha = 0.12f),
+        ),
+    ) {
+        Column(modifier = Modifier.fillMaxWidth().padding(20.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(if (streak > 0) "🔥" else "🕌", fontSize = 40.sp)
+                Spacer(Modifier.width(16.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "$streak",
+                        fontSize = 34.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (reached) BrandGold else BrandGreen,
                     )
                     Text(
-                        text = stringResource(labelRes),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.weight(1f),
+                        text = stringResource(R.string.tracker_streak),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                }
+                Text(
+                    text = "$prayedToday / 5",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            Spacer(Modifier.height(14.dp))
+            // Progress toward the mosque's reward — the concrete reason the streak exists.
+            LinearProgressIndicator(
+                progress = { (streak.coerceAtMost(REWARD_DAYS).toFloat() / REWARD_DAYS) },
+                modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
+                color = if (reached) BrandGold else BrandGreen,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = if (reached) {
+                    stringResource(R.string.tracker_reward_reached)
+                } else {
+                    stringResource(R.string.tracker_reward_progress, streak, REWARD_DAYS)
+                },
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = if (reached) FontWeight.Bold else FontWeight.Normal,
+                color = if (reached) BrandGold else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PrayerRow(row: TrackerRow, onAnswer: (Boolean) -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                StateIcon(row.state)
+                Spacer(Modifier.width(14.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(row.prayer.labelRes),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = statusLine(row),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = when (row.state) {
+                            RowState.PRAYED -> BrandGreen
+                            RowState.MISSED, RowState.NOT_PRAYED -> MaterialTheme.colorScheme.error
+                            RowState.OPEN -> BrandGold
+                            RowState.UPCOMING -> MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                    )
+                }
+            }
+
+            // The two buttons exist only while the answer can still be given. An always-present
+            // pair would invite ticking yesterday's prayers, which is the one thing this must not
+            // allow.
+            if (row.state == RowState.OPEN) {
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Button(
+                        onClick = { onAnswer(true) },
+                        colors = ButtonDefaults.buttonColors(containerColor = BrandGreen),
+                        modifier = Modifier.weight(1f),
+                    ) { Text(stringResource(R.string.action_yes)) }
+                    OutlinedButton(
+                        onClick = { onAnswer(false) },
+                        modifier = Modifier.weight(1f),
+                    ) { Text(stringResource(R.string.action_no)) }
                 }
             }
         }
     }
 }
 
-/** Consecutive days (ending today, or yesterday if today is not yet complete) with all 5 prayers. */
-private fun computeStreak(prefs: SharedPreferences, today: LocalDate, todayMask: Int): Int {
-    var streak = 0
-    var day = if (todayMask == ALL_DONE) today else today.minusDays(1)
-    while (prefs.getInt("d_$day", 0) == ALL_DONE) {
-        streak++
-        day = day.minusDays(1)
+@Composable
+private fun StateIcon(state: RowState) {
+    val (icon, tint) = when (state) {
+        RowState.PRAYED -> Icons.Filled.CheckCircle to BrandGreen
+        RowState.NOT_PRAYED, RowState.MISSED -> Icons.Filled.Cancel to MaterialTheme.colorScheme.error
+        RowState.OPEN -> Icons.Outlined.Schedule to BrandGold
+        RowState.UPCOMING -> Icons.Outlined.Lock to MaterialTheme.colorScheme.outline
     }
-    return streak
+    Box(
+        modifier = Modifier
+            .size(38.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(tint.copy(alpha = 0.12f)),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(22.dp))
+    }
 }
+
+@Composable
+private fun statusLine(row: TrackerRow): String = when (row.state) {
+    RowState.PRAYED -> stringResource(R.string.tracker_state_prayed)
+    RowState.NOT_PRAYED -> stringResource(R.string.tracker_state_not_prayed)
+    RowState.MISSED -> stringResource(R.string.tracker_state_missed)
+    RowState.OPEN -> stringResource(R.string.tracker_state_open, row.closesAt.format(HM))
+    RowState.UPCOMING -> stringResource(R.string.tracker_state_upcoming, row.opensAt.format(HM))
+}
+

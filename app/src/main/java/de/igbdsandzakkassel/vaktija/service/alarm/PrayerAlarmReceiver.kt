@@ -16,7 +16,10 @@ import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
+import de.igbdsandzakkassel.vaktija.data.tracker.PrayerLogRepository
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
+import de.igbdsandzakkassel.vaktija.service.tracker.TrackerNotifier
+import java.time.LocalDate
 import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
 import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +46,9 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var timesRepository: PrayerTimesRepository
+
+    @Inject
+    lateinit var logRepository: PrayerLogRepository
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
@@ -159,6 +165,25 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                     }
                     // Re-arm next week's reminder.
                     ACTION_WEEKLY_REMINDER -> alarmScheduler.rescheduleAll()
+                    // "Did you pray X?" — asked once, and only if it is still unanswered. Someone
+                    // who already ticked it in the app must not be asked about it again.
+                    ACTION_TRACKER_ASK -> {
+                        val prayer = prayerFrom(intent)
+                        if (prayer != null && !logRepository.isAnswered(LocalDate.now(), prayer)) {
+                            TrackerNotifier.ask(
+                                context,
+                                prayer,
+                                LocalDate.now(),
+                                settingsRepository.getLanguageTag(),
+                            )
+                        }
+                        // Only one window is ever open, so every other question in the shade is
+                        // now unanswerable. Leaving one up invites a tap that quietly does nothing.
+                        Prayer.OBLIGATORY.filter { it != prayer }
+                            .forEach { TrackerNotifier.cancel(context, it) }
+                        PrayerTimesWidgetReceiver.refresh(context)
+                        alarmScheduler.rescheduleAll()
+                    }
                 }
             } finally {
                 pendingResult.finish()
@@ -199,6 +224,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
         const val ACTION_SILENCE_END = "de.igbdsandzakkassel.vaktija.ALARM_SILENCE_END"
         const val ACTION_WEEKLY_REMINDER = "de.igbdsandzakkassel.vaktija.ALARM_WEEKLY_REMINDER"
         const val ACTION_DAY_ROLLOVER = "de.igbdsandzakkassel.vaktija.ALARM_DAY_ROLLOVER"
+        const val ACTION_TRACKER_ASK = "de.igbdsandzakkassel.vaktija.ALARM_TRACKER_ASK"
         const val EXTRA_PRAYER = "extra_prayer"
         const val EXTRA_MINUTES = "extra_minutes"
         const val EXTRA_SOUND = "extra_sound"

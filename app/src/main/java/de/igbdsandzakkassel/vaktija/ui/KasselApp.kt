@@ -56,8 +56,15 @@ import de.igbdsandzakkassel.vaktija.ui.tracker.PrayerTrackerScreen
  * (TV builds use TvDashboardScreen directly and never reach this.)
  */
 @Composable
-fun KasselApp() {
+fun KasselApp(openRoute: String? = null) {
     val navController = rememberNavController()
+
+    // Set when the app was opened by tapping a notification that belongs to a particular screen —
+    // the tracker question, for instance. Jumping there beats dropping the reader on the dashboard
+    // to hunt for the screen the notification was about.
+    LaunchedEffect(openRoute) {
+        if (openRoute != null) navController.navigate(openRoute) { launchSingleTop = true }
+    }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination
 

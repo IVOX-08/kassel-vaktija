@@ -244,4 +244,18 @@
     <string name="qibla_use_mosque">استخدم المسجد</string>
     <string name="admin_import_communities">استيراد الجماعات إلى قاعدة البيانات</string>
     <string name="admin_import_done">تمت كتابة %1$d جماعة.</string>
+    <string name="notif_channel_tracker">متابعة الصلاة</string>
+    <string name="notif_channel_tracker_desc">يسأل بعد كل صلاة إن كنت قد صليت.</string>
+    <string name="tracker_ask_title">هل صليت %1$s؟</string>
+    <string name="tracker_ask_text">أجب قبل دخول الصلاة التالية.</string>
+    <string name="action_yes">نعم</string>
+    <string name="action_no">لا</string>
+    <string name="tracker_rule_explained">لا يمكن تأكيد الصلاة إلا في وقتها — من الإقامة حتى الأذان التالي، والفجر حتى شروق الشمس فقط. الصلاة الفائتة تعيد الشعلة إلى صفر.</string>
+    <string name="tracker_reward_progress">%1$d من %2$d يوماً حتى هدية المسجد</string>
+    <string name="tracker_reward_reached">ثلاثون يوماً متتالياً — استلم هديتك من المسجد.</string>
+    <string name="tracker_state_prayed">صُلِّيت</string>
+    <string name="tracker_state_not_prayed">لم تُصلَّ</string>
+    <string name="tracker_state_missed">فائتة — انتهى الوقت</string>
+    <string name="tracker_state_open">متاح الآن — حتى %1$s</string>
+    <string name="tracker_state_upcoming">من %1$s</string>
 </resources>

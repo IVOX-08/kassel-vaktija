@@ -18,6 +18,7 @@ import de.igbdsandzakkassel.vaktija.data.repository.SessionManager
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
 import de.igbdsandzakkassel.vaktija.service.notification.PushTopicSubscriber
 import de.igbdsandzakkassel.vaktija.service.work.NewsCheckWorker
+import de.igbdsandzakkassel.vaktija.service.tracker.TrackerNotifier
 import de.igbdsandzakkassel.vaktija.service.work.StaleTimesWatcher
 import de.igbdsandzakkassel.vaktija.service.work.VaktijaRefreshWorker
 import java.util.concurrent.TimeUnit
@@ -52,6 +53,7 @@ class KasselVaktijaApp : Application(), Configuration.Provider {
         installTvCrashRecovery()
         PrayerNotifier.ensureChannels(this)
         NewsNotifier.ensureChannel(this)
+        TrackerNotifier.ensureChannel(this)
         // Subscribe for instant announcement pushes: one channel per community plus the
         // federation-wide one. No-op until a Cloud Function publishes to them (needs the Firebase
         // Blaze plan); until then the polling check below is the fallback.

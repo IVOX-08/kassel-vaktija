@@ -21,6 +21,10 @@ import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.DailyTimes
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
+import de.igbdsandzakkassel.vaktija.data.tracker.PrayerLogRepository
+import de.igbdsandzakkassel.vaktija.domain.PrayerWindows
+import de.igbdsandzakkassel.vaktija.service.tracker.TrackerAnswerReceiver
+import java.time.LocalDate
 import de.igbdsandzakkassel.vaktija.data.repository.PrayerTimesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +44,7 @@ import java.util.Locale
 interface WidgetEntryPoint {
     fun prayerTimesRepository(): PrayerTimesRepository
     fun communityRuleProvider(): CommunityRuleProvider
+    fun prayerLogRepository(): PrayerLogRepository
 }
 
 /**
@@ -128,7 +133,83 @@ class PrayerTimesWidgetReceiver : AppWidgetProvider() {
                 views.setChronometerCountDown(R.id.widget_chrono, true)
                 scheduleRollover(appContext, at)
             }
+
+            renderTracker(appContext, locCtx, views, times, entryPoint)
             manager.updateAppWidget(ids, views)
+        }
+
+        /**
+         * The tracker strip: the open question with its two buttons, or the streak.
+         *
+         * Answering here is the point. The home screen is already in front of the reader, so the
+         * answer costs one tap and no unlock; a question that first needs the app opened is a
+         * question that waits until the window has closed.
+         */
+        private suspend fun renderTracker(
+            context: Context,
+            locCtx: Context,
+            views: RemoteViews,
+            times: DailyTimes?,
+            entryPoint: WidgetEntryPoint,
+        ) {
+            val log = entryPoint.prayerLogRepository()
+            val today = LocalDate.now()
+            val rules = runCatching { entryPoint.communityRuleProvider().getRules() }.getOrNull()
+            val open = if (times == null || rules == null) {
+                null
+            } else {
+                PrayerWindows.openAt(LocalDateTime.now(), today, times, rules)
+                    ?.takeIf { !log.isAnswered(today, it) }
+            }
+
+            if (open != null) {
+                views.setTextViewText(
+                    R.id.widget_tracker_text,
+                    locCtx.getString(R.string.tracker_ask_title, locCtx.getString(open.labelRes)),
+                )
+                views.setViewVisibility(R.id.widget_tracker_yes, android.view.View.VISIBLE)
+                views.setViewVisibility(R.id.widget_tracker_no, android.view.View.VISIBLE)
+                views.setTextViewText(R.id.widget_tracker_yes, locCtx.getString(R.string.action_yes))
+                views.setTextViewText(R.id.widget_tracker_no, locCtx.getString(R.string.action_no))
+                views.setOnClickPendingIntent(
+                    R.id.widget_tracker_yes,
+                    answerIntent(context, open, today, true),
+                )
+                views.setOnClickPendingIntent(
+                    R.id.widget_tracker_no,
+                    answerIntent(context, open, today, false),
+                )
+            } else {
+                val streak = log.getStreak(today)
+                val done = log.getDay(today).prayedCount
+                views.setTextViewText(
+                    R.id.widget_tracker_text,
+                    "🔥 " + streak + "  \u00B7  " + done + " / 5",
+                )
+                views.setViewVisibility(R.id.widget_tracker_yes, android.view.View.GONE)
+                views.setViewVisibility(R.id.widget_tracker_no, android.view.View.GONE)
+            }
+        }
+
+        private fun answerIntent(
+            context: Context,
+            prayer: Prayer,
+            date: LocalDate,
+            prayed: Boolean,
+        ): PendingIntent {
+            val intent = Intent(context, TrackerAnswerReceiver::class.java).apply {
+                action = TrackerAnswerReceiver.ACTION_ANSWER
+                putExtra(TrackerAnswerReceiver.EXTRA_PRAYER, prayer.name)
+                putExtra(TrackerAnswerReceiver.EXTRA_DATE, date.toString())
+                putExtra(TrackerAnswerReceiver.EXTRA_PRAYED, prayed)
+            }
+            // Its own request-code space, apart from the notification's, so a widget tap and a
+            // shade tap cannot overwrite one another's intent.
+            val code = 7300 + prayer.ordinal * 2 + if (prayed) 1 else 0
+            return PendingIntent.getBroadcast(
+                context, code, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
         }
 
         private fun openAppIntent(context: Context): PendingIntent =

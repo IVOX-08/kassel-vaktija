@@ -114,6 +114,11 @@
             android:name=".service.alarm.PrayerAlarmReceiver"
             android:exported="false" />
 
+        <!-- Answers the tracker's "did you pray?" question from the notification's buttons. -->
+        <receiver
+            android:name=".service.tracker.TrackerAnswerReceiver"
+            android:exported="false" />
+
         <!-- Home-screen prayer-times widget (Glance). -->
         <receiver
             android:name=".service.widget.PrayerTimesWidgetReceiver"

@@ -256,4 +256,18 @@
     <string name="qibla_use_mosque">Use the mosque</string>
     <string name="admin_import_communities">Import communities into the database</string>
     <string name="admin_import_done">%1$d communities written.</string>
+    <string name="notif_channel_tracker">Prayer tracker</string>
+    <string name="notif_channel_tracker_desc">Asks after each prayer whether you prayed.</string>
+    <string name="tracker_ask_title">Did you pray %1$s?</string>
+    <string name="tracker_ask_text">Answer before the next prayer begins.</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+    <string name="tracker_rule_explained">Each prayer can only be confirmed during its own time — from the Iqamah until the next Adhan, and Fajr only until sunrise. A missed prayer resets the flame to 0.</string>
+    <string name="tracker_reward_progress">%1$d of %2$d days to the mosque\'s gift</string>
+    <string name="tracker_reward_reached">30 days done — collect your gift at the mosque.</string>
+    <string name="tracker_state_prayed">Prayed</string>
+    <string name="tracker_state_not_prayed">Not prayed</string>
+    <string name="tracker_state_missed">Missed — the time has passed</string>
+    <string name="tracker_state_open">Open now — until %1$s</string>
+    <string name="tracker_state_upcoming">From %1$s</string>
 </resources>

@@ -244,4 +244,18 @@
     <string name="qibla_use_mosque">مسجد استعمال کریں</string>
     <string name="admin_import_communities">جماعتیں ڈیٹا بیس میں درآمد کریں</string>
     <string name="admin_import_done">%1$d جماعتیں لکھی گئیں۔</string>
+    <string name="notif_channel_tracker">نماز ٹریکر</string>
+    <string name="notif_channel_tracker_desc">ہر نماز کے بعد پوچھتا ہے کہ آپ نے پڑھی یا نہیں۔</string>
+    <string name="tracker_ask_title">کیا آپ نے %1$s پڑھی؟</string>
+    <string name="tracker_ask_text">اگلی نماز شروع ہونے سے پہلے جواب دیں۔</string>
+    <string name="action_yes">ہاں</string>
+    <string name="action_no">نہیں</string>
+    <string name="tracker_rule_explained">ہر نماز صرف اپنے وقت میں تصدیق ہو سکتی ہے — اقامت سے اگلی اذان تک، اور فجر صرف طلوعِ آفتاب تک۔ ایک چھوٹی ہوئی نماز شعلے کو صفر کر دیتی ہے۔</string>
+    <string name="tracker_reward_progress">مسجد کے تحفے تک %2$d میں سے %1$d دن</string>
+    <string name="tracker_reward_reached">تیس دن مکمل — اپنا تحفہ مسجد سے لیں۔</string>
+    <string name="tracker_state_prayed">پڑھی گئی</string>
+    <string name="tracker_state_not_prayed">نہیں پڑھی</string>
+    <string name="tracker_state_missed">چھوٹ گئی — وقت گزر گیا</string>
+    <string name="tracker_state_open">اب ممکن — %1$s تک</string>
+    <string name="tracker_state_upcoming">%1$s سے</string>
 </resources>

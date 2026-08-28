@@ -85,6 +85,13 @@ class MainActivity : AppCompatActivity() {
         // phones/tablets get the in-app update prompt.
         if (!isTv) checkForAppUpdate()
 
+        // Tapping the "did you pray?" question opens the tracker rather than the dashboard.
+        val openRoute = if (intent?.getBooleanExtra(EXTRA_OPEN_TRACKER, false) == true) {
+            ROUTE_TRACKER
+        } else {
+            null
+        }
+
         setContent {
             val mainViewModel: MainViewModel = hiltViewModel()
             val themeMode by mainViewModel.themeMode.collectAsStateWithLifecycle()
@@ -111,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                     // A blocked community replaces the app rather than degrading inside it: with no
                     // prayer times left there is no half-working screen worth showing.
                     communityStatus == CommunityStatus.BLOCKED -> CommunityBlockedScreen()
-                    onboardingComplete == true -> KasselApp()
+                    onboardingComplete == true -> KasselApp(openRoute = openRoute)
                     else -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
                 }
 
@@ -187,6 +194,12 @@ class MainActivity : AppCompatActivity() {
         appUpdateManager.unregisterListener(installListener)
         super.onDestroy()
     }
+
+    companion object {
+        /** Set by the tracker question so tapping the notification lands on the tracker. */
+        const val EXTRA_OPEN_TRACKER = "open_tracker"
+        private const val ROUTE_TRACKER = "tracker"
+    }
 }
 
 @Composable
@@ -206,4 +219,5 @@ private fun UpdateDialog(
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.update_later)) }
         },
     )
+
 }

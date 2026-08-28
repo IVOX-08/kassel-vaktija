@@ -1,67 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Home-screen widget: the next prayer and its countdown, with the tracker's question underneath.
+
+  The question is here because the widget is the one surface people already look at. Answering from
+  the home screen costs one tap and no unlock; a streak that needs the app opened five times a day
+  is a streak nobody keeps.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@android:color/transparent"
-    android:gravity="center_vertical"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/widget_logo"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:background="@drawable/widget_logo_circle"
-        android:scaleType="fitCenter"
-        android:padding="4dp"
-        android:src="@drawable/widget_crest"
-        android:contentDescription="@string/cd_app_logo" />
-
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="14dp"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/widget_logo"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:background="@drawable/widget_logo_circle"
+            android:scaleType="fitCenter"
+            android:padding="4dp"
+            android:src="@drawable/widget_crest"
+            android:contentDescription="@string/cd_app_logo" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="14dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_prayer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFE0A93A"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:shadowColor="#A6000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="5" />
+
+            <Chronometer
+                android:id="@+id/widget_chrono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFFFF"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                android:includeFontPadding="false"
+                android:shadowColor="#BF000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="6" />
+
+            <TextView
+                android:id="@+id/widget_prayer_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="#FFFFFFFF"
+                android:textSize="16sp"
+                android:shadowColor="#BF000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="5" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Tracker strip. Shows the open question with two buttons, or the streak when nothing is
+         waiting to be answered. Hidden entirely on a widget too short to fit it. -->
+    <LinearLayout
+        android:id="@+id/widget_tracker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/widget_prayer_name"
-            android:layout_width="wrap_content"
+            android:id="@+id/widget_tracker_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="#FFE0A93A"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:maxLines="1"
+            android:layout_weight="1"
+            android:textColor="#FFFFFFFF"
+            android:textSize="14sp"
+            android:maxLines="2"
             android:ellipsize="end"
-            android:shadowColor="#A6000000"
-            android:shadowDx="0"
-            android:shadowDy="1"
-            android:shadowRadius="5" />
-
-        <Chronometer
-            android:id="@+id/widget_chrono"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFFFF"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            android:includeFontPadding="false"
-            android:shadowColor="#BF000000"
-            android:shadowDx="0"
-            android:shadowDy="1"
-            android:shadowRadius="6" />
-
-        <TextView
-            android:id="@+id/widget_prayer_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textColor="#FFFFFFFF"
-            android:textSize="16sp"
             android:shadowColor="#BF000000"
             android:shadowDx="0"
             android:shadowDy="1"
             android:shadowRadius="5" />
+
+        <Button
+            android:id="@+id/widget_tracker_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="6dp"
+            android:minWidth="60dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:background="@drawable/widget_answer_button"
+            android:textColor="#FFFFFFFF"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="@string/action_yes" />
+
+        <Button
+            android:id="@+id/widget_tracker_no"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="6dp"
+            android:minWidth="60dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:background="@drawable/widget_answer_button"
+            android:textColor="#FFFFFFFF"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="@string/action_no" />
     </LinearLayout>
 </LinearLayout>

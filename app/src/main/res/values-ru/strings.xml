@@ -244,4 +244,18 @@
     <string name="qibla_use_mosque">Использовать мечеть</string>
     <string name="admin_import_communities">Импортировать общины в базу</string>
     <string name="admin_import_done">Записано общин: %1$d.</string>
+    <string name="notif_channel_tracker">Трекер намаза</string>
+    <string name="notif_channel_tracker_desc">После каждого намаза спрашивает, совершили ли вы его.</string>
+    <string name="tracker_ask_title">Вы совершили %1$s?</string>
+    <string name="tracker_ask_text">Ответьте до наступления следующего намаза.</string>
+    <string name="action_yes">Да</string>
+    <string name="action_no">Нет</string>
+    <string name="tracker_rule_explained">Каждый намаз можно подтвердить только в своё время — от икамата до следующего азана, а фаджр только до восхода солнца. Пропущенный намаз обнуляет огонёк.</string>
+    <string name="tracker_reward_progress">%1$d из %2$d дней до подарка мечети</string>
+    <string name="tracker_reward_reached">30 дней подряд — заберите подарок в мечети.</string>
+    <string name="tracker_state_prayed">Совершён</string>
+    <string name="tracker_state_not_prayed">Не совершён</string>
+    <string name="tracker_state_missed">Пропущен — время вышло</string>
+    <string name="tracker_state_open">Сейчас можно — до %1$s</string>
+    <string name="tracker_state_upcoming">С %1$s</string>
 </resources>

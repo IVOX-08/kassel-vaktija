@@ -310,4 +310,18 @@
     <string name="qibla_use_mosque">Koristi džamiju</string>
     <string name="admin_import_communities">Prenesi džemate u bazu</string>
     <string name="admin_import_done">%1$d džemata upisano.</string>
+    <string name="notif_channel_tracker">Praćenje namaza</string>
+    <string name="notif_channel_tracker_desc">Pita nakon svakog namaza jesi li klanjao.</string>
+    <string name="tracker_ask_title">Jesi li klanjao %1$s?</string>
+    <string name="tracker_ask_text">Odgovori prije nego nastupi sljedeći namaz.</string>
+    <string name="action_yes">Da</string>
+    <string name="action_no">Ne</string>
+    <string name="tracker_rule_explained">Svaki namaz se može potvrditi samo u svom vremenu — od ikameta do sljedećeg ezana, a sabah samo do izlaska sunca. Propušten namaz vraća plamen na 0.</string>
+    <string name="tracker_reward_progress">%1$d od %2$d dana do poklona džemata</string>
+    <string name="tracker_reward_reached">30 dana zaredom — uzmi svoj poklon u džematu.</string>
+    <string name="tracker_state_prayed">Klanjano</string>
+    <string name="tracker_state_not_prayed">Nije klanjano</string>
+    <string name="tracker_state_missed">Propušteno — vrijeme je isteklo</string>
+    <string name="tracker_state_open">Sada moguće — do %1$s</string>
+    <string name="tracker_state_upcoming">Od %1$s</string>
 </resources>
