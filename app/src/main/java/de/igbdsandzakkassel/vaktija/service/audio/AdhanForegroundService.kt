@@ -35,13 +35,19 @@ class AdhanForegroundService : Service() {
         val sound = AdhanSound.fromName(intent?.getStringExtra(EXTRA_SOUND))
         val isJumua = intent?.getBooleanExtra(EXTRA_IS_JUMUA, false) ?: false
 
-        startForegroundCompat(prayer, isJumua)
+        startForegroundCompat(prayer, isJumua, sound)
         playSound(sound.rawResName)
         return START_NOT_STICKY
     }
 
-    private fun startForegroundCompat(prayer: Prayer, isJumua: Boolean) {
-        val notification = PrayerNotifier.buildAdhanNotification(this, prayer, stopPendingIntent(), isJumua)
+    private fun startForegroundCompat(prayer: Prayer, isJumua: Boolean, sound: AdhanSound) {
+        val notification = PrayerNotifier.buildAdhanNotification(
+            this,
+            prayer,
+            stopPendingIntent(),
+            isJumua,
+            showStop = sound == AdhanSound.SHORT_ADHAN,
+        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ServiceCompat.startForeground(
                 this,

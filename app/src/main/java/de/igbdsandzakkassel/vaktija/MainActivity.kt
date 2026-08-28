@@ -85,11 +85,13 @@ class MainActivity : AppCompatActivity() {
         // phones/tablets get the in-app update prompt.
         if (!isTv) checkForAppUpdate()
 
-        // Tapping the "did you pray?" question opens the tracker rather than the dashboard.
-        val openRoute = if (intent?.getBooleanExtra(EXTRA_OPEN_TRACKER, false) == true) {
-            ROUTE_TRACKER
-        } else {
-            null
+        // A notification opens the screen it is about: the tracker's question opens the tracker,
+        // an announcement opens the announcements. Landing on the dashboard would leave the reader
+        // hunting for what they just tapped.
+        val openRoute = when {
+            intent?.getBooleanExtra(EXTRA_OPEN_TRACKER, false) == true -> ROUTE_TRACKER
+            intent?.getBooleanExtra(EXTRA_OPEN_NEWS, false) == true -> ROUTE_NEWS
+            else -> null
         }
 
         setContent {
@@ -198,7 +200,10 @@ class MainActivity : AppCompatActivity() {
     companion object {
         /** Set by the tracker question so tapping the notification lands on the tracker. */
         const val EXTRA_OPEN_TRACKER = "open_tracker"
+        /** Set by an announcement notification so tapping it lands on the announcements. */
+        const val EXTRA_OPEN_NEWS = "open_news"
         private const val ROUTE_TRACKER = "tracker"
+        private const val ROUTE_NEWS = "news"
     }
 }
 

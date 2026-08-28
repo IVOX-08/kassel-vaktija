@@ -21,6 +21,8 @@ import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.DailyTimes
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.data.repository.CommunityRuleProvider
+import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
+import de.igbdsandzakkassel.vaktija.data.community.CommunityRepository
 import de.igbdsandzakkassel.vaktija.data.tracker.PrayerLogRepository
 import de.igbdsandzakkassel.vaktija.domain.PrayerWindows
 import de.igbdsandzakkassel.vaktija.service.tracker.TrackerAnswerReceiver
@@ -45,6 +47,7 @@ interface WidgetEntryPoint {
     fun prayerTimesRepository(): PrayerTimesRepository
     fun communityRuleProvider(): CommunityRuleProvider
     fun prayerLogRepository(): PrayerLogRepository
+    fun communityRepository(): CommunityRepository
 }
 
 /**
@@ -106,6 +109,17 @@ class PrayerTimesWidgetReceiver : AppWidgetProvider() {
 
             val views = RemoteViews(appContext.packageName, R.layout.widget_next_prayer)
             views.setOnClickPendingIntent(R.id.widget_root, openAppIntent(appContext))
+
+            // Whose mark the widget carries. The crest is Kassel's own; every other community
+            // shows the federation's, exactly as the dashboard does — a widget showing Kassel's
+            // coat of arms above Nürnberg's prayer times would be plainly wrong.
+            val isHome = runCatching {
+                entryPoint.communityRepository().observeSelection().first()?.community?.id
+            }.getOrNull() == CommunityCatalog.KASSEL_ID
+            views.setImageViewResource(
+                R.id.widget_logo,
+                if (isHome) R.drawable.widget_crest else R.drawable.logo_igbd,
+            )
 
             if (times == null) {
                 views.setTextViewText(R.id.widget_prayer_name, "—")

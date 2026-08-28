@@ -25,8 +25,8 @@ object PrayerNotifier {
     // (so an app update can't add it) and some OEMs (e.g. Honor) silently drop it. The buzz is now
     // fired explicitly from PrayerAlarmReceiver (alarm usage), so this channel stays fully silent.
     const val CHANNEL_ADHAN = "prayer_adhan_v2"
-    const val CHANNEL_PREWARN = "prayer_prewarn"
-    const val CHANNEL_REMINDER = "weekly_reminder"
+    const val CHANNEL_PREWARN = "prayer_prewarn_v2"
+    const val CHANNEL_REMINDER = "weekly_reminder_v2"
     const val ADHAN_NOTIFICATION_ID = 1001
     private const val PREWARN_BASE_ID = 2000
     private const val REMINDER_NOTIFICATION_ID = 4001
@@ -35,6 +35,10 @@ object PrayerNotifier {
         val manager = context.getSystemService<NotificationManager>() ?: return
         // Remove the old v1 Adhan channel whose (locked) vibration setting some devices ignored.
         manager.deleteNotificationChannel("prayer_adhan")
+        // An existing channel keeps the importance it was created with, so raising these to
+        // urgent means new ids and clearing the old ones out of the system's list.
+        runCatching { manager.deleteNotificationChannel("prayer_prewarn") }
+        runCatching { manager.deleteNotificationChannel("weekly_reminder") }
         val adhan = NotificationChannel(
             CHANNEL_ADHAN,
             context.getString(R.string.notif_channel_adhan),
@@ -47,7 +51,7 @@ object PrayerNotifier {
         val preWarn = NotificationChannel(
             CHANNEL_PREWARN,
             context.getString(R.string.notif_channel_prewarn),
-            NotificationManager.IMPORTANCE_DEFAULT,
+            NotificationManager.IMPORTANCE_HIGH,
         ).apply {
             description = context.getString(R.string.notif_channel_prewarn_desc)
         }
@@ -56,7 +60,7 @@ object PrayerNotifier {
         val reminder = NotificationChannel(
             CHANNEL_REMINDER,
             context.getString(R.string.notif_channel_reminder),
-            NotificationManager.IMPORTANCE_DEFAULT,
+            NotificationManager.IMPORTANCE_HIGH,
         ).apply {
             description = context.getString(R.string.notif_channel_reminder_desc)
             enableVibration(true)
@@ -67,11 +71,17 @@ object PrayerNotifier {
     }
 
     /** High-priority Adhan notification shown by the foreground service while the sound plays. */
+    /**
+     * [showStop] is true only for the recorded Adhan. That one runs for a minute or more, and
+     * someone at work or in a lecture needs a way to cut it short. The plain tones are over in a
+     * couple of seconds — a Stop button under them would be a button nobody could reach in time.
+     */
     fun buildAdhanNotification(
         context: Context,
         prayer: Prayer,
         stopIntent: PendingIntent,
         isJumua: Boolean = false,
+        showStop: Boolean = true,
     ): Notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
         .setSmallIcon(R.drawable.ic_stat_adhan)
         .setLargeIcon(communityLogo(context))
@@ -81,7 +91,7 @@ object PrayerNotifier {
         .setCategory(NotificationCompat.CATEGORY_ALARM)
         .setContentIntent(openAppIntent(context))
         .setOngoing(true)
-        .addAction(0, context.getString(R.string.notif_stop), stopIntent)
+        .apply { if (showStop) addAction(0, context.getString(R.string.notif_stop), stopIntent) }
         .build()
 
     /**

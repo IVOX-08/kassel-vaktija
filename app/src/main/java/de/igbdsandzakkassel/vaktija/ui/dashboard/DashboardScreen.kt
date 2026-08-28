@@ -85,6 +85,9 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+/** How tall a community's mark is drawn — the same for the home crest and the federation logo. */
+private val EMBLEM_HEIGHT = 96.dp
+
 private val TIME: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 private fun LocalTime.hhmm(): String = format(TIME)
 
@@ -274,7 +277,7 @@ private fun Header(state: DashboardUiState, gregorianDate: String, hijriDate: St
                 modifier = Modifier.weight(1f),
             )
             // Center: community emblem, blended into the page background (like the website logo).
-            CommunityEmblem(state, modifier = Modifier.height(96.dp))
+            CommunityEmblem(state)
             // Right: donate → opens PayPal. Hidden entirely while the community is switched off —
             // leaving the button would keep collecting for a community that is no longer listed,
             // and falling back to the old built-in link would send the money to Kassel.
@@ -364,7 +367,7 @@ private fun HeaderSideItem(
 @Composable
 private fun CommunityEmblem(state: DashboardUiState, modifier: Modifier = Modifier) {
     if (state.isHomeCommunity) {
-        BlendedEmblem(modifier)
+        BlendedEmblem(modifier.height(EMBLEM_HEIGHT))
         return
     }
     Column(
@@ -376,7 +379,9 @@ private fun CommunityEmblem(state: DashboardUiState, modifier: Modifier = Modifi
             painter = painterResource(R.drawable.logo_igbd),
             contentDescription = stringResource(R.string.cd_app_logo),
             contentScale = ContentScale.Fit,
-            modifier = Modifier.weight(1f),
+            // The same height as Kassel's crest. Weighting it inside a fixed box made every other
+            // community's mark visibly smaller than the home one, which read as second class.
+            modifier = Modifier.height(EMBLEM_HEIGHT),
         )
         Text(
             text = state.communityName,

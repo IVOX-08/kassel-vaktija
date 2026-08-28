@@ -31,20 +31,21 @@ import java.util.Locale
  */
 object TrackerNotifier {
 
-    const val CHANNEL_TRACKER = "prayer_tracker"
+    const val CHANNEL_TRACKER = "prayer_tracker_v2"
     private const val BASE_ID = 5100
 
     fun ensureChannel(context: Context) {
         val manager = context.getSystemService<NotificationManager>() ?: return
+        runCatching { manager.deleteNotificationChannel("prayer_tracker") }
         val channel = NotificationChannel(
             CHANNEL_TRACKER,
             context.getString(R.string.notif_channel_tracker),
-            // LOW: it appears in the shade without a sound or a heads-up banner. The question can
-            // wait until the phone is next picked up; it must not interrupt a lesson or a shift.
-            NotificationManager.IMPORTANCE_LOW,
+            // Urgent, at the owner's instruction: the question exists to be answered, and one that
+            // waits silently in the shade until the window has closed answers nothing.
+            NotificationManager.IMPORTANCE_HIGH,
         ).apply {
             description = context.getString(R.string.notif_channel_tracker_desc)
-            enableVibration(false)
+            enableVibration(true)
             setShowBadge(true)
         }
         manager.createNotificationChannel(channel)
@@ -62,7 +63,7 @@ object TrackerNotifier {
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setContentTitle(loc.getString(R.string.tracker_ask_title, name))
             .setContentText(loc.getString(R.string.tracker_ask_text))
-            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setContentIntent(openApp(context))
             .setAutoCancel(true)
