@@ -270,4 +270,8 @@
     <string name="tracker_state_missed">Missed — the time has passed</string>
     <string name="tracker_state_open">Open now — until %1$s</string>
     <string name="tracker_state_upcoming">From %1$s</string>
+    <string name="quran_script_ottoman">Ottoman script</string>
+    <string name="quran_tajweed">Tajweed</string>
+    <string name="quran_smaller">Smaller</string>
+    <string name="quran_larger">Larger</string>
 </resources>

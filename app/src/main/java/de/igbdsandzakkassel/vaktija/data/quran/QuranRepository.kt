@@ -18,14 +18,30 @@ data class SurahMeta(
     @SerialName("total_verses") val totalVerses: Int,
 )
 
-/** A single ayah: number within the surah + Uthmani Arabic text + its Mushaf page (1..604). */
-data class Ayah(val number: Int, val text: String, val page: Int)
+/**
+ * A single ayah: number within the surah, the Uthmani text, its Mushaf page (1..604), and the same
+ * text with the tajweed rules marked inline.
+ *
+ * [tajweed] is empty only if the marked edition is missing for this ayah, in which case the reader
+ * falls back to the plain text rather than colouring anything by guesswork.
+ */
+data class Ayah(
+    val number: Int,
+    val text: String,
+    val page: Int,
+    val tajweed: String = "",
+)
 
 @Serializable
 private data class SurahFile(val ayahs: List<AyahEntry> = emptyList())
 
 @Serializable
-private data class AyahEntry(val n: Int = 0, val t: String = "", val p: Int = 0)
+private data class AyahEntry(
+    val n: Int = 0,
+    val t: String = "",
+    val p: Int = 0,
+    val tj: String = "",
+)
 
 /**
  * The Qur'an in Arabic only (Uthmani text, public domain), bundled as JSON assets:
@@ -47,7 +63,7 @@ class QuranRepository @Inject constructor(
     fun ayahs(surahId: Int): List<Ayah> = runCatching {
         context.assets.open("quran/$surahId.json").use {
             json.decodeFromString<SurahFile>(it.readBytes().decodeToString())
-                .ayahs.map { a -> Ayah(a.n, a.t, a.p) }
+                .ayahs.map { a -> Ayah(a.n, a.t, a.p, a.tj) }
         }
     }.getOrDefault(emptyList())
 }

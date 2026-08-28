@@ -3,6 +3,7 @@ package de.igbdsandzakkassel.vaktija.ui.quran
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -64,6 +65,14 @@ import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.quran.Ayah
 import de.igbdsandzakkassel.vaktija.data.quran.QuranProgress
 import de.igbdsandzakkassel.vaktija.data.quran.SurahMeta
+import de.igbdsandzakkassel.vaktija.data.quran.QuranReaderPrefs
+import de.igbdsandzakkassel.vaktija.data.quran.QuranScript
+import de.igbdsandzakkassel.vaktija.data.quran.tajweedAnnotated
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.FilterChip
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
@@ -73,6 +82,16 @@ private const val BISMILLAH = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰ�
 // Large, easy-to-read Arabic so the harakat/tajweed marks are clearly visible (the community asked
 // for bigger marks). Pages are built to fit this size with NO scrolling — see [paginate].
 private val QURAN_FONT_SP = 25.sp
+
+/**
+ * Amiri Quran — the classical naskh cut of Ottoman and Turkish printed mushafs, bundled under the
+ * SIL Open Font Licence. Offered beside the phone's own Arabic face because the two are read very
+ * differently: members who learned from a Turkish mushaf find the letterforms they know here.
+ */
+private val OttomanFamily = FontFamily(Font(R.font.amiri_quran))
+
+private fun familyFor(script: QuranScript): FontFamily? =
+    if (script == QuranScript.OTTOMAN) OttomanFamily else null
 private const val QURAN_LINE_MULT = 1.95f
 private val QURAN_H_PADDING = 18.dp
 
@@ -84,7 +103,10 @@ fun QuranListScreen(
     viewModel: QuranViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
-    LaunchedEffect(Unit) { QuranProgress.load(context) }
+    LaunchedEffect(Unit) {
+        QuranProgress.load(context)
+        QuranReaderPrefs.load(context)
+    }
     val surahs by viewModel.surahs.collectAsStateWithLifecycle()
     val list = surahs
     if (list == null) {
@@ -234,7 +256,10 @@ fun QuranSurahScreen(
     viewModel: QuranViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
-    LaunchedEffect(Unit) { QuranProgress.load(context) }
+    LaunchedEffect(Unit) {
+        QuranProgress.load(context)
+        QuranReaderPrefs.load(context)
+    }
     LaunchedEffect(surahId) { viewModel.loadSurah(surahId) }
     val meta by viewModel.meta.collectAsStateWithLifecycle()
     val ayahs by viewModel.ayahs.collectAsStateWithLifecycle()
@@ -267,6 +292,7 @@ fun QuranSurahScreen(
                 )
             }
         }
+        ReaderControls(context)
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
         val list = ayahs
@@ -278,19 +304,38 @@ fun QuranSurahScreen(
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val density = LocalDensity.current
             val measurer = rememberTextMeasurer()
+            val compactTitle = maxHeight < 520.dp
+            // 1.95 line spacing gives the harakat room to breathe on a tall portrait page. On a
+            // landscape page it is most of the page: at that spacing barely two lines fit between
+            // the controls and the page number, and reading sideways becomes slower, not faster.
+            val lineMult = if (compactTitle) 1.45f else QURAN_LINE_MULT
+            // Pagination measures with EXACTLY the style the page is drawn in — a different
+            // size or face here would break pages in the wrong places, and every page would either
+            // overflow or end short.
+            val scale = QuranReaderPrefs.scale
+            val fontSize = QURAN_FONT_SP * scale
+            val family = familyFor(QuranReaderPrefs.script)
             val measureStyle = TextStyle(
-                fontSize = QURAN_FONT_SP,
-                lineHeight = QURAN_FONT_SP * QURAN_LINE_MULT,
+                fontSize = fontSize,
+                lineHeight = fontSize * lineMult,
                 textAlign = TextAlign.Justify,
+                fontFamily = family,
             )
             // Width of the text column (page padding subtracted) and the height available for ayahs
             // (page number + paddings subtracted); the first page also hosts the title + Bismillah.
             val contentWidthPx = with(density) { (maxWidth - QURAN_H_PADDING * 2).toPx().toInt() }
-            val availHeightPx = with(density) { maxHeight.toPx() - 64.dp.toPx() }
-            val firstPageReservePx = with(density) { 150.dp.toPx() }
+            val availHeightPx =
+                with(density) { maxHeight.toPx() - (if (maxHeight < 520.dp) 34.dp else 64.dp).toPx() }
+            // Landscape is barely 400dp tall: the full title block would take the whole page and
+            // push every ayah below the fold, which is what reading in landscape is meant to fix.
+            val firstPageReservePx =
+                with(density) { (if (compactTitle) 74.dp else 150.dp).toPx() }
 
-            val pages = remember(list, contentWidthPx, availHeightPx) {
-                paginate(list, measurer, measureStyle, contentWidthPx, availHeightPx, firstPageReservePx)
+            val pages = remember(list, contentWidthPx, availHeightPx, scale, family, lineMult, QuranReaderPrefs.tajweed) {
+                paginate(
+                    list, measurer, measureStyle, contentWidthPx, availHeightPx,
+                    firstPageReservePx, QuranReaderPrefs.tajweed,
+                )
             }
             val initialPage = remember(pages, initialAyah) {
                 pages.indexOfFirst { page -> page.any { it.number >= initialAyah } }.coerceAtLeast(0)
@@ -309,11 +354,64 @@ fun QuranSurahScreen(
                         surahId = surahId,
                         meta = meta,
                         isFirstPage = index == 0,
+                        compactTitle = compactTitle,
                         pageNumber = pageAyahs.firstOrNull()?.page ?: 1,
                         ayahs = pageAyahs,
+                        fontSize = fontSize,
+                        lineMult = lineMult,
+                        family = family,
+                        tajweed = QuranReaderPrefs.tajweed,
                     )
                 }
             }
+        }
+    }
+}
+
+/**
+ * Script, size and tajweed, in one line above the page.
+ *
+ * Kept in the reader rather than buried in Settings: these are decisions made while reading — the
+ * text is a shade too small, or the rules are wanted for this session — and a reader who has to
+ * leave the surah to change them will simply not change them.
+ */
+@Composable
+private fun ReaderControls(context: android.content.Context) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 12.dp, end = 8.dp, bottom = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        FilterChip(
+            selected = QuranReaderPrefs.script == QuranScript.OTTOMAN,
+            onClick = {
+                QuranReaderPrefs.setScript(
+                    context,
+                    if (QuranReaderPrefs.script == QuranScript.OTTOMAN) QuranScript.SYSTEM
+                    else QuranScript.OTTOMAN,
+                )
+            },
+            label = { Text(stringResource(R.string.quran_script_ottoman)) },
+        )
+        FilterChip(
+            selected = QuranReaderPrefs.tajweed,
+            onClick = { QuranReaderPrefs.setTajweed(context, !QuranReaderPrefs.tajweed) },
+            label = { Text(stringResource(R.string.quran_tajweed)) },
+        )
+        Spacer(Modifier.weight(1f))
+        IconButton(
+            onClick = { QuranReaderPrefs.zoom(context, -QuranReaderPrefs.STEP) },
+            enabled = QuranReaderPrefs.scale > QuranReaderPrefs.MIN_SCALE,
+        ) {
+            Icon(Icons.Filled.Remove, contentDescription = stringResource(R.string.quran_smaller))
+        }
+        IconButton(
+            onClick = { QuranReaderPrefs.zoom(context, QuranReaderPrefs.STEP) },
+            enabled = QuranReaderPrefs.scale < QuranReaderPrefs.MAX_SCALE,
+        ) {
+            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.quran_larger))
         }
     }
 }
@@ -323,8 +421,13 @@ private fun QuranPage(
     surahId: Int,
     meta: SurahMeta?,
     isFirstPage: Boolean,
+    compactTitle: Boolean,
     pageNumber: Int,
     ayahs: List<Ayah>,
+    fontSize: androidx.compose.ui.unit.TextUnit,
+    lineMult: Float,
+    family: FontFamily?,
+    tajweed: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -340,14 +443,15 @@ private fun QuranPage(
                 .verticalScroll(rememberScrollState()),
         ) {
             if (isFirstPage) {
-                SurahTitleBlock(meta)
-                if (surahId != 1 && surahId != 9) BismillahHeader()
+                SurahTitleBlock(meta, compactTitle)
+                if (surahId != 1 && surahId != 9 && !compactTitle) BismillahHeader()
             }
             Text(
-                text = pageText(ayahs),
-                fontSize = QURAN_FONT_SP,
-                lineHeight = QURAN_FONT_SP * QURAN_LINE_MULT,
+                text = pageText(ayahs, tajweed, MaterialTheme.colorScheme.onSurface),
+                fontSize = fontSize,
+                lineHeight = fontSize * lineMult,
                 textAlign = TextAlign.Justify,
+                fontFamily = family,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -365,27 +469,29 @@ private fun QuranPage(
 }
 
 @Composable
-private fun SurahTitleBlock(meta: SurahMeta?) {
+private fun SurahTitleBlock(meta: SurahMeta?, compact: Boolean = false) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 12.dp),
-        shape = RoundedCornerShape(20.dp),
+            .padding(bottom = if (compact) 6.dp else 12.dp),
+        shape = RoundedCornerShape(if (compact) 12.dp else 20.dp),
         color = BrandGreen,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 16.dp),
+                .padding(vertical = if (compact) 6.dp else 16.dp, horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = meta?.name ?: "",
-                fontSize = 30.sp,
+                fontSize = if (compact) 20.sp else 30.sp,
                 fontWeight = FontWeight.Bold,
                 color = BrandGoldLight,
             )
-            if (meta != null) {
+            // The transliteration is dropped on a short screen: the Arabic name already says which
+            // surah this is, and every line here is a line the text loses.
+            if (meta != null && !compact) {
                 Text(
                     text = meta.transliteration + "  ·  " + typeLabel(meta.type),
                     style = MaterialTheme.typography.bodyMedium,
@@ -411,9 +517,19 @@ private fun BismillahHeader() {
 }
 
 /** Continuous justified Arabic for a page: each ayah followed by its gold ﴿number﴾ marker. */
-private fun pageText(ayahs: List<Ayah>): AnnotatedString = buildAnnotatedString {
+private fun pageText(
+    ayahs: List<Ayah>,
+    tajweed: Boolean,
+    baseColor: Color,
+): AnnotatedString = buildAnnotatedString {
     ayahs.forEachIndexed { i, ayah ->
-        append(ayah.text)
+        // Falls back to the plain text when this ayah has no marked edition, rather than showing
+        // nothing or colouring by guesswork.
+        if (tajweed && ayah.tajweed.isNotBlank()) {
+            append(tajweedAnnotated(ayah.tajweed, baseColor))
+        } else {
+            append(ayah.text)
+        }
         append(" ")
         withStyle(SpanStyle(color = BrandGold, fontWeight = FontWeight.Bold)) {
             append("﴿${toArabicIndic(ayah.number)}﴾")
@@ -434,6 +550,7 @@ private fun paginate(
     widthPx: Int,
     availHeightPx: Float,
     firstPageReservePx: Float,
+    tajweed: Boolean,
 ): List<List<Ayah>> {
     if (widthPx <= 0 || availHeightPx <= 0f) return listOf(ayahs)
     val pages = mutableListOf<List<Ayah>>()
@@ -443,7 +560,10 @@ private fun paginate(
         val reserve = if (pages.isEmpty()) firstPageReservePx else 0f
         val limit = (availHeightPx - reserve) * 0.96f
         val height = measurer.measure(
-            text = pageText(current),
+            // Measured with the SAME text the page will draw. The marked edition can encode a
+            // diacritic slightly differently from the plain one, and measuring the other variant
+            // would break pages a hair too early or too late.
+            text = pageText(current, tajweed, Color.Unspecified),
             style = style,
             constraints = Constraints(maxWidth = widthPx),
             layoutDirection = LayoutDirection.Rtl,

@@ -258,4 +258,8 @@
     <string name="tracker_state_missed">Kaçırıldı — vakit doldu</string>
     <string name="tracker_state_open">Şimdi mümkün — saat %1$s kadar</string>
     <string name="tracker_state_upcoming">Saat %1$s itibaren</string>
+    <string name="quran_script_ottoman">Osmanlı yazısı</string>
+    <string name="quran_tajweed">Tecvid</string>
+    <string name="quran_smaller">Küçült</string>
+    <string name="quran_larger">Büyüt</string>
 </resources>

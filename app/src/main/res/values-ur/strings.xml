@@ -258,4 +258,8 @@
     <string name="tracker_state_missed">چھوٹ گئی — وقت گزر گیا</string>
     <string name="tracker_state_open">اب ممکن — %1$s تک</string>
     <string name="tracker_state_upcoming">%1$s سے</string>
+    <string name="quran_script_ottoman">عثمانی رسم الخط</string>
+    <string name="quran_tajweed">تجوید</string>
+    <string name="quran_smaller">چھوٹا</string>
+    <string name="quran_larger">بڑا</string>
 </resources>

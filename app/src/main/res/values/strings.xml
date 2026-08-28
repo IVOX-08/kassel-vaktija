@@ -324,4 +324,8 @@
     <string name="tracker_state_missed">Propušteno — vrijeme je isteklo</string>
     <string name="tracker_state_open">Sada moguće — do %1$s</string>
     <string name="tracker_state_upcoming">Od %1$s</string>
+    <string name="quran_script_ottoman">Osmansko pismo</string>
+    <string name="quran_tajweed">Tedžvid</string>
+    <string name="quran_smaller">Manje</string>
+    <string name="quran_larger">Veće</string>
 </resources>
