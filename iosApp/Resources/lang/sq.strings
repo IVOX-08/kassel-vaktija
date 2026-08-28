@@ -199,7 +199,7 @@
 "zakat_below_nisab" = "Jeni nën nisab — zekati nuk është i detyrueshëm.";
 "zakat_disclaimer" = "Kjo është një ndihmë llogaritëse, jo fetva. Për rastin tuaj pyesni imamin.";
 "community_section_header" = "Xhemati";
-"community_picker_title" = "Zgjidhni xhematin";
+"community_picker_title" = "Zgjidhni xhematin tuaj";
 "community_search_hint" = "Kërko qytet ose xhemat";
 "community_none_found" = "Nuk u gjet asnjë xhemat.";
 "community_none_selected" = "Nuk është zgjedhur xhemat";
@@ -224,3 +224,12 @@
 "settings_community_header" = "Xhemati";
 "admin_login_community" = "Hyrje për administratorët e xhematit";
 "admin_login_head_title" = "Hyrja e administratorit kryesor";
+"community_picker_subtitle" = "Kohët e namazit ndryshojnë sipas qytetit — zgjidhni ku faleni.";
+"community_search_clear" = "Pastro kërkimin";
+"community_search_empty" = "Asnjë rezultat. Kontrolloni shkrimin ose provoni qytetin fqinj.";
+"community_inactive_notice" = "Ky xhemat aktualisht nuk është aktiv. Kohët e namazit vazhdojnë të funksionojnë. Në Cilësimet mund të zgjidhni një xhemat tjetër.";
+"community_none_available" = "Aktualisht nuk ka xhemate në dispozicion. Kontrolloni lidhjen e internetit dhe provoni sërish.";
+"community_blocked_title" = "Xhemati nuk është i disponueshëm";
+"community_blocked_body" = "Ky xhemat aktualisht nuk është i disponueshëm në aplikacion. Zgjidhni një tjetër për të vazhduar.";
+"community_blocked_action" = "Zgjidh xhemat tjetër";
+"community_pick_town" = "Për cilin qytet dëshironi kohët e namazit?";

@@ -1,14 +1,16 @@
 import SwiftUI
 
-// Die Gemeindeauswahl — wie auf Android zweistufig: erst die Gemeinde, dann der Ort, falls eine
-// Gemeinde mehrere hat.
+// Die Gemeindeauswahl. Aufbau und Texte wie auf Android — die Apps sollen sich gleich anfühlen,
+// sonst erklärt der Vorstand bei jeder Schulung zweimal dasselbe.
 //
-// Gesucht wird über Name UND Ort. Wer die App bekommt, kennt oft nur seine Stadt, nicht den
-// eingetragenen Vereinsnamen ("IGBD-Džemat BKC Siegen e.V." findet man über "Siegen").
+// Zweistufig und in DIESER Reihenfolge: erst die Gemeinde, dann der Ort. Nicht umgekehrt — in
+// Berlin gibt es zwei Gemeinden, und eine Ortsliste vorweg könnte sie nicht auseinanderhalten.
 //
-// Gesperrte und eingeschränkte Gemeinden stehen NICHT in der Liste: eine Gemeinde, die nicht
-// teilnimmt, soll auch nicht wählbar sein. Ihre Gebetszeiten laufen für Bestandsnutzer weiter,
-// das entscheidet der Hauptadministrator, nicht diese Ansicht.
+// Gesucht wird über Name, Adresse und alle Orte. Wer die App bekommt, kennt oft nur seine Stadt,
+// nicht den eingetragenen Vereinsnamen: „Siegen" muss „IGBD-Džemat BKC Siegen e.V." finden.
+//
+// Abgeschaltete und gesperrte Gemeinden stehen nicht in der Liste. Neue Gemeinden werden
+// abgeschaltet angelegt, deshalb ist die Liste anfangs kurz — das ist Absicht, kein Fehler.
 struct CommunityPickerView: View {
     @ObservedObject private var catalog = CommunityCatalog.shared
     @Environment(\.dismiss) private var dismiss
@@ -29,40 +31,47 @@ struct CommunityPickerView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                searchField
-                if matches.isEmpty {
-                    Spacer()
-                    Text(L("community_none_found"))
-                        .font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
-                        .multilineTextAlignment(.center).padding(.horizontal, 32)
-                    Spacer()
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 10) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text(L("community_picker_title"))
+                        .font(.inter(30, .bold)).foregroundColor(.brandGreen)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text(L("community_picker_subtitle"))
+                        .font(.inter(15)).foregroundColor(.appOnSurface)
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    searchField
+
+                    if catalog.selectable.isEmpty {
+                        // Ohne Netz und ohne Verzeichnis ist die Liste leer — das ist etwas
+                        // anderes als „nichts gefunden" und muss anders klingen.
+                        notice(L("community_none_available"))
+                    } else if matches.isEmpty {
+                        notice(L("community_search_empty"))
+                    } else {
+                        VStack(spacing: 10) {
                             ForEach(matches) { community in
                                 Button { pick(community) } label: { row(community) }
                                     .buttonStyle(.plain)
                             }
                         }
-                        .padding(.horizontal, 16).padding(.vertical, 12)
                     }
                 }
+                .padding(.horizontal, 20).padding(.top, 24).padding(.bottom, 32)
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle(L("community_picker_title"))
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(L("action_cancel")) { dismiss() }
                 }
             }
             .sheet(item: $pendingLocations) { community in
-                LocationPickerView(community: community) { location in
+                LocationPickerSheet(community: community) { location in
                     catalog.choose(community, location: location)
                     pendingLocations = nil
                     dismiss()
                 }
+                .presentationDetents([.medium, .large])
             }
         }
         .tint(.brandGreen)
@@ -70,46 +79,56 @@ struct CommunityPickerView: View {
     }
 
     private var searchField: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "magnifyingglass").foregroundColor(.appOnSurfaceVariant)
+        HStack(spacing: 12) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 19)).foregroundColor(.appOnSurfaceVariant)
             TextField(L("community_search_hint"), text: $query)
-                .font(.inter(15))
-                .autocorrectionDisabled()
+                .font(.inter(17)).autocorrectionDisabled()
+            if !query.isEmpty {
+                Button { query = "" } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.appOnSurfaceVariant)
+                }
+                .accessibilityLabel(L("community_search_clear"))
+            }
         }
-        .padding(12)
-        .background(Color.appSurface)
-        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
-            .stroke(Color.appOnSurfaceVariant.opacity(0.3), lineWidth: 1))
-        .padding(.horizontal, 16).padding(.top, 12)
+        .padding(.horizontal, 16).padding(.vertical, 18)
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
+            .stroke(Color.appOnSurfaceVariant.opacity(0.45), lineWidth: 1))
+    }
+
+    private func notice(_ text: String) -> some View {
+        Text(text)
+            .font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.top, 8)
     }
 
     private func row(_ c: CommunityInfo) -> some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 16) {
             Image(systemName: "mappin.and.ellipse")
-                .font(.system(size: 17)).foregroundColor(.brandGreen).frame(width: 26)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(c.name).font(.inter(15, .semibold)).foregroundColor(.appOnSurface)
+                .font(.system(size: 22)).foregroundColor(.brandGoldLight)
+                .frame(width: 60, height: 60)
+                .background(Color.brandGreen).clipShape(Circle())
+            VStack(alignment: .leading, spacing: 4) {
+                Text(c.name)
+                    .font(.inter(19, .bold)).foregroundColor(.appOnSurface)
                     .fixedSize(horizontal: false, vertical: true)
                     .multilineTextAlignment(.leading)
-                if let place = c.primaryLocation {
-                    Text(place.name).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
-                }
+                // Alle Orte, nicht nur der erste: die Zeile beantwortet die Frage „ist meine
+                // Stadt dabei?", und die stellt sich vor dem Antippen.
+                Text(c.locations.map(\.name).joined(separator: " · "))
+                    .font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
+                    .lineLimit(1)
             }
-            Spacer()
-            if c.id == catalog.selected?.id {
-                Image(systemName: "checkmark").font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.brandGreen)
-            }
+            Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        .background(Color.appSurface)
-        .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
+        .padding(.vertical, 10)
     }
 
     private func pick(_ c: CommunityInfo) {
-        // Zweiter Schritt nur, wenn es überhaupt etwas zu wählen gibt.
+        // Zweiter Schritt nur, wenn es etwas zu wählen gibt.
         if c.locations.count > 1 {
             pendingLocations = c
         } else {
@@ -119,44 +138,51 @@ struct CommunityPickerView: View {
     }
 }
 
-/// Zweiter Schritt: der Ort innerhalb einer Gemeinde. Betrifft die Gebetszeiten, nicht nur die
+/// Zweiter Schritt: der Ort innerhalb der Gemeinde. Betrifft die Gebetszeiten, nicht nur die
 /// Anzeige — eine Filiale in der Nachbarstadt hat eigene Zeiten.
-private struct LocationPickerView: View {
+private struct LocationPickerSheet: View {
     let community: CommunityInfo
     let onPick: (CommunityLocation) -> Void
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        NavigationStack {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(community.name)
+                .font(.inter(24, .bold)).foregroundColor(.appOnSurface)
+                .fixedSize(horizontal: false, vertical: true)
+            Text(L("community_pick_town"))
+                .font(.inter(16)).foregroundColor(.appOnSurface)
+                .fixedSize(horizontal: false, vertical: true)
+
             ScrollView {
-                LazyVStack(spacing: 10) {
+                VStack(spacing: 10) {
                     ForEach(community.locations) { place in
                         Button { onPick(place) } label: {
-                            HStack {
-                                Text(place.name).font(.inter(15, .medium)).foregroundColor(.appOnSurface)
+                            HStack(spacing: 14) {
+                                Image(systemName: "mappin.and.ellipse")
+                                    .font(.system(size: 19)).foregroundColor(.brandGreen)
+                                Text(place.name)
+                                    .font(.inter(17, .medium)).foregroundColor(.appOnSurface)
                                 Spacer()
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 13)).foregroundColor(.appOnSurfaceVariant)
                             }
-                            .padding(14)
+                            .padding(.horizontal, 16).padding(.vertical, 16)
                             .frame(maxWidth: .infinity)
-                            .background(Color.appSurface)
-                            .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
+                            .background(Color.appBackground)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                         }
                         .buttonStyle(.plain)
                     }
                 }
-                .padding(16)
             }
-            .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle(community.name)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(L("action_cancel")) { dismiss() }
-                }
+
+            HStack {
+                Spacer()
+                Button(L("action_cancel")) { dismiss() }
+                    .font(.inter(16, .semibold)).foregroundColor(.brandGreen)
             }
         }
-        .tint(.brandGreen)
+        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(Color.moreCard.ignoresSafeArea())
     }
 }

@@ -219,8 +219,8 @@
 "zakat_below_nisab" = "Ispod ste nisaba — zekat nije obavezan.";
 "zakat_disclaimer" = "Ovo je pomoćni račun, a ne fetva. Za svoj slučaj pitajte imama.";
 "community_section_header" = "Džemat";
-"community_picker_title" = "Izaberite džemat";
-"community_search_hint" = "Pretraži grad ili džemat";
+"community_picker_title" = "Odaberite svoj džemat";
+"community_search_hint" = "Traži grad ili džemat";
 "community_none_found" = "Nije pronađen nijedan džemat.";
 "community_none_selected" = "Nije izabran džemat";
 "action_change_community" = "Promijeni džemat";
@@ -244,3 +244,12 @@
 "settings_community_header" = "Džemat";
 "admin_login_community" = "Prijava za administratore džemata";
 "admin_login_head_title" = "Prijava glavnog administratora";
+"community_picker_subtitle" = "Namaska vremena se razlikuju po gradu — odaberite gdje klanjate.";
+"community_search_clear" = "Obriši pretragu";
+"community_search_empty" = "Nema rezultata. Provjerite pravopis ili tražite susjedni grad.";
+"community_inactive_notice" = "Ovaj džemat trenutno nije aktivan. Namaska vremena i dalje rade. U Postavkama možete odabrati drugi džemat.";
+"community_none_available" = "Trenutno nema dostupnih džemata. Provjerite internet vezu i pokušajte ponovo.";
+"community_blocked_title" = "Džemat nije dostupan";
+"community_blocked_body" = "Ovaj džemat trenutno nije dostupan u aplikaciji. Odaberite drugi džemat da nastavite.";
+"community_blocked_action" = "Odaberi drugi džemat";
+"community_pick_town" = "Za koji grad želite namaska vremena?";

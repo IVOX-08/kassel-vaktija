@@ -202,7 +202,7 @@
 "zakat_below_nisab" = "Sie liegen unter dem Nisab — es fällt kein Zakat an.";
 "zakat_disclaimer" = "Dies ist eine Rechenhilfe, keine Fatwa. Fragen Sie für Ihren Fall Ihren Imam.";
 "community_section_header" = "Gemeinde";
-"community_picker_title" = "Gemeinde wählen";
+"community_picker_title" = "Wählen Sie Ihre Gemeinde";
 "community_search_hint" = "Stadt oder Gemeinde suchen";
 "community_none_found" = "Keine Gemeinde gefunden.";
 "community_none_selected" = "Keine Gemeinde gewählt";
@@ -227,3 +227,12 @@
 "settings_community_header" = "Gemeinde";
 "admin_login_community" = "Anmeldung für Gemeinde-Administratoren";
 "admin_login_head_title" = "Anmeldung Hauptadministrator";
+"community_picker_subtitle" = "Die Gebetszeiten unterscheiden sich je Stadt — wählen Sie, wo Sie beten.";
+"community_search_clear" = "Suche löschen";
+"community_search_empty" = "Keine Treffer. Prüfen Sie die Schreibweise oder suchen Sie die Nachbarstadt.";
+"community_inactive_notice" = "Diese Gemeinde ist derzeit nicht aktiv. Die Gebetszeiten laufen weiter. In den Einstellungen können Sie eine andere Gemeinde wählen.";
+"community_none_available" = "Derzeit sind keine Gemeinden verfügbar. Bitte Internetverbindung prüfen und erneut versuchen.";
+"community_blocked_title" = "Gemeinde nicht verfügbar";
+"community_blocked_body" = "Diese Gemeinde ist derzeit nicht in der App verfügbar. Wählen Sie eine andere Gemeinde, um fortzufahren.";
+"community_blocked_action" = "Andere Gemeinde wählen";
+"community_pick_town" = "Für welche Stadt möchten Sie die Gebetszeiten?";

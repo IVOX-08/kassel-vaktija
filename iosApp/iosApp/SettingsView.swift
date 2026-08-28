@@ -6,7 +6,6 @@ import UserNotifications
 struct SettingsView: View {
     @AppStorage("appColorScheme") private var theme = "system"
     // 6.2 prayer notifications
-    @AppStorage("notif_master") private var master = true
     @AppStorage("notif_sound") private var soundRaw = NotifSound.adhan.rawValue
     @AppStorage("notif_silent") private var playInSilent = false
     // 6.3 auto-mute
@@ -66,7 +65,6 @@ struct SettingsView: View {
         .tint(.brandGreen)
         .sheet(isPresented: $showCommunityPicker) { CommunityPickerView() }
         .onAppear { refreshAuth(); admin.start(); catalog.start() }
-        .onChange(of: master) { _ in rearm() }
         .onChange(of: soundRaw) { _ in rearm() }
         .fullScreenCover(isPresented: $showLangPicker) {
             LanguagePickerView(
@@ -126,29 +124,26 @@ struct SettingsView: View {
         VStack(alignment: .leading, spacing: 8) {
             SettingHeader(L("settings_notifications_header"))
             SettingCard {
-                Toggle(L("settings_master_toggle"), isOn: $master)
-                    .tint(.brandGreen).font(.inter(15, .medium))
-                if master {
-                    Divider()
-                    HStack {
-                        Text(L("settings_notification_sound")).font(.inter(15))
-                        Spacer()
-                        Menu {
-                            ForEach(NotifSound.allCases, id: \.self) { s in
-                                Button(s.label) { soundRaw = s.rawValue }
-                            }
-                        } label: { PillLabel(sound.label) }
-                    }
-                    Divider()
-                    VStack(alignment: .leading, spacing: 4) {
-                        Toggle(L("settings_play_when_silent"), isOn: $playInSilent)
-                            .tint(.brandGreen).font(.inter(15, .medium))
-                        Text(L("settings_play_when_silent_hint"))
-                            .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
-                    }
+                // Kein Hauptschalter mehr: Er schaltete mit einem Tipp alles ab, und wer ihn
+                // einmal gedrückt hatte, fand selten zurück. Die einzelnen Schalter bleiben.
+                HStack {
+                    Text(L("settings_notification_sound")).font(.inter(15))
+                    Spacer()
+                    Menu {
+                        ForEach(NotifSound.allCases, id: \.self) { s in
+                            Button(s.label) { soundRaw = s.rawValue }
+                        }
+                    } label: { PillLabel(sound.label) }
+                }
+                Divider()
+                VStack(alignment: .leading, spacing: 4) {
+                    Toggle(L("settings_play_when_silent"), isOn: $playInSilent)
+                        .tint(.brandGreen).font(.inter(15, .medium))
+                    Text(L("settings_play_when_silent_hint"))
+                        .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
                 }
             }
-            if master {
+            Group {
                 ForEach(SettingsView.prayers, id: \.0) { key, nameKey in
                     PrayerNotifCard(title: L(nameKey), key: key,
                                     hint: key == "sunrise" ? L("settings_sunrise_hint") : nil,

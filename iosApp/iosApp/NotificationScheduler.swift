@@ -51,7 +51,8 @@ enum NotificationScheduler {
 
         center.removeAllPendingNotificationRequests()
         let d = UserDefaults.standard
-        guard d.object(forKey: "notif_master") == nil || d.bool(forKey: "notif_master") else { return }
+        // Kein Hauptschalter mehr — jedes Gebet hat seinen eigenen. Ein einziger Schalter, der
+        // alles abdreht, hat zu viele Leute stumm zurückgelassen.
 
         let sound = notifSound()
         // Schedule today's remaining prayers and the same set for the next 6 days, so notifications

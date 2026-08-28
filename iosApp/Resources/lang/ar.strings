@@ -199,7 +199,7 @@
 "zakat_below_nisab" = "أنت دون النصاب — لا زكاة عليك.";
 "zakat_disclaimer" = "هذه أداة حساب وليست فتوى. اسأل إمامك عن حالتك.";
 "community_section_header" = "الجماعة";
-"community_picker_title" = "اختر الجماعة";
+"community_picker_title" = "اختر جماعتك";
 "community_search_hint" = "ابحث عن مدينة أو جماعة";
 "community_none_found" = "لم يتم العثور على جماعة.";
 "community_none_selected" = "لم يتم اختيار جماعة";
@@ -224,3 +224,12 @@
 "settings_community_header" = "الجماعة";
 "admin_login_community" = "تسجيل الدخول لمشرفي الجماعات";
 "admin_login_head_title" = "تسجيل دخول المشرف العام";
+"community_picker_subtitle" = "تختلف مواقيت الصلاة حسب المدينة — اختر المكان الذي تصلي فيه.";
+"community_search_clear" = "مسح البحث";
+"community_search_empty" = "لا توجد نتائج. تحقق من الإملاء أو جرّب مدينة مجاورة.";
+"community_inactive_notice" = "هذه الجماعة غير مُفعَّلة حاليًا. مواقيت الصلاة تعمل كالمعتاد. يمكنك اختيار جماعة أخرى من الإعدادات.";
+"community_none_available" = "لا توجد جماعات متاحة حاليًا. تحقق من اتصال الإنترنت وحاول مرة أخرى.";
+"community_blocked_title" = "الجماعة غير متاحة";
+"community_blocked_body" = "هذه الجماعة غير متاحة حاليًا في التطبيق. اختر جماعة أخرى للمتابعة.";
+"community_blocked_action" = "اختر جماعة أخرى";
+"community_pick_town" = "مواقيت أي مدينة تريد؟";

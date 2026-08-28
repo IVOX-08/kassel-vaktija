@@ -239,7 +239,14 @@ final class HeadingModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     }
 
     func locationManager(_ m: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        heading = newHeading.magneticHeading
+        // trueHeading, nicht magneticHeading: Die Richtung zur Kaaba wird gegen GEOGRAFISCH Nord
+        // gerechnet, der Kompass misst gegen MAGNETISCH Nord. Beides direkt zu vergleichen ist
+        // falsch — über Deutschland 3 bis 5 Grad, weiter östlich mehr. Genau die Abweichung, die
+        // beim Ausprobieren aufgefallen ist.
+        //
+        // trueHeading ist erst gültig, wenn der Standort bekannt ist (sonst -1); bis dahin bleibt
+        // die magnetische Messung besser als gar keine Nadel.
+        heading = newHeading.trueHeading >= 0 ? newHeading.trueHeading : newHeading.magneticHeading
     }
 
     func locationManager(_ m: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
