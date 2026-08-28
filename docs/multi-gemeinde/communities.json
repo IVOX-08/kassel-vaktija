@@ -1,330 +1,1066 @@
 [
   {
-    "id": "bosniakisch-deutsche-gemeinde-karlsruhe-e-v",
-    "name": "Bosniakisch-Deutsche Gemeinde Karlsruhe e.V.",
-    "address": "Pfalzbahnstraße 4, 76187 Karlsruhe",
-    "status": "active",
-    "fajrIqamah": "05:15",
-    "jumua": "15:00",
-    "dhuhrOffsetMin": 10,
-    "asrOffsetMin": 10,
-    "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "id": "big-frankfurt",
+    "name": "BIG Frankfurt",
+    "address": "Höchster Bahn Str. 2 a 65929 Frankfurt (Höchst)",
+    "status": "blocked",
     "locations": [
       {
-        "id": "karlsruhe",
-        "name": "Karlsruhe",
-        "vaktijaSlug": "karlsruhe",
-        "latitude": 49.026653,
-        "longitude": 8.341525
+        "id": "frankfurt-hoechst",
+        "name": "Frankfurt (Höchst)",
+        "vaktijaSlug": "frankfurt",
+        "latitude": 50.103431,
+        "longitude": 8.542943
       }
     ],
-    "_check": {
-      "geocoded_as": "4, Pfalzbahnstraße, Alt-Knielingen, Knielingen, Karlsruhe, Baden-Württemberg, 76187, Deutschland",
-      "town_distance_km": 5.0,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:41",
-        "Izlazak Sunca": "06:26",
-        "Podne": "13:33",
-        "Ikindija": "17:22",
-        "Akšam": "20:30",
-        "Jacija": "22:00"
-      }
-    }
-  },
-  {
-    "id": "dzemat-essen-e-v",
-    "name": "Džemat Essen e.V.",
-    "address": "Rahmstraße 253, 45326 Essen",
-    "status": "active",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "bikg-hanau-e-v",
+    "name": "BIKG Hanau e.V.",
+    "address": "Martin-Luther-King-Straße. 7 63452 Hanau",
+    "status": "blocked",
     "locations": [
       {
-        "id": "essen",
-        "name": "Essen",
-        "vaktijaSlug": "essen",
-        "latitude": 51.496402,
-        "longitude": 7.018705
+        "id": "hanau",
+        "name": "Hanau",
+        "vaktijaSlug": "hanau",
+        "latitude": 50.146292,
+        "longitude": 8.920855
       }
     ],
-    "_check": {
-      "geocoded_as": "Kulturzentrum Dzemat e.V., 253, Rahmstraße, Altenessen-Süd, Altenessen, Stadtbezirk V, Essen, Nordrhein-Westfalen, 45326, Deutschland",
-      "town_distance_km": 4.6,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:42",
-        "Izlazak Sunca": "06:27",
-        "Podne": "13:39",
-        "Ikindija": "17:28",
-        "Akšam": "20:40",
-        "Jacija": "22:10"
-      }
-    }
-  },
-  {
-    "id": "dzemat-ikre-berlin-e-v",
-    "name": "Džemat IKRE Berlin e.V.",
-    "address": "Ollenhauerstraße 15, 13403 Berlin",
-    "status": "active",
+    "email": "info@bikg-hanau.de",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "bkc-frankfurt",
+    "name": "BKC Frankfurt",
+    "address": "Mainzer Landstraße 125 60327 Frankfurt am Main",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "frankfurt-am-main",
+        "name": "Frankfurt am Main",
+        "vaktijaSlug": "frankfurt-am-main",
+        "latitude": 50.107925,
+        "longitude": 8.657263
+      }
+    ],
+    "email": "info@bkc-frankfurt.de",
+    "website": "https://www.bkc-frankfurt.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "bkc-offenbach",
+    "name": "BKC Offenbach",
+    "address": "Strahlenbergerstr.105 63067 Offenbach",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "offenbach",
+        "name": "Offenbach",
+        "vaktijaSlug": "offenbach",
+        "latitude": 50.107327,
+        "longitude": 8.733929
+      }
+    ],
+    "email": "offenbachbkc@gmail.com",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "bkc-saarbruecken",
+    "name": "BKC Saarbrücken",
+    "address": "Dresdenerstr.16 A 66113 Saarbrücken",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "saarbruecken",
+        "name": "Saarbrücken",
+        "vaktijaSlug": "saarbruecken",
+        "latitude": 49.230852,
+        "longitude": 6.991341
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "bosniakisches-kulturzentrum-ingolstadt-e-v",
+    "name": "Bosniakisches Kulturzentrum Ingolstadt e.V",
+    "address": "Hindenburgstr 56 85057 Ingolstadt",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "ingolstadt",
+        "name": "Ingolstadt",
+        "vaktijaSlug": "ingolstadt",
+        "latitude": 48.775772,
+        "longitude": 11.419696
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-sejhul-ekber-rosenheim",
+    "name": "Džemat \"Šejhul Ekber\" Rosenheim",
+    "address": "Burgfriedstrasse 55 83024 Rosenheim",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "rosenheim",
+        "name": "Rosenheim",
+        "vaktijaSlug": "rosenheim",
+        "latitude": 47.86642,
+        "longitude": 12.11307
+      }
+    ],
+    "email": "info@dzemat-rosenheim.de",
+    "phone": "08031 890711",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-aachen",
+    "name": "Džemat Aachen",
+    "address": "Josefstraße 158 52080 Aachen",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "aachen",
+        "name": "Aachen",
+        "vaktijaSlug": "aachen",
+        "latitude": 50.784321,
+        "longitude": 6.154333
+      }
+    ],
+    "email": "info@dzemat-aachen.de",
+    "phone": "2411606758",
+    "website": "https://www.dzemat-aachen.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-ahlen",
+    "name": "Džemat Ahlen",
+    "address": "Im Kühl 10 59227 Ahlen",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "ahlen",
+        "name": "Ahlen",
+        "vaktijaSlug": "ahlen",
+        "latitude": 51.76196,
+        "longitude": 7.891765
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-augsburg",
+    "name": "Džemat Augsburg",
+    "address": "Steinerne Furt 84 86167 Augsburg",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "augsburg",
+        "name": "Augsburg",
+        "vaktijaSlug": "augsburg",
+        "latitude": 48.396368,
+        "longitude": 10.935632
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-balingen",
+    "name": "Džemat Balingen",
+    "address": "Hölzlestraße 6 72336 Balingen",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "balingen",
+        "name": "Balingen",
+        "vaktijaSlug": "balingen",
+        "latitude": 48.298389,
+        "longitude": 8.866618
+      }
+    ],
+    "email": "igbalingen@outlook.de",
+    "phone": "07433 9985962",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-berlin-ikre",
+    "name": "Džemat Berlin IKRE",
+    "address": "Meteorstraße 30 13405 Berlin",
+    "status": "blocked",
     "locations": [
       {
         "id": "berlin",
         "name": "Berlin",
         "vaktijaSlug": "berlin",
-        "latitude": 52.566752,
-        "longitude": 13.329335
+        "latitude": 52.56336,
+        "longitude": 13.32162
       }
     ],
-    "_check": {
-      "geocoded_as": "15, Ollenhauerstraße, Reinickendorf, Berlin, 13403, Deutschland",
-      "town_distance_km": 7.3,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:15",
-        "Izlazak Sunca": "06:00",
-        "Podne": "13:13",
-        "Ikindija": "17:02",
-        "Akšam": "20:17",
-        "Jacija": "21:47"
-      }
-    }
-  },
-  {
-    "id": "gemeinde-bosnischer-moslems-e-v-dzemat-bremen",
-    "name": "Gemeinde bosnischer Moslems e.V. — Džemat Bremen",
-    "address": "Schiffbauerweg 4, 28237 Bremen",
-    "status": "active",
+    "phone": "0176 44269404",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-bielefeld",
+    "name": "Džemat Bielefeld",
+    "address": "Ziegelstraße 67 33609 Bielefeld",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "bielefeld",
+        "name": "Bielefeld",
+        "vaktijaSlug": "bielefeld",
+        "latitude": 52.037076,
+        "longitude": 8.566697
+      }
+    ],
+    "email": "igbdgemeindebielefeld@gmail.com",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-bochum",
+    "name": "Džemat Bochum",
+    "address": "Hochstraße 92 44866 Bochum",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "bochum",
+        "name": "Bochum",
+        "vaktijaSlug": "bochum",
+        "latitude": 51.479854,
+        "longitude": 7.147394
+      }
+    ],
+    "email": "ikc-bb@outlook.de",
+    "phone": "0177 7540425",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-bonn",
+    "name": "Džemat Bonn",
+    "address": "An der Esche 24 53111 Bonn",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "bonn",
+        "name": "Bonn",
+        "vaktijaSlug": "bonn",
+        "latitude": 50.742886,
+        "longitude": 7.101351
+      }
+    ],
+    "email": "info@hajr-bonn.de",
+    "phone": "0228 30412776",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-braunschweig",
+    "name": "Džemat Braunschweig",
+    "address": "An d. Rothenburg 38 38120 Braunschweig",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "braunschweig",
+        "name": "Braunschweig",
+        "vaktijaSlug": "braunschweig",
+        "latitude": 52.23826,
+        "longitude": 10.47799
+      }
+    ],
+    "phone": "0531 28096",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-bremen",
+    "name": "Džemat Bremen",
+    "address": "Schiffbauerweg 4 28237 Bremen",
+    "status": "blocked",
     "locations": [
       {
         "id": "bremen",
         "name": "Bremen",
         "vaktijaSlug": "bremen",
-        "latitude": 53.113772,
-        "longitude": 8.750703
+        "latitude": 53.11411,
+        "longitude": 8.75107
       }
     ],
-    "_check": {
-      "geocoded_as": "4, Schiffbauerweg, Industriehäfen, Häfen, Bremen-Mitte, Bremen, 28237, Deutschland",
-      "town_distance_km": 5.1,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:31",
-        "Izlazak Sunca": "06:16",
-        "Podne": "13:32",
-        "Ikindija": "17:20",
-        "Akšam": "20:35",
-        "Jacija": "22:05"
-      }
-    }
-  },
-  {
-    "id": "dzemat-bkc-siegen-e-v",
-    "name": "IGBD-Džemat BKC Siegen e.V.",
-    "address": "Obere Kaiserstraße 6, 57078 Siegen",
-    "status": "active",
+    "email": "info@dzematbremen.de",
+    "phone": "+(49) 173 9054050",
+    "website": "https://dzematbremen.de/",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-bremen-ig",
+    "name": "Džemat Bremen IG",
+    "address": "Zum Panrepel 10 28307 Bremen",
+    "status": "blocked",
     "locations": [
       {
-        "id": "siegen",
-        "name": "Siegen",
-        "vaktijaSlug": "siegen",
-        "latitude": 50.918402,
-        "longitude": 8.014279
+        "id": "bremen",
+        "name": "Bremen",
+        "vaktijaSlug": "bremen",
+        "latitude": 53.04357,
+        "longitude": 8.96239
       }
     ],
-    "_check": {
-      "geocoded_as": "Haus der Vereine, 6, Obere Kaiserstraße, Deutsche Edelstahlwerke, Geisweid, Niedersetzen, Siegen, Kreis Siegen-Wittgenstein, Nordrhein-Westfalen, 57078, Deutschland",
-      "town_distance_km": 4.9,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:39",
-        "Izlazak Sunca": "06:24",
-        "Podne": "13:35",
-        "Ikindija": "17:24",
-        "Akšam": "20:36",
-        "Jacija": "22:06"
-      }
-    }
-  },
-  {
-    "id": "boeblingen-sindelfingen-e-v",
-    "name": "IGBD-Gemeinde Böblingen/Sindelfingen e.V.",
-    "address": "Max-Eyth-Straße 4, 71065 Sindelfingen",
-    "status": "active",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-boeblingen-sindelfingen",
+    "name": "Džemat Böblingen/Sindelfingen",
+    "address": "Max-Eyth-Straße 4 71065 Sindelfingen",
+    "status": "blocked",
     "locations": [
       {
         "id": "sindelfingen",
         "name": "Sindelfingen",
         "vaktijaSlug": "sindelfingen",
-        "latitude": 48.697492,
-        "longitude": 9.005919
+        "latitude": 48.69748,
+        "longitude": 9.00593
       }
     ],
-    "_check": {
-      "geocoded_as": "Bosnische Moschee Böblingen/Sindelfingen, 4, Max-Eyth-Straße, Am Hirnach, Sindelfingen (Stadt), Sindelfingen, Landkreis Böblingen, Baden-Württemberg, 71065, Deutschland",
-      "town_distance_km": 1.8,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:40",
-        "Izlazak Sunca": "06:25",
-        "Podne": "13:31",
-        "Ikindija": "17:19",
-        "Akšam": "20:27",
-        "Jacija": "21:57"
-      }
-    }
-  },
-  {
-    "id": "duisburg-e-v",
-    "name": "IGBD-Gemeinde Duisburg e.V.",
-    "address": "Ziethenstraße 49, 47169 Duisburg",
-    "status": "active",
+    "email": "info@dzemat-sindelfingen.de",
+    "phone": "07031 870656",
+    "website": "https://dzemat-sindelfingen.de/",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-calw",
+    "name": "Džemat Calw",
+    "address": "Breite Heerstraße 1 75365 Calw",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "calw",
+        "name": "Calw",
+        "vaktijaSlug": "calw",
+        "latitude": 48.70953,
+        "longitude": 8.76209
+      }
+    ],
+    "email": "islamskazajednica@live.de",
+    "phone": "07051 78385",
+    "website": "https://www.dzemat-calw.de/deutsch/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-castrop-rauxel",
+    "name": "Džemat Castrop-Rauxel",
+    "address": "Wartburgstr. 29 44579 Castrop-Rauxel",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "castrop-rauxel",
+        "name": "Castrop-Rauxel",
+        "vaktijaSlug": "castrop-rauxel",
+        "latitude": 51.575285,
+        "longitude": 7.321088
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-darmstadt",
+    "name": "Džemat Darmstadt",
+    "address": "Dieselstr. 1 64347 Griesheim",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "griesheim",
+        "name": "Griesheim",
+        "vaktijaSlug": "griesheim",
+        "latitude": 49.868166,
+        "longitude": 8.558804
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-dortmund",
+    "name": "Džemat Dortmund",
+    "address": "Dernerstr. 94 44339 Dortmund",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "dortmund",
+        "name": "Dortmund",
+        "vaktijaSlug": "dortmund",
+        "latitude": 51.545416,
+        "longitude": 7.484227
+      }
+    ],
+    "website": "http://dzemat-dortmund.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-dortmund-san",
+    "name": "Džemat Dortmund SAN",
+    "address": "Brunnenstrasse 68 44145 Dortmund",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "dortmund",
+        "name": "Dortmund",
+        "vaktijaSlug": "dortmund",
+        "latitude": 51.52624,
+        "longitude": 7.47189
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-duisburg",
+    "name": "Džemat Duisburg",
+    "address": "Ziethenstraße 49 47169 Duisburg",
+    "status": "blocked",
     "locations": [
       {
         "id": "duisburg",
         "name": "Duisburg",
         "vaktijaSlug": "duisburg",
-        "latitude": 51.514294,
-        "longitude": 6.758057
+        "latitude": 51.514219,
+        "longitude": 6.758104
       }
     ],
-    "_check": {
-      "geocoded_as": "Bosnische Moschee - Islamisches Kulturzentrum e.V., 49, Ziethenstraße, Fahrn, Walsum, Duisburg, Nordrhein-Westfalen, 47169, Deutschland",
-      "town_distance_km": 8.9,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:44",
-        "Izlazak Sunca": "06:29",
-        "Podne": "13:40",
-        "Ikindija": "17:28",
-        "Akšam": "20:41",
-        "Jacija": "22:11"
-      }
-    }
-  },
-  {
-    "id": "hagen-e-v",
-    "name": "IGBD-Gemeinde Hagen e.V.",
-    "address": "Augustastraße 22, 58089 Hagen",
-    "status": "active",
+    "phone": "0203406116",
+    "website": "http://dzemat-duisburg.de/",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-duisburg-san",
+    "name": "Džemat Duisburg SAN",
+    "address": "Brückenstraße 98 47053 Duisburg",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "duisburg",
+        "name": "Duisburg",
+        "vaktijaSlug": "duisburg",
+        "latitude": 51.41812,
+        "longitude": 6.75028
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-duesseldorf",
+    "name": "Džemat Düsseldorf",
+    "address": "Niederstraße 1 40223 Düsseldorf",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "duesseldorf",
+        "name": "Düsseldorf",
+        "vaktijaSlug": "duesseldorf",
+        "latitude": 51.207981,
+        "longitude": 6.767028
+      }
+    ],
+    "email": "generalsektretaer@ikc-d.de",
+    "phone": "02119304619",
+    "website": "https://ikc-d.org/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-essen",
+    "name": "Džemat Essen",
+    "address": "Rahmstraße 253 45326 Essen",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "essen",
+        "name": "Essen",
+        "vaktijaSlug": "essen",
+        "latitude": 51.496426,
+        "longitude": 7.018741
+      }
+    ],
+    "email": "vorstand@dzemat-essen.de",
+    "phone": "0201 47673999",
+    "website": "http://dzemat-essen.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-fedzr",
+    "name": "Džemat Fedžr",
+    "address": "Drygalski-Allee 33D 81477 München",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "muenchen",
+        "name": "München",
+        "vaktijaSlug": "munchen",
+        "latitude": 48.09233,
+        "longitude": 11.50371
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-gaggenau",
+    "name": "Džemat Gaggenau",
+    "address": "August-Schneider-Straße 25a 76571 Gaggenau",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "gaggenau",
+        "name": "Gaggenau",
+        "vaktijaSlug": "gaggenau",
+        "latitude": 48.803967,
+        "longitude": 8.320876
+      }
+    ],
+    "email": "info@dzemat-gaggenau.de",
+    "phone": "07225 / 913 505",
+    "website": "https://www.dzemat-gaggenau.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-hagen",
+    "name": "Džemat Hagen",
+    "address": "Augustastraße 22 58089 Hagen",
+    "status": "blocked",
     "locations": [
       {
         "id": "hagen",
         "name": "Hagen",
         "vaktijaSlug": "hagen",
-        "latitude": 51.357705,
-        "longitude": 7.460284
+        "latitude": 51.35774,
+        "longitude": 7.460238
       }
     ],
-    "_check": {
-      "geocoded_as": "22, Augustastraße, Philippshöhe, Wehringhausen, Hagen-Mitte, Hagen, Nordrhein-Westfalen, 58089, Deutschland",
-      "town_distance_km": 1.0,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:41",
-        "Izlazak Sunca": "06:26",
-        "Podne": "13:37",
-        "Ikindija": "17:25",
-        "Akšam": "20:37",
-        "Jacija": "22:07"
-      }
-    }
-  },
-  {
-    "id": "hannover-e-v",
-    "name": "IGBD-Gemeinde Hannover e.V.",
-    "address": "Varrelheidering 4, 30659 Hannover",
-    "status": "active",
+    "email": "igbdhagen@gmail.com",
+    "phone": "02331-371196",
+    "website": "https://www.igbd-hagen.de/",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-hamburg",
+    "name": "Džemat Hamburg",
+    "address": "Horner Brückenweg 6 22111 Hamburg",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "hamburg",
+        "name": "Hamburg",
+        "vaktijaSlug": "hamburg",
+        "latitude": 53.54603,
+        "longitude": 10.08629
+      }
+    ],
+    "email": "info@igbd-hamburg.de",
+    "phone": "040/2296564",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-hamm",
+    "name": "Džemat Hamm",
+    "address": "Ahlenerstraße 130 59037 Hamm",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "hamm",
+        "name": "Hamm",
+        "vaktijaSlug": "hamm",
+        "latitude": 51.708071,
+        "longitude": 7.833075
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-hannover",
+    "name": "Džemat Hannover",
+    "address": "Schulenburger Landstr. 222 30419 Hannover",
+    "status": "blocked",
     "locations": [
       {
         "id": "hannover",
         "name": "Hannover",
         "vaktijaSlug": "hannover",
-        "latitude": 52.425764,
-        "longitude": 9.826992
+        "latitude": 52.41612,
+        "longitude": 9.70069
       }
     ],
-    "_check": {
-      "geocoded_as": "4, Varrelheidering, Lahe, Bothfeld-Vahrenheide, Hannover, Region Hannover, Niedersachsen, 30659, Deutschland",
-      "town_distance_km": 8.5,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:29",
-        "Izlazak Sunca": "06:10",
-        "Podne": "13:28",
-        "Ikindija": "17:20",
-        "Akšam": "20:36",
-        "Jacija": "22:06"
-      }
-    }
-  },
-  {
-    "id": "mainz-e-v",
-    "name": "IGBD-Gemeinde Mainz e.V.",
-    "address": "Curiestraße 15a, 55129 Mainz",
-    "status": "active",
+    "email": "kontakt@igbd-hannover.de",
+    "phone": "0511 352 33 47",
+    "website": "https://igbd-hannover.de/",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-heilbronn",
+    "name": "Džemat Heilbronn",
+    "address": "Böckinger Str. 30 74078 Heilbronn",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "heilbronn",
+        "name": "Heilbronn",
+        "vaktijaSlug": "heilbronn",
+        "latitude": 49.1427,
+        "longitude": 9.2109
+      }
+    ],
+    "email": "info@igbhn.de",
+    "phone": "07131 165111",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-hidaje-muenchen",
+    "name": "Džemat Hidaje München",
+    "address": "Gärtnerstrasse 41 80992 München",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "muenchen",
+        "name": "München",
+        "vaktijaSlug": "muenchen",
+        "latitude": 48.17792,
+        "longitude": 11.53146
+      }
+    ],
+    "email": "info@hidaje.de",
+    "phone": "+ 49 89 219 329 12",
+    "website": "https://hidaje.de/de",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-ikc-frankfurt",
+    "name": "Džemat IKC Frankfurt",
+    "address": "Lahnstr. 15 60326 Frankfurt",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "frankfurt",
+        "name": "Frankfurt",
+        "vaktijaSlug": "frankfurt",
+        "latitude": 50.101279,
+        "longitude": 8.637968
+      }
+    ],
+    "email": "mc333333@hotmail.com",
+    "phone": "0176 96561659",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-ikre-muenchen",
+    "name": "Džemat IKRE München",
+    "address": "Lindberghstraße 28 80939 München",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "muenchen",
+        "name": "München",
+        "vaktijaSlug": "muenchen",
+        "latitude": 48.189932,
+        "longitude": 11.603133
+      }
+    ],
+    "email": "kontakt@ikre.info",
+    "phone": "089 904 2241 0",
+    "website": "https://ikre.info/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-kamp-lintfort",
+    "name": "Džemat Kamp-Lintfort",
+    "address": "Haarbeckstraße 6 47475 Kamp-Lintfort",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "kamp-lintfort",
+        "name": "Kamp-Lintfort",
+        "vaktijaSlug": "kamp-lintfort",
+        "latitude": 51.48918,
+        "longitude": 6.565907
+      }
+    ],
+    "email": "moscheekamplintfort@googlemail.com",
+    "phone": "02842 9033299",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-karlsruhe",
+    "name": "Džemat Karlsruhe",
+    "address": "Pfalzbahnstraße 4 76187 Karlsruhe",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "karlsruhe",
+        "name": "Karlsruhe",
+        "vaktijaSlug": "karlsruhe",
+        "latitude": 49.026539,
+        "longitude": 8.341662
+      }
+    ],
+    "email": "info@dzemat-karlsruhe.de",
+    "phone": "0721 9664524",
+    "website": "https://www.dzemat-karlsruhe.de",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-kassel",
+    "name": "Džemat Kassel",
+    "address": "Bremer Str. 28 34117 Kassel",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "kassel",
+        "name": "Kassel",
+        "vaktijaSlug": "kassel",
+        "latitude": 51.319442,
+        "longitude": 9.504953
+      }
+    ],
+    "email": "igbd@dzamija-kassel.de",
+    "website": "https://dzamija-kassel.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-kirchheim-teck",
+    "name": "Džemat Kirchheim Teck",
+    "address": "Kirchheimer Str. 50 73265 Dettingen",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "dettingen",
+        "name": "Dettingen",
+        "vaktijaSlug": "kirchheim-teck",
+        "latitude": 48.621803,
+        "longitude": 9.453756
+      }
+    ],
+    "email": "Islamischegemeindekirchheim@gmail.com",
+    "phone": "0702182342",
+    "website": "https://dzemat-kirchheim.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-koblenz",
+    "name": "Džemat Koblenz",
+    "address": "Hochstr. 83 56070 Koblenz",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "koblenz",
+        "name": "Koblenz",
+        "vaktijaSlug": "koblenz",
+        "latitude": 50.376053,
+        "longitude": 7.609051
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-koeln",
+    "name": "Džemat Köln",
+    "address": "Vogelsangerstr. 210 50825 Köln",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "koeln",
+        "name": "Köln",
+        "vaktijaSlug": "koeln",
+        "latitude": 50.950125,
+        "longitude": 6.911803
+      }
+    ],
+    "email": "info@dzemat.de",
+    "phone": "0221 5461807",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-leipzig",
+    "name": "Džemat Leipzig",
+    "address": "Apostelstraße 19 04177 Leipzig",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "leipzig",
+        "name": "Leipzig",
+        "vaktijaSlug": "leipzig",
+        "latitude": 51.33692,
+        "longitude": 12.32856
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-ludwigsburg",
+    "name": "Džemat Ludwigsburg",
+    "address": "Harteneckerstraße 23/2 71691 Freiberg am Neckar",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "freiberg-am-neckar",
+        "name": "Freiberg am Neckar",
+        "vaktijaSlug": "freiberg-am-neckar",
+        "latitude": 48.925015,
+        "longitude": 9.201017
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-loehne",
+    "name": "Džemat Löhne",
+    "address": "Bahnhofstraße 137 32584 Löhne",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "loehne",
+        "name": "Löhne",
+        "vaktijaSlug": "loehne",
+        "latitude": 52.208471,
+        "longitude": 8.691393
+      }
+    ],
+    "phone": "05732 688557",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-mainz",
+    "name": "Džemat Mainz",
+    "address": "Curiestr. 15 55129 Mainz",
+    "status": "blocked",
     "locations": [
       {
         "id": "mainz",
@@ -334,195 +1070,693 @@
         "longitude": 8.266303
       }
     ],
-    "_check": {
-      "geocoded_as": "Bosnische Moschee, 15A, Curiestraße, Margraf-Fischer-Siedlung, Hechtsheim, Mainz, Rheinland-Pfalz, 55129, Deutschland",
-      "town_distance_km": 2.8,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:41",
-        "Izlazak Sunca": "06:25",
-        "Podne": "13:33",
-        "Ikindija": "17:22",
-        "Akšam": "20:33",
-        "Jacija": "22:03"
-      }
-    }
-  },
-  {
-    "id": "mannheim-e-v",
-    "name": "IGBD-Gemeinde Mannheim e.V.",
-    "address": "Neonstraße 5, 68199 Mannheim",
-    "status": "active",
+    "email": "dzemat-mainz@web.de",
+    "phone": "06131-625846",
+    "website": "http://www.dzemat-mainz.de",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-mannheim",
+    "name": "Džemat Mannheim",
+    "address": "Neonstraße 5 68199 Mannheim",
+    "status": "blocked",
     "locations": [
       {
         "id": "mannheim",
         "name": "Mannheim",
         "vaktijaSlug": "mannheim",
-        "latitude": 49.460997,
-        "longitude": 8.494575
+        "latitude": 49.461,
+        "longitude": 8.49457
       }
     ],
-    "_check": {
-      "geocoded_as": "5, Neonstraße, Neckarau, Mannheim, Baden-Württemberg, 68199, Deutschland",
-      "town_distance_km": 3.6,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:40",
-        "Izlazak Sunca": "06:25",
-        "Podne": "13:33",
-        "Ikindija": "17:22",
-        "Akšam": "20:31",
-        "Jacija": "22:01"
-      }
-    }
-  },
-  {
-    "id": "nuernberg-e-v",
-    "name": "IGBD-Gemeinde Nürnberg e.V.",
-    "address": "Turnerheimstraße 48, 90441 Nürnberg",
-    "status": "active",
+    "email": "info@dzemat-mannheim.de",
+    "phone": "062180397840",
+    "website": "https://dzemat-mannheim.de/",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-muelheim-a-d-ruhr",
+    "name": "Džemat Mülheim a. d. Ruhr",
+    "address": "Hingbergstraße 163 45470 Mülheim an der Ruhr",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "muelheim-an-der-ruhr",
+        "name": "Mülheim an der Ruhr",
+        "vaktijaSlug": "muelheim",
+        "latitude": 51.432378,
+        "longitude": 6.899779
+      }
+    ],
+    "phone": "0172 9961202",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-muenster",
+    "name": "Džemat Münster",
+    "address": "Münsterstraße 52b 48167 Münster",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "muenster",
+        "name": "Münster",
+        "vaktijaSlug": "muenster",
+        "latitude": 51.924779,
+        "longitude": 7.725041
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-nuernberg",
+    "name": "Džemat Nürnberg",
+    "address": "Turnerheimstraße 48 90441 Nürnberg",
+    "status": "blocked",
     "locations": [
       {
         "id": "nuernberg",
         "name": "Nürnberg",
         "vaktijaSlug": "nuernberg",
-        "latitude": 49.428317,
-        "longitude": 11.045981
+        "latitude": 49.426511,
+        "longitude": 11.045883
       }
     ],
-    "_check": {
-      "geocoded_as": "Turnerheimstraße, Hohe Marter, Südwestliche Außenstadt, Nürnberg, Bayern, 90441, Deutschland",
-      "town_distance_km": 3.5,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:30",
-        "Izlazak Sunca": "06:15",
-        "Podne": "13:23",
-        "Ikindija": "17:11",
-        "Akšam": "20:20",
-        "Jacija": "21:50"
-      }
-    }
-  },
-  {
-    "id": "oberhausen-e-v",
-    "name": "IGBD-Gemeinde Oberhausen e.V.",
-    "address": "Fahnhorststraße 32, 46117 Oberhausen",
-    "status": "active",
+    "email": "info@dzamija.net",
+    "phone": "+49911/6589571",
+    "website": "http://www.dzamija.net",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-oberhausen",
+    "name": "Džemat Oberhausen",
+    "address": "Fahnhorststraße 32 46117 Oberhausen",
+    "status": "blocked",
     "locations": [
       {
         "id": "oberhausen",
         "name": "Oberhausen",
         "vaktijaSlug": "oberhausen",
-        "latitude": 51.501748,
-        "longitude": 6.870051
+        "latitude": 51.501757,
+        "longitude": 6.869947
       }
     ],
-    "_check": {
-      "geocoded_as": "Bosnische Moschee Oberhausen, 32, Fahnhorststraße, Eisenheim, Osterfeld-Heide, Osterfeld, Oberhausen, Nordrhein-Westfalen, 46117, Deutschland",
-      "town_distance_km": 3.8,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:43",
-        "Izlazak Sunca": "06:28",
-        "Podne": "13:40",
-        "Ikindija": "17:28",
-        "Akšam": "20:41",
-        "Jacija": "22:11"
-      }
-    }
-  },
-  {
-    "id": "offenburg-e-v",
-    "name": "IGBD-Gemeinde Offenburg e.V.",
-    "address": "Okenstraße 73, 77652 Offenburg",
-    "status": "active",
+    "email": "dzematoberhausen@gmail.com",
+    "phone": "0208811000",
+    "website": "http://www.dzemat-oberhausen.de",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
-    "locations": [
-      {
-        "id": "hohberg",
-        "name": "Höhberg",
-        "vaktijaSlug": "hohberg",
-        "latitude": 48.480668,
-        "longitude": 7.945542
-      }
-    ],
-    "_check": {
-      "geocoded_as": "73, Okenstraße, Offenburg, VVG der Stadt Offenburg, Ortenaukreis, Baden-Württemberg, 77652, Deutschland",
-      "town_distance_km": 6.8,
-      "town_matched_by": "Nähe",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:43",
-        "Izlazak Sunca": "06:28",
-        "Podne": "13:35",
-        "Ikindija": "17:25",
-        "Akšam": "20:33",
-        "Jacija": "22:02"
-      }
-    }
+    "ishaOffsetMin": 0
   },
   {
-    "id": "rosenheim-e-v",
-    "name": "IGBD-Gemeinde Rosenheim e.V.",
-    "address": "Burgfriedstraße 55, 83024 Rosenheim",
-    "status": "active",
+    "id": "dzemat-offenbach",
+    "name": "Džemat Offenbach",
+    "address": "Geleitstr. 46 63065 Offenbach",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "offenbach",
+        "name": "Offenbach",
+        "vaktijaSlug": "offenbach",
+        "latitude": 50.102618,
+        "longitude": 8.759943
+      }
+    ],
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-osnabrueck-ig",
+    "name": "Džemat Osnabrück - IG",
+    "address": "Ackerstraße 55 49084 Osnabrück",
+    "status": "blocked",
     "locations": [
       {
-        "id": "rosenheim",
-        "name": "Rosenheim",
-        "vaktijaSlug": "rosenheim",
-        "latitude": 47.866545,
-        "longitude": 12.113048
+        "id": "osnabrueck",
+        "name": "Osnabrück",
+        "vaktijaSlug": "osnabrueck",
+        "latitude": 52.262348,
+        "longitude": 8.082683
       }
     ],
-    "_check": {
-      "geocoded_as": "55, Burgfriedstraße, Hausstätt, Mitterfeld, Westerndorf St. Peter, Rosenheim, Bayern, 83024, Deutschland",
-      "town_distance_km": 1.7,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:28",
-        "Izlazak Sunca": "06:13",
-        "Podne": "13:19",
-        "Ikindija": "17:07",
-        "Akšam": "20:14",
-        "Jacija": "21:44"
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-osnabrueck-sb",
+    "name": "Džemat Osnabrück - SB",
+    "address": "Meller Str. 298, 49082 Osnabrück 49082 Osnabrück",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "osnabrueck",
+        "name": "Osnabrück",
+        "vaktijaSlug": "osnabrueck",
+        "latitude": 52.25578,
+        "longitude": 8.08484
       }
-    }
+    ],
+    "email": "igbsarajbosna@gmail.com",
+    "phone": "0541 572904",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-paderborn",
+    "name": "Džemat Paderborn",
+    "address": "Stettiner Str. 34 33106 Paderborn",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "paderborn",
+        "name": "Paderborn",
+        "vaktijaSlug": "paderborn",
+        "latitude": 51.699658,
+        "longitude": 8.731943
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-penzberg",
+    "name": "Džemat Penzberg",
+    "address": "Bichler Str. 15 82377 Penzberg",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "penzberg",
+        "name": "Penzberg",
+        "vaktijaSlug": "penzberg",
+        "latitude": 47.74956,
+        "longitude": 11.3829
+      }
+    ],
+    "email": "info@islam-penzberg.de",
+    "phone": "0 885 693 2332",
+    "website": "https://islam-penzberg.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-pfalzgrafenweiler",
+    "name": "Džemat Pfalzgrafenweiler",
+    "address": "Hauptstraße 40 72285 Pfalzgrafenweiler",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "pfalzgrafenweiler",
+        "name": "Pfalzgrafenweiler",
+        "vaktijaSlug": "pfalzgrafenweiler",
+        "latitude": 48.5289,
+        "longitude": 8.56868
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-philippsburg",
+    "name": "Džemat Philippsburg",
+    "address": "Bruchstücker 60A 76661 Philippsburg",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "philippsburg",
+        "name": "Philippsburg",
+        "vaktijaSlug": "philippsburg",
+        "latitude": 49.22278,
+        "longitude": 8.46433
+      }
+    ],
+    "phone": "07256 202369910",
+    "website": "https://dzemat-philippsburg.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-ravensburg",
+    "name": "Džemat Ravensburg",
+    "address": "Höll 19 88212 Ravensburg",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "ravensburg",
+        "name": "Ravensburg",
+        "vaktijaSlug": "ravensburg",
+        "latitude": 47.78598,
+        "longitude": 9.59141
+      }
+    ],
+    "email": "izbrv1992@gmail.com",
+    "phone": "--",
+    "website": "https://igbrv.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-regensburg",
+    "name": "Džemat Regensburg",
+    "address": "Isarstraße 62A, 93057 Regensburg 93059 Regensburg",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "regensburg",
+        "name": "Regensburg",
+        "vaktijaSlug": "regensburg",
+        "latitude": 49.03373,
+        "longitude": 12.13417
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-reutlingen",
+    "name": "Džemat Reutlingen",
+    "address": "Am Kappelbach 20 72800 Eningen unter Achalm",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "eningen-unter-achalm",
+        "name": "Eningen unter Achalm",
+        "vaktijaSlug": "eningen",
+        "latitude": 48.48147,
+        "longitude": 9.25339
+      }
+    ],
+    "phone": "07121880098",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-sabur",
+    "name": "Džemat Sabur",
+    "address": "Bodenseestr. 80 81243 München",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "muenchen",
+        "name": "München",
+        "vaktijaSlug": "munchen",
+        "latitude": 48.14612,
+        "longitude": 11.44626
+      }
+    ],
+    "email": "info@sabur.de",
+    "phone": "089 82940369",
+    "website": "http://www.sabur.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-schwaebisch-gmuend",
+    "name": "Džemat Schwäbisch Gmünd",
+    "address": "Schindelackerweg 22 73525 Schwäbisch Gmünd",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "schwaebisch-gmuend",
+        "name": "Schwäbisch Gmünd",
+        "vaktijaSlug": "schwaebisch-gmuend",
+        "latitude": 48.80177,
+        "longitude": 9.82019
+      }
+    ],
+    "phone": "07171 9084806",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-schuettorf",
+    "name": "Džemat Schüttorf",
+    "address": "Färbestraße 2 48465 Schüttorf",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "schuettorf",
+        "name": "Schüttorf",
+        "vaktijaSlug": "schuettorf",
+        "latitude": 52.32261,
+        "longitude": 7.22466
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-siegen",
+    "name": "Džemat Siegen",
+    "address": "Obere Kaiserstraße 6 57078 Siegen",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "siegen",
+        "name": "Siegen",
+        "vaktijaSlug": "siegen",
+        "latitude": 50.918211,
+        "longitude": 8.014308
+      }
+    ],
+    "email": "info@dzemat-siegen.de",
+    "phone": "01795453338",
+    "website": "http://www.dzemat-siegen.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-stuttgart",
+    "name": "Džemat Stuttgart",
+    "address": "Kesselstraße 27 70327 Stuttgart",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "stuttgart",
+        "name": "Stuttgart",
+        "vaktijaSlug": "stuttgart",
+        "latitude": 48.76535,
+        "longitude": 9.25227
+      }
+    ],
+    "email": "info@igstuttgart.de",
+    "phone": "0711 65200831",
+    "website": "https://igstuttgart.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-stuttgart-70376",
+    "name": "Džemat Stuttgart",
+    "address": "Haldenstraße 28 70376 Stuttgart",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "stuttgart",
+        "name": "Stuttgart",
+        "vaktijaSlug": "stuttgart",
+        "latitude": 48.80876,
+        "longitude": 9.20845
+      }
+    ],
+    "phone": "07115498202",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-tevhid",
+    "name": "Džemat Tevhid",
+    "address": "Ligsalz str.31a 80339 München",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "muenchen",
+        "name": "München",
+        "vaktijaSlug": "muenchen",
+        "latitude": 48.134946,
+        "longitude": 11.542701
+      }
+    ],
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-tuttlingen",
+    "name": "Džemat Tuttlingen",
+    "address": "Hinterm Bild 11 78532 Tuttlingen",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "tuttlingen",
+        "name": "Tuttlingen",
+        "vaktijaSlug": "tuttlingen",
+        "latitude": 47.98805,
+        "longitude": 8.82007
+      }
+    ],
+    "email": "ig.tuttlingen@yahoo.de",
+    "phone": "07461 71367",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-uhingen-goeppingen-geislingen",
+    "name": "Džemat Uhingen, Göppingen, Geislingen",
+    "address": "Haldenbergstraße 13/a 73066 Uhingen",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "uhingen",
+        "name": "Uhingen",
+        "vaktijaSlug": "uhingen",
+        "latitude": 48.709966,
+        "longitude": 9.586494
+      }
+    ],
+    "email": "i.z.uhingen@gmail.com",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-ulm",
+    "name": "Džemat Ulm",
+    "address": "Auchertwiesenweg 21 89081 Ulm",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "ulm",
+        "name": "Ulm",
+        "vaktijaSlug": "ulm",
+        "latitude": 48.40076,
+        "longitude": 9.95198
+      }
+    ],
+    "email": "info@igbd-ulm.de",
+    "phone": "073114414630",
+    "website": "https://igbd-ulm.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-velbert",
+    "name": "Džemat Velbert",
+    "address": "Friedrichstraße 34 42551 Velbert",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "velbert",
+        "name": "Velbert",
+        "vaktijaSlug": "velbert",
+        "latitude": 51.345423,
+        "longitude": 7.039298
+      }
+    ],
+    "email": "ikcvelbert@web.de",
+    "phone": "02051 8091310",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-wiesbaden",
+    "name": "Džemat Wiesbaden",
+    "address": "Rheinstr. 64 65185 Wiesbaden",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "wiesbaden",
+        "name": "Wiesbaden",
+        "vaktijaSlug": "wiesbaden",
+        "latitude": 50.077258,
+        "longitude": 8.236141
+      }
+    ],
+    "email": "info@igbd-gw.org",
+    "phone": "0611 168 95 644",
+    "website": "http://www.igbd-gw.org",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-witten",
+    "name": "Džemat Witten",
+    "address": "Breite Str. 5 58452 Witten",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "witten",
+        "name": "Witten",
+        "vaktijaSlug": "witten",
+        "latitude": 51.438059,
+        "longitude": 7.328156
+      }
+    ],
+    "email": "info@bkc-witten.de",
+    "phone": "02302275240",
+    "website": "https://igbd-witten.de/",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-wuppertal",
+    "name": "Džemat Wuppertal",
+    "address": "Uellendahler Str. 6A 42107 Wuppertal",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "wuppertal",
+        "name": "Wuppertal",
+        "vaktijaSlug": "wuppertal",
+        "latitude": 51.26512,
+        "longitude": 7.14782
+      }
+    ],
+    "phone": "0202452113",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
+  },
+  {
+    "id": "dzemat-wuerzburg",
+    "name": "Džemat Würzburg",
+    "address": "Dr.Maria-Probst-Str.3 97082 Würzburg",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "wuerzburg",
+        "name": "Würzburg",
+        "vaktijaSlug": "wuerzburg",
+        "latitude": 49.796434,
+        "longitude": 9.901494
+      }
+    ],
+    "phone": "0176 49493555",
+    "fajrIqamah": "05:15",
+    "jumua": "15:00",
+    "dhuhrOffsetMin": 10,
+    "asrOffsetMin": 10,
+    "maghribOffsetMin": 5,
+    "ishaOffsetMin": 0
   },
   {
     "id": "igbd-gemeinde-sandzak-kassel",
@@ -590,143 +1824,48 @@
     "donationUrl": "https://www.paypal.com/donate?business=ikzsandzakkassel@gmail.com"
   },
   {
-    "id": "ulm-e-v",
-    "name": "IGBD-Gemeinde Ulm e.V.",
-    "address": "Auchertwiesenweg 21, 89081 Ulm",
-    "status": "active",
+    "id": "ikc-saarbruecken",
+    "name": "IKC Saarbrücken",
+    "address": "Arndtstr. 14-16 66121 Saarbrücken",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "saarbruecken",
+        "name": "Saarbrücken",
+        "vaktijaSlug": "saarbruecken",
+        "latitude": 49.230236,
+        "longitude": 7.00823
+      }
+    ],
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
-    "locations": [
-      {
-        "id": "ulm",
-        "name": "Ulm",
-        "vaktijaSlug": "ulm",
-        "latitude": 48.400763,
-        "longitude": 9.951982
-      }
-    ],
-    "_check": {
-      "geocoded_as": "21, Auchertwiesenweg, Söflingen, Ulm, Baden-Württemberg, 89081, Deutschland",
-      "town_distance_km": 2.6,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:37",
-        "Izlazak Sunca": "06:22",
-        "Podne": "13:27",
-        "Ikindija": "17:14",
-        "Akšam": "20:21",
-        "Jacija": "21:51"
-      }
-    }
+    "ishaOffsetMin": 0
   },
   {
-    "id": "witten-e-v",
-    "name": "IGBD-Gemeinde Witten e.V.",
-    "address": "Breite Straße 5, 58452 Witten",
-    "status": "active",
+    "id": "islamski-kulturni-centar-bosnjaka-u-berlinu",
+    "name": "Islamski kulturni centar Bošnjaka u Berlinu",
+    "address": "Adalbertstr. 94 10999 Berlin",
+    "status": "blocked",
+    "locations": [
+      {
+        "id": "berlin",
+        "name": "Berlin",
+        "vaktijaSlug": "berlin",
+        "latitude": 52.500847,
+        "longitude": 13.41845
+      }
+    ],
+    "email": "kontakt@ikb-berlin.de",
+    "phone": "(030) 695664-0",
+    "website": "http://www.ikb-berlin.de/",
     "fajrIqamah": "05:15",
     "jumua": "15:00",
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
-    "locations": [
-      {
-        "id": "witten",
-        "name": "Witten",
-        "vaktijaSlug": "witten",
-        "latitude": 51.438767,
-        "longitude": 7.329269
-      }
-    ],
-    "_check": {
-      "geocoded_as": "Breite Straße, Breddeviertel, Witten-Mitte, Witten, Ennepe-Ruhr-Kreis, Nordrhein-Westfalen, 58452, Deutschland",
-      "town_distance_km": 0.8,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:42",
-        "Izlazak Sunca": "06:27",
-        "Podne": "13:38",
-        "Ikindija": "17:25",
-        "Akšam": "20:37",
-        "Jacija": "22:07"
-      }
-    }
-  },
-  {
-    "id": "wuppertal-e-v",
-    "name": "IGBD-Gemeinde Wuppertal e.V.",
-    "address": "Uellendahler Straße 6A, 42107 Wuppertal",
-    "status": "active",
-    "fajrIqamah": "05:15",
-    "jumua": "15:00",
-    "dhuhrOffsetMin": 10,
-    "asrOffsetMin": 10,
-    "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
-    "locations": [
-      {
-        "id": "wuppertal",
-        "name": "Wuppertal",
-        "vaktijaSlug": "wuppertal",
-        "latitude": 51.269046,
-        "longitude": 7.148558
-      }
-    ],
-    "_check": {
-      "geocoded_as": "Uellendahler Straße, Ostersbaum, Gemarkung Elberfeld, Elberfeld, Wuppertal, Nordrhein-Westfalen, 42107, Deutschland",
-      "town_distance_km": 1.4,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:43",
-        "Izlazak Sunca": "06:28",
-        "Podne": "13:38",
-        "Ikindija": "17:27",
-        "Akšam": "20:38",
-        "Jacija": "22:08"
-      }
-    }
-  },
-  {
-    "id": "islamische-gemeinschaft-bih-aachen",
-    "name": "Islamische Gemeinschaft „BiH\" Aachen",
-    "address": "Josefstraße 158, 52080 Aachen",
-    "status": "active",
-    "fajrIqamah": "05:15",
-    "jumua": "15:00",
-    "dhuhrOffsetMin": 10,
-    "asrOffsetMin": 10,
-    "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0,
-    "locations": [
-      {
-        "id": "aachen",
-        "name": "Aachen",
-        "vaktijaSlug": "aachen",
-        "latitude": 50.784228,
-        "longitude": 6.154374
-      }
-    ],
-    "_check": {
-      "geocoded_as": "Bosnische Moschee Aachen (Dzemat Aachen), 158, Josefstraße, Nirm, Eilendorf, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52080, Deutschland",
-      "town_distance_km": 5.1,
-      "town_matched_by": "Name",
-      "times_ok": true,
-      "sample_times": {
-        "Sabah": "04:49",
-        "Izlazak Sunca": "06:34",
-        "Podne": "13:43",
-        "Ikindija": "17:30",
-        "Akšam": "20:41",
-        "Jacija": "22:11"
-      }
-    }
+    "ishaOffsetMin": 0
   }
 ]

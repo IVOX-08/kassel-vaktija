@@ -101,12 +101,21 @@ class CommunityRepository @Inject constructor(
             )
             community.address?.let { data["address"] = it }
             community.email?.let { data["email"] = it }
+            community.phone?.let { data["phone"] = it }
+            community.website?.let { data["website"] = it }
             community.donationUrl?.let { data["donationUrl"] = it }
             community.logoUrl?.let { data["logoUrl"] = it }
             community.imamName?.let { data["imamName"] = it }
             community.imamPhone?.let { data["imamPhone"] = it }
             runCatching {
                 val document = firestore.collection(COLLECTION).document(community.id)
+                // Status is written ONLY for a community the database has never seen. Sending it
+                // on every import would switch a community the head admin suspended back on, and
+                // it would be listed again — publishing prayer times in its name — with nothing
+                // on screen to show that a routine import had done it.
+                if (!document.get().await().exists()) {
+                    data["status"] = community.status.name.lowercase()
+                }
                 document.set(data, com.google.firebase.firestore.SetOptions.merge()).await()
                 seedRules(document, community.id)
                 written++
@@ -174,6 +183,8 @@ class CommunityRepository @Inject constructor(
             donationUrl = getString("donationUrl"),
             address = getString("address"),
             email = getString("email"),
+            phone = getString("phone"),
+            website = getString("website"),
             imamName = getString("imamName"),
             imamPhone = getString("imamPhone"),
             locations = locations,

@@ -137,6 +137,7 @@ fun CommunityPickerScreen(
                 items(results, key = { it.id }) { community ->
                     CommunityRow(
                         community = community,
+                        subtitle = viewModel.subtitleFor(community, results),
                         onClick = {
                             val only = community.locations.singleOrNull()
                             if (only != null) viewModel.select(community, only, onSelected)
@@ -210,7 +211,7 @@ private fun LocationSheet(
 }
 
 @Composable
-private fun CommunityRow(community: Community, onClick: () -> Unit) {
+private fun CommunityRow(community: Community, subtitle: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -244,9 +245,7 @@ private fun CommunityRow(community: Community, onClick: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
-                // The towns this community covers, so someone looking for Korbach can see it is
-                // here without opening the community first.
-                text = community.locations.joinToString(" · ") { it.name },
+                text = subtitle,
                 fontSize = 13.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

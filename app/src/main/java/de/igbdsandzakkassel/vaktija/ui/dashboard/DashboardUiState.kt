@@ -45,6 +45,8 @@ data class DashboardUiState(
     val communityStatus: CommunityStatus = CommunityStatus.ACTIVE,
     /** Logo of the selected community, if one is on file. */
     val communityLogoUrl: String? = null,
+    /** Name of the selected community — shown under the federation logo. */
+    val communityName: String = "",
     /** True for the home community, whose emblem ships inside the app. */
     val isHomeCommunity: Boolean = true,
 )

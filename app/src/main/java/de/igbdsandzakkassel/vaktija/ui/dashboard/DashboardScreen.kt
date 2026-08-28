@@ -70,6 +70,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material.icons.outlined.Mosque
@@ -353,27 +356,40 @@ private fun HeaderSideItem(
 /**
  * The selected community's emblem.
  *
- * Three cases, because showing the wrong coat of arms is worse than showing none: the home
- * community's emblem ships in the app and gets the blended treatment that matches the website; any
- * other community shows the logo it filed with us; a community that has not filed one yet gets a
- * neutral mark rather than borrowing Kassel's.
+ * Kassel keeps its own coat of arms, blended into the page the way the website shows it. Every
+ * other community carries the federation's mark with its own name underneath — they belong to
+ * IGBD, and none of them has a logo on file. A generic mosque glyph said nothing about whose
+ * times were on screen; the name does.
  */
 @Composable
 private fun CommunityEmblem(state: DashboardUiState, modifier: Modifier = Modifier) {
-    val logoUrl = state.communityLogoUrl
-    when {
-        state.isHomeCommunity -> BlendedEmblem(modifier)
-        logoUrl != null -> AsyncImage(
-            model = logoUrl,
+    if (state.isHomeCommunity) {
+        BlendedEmblem(modifier)
+        return
+    }
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Image(
+            painter = painterResource(R.drawable.logo_igbd),
             contentDescription = stringResource(R.string.cd_app_logo),
             contentScale = ContentScale.Fit,
-            modifier = modifier,
+            modifier = Modifier.weight(1f),
         )
-        else -> Icon(
-            imageVector = Icons.Outlined.Mosque,
-            contentDescription = stringResource(R.string.cd_app_logo),
-            tint = BrandGreen,
-            modifier = modifier,
+        Text(
+            text = state.communityName,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = BrandGreen,
+            textAlign = TextAlign.Center,
+            // Two lines: names like "Islamski kulturni centar Bošnjaka u Berlinu" do not fit on
+            // one, and cutting a community's name down to an ellipsis is not a good greeting.
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            lineHeight = 12.sp,
+            modifier = Modifier.padding(top = 3.dp),
         )
     }
 }

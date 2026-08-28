@@ -19,6 +19,9 @@ data class Community(
     val address: String? = null,
     /** Contact address of the community office, shown in "About". */
     val email: String? = null,
+    /** The community's own telephone and website, as IGBD's register lists them. */
+    val phone: String? = null,
+    val website: String? = null,
     /** The community's imam, and the number people may call. Both optional. */
     val imamName: String? = null,
     val imamPhone: String? = null,
@@ -82,6 +85,9 @@ data class CommunityLocation(
     val address: String? = null,
     /** Contact address of the community office, shown in "About". */
     val email: String? = null,
+    /** The community's own telephone and website, as IGBD's register lists them. */
+    val phone: String? = null,
+    val website: String? = null,
     /** The community's imam, and the number people may call. Both optional. */
     val imamName: String? = null,
     val imamPhone: String? = null,

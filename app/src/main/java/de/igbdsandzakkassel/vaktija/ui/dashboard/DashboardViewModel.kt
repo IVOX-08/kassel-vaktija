@@ -69,6 +69,9 @@ class DashboardViewModel @Inject constructor(
             // Branding goes away with the rest when a community is switched off.
             communityLogoUrl = selection?.community?.logoUrl
                 ?.takeIf { selection.community.status.showsCommunityContent },
+            // The name stays even when a community is switched off: it says WHICH community these
+            // times belong to, which is exactly what a reader still needs to know.
+            communityName = selection?.community?.name.orEmpty(),
             isHomeCommunity = selection?.community?.id == CommunityCatalog.KASSEL_ID,
         )
     }.stateIn(

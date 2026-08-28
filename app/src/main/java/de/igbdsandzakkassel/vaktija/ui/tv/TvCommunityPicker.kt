@@ -108,7 +108,7 @@ fun TvCommunityPicker(
                         Row(
                             key = community.id,
                             title = community.name,
-                            subtitle = community.locations.joinToString(" · ") { it.name },
+                            subtitle = viewModel.subtitleFor(community, communities),
                             onSelect = { chosen = community },
                         )
                     },

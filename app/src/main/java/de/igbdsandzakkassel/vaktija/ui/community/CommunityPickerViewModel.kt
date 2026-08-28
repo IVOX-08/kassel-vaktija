@@ -67,6 +67,21 @@ class CommunityPickerViewModel @Inject constructor(
 
     fun onQueryChange(value: String) { _query.value = value }
 
+    /**
+     * The line under a community's name.
+     *
+     * Normally its towns, so someone looking for Korbach sees it without opening the community.
+     * But IGBD's register holds two communities called exactly "Džemat Stuttgart", both in
+     * Stuttgart — as towns they are two identical rows, and picking one would be a coin toss. When
+     * a name is shared, the street is what tells them apart, so the street is what is shown.
+     */
+    fun subtitleFor(community: Community, all: List<Community>): String {
+        val shared = all.count { it.name.equals(community.name, ignoreCase = true) } > 1
+        val address = community.address
+        if (shared && !address.isNullOrBlank()) return address
+        return community.locations.joinToString(" · ") { it.name }
+    }
+
     fun select(community: Community, location: CommunityLocation, onDone: () -> Unit) {
         viewModelScope.launch {
             selectionRepository.select(community.id, location.id)

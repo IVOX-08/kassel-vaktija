@@ -34,6 +34,12 @@ def render(c):
         lines.append("            address = %s," % kt(c["address"]))
     if c.get("email"):
         lines.append("            email = %s," % kt(c["email"]))
+    if c.get("phone"):
+        lines.append("            phone = %s," % kt(c["phone"]))
+    if c.get("website"):
+        lines.append("            website = %s," % kt(c["website"]))
+    if c.get("status") and c["status"] != "active":
+        lines.append("            status = CommunityStatus.%s," % c["status"].upper())
     if c.get("donationUrl"):
         lines.append("            donationUrl = %s," % kt(c["donationUrl"]))
     if c.get("logoUrl"):
@@ -70,6 +76,7 @@ TEMPLATE = '''package de.igbdsandzakkassel.vaktija.data.community
 import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.data.model.CommunityLocation
 import de.igbdsandzakkassel.vaktija.data.model.CommunityRules
+import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
 import java.time.LocalTime
 
 /**
