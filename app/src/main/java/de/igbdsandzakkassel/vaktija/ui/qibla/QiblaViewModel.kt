@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.ui.qibla
 
+import android.hardware.GeomagneticField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +15,22 @@ import javax.inject.Inject
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
+
+/**
+ * The direction to the Kaaba, in the two forms this screen needs.
+ *
+ * They differ by the magnetic declination and must never be confused: [trueBearing] is the number
+ * people know and quote (Kassel ≈ 130°), [compassBearing] is the only one that may be compared
+ * against a phone's compass reading.
+ */
+data class QiblaReading(
+    /** Degrees clockwise from TRUE (geographic) north. This is what is shown as a number. */
+    val trueBearing: Float,
+    /** The same direction expressed from MAGNETIC north — for the needle and the alignment check. */
+    val compassBearing: Float,
+    /** Degrees between the two norths at this position, east-positive. */
+    val declination: Float,
+)
 
 /**
  * Supplies the Qibla bearing for the selected mosque.
@@ -35,7 +52,7 @@ class QiblaViewModel @Inject constructor(
         .map { it != null }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
-    val bearing: StateFlow<Float> = combine(
+    val reading: StateFlow<QiblaReading> = combine(
         communityRepository.observeLocation(),
         _deviceFix,
     ) { mosque, fix ->
@@ -43,8 +60,8 @@ class QiblaViewModel @Inject constructor(
             // Where the phone is wins: someone travelling is the whole reason this exists. Within
             // Germany the difference is a degree or two, but Novi Pazar is 7 degrees off Kassel and
             // Istanbul is 21 — far enough to line a row up wrong.
-            fix != null -> bearingToKaaba(fix.first, fix.second)
-            mosque != null -> bearingToKaaba(mosque.latitude, mosque.longitude)
+            fix != null -> readingAt(fix.first, fix.second)
+            mosque != null -> readingAt(mosque.latitude, mosque.longitude)
             else -> KASSEL_FALLBACK
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), KASSEL_FALLBACK)
@@ -64,7 +81,33 @@ class QiblaViewModel @Inject constructor(
         const val KAABA_LNG = 39.8262
 
         /** Kassel's mosque — shown only in the moment before the catalogue resolves. */
-        val KASSEL_FALLBACK = bearingToKaaba(51.3093, 9.5132)
+        val KASSEL_FALLBACK = readingAt(51.3093, 9.5132)
+
+        /**
+         * Both bearings for a position.
+         *
+         * The declination step is what makes the needle actually point at Mecca. The great-circle
+         * bearing is measured from TRUE north, but a phone's rotation sensor reports its azimuth
+         * from MAGNETIC north — comparing the two straight away is comparing two different norths.
+         * Over Germany that is roughly 3° to 5°, enough to set a prayer row visibly askew, and it
+         * grows the further east or north you travel.
+         */
+        fun readingAt(latitude: Double, longitude: Double): QiblaReading {
+            val trueBearing = bearingToKaaba(latitude, longitude)
+            // Altitude barely moves the field; sea level is close enough and spares us a fix that
+            // coarse location often does not carry anyway.
+            val declination = GeomagneticField(
+                latitude.toFloat(),
+                longitude.toFloat(),
+                0f,
+                System.currentTimeMillis(),
+            ).declination
+            return QiblaReading(
+                trueBearing = trueBearing,
+                compassBearing = ((trueBearing - declination) + 360f) % 360f,
+                declination = declination,
+            )
+        }
 
         /** Initial great-circle bearing from a point to the Kaaba, in degrees clockwise from north. */
         fun bearingToKaaba(latitude: Double, longitude: Double): Float {

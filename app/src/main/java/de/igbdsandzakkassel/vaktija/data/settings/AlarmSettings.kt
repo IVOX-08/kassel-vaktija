@@ -66,7 +66,10 @@ data class AlarmSettings(
          * Minutes BEFORE sunrise for the Fajr-is-ending reminder. Includes 0 at the owner's
          * request — a notice exactly at sunrise still tells you the window has closed.
          */
-        val SUNRISE_WARN_OPTIONS = listOf(0, 5, 10, 15, 20, 25, 30)
+        // Coarser and reaching further back than the other prayers: the point at sunrise is
+        // "Fajr is running out", and someone who wants an hour's warning wants a whole hour, not
+        // a choice between 25 and 30 minutes.
+        val SUNRISE_WARN_OPTIONS = listOf(0, 10, 20, 30, 40, 50, 60)
 
         /** Auto-silence duration options (minutes before/after the Adhan). */
         val SILENCE_OPTIONS = listOf(5, 10, 15, 20, 30)

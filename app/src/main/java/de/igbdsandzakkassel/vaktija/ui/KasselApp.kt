@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import de.igbdsandzakkassel.vaktija.ui.calendar.MonthCalendarScreen
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardScreen
 import de.igbdsandzakkassel.vaktija.ui.navigation.TopLevelDestination
+import de.igbdsandzakkassel.vaktija.ui.navigation.VaktijaBottomBar
 import de.igbdsandzakkassel.vaktija.ui.news.NewsScreen
 import de.igbdsandzakkassel.vaktija.ui.qibla.QiblaScreen
 import de.igbdsandzakkassel.vaktija.ui.settings.SettingsScreen
@@ -85,51 +83,23 @@ fun KasselApp() {
                 enter = slideInVertically(initialOffsetY = { it }),
                 exit = slideOutVertically(targetOffsetY = { it }),
             ) {
-            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
-                TopLevelDestination.entries.forEach { destination ->
-                    val selected = if (destination == TopLevelDestination.LIBRARY) {
+            VaktijaBottomBar(
+                destinations = TopLevelDestination.entries,
+                isSelected = { destination ->
+                    if (destination == TopLevelDestination.LIBRARY) {
                         currentRoute?.route in LibrarySection.ROUTES
                     } else {
                         currentRoute?.hierarchy?.any { it.route == destination.route } == true
                     }
-                    NavigationBarItem(
-                        selected = selected,
-                        onClick = {
-                            navController.navigate(destination.route) {
-                                popUpTo(navController.graph.startDestinationId) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = destination.icon,
-                                contentDescription = stringResource(destination.labelRes),
-                            )
-                        },
-                        label = {
-                            // Single line, ellipsised — keeps long German labels ("Einstellungen",
-                            // "Nachrichten") from wrapping. 11sp instead of the earlier 9sp: the
-                            // community skews older and 9sp was borderline illegible for primary nav.
-                            Text(
-                                text = stringResource(destination.labelRes),
-                                fontSize = 11.sp,
-                                maxLines = 1,
-                                softWrap = false,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        },
-                        // Brand-green selection instead of the default purple.
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        ),
-                    )
-                }
-            }
+                },
+                onSelect = { destination ->
+                    navController.navigate(destination.route) {
+                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+            )
             }
         },
     ) { innerPadding ->

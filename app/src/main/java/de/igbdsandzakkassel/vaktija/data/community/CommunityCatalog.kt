@@ -255,6 +255,20 @@ object CommunityCatalog {
                     latitude = 51.2761,
                     longitude = 8.8735,
                 ),
+                CommunityLocation(
+                    id = "beverungen",
+                    name = "Beverungen",
+                    vaktijaSlug = "beverungen",
+                    latitude = 51.6667,
+                    longitude = 9.3667,
+                ),
+                CommunityLocation(
+                    id = "melsungen",
+                    name = "Melsungen",
+                    vaktijaSlug = "knullwald",
+                    latitude = 51.1333,
+                    longitude = 9.55,
+                ),
             ),
         ),
         Community(

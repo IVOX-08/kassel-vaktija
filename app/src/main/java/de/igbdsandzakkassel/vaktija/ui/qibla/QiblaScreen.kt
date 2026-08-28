@@ -67,7 +67,7 @@ fun QiblaScreen(
     modifier: Modifier = Modifier,
     viewModel: QiblaViewModel = hiltViewModel(),
 ) {
-    val qiblaBearing by viewModel.bearing.collectAsStateWithLifecycle()
+    val reading by viewModel.reading.collectAsStateWithLifecycle()
     val usingDeviceLocation by viewModel.usingDeviceLocation.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -127,7 +127,7 @@ fun QiblaScreen(
             onDispose { sensorManager.unregisterListener(listener) }
         }
 
-        val aligned = abs(normalizeSigned(qiblaBearing - azimuth)) < 5f
+        val aligned = abs(normalizeSigned(reading.compassBearing - azimuth)) < 5f
 
         Text(
             text = stringResource(R.string.nav_qibla),
@@ -137,7 +137,7 @@ fun QiblaScreen(
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = "${qiblaBearing.roundToInt()}°",
+            text = "${reading.trueBearing.roundToInt()}°",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.secondary,
         )
@@ -176,7 +176,7 @@ fun QiblaScreen(
 
         CompassDial(
             azimuth = azimuth,
-            qiblaBearing = qiblaBearing,
+            qiblaBearing = reading.compassBearing,
             aligned = aligned,
             modifier = Modifier.size(300.dp),
         )
