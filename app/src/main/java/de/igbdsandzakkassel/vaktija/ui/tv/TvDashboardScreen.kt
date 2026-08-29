@@ -64,7 +64,7 @@ import de.igbdsandzakkassel.vaktija.data.model.Prayer
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardUiState
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardViewModel
 import de.igbdsandzakkassel.vaktija.ui.dashboard.PrayerRowUi
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreenDark
@@ -212,7 +212,7 @@ fun TvDashboardScreen(
             if (state.isStale) {
                 Text(
                     text = "⚠ Vremena možda nisu ažurna (nema interneta) · Zeiten evtl. nicht aktuell (kein Internet)",
-                    color = BrandGold,
+                    color = BrandGoldText,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
@@ -292,7 +292,7 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                         // The big "IGBD" is already above; the subtitle is just the community name
                         // — no repeated "IGBD-", and "Sandžak Kassel" with a space (not a hyphen).
                         text = boardSubtitle(state.communityName),
-                        color = BrandGold,
+                        color = BrandGoldText,
                         // 14sp, not 17: the two download badges narrowed this column, and the name
                         // reads better on one line than wrapped after "Sandžak".
                         fontSize = 14.sp,
@@ -334,7 +334,7 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(CARD_SHAPE)
-                            .background(BrandGold)
+                            .background(BrandGoldText)
                             .padding(horizontal = 20.dp, vertical = 8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
@@ -434,9 +434,9 @@ private fun TvPrayerCard(row: PrayerRowUi, german: Boolean, ctx: Context, modifi
     // Filled green look while it's the next prayer OR currently in its Adhan→Iqamah window.
     val on = row.isHighlighted || row.inIqamahWindow
     // Prayer NAME is gold (owner's reference design); the TIME stays green / white-on-green.
-    val nameColor = if (on) BrandGoldLight else BrandGold
+    val nameColor = if (on) BrandGoldLight else BrandGoldText
     val timeColor = if (on) Color.White else BrandGreen
-    val iqamahColor = if (on) BrandGoldLight else BrandGold
+    val iqamahColor = if (on) BrandGoldLight else BrandGoldText
     val label = prayerLabel(row, german, ctx)
     val nameSize = if (label.length >= 14) 16.sp else 20.sp
     // Continuous green-white "breathing" glow for the whole Adhan→Iqamah window.
@@ -536,7 +536,7 @@ private fun JumuaCard(jumua: java.time.LocalTime, german: Boolean, ctx: Context,
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, color = BrandGold, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(label, color = BrandGoldText, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         Text(jumua.format(HM), color = BrandGreen, fontSize = 26.sp, fontWeight = FontWeight.Bold, maxLines = 1)
     }
 }
@@ -564,7 +564,7 @@ private fun DailyHadithBand(
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = if (german) "Hadith des Tages" else "Hadis dana",
-                color = BrandGold,
+                color = BrandGoldText,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
@@ -572,7 +572,7 @@ private fun DailyHadithBand(
             // Small hint on the right: which language comes next + seconds until it switches.
             Text(
                 text = if (german) "Bosanski za: ${secondsLeft}s" else "Deutsch in: ${secondsLeft}s",
-                color = BrandGold.copy(alpha = 0.75f),
+                color = BrandGoldText.copy(alpha = 0.75f),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
             )

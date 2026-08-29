@@ -51,6 +51,20 @@ wer ihn einmal gedrückt hatte, fand selten zurück. Die einzelnen Schalter blei
 **Gleich groß**, 96 dp Höhe, in der App und im Widget. Ein kleineres Zeichen für die anderen liest
 sich wie zweite Klasse.
 
+Die Markenfarben, die erlaubten Fassungen des Zeichens und die Regeln aus dem Handbuch der
+Islamska zajednica stehen in **`docs/marke/README.md`**. Dort liegen auch die Originaldateien.
+Kurz:
+
+| | Hex |
+|---|---|
+| IZ zelena (Pantone 356 C) | `#008348` |
+| IZ zlatna (Pantone 871 C) | `#A59573` |
+| Gold für Text auf hellem Grund | `#7C6C45` |
+| Gold für Text auf grünem/schwarzem Grund | `#DCD2B8` |
+
+Auf hellem Grund die positive Fassung, auf schwarzem die offizielle Negativ-Fassung (weiß). Das
+Zeichen wird **nicht** umgefärbt.
+
 ---
 
 ## 3 · Gebetstracker

@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import java.time.format.DateTimeFormatter
 
@@ -109,7 +109,7 @@ private fun StreakCard(streak: Int, prayedToday: Int) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (reached) BrandGold.copy(alpha = 0.16f) else BrandGreen.copy(alpha = 0.12f),
+            containerColor = if (reached) BrandGoldText.copy(alpha = 0.16f) else BrandGreen.copy(alpha = 0.12f),
         ),
     ) {
         Column(modifier = Modifier.fillMaxWidth().padding(20.dp)) {
@@ -121,7 +121,7 @@ private fun StreakCard(streak: Int, prayedToday: Int) {
                         text = "$streak",
                         fontSize = 34.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (reached) BrandGold else BrandGreen,
+                        color = if (reached) BrandGoldText else BrandGreen,
                     )
                     Text(
                         text = stringResource(R.string.tracker_streak),
@@ -142,7 +142,7 @@ private fun StreakCard(streak: Int, prayedToday: Int) {
             LinearProgressIndicator(
                 progress = { (streak.coerceAtMost(REWARD_DAYS).toFloat() / REWARD_DAYS) },
                 modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
-                color = if (reached) BrandGold else BrandGreen,
+                color = if (reached) BrandGoldText else BrandGreen,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
             Spacer(Modifier.height(8.dp))
@@ -154,7 +154,7 @@ private fun StreakCard(streak: Int, prayedToday: Int) {
                 },
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = if (reached) FontWeight.Bold else FontWeight.Normal,
-                color = if (reached) BrandGold else MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (reached) BrandGoldText else MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -179,7 +179,7 @@ private fun PrayerRow(row: TrackerRow, onAnswer: (Boolean) -> Unit) {
                         color = when (row.state) {
                             RowState.PRAYED -> BrandGreen
                             RowState.MISSED, RowState.NOT_PRAYED -> MaterialTheme.colorScheme.error
-                            RowState.OPEN -> BrandGold
+                            RowState.OPEN -> BrandGoldText
                             RowState.UPCOMING -> MaterialTheme.colorScheme.onSurfaceVariant
                         },
                     )
@@ -212,7 +212,7 @@ private fun StateIcon(state: RowState) {
     val (icon, tint) = when (state) {
         RowState.PRAYED -> Icons.Filled.CheckCircle to BrandGreen
         RowState.NOT_PRAYED, RowState.MISSED -> Icons.Filled.Cancel to MaterialTheme.colorScheme.error
-        RowState.OPEN -> Icons.Outlined.Schedule to BrandGold
+        RowState.OPEN -> Icons.Outlined.Schedule to BrandGoldText
         RowState.UPCOMING -> Icons.Outlined.Lock to MaterialTheme.colorScheme.outline
     }
     Box(

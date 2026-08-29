@@ -46,7 +46,7 @@ import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
 import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.ui.community.CommunityPickerViewModel
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreenDark
 import de.igbdsandzakkassel.vaktija.ui.theme.PageBackgroundLight
@@ -97,7 +97,7 @@ fun TvCommunityPicker(
             )
             Text(
                 text = if (picked == null) "Odaberi džemat" else "Odaberi mjesto",
-                color = BrandGold,
+                color = BrandGoldText,
                 fontSize = 26.sp,
                 modifier = Modifier.padding(bottom = 20.dp),
             )
@@ -121,9 +121,9 @@ fun TvCommunityPicker(
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = BrandGreenDark,
                         unfocusedTextColor = BrandGreenDark,
-                        focusedLabelColor = BrandGold,
+                        focusedLabelColor = BrandGoldText,
                         unfocusedLabelColor = Color(0xFF777777),
-                        focusedIndicatorColor = BrandGold,
+                        focusedIndicatorColor = BrandGoldText,
                         unfocusedIndicatorColor = Color(0xFFDDDDDD),
                         cursorColor = BrandGreen,
                     ),
@@ -179,7 +179,7 @@ fun TvCommunityPicker(
             // drawn over it covers the hadith. This is also the moment the remote is in hand.
             Text(
                 text = "Später ändern: OK gedrückt halten · Kasnije promijeniti: držite OK",
-                color = BrandGold,
+                color = BrandGoldText,
                 fontSize = 16.sp,
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 textAlign = TextAlign.End,
@@ -234,7 +234,7 @@ private fun PickerRow(row: PickerEntry, modifier: Modifier = Modifier) {
             .background(if (focused) BrandGreen else Color.White)
             .border(
                 width = if (focused) 3.dp else 1.dp,
-                color = if (focused) BrandGold else Color(0xFFDDDDDD),
+                color = if (focused) BrandGoldText else Color(0xFFDDDDDD),
                 shape = RoundedCornerShape(10.dp),
             )
             .onFocusChanged { focused = it.isFocused }

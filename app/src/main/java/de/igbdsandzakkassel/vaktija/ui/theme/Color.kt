@@ -2,12 +2,33 @@ package de.igbdsandzakkassel.vaktija.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// --- Brand palette (mirrors res/values/colors.xml) ---
-val BrandGreen = Color(0xFF2E7D32)
-val BrandGreenDark = Color(0xFF1B5E20)
-val BrandGreenLight = Color(0xFF66BB6A)
-val BrandGold = Color(0xFFB8860B)
-val BrandGoldLight = Color(0xFFD4AF37)
+// --- Brand palette ---
+//
+// The protected colours from chapter 2.1 of the graphic standards of the Islamska zajednica u
+// Bosni i Hercegovini, version 1.0. These are exact and are not to be nudged: the app used
+// Material's green 800 and a dark goldenrod, which merely looked close.
+//
+//   IZ zelena   Pantone 356 C   #008348
+//   IZ zlatna   Pantone 871 C   #A59573
+//   Crna        Pantone Black   #000000
+val BrandGreen = Color(0xFF008348)
+val BrandGold = Color(0xFFA59573)
+
+/** Darker and lighter greens for pressed states, dark mode and headings. */
+val BrandGreenDark = Color(0xFF00612F)
+val BrandGreenLight = Color(0xFF4CB783)
+
+/**
+ * Gold for TEXT.
+ *
+ * The protected gold is a light colour: as small print on a white card it reaches about 3:1, which
+ * is under the line for body text. The mark always uses [BrandGold]; wording uses this darker
+ * shade of the same hue on light surfaces and [BrandGoldLight] on dark ones.
+ */
+val BrandGoldText = Color(0xFF7C6C45)
+// A light tint of the same gold, for wording ON the green card and on black. At #C9BC9A a prayer
+// name sat at 2.4:1 against IZ Zelena; this clears 3:1.
+val BrandGoldLight = Color(0xFFDCD2B8)
 
 /** Tinted fills behind brand-coloured content — kept away from Material's lavender containers. */
 val BrandGreenContainer = Color(0xFFDCEBDD)

@@ -78,7 +78,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material.icons.outlined.Mosque
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import java.time.LocalTime
@@ -217,7 +217,7 @@ private fun InactiveCommunityBanner(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(top = 8.dp),
         shape = RoundedCornerShape(12.dp),
-        color = BrandGold,
+        color = BrandGoldText,
     ) {
         Text(
             text = stringResource(R.string.community_inactive_notice),
@@ -236,7 +236,7 @@ private fun StaleBanner() {
             .fillMaxWidth()
             .padding(top = 8.dp),
         shape = RoundedCornerShape(12.dp),
-        color = BrandGold,
+        color = BrandGoldText,
     ) {
         Text(
             text = stringResource(R.string.cache_stale_warning),

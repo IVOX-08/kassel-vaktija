@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Brand colors (mirrored in Compose theme/Color.kt). -->
-    <color name="brand_green">#2E7D32</color>
-    <color name="brand_gold">#B8860B</color>
+    <color name="brand_green">#008348</color>
+    <color name="brand_gold">#A59573</color>
 
     <!-- Window background used by the launch theme before Compose draws (matches page bg). -->
     <color name="window_background">#FFF4F4F4</color>
