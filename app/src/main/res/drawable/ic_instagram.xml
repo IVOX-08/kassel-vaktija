@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simplified monochrome glyph, tinted in the app's colours — the rounded frame, the lens and
+     the dot. Not the coloured brand mark, and not presented as one. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path android:fillColor="@android:color/white"
+        android:pathData="M7,2h10c2.76,0 5,2.24 5,5v10c0,2.76 -2.24,5 -5,5H7c-2.76,0 -5,-2.24 -5,-5V7c0,-2.76 2.24,-5 5,-5zM7,4C5.35,4 4,5.35 4,7v10c0,1.65 1.35,3 3,3h10c1.65,0 3,-1.35 3,-3V7c0,-1.65 -1.35,-3 -3,-3H7z"/>
+    <path android:fillColor="@android:color/white"
+        android:pathData="M12,7c2.76,0 5,2.24 5,5s-2.24,5 -5,5 -5,-2.24 -5,-5 2.24,-5 5,-5zM12,9c-1.65,0 -3,1.35 -3,3s1.35,3 3,3 3,-1.35 3,-3 -1.35,-3 -3,-3z"/>
+    <path android:fillColor="@android:color/white"
+        android:pathData="M17.8,5.1m-1.1,0a1.1,1.1 0,1 1,2.2 0a1.1,1.1 0,1 1,-2.2 0"/>
+</vector>

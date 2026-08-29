@@ -103,6 +103,9 @@ class CommunityRepository @Inject constructor(
             community.email?.let { data["email"] = it }
             community.phone?.let { data["phone"] = it }
             community.website?.let { data["website"] = it }
+            community.facebookUrl?.let { data["facebookUrl"] = it }
+            community.instagramUrl?.let { data["instagramUrl"] = it }
+            community.youtubeUrl?.let { data["youtubeUrl"] = it }
             community.donationUrl?.let { data["donationUrl"] = it }
             community.logoUrl?.let { data["logoUrl"] = it }
             community.imamName?.let { data["imamName"] = it }
@@ -122,6 +125,34 @@ class CommunityRepository @Inject constructor(
             }
         }
         return written
+    }
+
+    /**
+     * Removes the documents left behind by the FIRST catalogue.
+     *
+     * That catalogue was assembled from the communities' own Impressum pages and gave them ids
+     * like `hagen-e-v`. The current one comes from IGBD's register and calls the same community
+     * `dzemat-hagen`. Importing the second alongside the first left both in the database, so
+     * nineteen communities exist twice under two different names — invisible while everything is
+     * switched off, and two identical-looking rows in the picker the moment one is switched on.
+     *
+     * The ids are listed rather than derived ("delete anything not in the bundled catalogue"),
+     * because a community added later straight in the console would not be in the catalogue
+     * either, and a tidy-up must never be able to delete one of those.
+     */
+    suspend fun deleteSupersededDocuments(): Int {
+        if (!BuildConfig.DEBUG) return 0
+        var deleted = 0
+        SUPERSEDED_IDS.forEach { id ->
+            runCatching {
+                val ref = firestore.collection(COLLECTION).document(id)
+                if (ref.get().await().exists()) {
+                    ref.delete().await()
+                    deleted++
+                }
+            }
+        }
+        return deleted
     }
 
     /**
@@ -185,6 +216,9 @@ class CommunityRepository @Inject constructor(
             email = getString("email"),
             phone = getString("phone"),
             website = getString("website"),
+            facebookUrl = getString("facebookUrl"),
+            instagramUrl = getString("instagramUrl"),
+            youtubeUrl = getString("youtubeUrl"),
             imamName = getString("imamName"),
             imamPhone = getString("imamPhone"),
             locations = locations,
@@ -192,6 +226,29 @@ class CommunityRepository @Inject constructor(
     }
 
     private companion object {
+        /** Ids from the first, Impressum-derived catalogue. Each is now a duplicate. */
+        val SUPERSEDED_IDS = listOf(
+            "boeblingen-sindelfingen-e-v",
+            "bosniakisch-deutsche-gemeinde-karlsruhe-e-v",
+            "duisburg-e-v",
+            "dzemat-bkc-siegen-e-v",
+            "dzemat-essen-e-v",
+            "dzemat-ikre-berlin-e-v",
+            "gemeinde-bosnischer-moslems-e-v-dzemat-bremen",
+            "hagen-e-v",
+            "hannover-e-v",
+            "islamische-gemeinschaft-bih-aachen",
+            "mainz-e-v",
+            "mannheim-e-v",
+            "nuernberg-e-v",
+            "oberhausen-e-v",
+            "offenburg-e-v",
+            "rosenheim-e-v",
+            "ulm-e-v",
+            "witten-e-v",
+            "wuppertal-e-v",
+        )
+
         const val COLLECTION = "communities"
         const val CONFIG = "config"
         const val RULES = "rules"

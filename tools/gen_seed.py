@@ -38,6 +38,9 @@ def render(c):
         lines.append("            phone = %s," % kt(c["phone"]))
     if c.get("website"):
         lines.append("            website = %s," % kt(c["website"]))
+    for field in ("facebookUrl", "instagramUrl", "youtubeUrl"):
+        if c.get(field):
+            lines.append("            %s = %s," % (field, kt(c[field])))
     if c.get("status") and c["status"] != "active":
         lines.append("            status = CommunityStatus.%s," % c["status"].upper())
     if c.get("donationUrl"):

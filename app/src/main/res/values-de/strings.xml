@@ -279,4 +279,6 @@
     <string name="sound_soft">Leiser Ton</string>
     <string name="sound_announcement">Standardton</string>
     <string name="settings_news_sound">Ton für Mitteilungen</string>
+    <string name="admin_cleanup_communities">Alte Doppel-Einträge entfernen</string>
+    <string name="admin_cleanup_done">Entfernt: %1$d</string>
 </resources>

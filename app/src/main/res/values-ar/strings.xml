@@ -267,4 +267,6 @@
     <string name="sound_soft">نغمة هادئة</string>
     <string name="sound_announcement">النغمة الافتراضية</string>
     <string name="settings_news_sound">نغمة الإعلانات</string>
+    <string name="admin_cleanup_communities">إزالة المكررات القديمة</string>
+    <string name="admin_cleanup_done">تمت الإزالة: %1$d</string>
 </resources>

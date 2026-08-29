@@ -210,6 +210,20 @@ fun SettingsScreen(
                         },
                         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     ) { Text(stringResource(R.string.admin_import_communities)) }
+
+                    val cleanedMsg = stringResource(R.string.admin_cleanup_done)
+                    OutlinedButton(
+                        onClick = {
+                            viewModel.deleteSupersededCommunities { count ->
+                                Toast.makeText(
+                                    context,
+                                    cleanedMsg.format(count),
+                                    Toast.LENGTH_LONG,
+                                ).show()
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    ) { Text(stringResource(R.string.admin_cleanup_communities)) }
                 }
                 Spacer(Modifier.height(8.dp))
             }

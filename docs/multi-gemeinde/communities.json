@@ -18,7 +18,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "bikg-hanau-e-v",
@@ -40,7 +43,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "bkc-frankfurt",
@@ -63,7 +69,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "bkc-offenbach",
@@ -85,7 +94,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "bkc-saarbruecken",
@@ -106,7 +118,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "bosniakisches-kulturzentrum-ingolstadt-e-v",
@@ -127,7 +142,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-sejhul-ekber-rosenheim",
@@ -150,7 +168,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-aachen",
@@ -174,7 +195,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-ahlen",
@@ -195,7 +219,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-augsburg",
@@ -216,7 +243,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-balingen",
@@ -239,7 +269,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-berlin-ikre",
@@ -261,7 +294,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-bielefeld",
@@ -283,7 +319,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-bochum",
@@ -306,7 +345,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-bonn",
@@ -329,7 +371,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-braunschweig",
@@ -351,7 +396,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-bremen",
@@ -375,7 +423,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-bremen-ig",
@@ -396,7 +447,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-boeblingen-sindelfingen",
@@ -420,7 +474,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-calw",
@@ -444,7 +501,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-castrop-rauxel",
@@ -465,7 +525,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-darmstadt",
@@ -486,7 +549,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-dortmund",
@@ -508,7 +574,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-dortmund-san",
@@ -529,7 +598,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-duisburg",
@@ -552,7 +624,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-duisburg-san",
@@ -573,7 +648,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-duesseldorf",
@@ -597,7 +675,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-essen",
@@ -621,7 +702,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-fedzr",
@@ -642,7 +726,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-gaggenau",
@@ -666,7 +753,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-hagen",
@@ -690,7 +780,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-hamburg",
@@ -713,7 +806,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-hamm",
@@ -734,7 +830,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-hannover",
@@ -758,7 +857,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-heilbronn",
@@ -781,7 +883,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-hidaje-muenchen",
@@ -805,7 +910,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-ikc-frankfurt",
@@ -828,7 +936,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-ikre-muenchen",
@@ -852,7 +963,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-kamp-lintfort",
@@ -875,7 +989,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-karlsruhe",
@@ -899,7 +1016,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-kassel",
@@ -922,7 +1042,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-kirchheim-teck",
@@ -946,7 +1069,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-koblenz",
@@ -967,7 +1093,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-koeln",
@@ -990,7 +1119,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-leipzig",
@@ -1011,7 +1143,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-ludwigsburg",
@@ -1032,7 +1167,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-loehne",
@@ -1054,7 +1192,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-mainz",
@@ -1078,7 +1219,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-mannheim",
@@ -1102,7 +1246,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-muelheim-a-d-ruhr",
@@ -1124,7 +1271,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-muenster",
@@ -1145,7 +1295,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-nuernberg",
@@ -1169,7 +1322,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-oberhausen",
@@ -1193,7 +1349,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-offenbach",
@@ -1214,7 +1373,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-osnabrueck-ig",
@@ -1235,7 +1397,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-osnabrueck-sb",
@@ -1258,7 +1423,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-paderborn",
@@ -1279,7 +1447,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-penzberg",
@@ -1303,7 +1474,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-pfalzgrafenweiler",
@@ -1324,7 +1498,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-philippsburg",
@@ -1347,7 +1524,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-ravensburg",
@@ -1371,7 +1551,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-regensburg",
@@ -1392,7 +1575,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-reutlingen",
@@ -1414,7 +1600,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-sabur",
@@ -1438,7 +1627,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-schwaebisch-gmuend",
@@ -1460,7 +1652,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-schuettorf",
@@ -1481,7 +1676,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-siegen",
@@ -1505,7 +1703,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-stuttgart",
@@ -1529,7 +1730,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-stuttgart-70376",
@@ -1551,7 +1755,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-tevhid",
@@ -1572,7 +1779,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-tuttlingen",
@@ -1595,7 +1805,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-uhingen-goeppingen-geislingen",
@@ -1617,7 +1830,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-ulm",
@@ -1641,7 +1857,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-velbert",
@@ -1664,7 +1883,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-wiesbaden",
@@ -1688,7 +1910,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-witten",
@@ -1712,7 +1937,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-wuppertal",
@@ -1734,7 +1962,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "dzemat-wuerzburg",
@@ -1756,7 +1987,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "igbd-gemeinde-sandzak-kassel",
@@ -1821,7 +2055,10 @@
       }
     },
     "email": "vorstand@igbdsandzakkassel.de",
-    "donationUrl": "https://www.paypal.com/donate?business=ikzsandzakkassel@gmail.com"
+    "donationUrl": "https://www.paypal.com/donate?business=ikzsandzakkassel@gmail.com",
+    "facebookUrl": "https://www.facebook.com/IKZEbuHanife/",
+    "instagramUrl": "https://www.instagram.com/igbdsandzakkassel/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "ikc-saarbruecken",
@@ -1842,7 +2079,10 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   },
   {
     "id": "islamski-kulturni-centar-bosnjaka-u-berlinu",
@@ -1866,6 +2106,9 @@
     "dhuhrOffsetMin": 10,
     "asrOffsetMin": 10,
     "maghribOffsetMin": 5,
-    "ishaOffsetMin": 0
+    "ishaOffsetMin": 0,
+    "facebookUrl": "https://www.facebook.com/igbd.org/",
+    "instagramUrl": "https://www.instagram.com/igbd_official/",
+    "youtubeUrl": "https://www.youtube.com/igbdorg"
   }
 ]

@@ -122,6 +122,11 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch { onDone(communityRepository.importSeed()) }
     }
 
+    /** One-off: clears the duplicates left by the first catalogue. Debug builds only. */
+    fun deleteSupersededCommunities(onDone: (Int) -> Unit) {
+        viewModelScope.launch { onDone(communityRepository.deleteSupersededDocuments()) }
+    }
+
     /** Current community rules (Fajr Iqamah, Jumua, offsets) — what the admin edits. */
     val communityRules: StateFlow<CommunityRules> = communityRuleProvider.observeRules()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CommunityRules.DEFAULT)

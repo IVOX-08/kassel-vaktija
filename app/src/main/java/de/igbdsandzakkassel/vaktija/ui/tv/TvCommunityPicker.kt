@@ -1,5 +1,7 @@
 package de.igbdsandzakkassel.vaktija.ui.tv
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,7 +10,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,13 +30,20 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import de.igbdsandzakkassel.vaktija.R
+import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
 import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.ui.community.CommunityPickerViewModel
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
@@ -91,6 +102,36 @@ fun TvCommunityPicker(
                 modifier = Modifier.padding(bottom = 20.dp),
             )
 
+            // Eighty-one communities is far too many to walk past with a D-pad. Typing uses the
+            // TV's own on-screen keyboard, which the remote drives — slow to type on, but far
+            // faster than pressing DOWN sixty times. Only shown on the community step; a community
+            // has a handful of towns at most.
+            if (picked == null) {
+                val query by viewModel.query.collectAsStateWithLifecycle()
+                TextField(
+                    value = query,
+                    onValueChange = viewModel::onQueryChange,
+                    singleLine = true,
+                    label = { Text("Suchen · Traži", fontSize = 20.sp) },
+                    textStyle = LocalTextStyle.current.copy(fontSize = 26.sp),
+                    // The board is a light page; Material's default dark field would sit on it as
+                    // a black slab.
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = BrandGreenDark,
+                        unfocusedTextColor = BrandGreenDark,
+                        focusedLabelColor = BrandGold,
+                        unfocusedLabelColor = Color(0xFF777777),
+                        focusedIndicatorColor = BrandGold,
+                        unfocusedIndicatorColor = Color(0xFFDDDDDD),
+                        cursorColor = BrandGreen,
+                    ),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 14.dp),
+                )
+            }
+
             // The list gets the space that is left, so the hint below can never sit on top of a row.
             Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
                 when {
@@ -99,23 +140,31 @@ fun TvCommunityPicker(
                 !loaded && communities.isEmpty() -> CentredNote(
                     "Gemeinden werden geladen …\nUčitavanje džemata …",
                 )
+                communities.isEmpty() && viewModel.query.value.isNotBlank() -> CentredNote(
+                    "Keine Gemeinde gefunden\nNema pronađenih džemata",
+                )
                 communities.isEmpty() -> CentredNote(
                     "Keine Gemeinde verfügbar — bitte Internetverbindung prüfen\n" +
                         "Nema dostupnih džemata — provjeri internet vezu",
                 )
                 picked == null -> PickerList(
                     rows = communities.map { community ->
-                        Row(
+                        PickerEntry(
                             key = community.id,
                             title = community.name,
                             subtitle = viewModel.subtitleFor(community, communities),
+                            logo = if (community.id == CommunityCatalog.KASSEL_ID) {
+                                R.drawable.logo_emblem
+                            } else {
+                                R.drawable.logo_igbd
+                            },
                             onSelect = { chosen = community },
                         )
                     },
                 )
                 else -> PickerList(
                     rows = picked.locations.map { location ->
-                        Row(
+                        PickerEntry(
                             key = location.id,
                             title = location.name,
                             subtitle = location.address.orEmpty(),
@@ -139,15 +188,17 @@ fun TvCommunityPicker(
     }
 }
 
-private data class Row(
+private data class PickerEntry(
     val key: String,
     val title: String,
     val subtitle: String,
+    /** The community's mark, or null on the town step where every row is the same community. */
+    @DrawableRes val logo: Int? = null,
     val onSelect: () -> Unit,
 )
 
 @Composable
-private fun PickerList(rows: List<Row>) {
+private fun PickerList(rows: List<PickerEntry>) {
     val firstRow = remember { FocusRequester() }
     // Focus the first row so the remote works immediately: without it the D-pad has nothing to
     // move from and the screen looks frozen.
@@ -174,9 +225,9 @@ private fun PickerList(rows: List<Row>) {
 }
 
 @Composable
-private fun PickerRow(row: Row, modifier: Modifier = Modifier) {
+private fun PickerRow(row: PickerEntry, modifier: Modifier = Modifier) {
     var focused by remember { mutableStateOf(false) }
-    Column(
+    Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
@@ -189,8 +240,18 @@ private fun PickerRow(row: Row, modifier: Modifier = Modifier) {
             .onFocusChanged { focused = it.isFocused }
             // clickable makes the row focusable and answers the remote's OK button.
             .clickable(onClick = row.onSelect)
-            .padding(horizontal = 22.dp, vertical = 16.dp),
+            .padding(horizontal = 22.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
+        if (row.logo != null) {
+            Image(
+                painter = painterResource(row.logo),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.height(46.dp).padding(end = 18.dp),
+            )
+        }
+        Column(modifier = Modifier.weight(1f)) {
         Text(
             text = row.title,
             color = if (focused) Color.White else BrandGreenDark,
@@ -203,6 +264,7 @@ private fun PickerRow(row: Row, modifier: Modifier = Modifier) {
                 color = if (focused) Color(0xFFE8F5E9) else Color(0xFF666666),
                 fontSize = 19.sp,
             )
+        }
         }
     }
 }

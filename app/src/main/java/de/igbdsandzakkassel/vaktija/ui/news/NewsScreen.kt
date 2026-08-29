@@ -73,6 +73,7 @@ import coil.compose.AsyncImage
 import androidx.compose.material3.Switch
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.Image
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material.icons.filled.Favorite
@@ -97,6 +98,7 @@ fun NewsScreen(
     viewModel: NewsViewModel = hiltViewModel(),
 ) {
     val news by viewModel.news.collectAsStateWithLifecycle()
+    val community by viewModel.community.collectAsStateWithLifecycle()
     val isAdmin by viewModel.isAdmin.collectAsStateWithLifecycle()
     val canBroadcast by viewModel.canBroadcast.collectAsStateWithLifecycle()
     val broadcastOnly by viewModel.broadcastOnly.collectAsStateWithLifecycle()
@@ -121,13 +123,22 @@ fun NewsScreen(
             .fillMaxSize()
             .padding(horizontal = 16.dp),
     ) {
-        Text(
-            text = stringResource(R.string.nav_news),
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.nav_news),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.weight(1f),
+            )
+            // Where the community posts. Beside the heading rather than at the foot of the list:
+            // someone who has just read an announcement is exactly the person who wants more, and
+            // at the foot they would be below however many announcements there happen to be.
+            SocialLinks(community)
+        }
 
         if (isAdmin) {
             Button(
@@ -718,6 +729,33 @@ private fun ComposeNewsDialog(
 // (8 language copies × title+body).
 private const val TITLE_MAX_CHARS = 200
 private const val BODY_MAX_CHARS = 4000
+
+/** Instagram, Facebook and YouTube — only the ones the community actually has. */
+@Composable
+private fun SocialLinks(community: de.igbdsandzakkassel.vaktija.data.model.Community?) {
+    val uriHandler = LocalUriHandler.current
+    val links = listOfNotNull(
+        community?.instagramUrl?.takeIf { it.isNotBlank() }
+            ?.let { R.drawable.ic_instagram to it },
+        community?.facebookUrl?.takeIf { it.isNotBlank() }
+            ?.let { R.drawable.ic_facebook to it },
+        community?.youtubeUrl?.takeIf { it.isNotBlank() }
+            ?.let { R.drawable.ic_youtube to it },
+    )
+    if (links.isEmpty()) return
+    Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        links.forEach { (icon, url) ->
+            IconButton(onClick = { uriHandler.openUri(url) }) {
+                Icon(
+                    painter = painterResource(icon),
+                    contentDescription = url,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+        }
+    }
+}
 
 @Composable
 private fun CenteredBox(content: @Composable () -> Unit) {

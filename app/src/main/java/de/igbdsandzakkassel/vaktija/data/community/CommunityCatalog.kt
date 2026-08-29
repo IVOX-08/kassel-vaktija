@@ -22,6 +22,9 @@ object CommunityCatalog {
             id = "big-frankfurt",
             name = "BIG Frankfurt",
             address = "Höchster Bahn Str. 2 a 65929 Frankfurt (Höchst)",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -38,6 +41,9 @@ object CommunityCatalog {
             name = "BIKG Hanau e.V.",
             address = "Martin-Luther-King-Straße. 7 63452 Hanau",
             email = "info@bikg-hanau.de",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -55,6 +61,9 @@ object CommunityCatalog {
             address = "Mainzer Landstraße 125 60327 Frankfurt am Main",
             email = "info@bkc-frankfurt.de",
             website = "https://www.bkc-frankfurt.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -71,6 +80,9 @@ object CommunityCatalog {
             name = "BKC Offenbach",
             address = "Strahlenbergerstr.105 63067 Offenbach",
             email = "offenbachbkc@gmail.com",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -86,6 +98,9 @@ object CommunityCatalog {
             id = "bkc-saarbruecken",
             name = "BKC Saarbrücken",
             address = "Dresdenerstr.16 A 66113 Saarbrücken",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -101,6 +116,9 @@ object CommunityCatalog {
             id = "bosniakisches-kulturzentrum-ingolstadt-e-v",
             name = "Bosniakisches Kulturzentrum Ingolstadt e.V",
             address = "Hindenburgstr 56 85057 Ingolstadt",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -118,6 +136,9 @@ object CommunityCatalog {
             address = "Burgfriedstrasse 55 83024 Rosenheim",
             email = "info@dzemat-rosenheim.de",
             phone = "08031 890711",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -136,6 +157,9 @@ object CommunityCatalog {
             email = "info@dzemat-aachen.de",
             phone = "2411606758",
             website = "https://www.dzemat-aachen.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -151,6 +175,9 @@ object CommunityCatalog {
             id = "dzemat-ahlen",
             name = "Džemat Ahlen",
             address = "Im Kühl 10 59227 Ahlen",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -166,6 +193,9 @@ object CommunityCatalog {
             id = "dzemat-augsburg",
             name = "Džemat Augsburg",
             address = "Steinerne Furt 84 86167 Augsburg",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -183,6 +213,9 @@ object CommunityCatalog {
             address = "Hölzlestraße 6 72336 Balingen",
             email = "igbalingen@outlook.de",
             phone = "07433 9985962",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -199,6 +232,9 @@ object CommunityCatalog {
             name = "Džemat Berlin IKRE",
             address = "Meteorstraße 30 13405 Berlin",
             phone = "0176 44269404",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -215,6 +251,9 @@ object CommunityCatalog {
             name = "Džemat Bielefeld",
             address = "Ziegelstraße 67 33609 Bielefeld",
             email = "igbdgemeindebielefeld@gmail.com",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -232,6 +271,9 @@ object CommunityCatalog {
             address = "Hochstraße 92 44866 Bochum",
             email = "ikc-bb@outlook.de",
             phone = "0177 7540425",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -249,6 +291,9 @@ object CommunityCatalog {
             address = "An der Esche 24 53111 Bonn",
             email = "info@hajr-bonn.de",
             phone = "0228 30412776",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -265,6 +310,9 @@ object CommunityCatalog {
             name = "Džemat Braunschweig",
             address = "An d. Rothenburg 38 38120 Braunschweig",
             phone = "0531 28096",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -283,6 +331,9 @@ object CommunityCatalog {
             email = "info@dzematbremen.de",
             phone = "+(49) 173 9054050",
             website = "https://dzematbremen.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -298,6 +349,9 @@ object CommunityCatalog {
             id = "dzemat-bremen-ig",
             name = "Džemat Bremen IG",
             address = "Zum Panrepel 10 28307 Bremen",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -316,6 +370,9 @@ object CommunityCatalog {
             email = "info@dzemat-sindelfingen.de",
             phone = "07031 870656",
             website = "https://dzemat-sindelfingen.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -334,6 +391,9 @@ object CommunityCatalog {
             email = "islamskazajednica@live.de",
             phone = "07051 78385",
             website = "https://www.dzemat-calw.de/deutsch/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -349,6 +409,9 @@ object CommunityCatalog {
             id = "dzemat-castrop-rauxel",
             name = "Džemat Castrop-Rauxel",
             address = "Wartburgstr. 29 44579 Castrop-Rauxel",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -364,6 +427,9 @@ object CommunityCatalog {
             id = "dzemat-darmstadt",
             name = "Džemat Darmstadt",
             address = "Dieselstr. 1 64347 Griesheim",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -380,6 +446,9 @@ object CommunityCatalog {
             name = "Džemat Dortmund",
             address = "Dernerstr. 94 44339 Dortmund",
             website = "http://dzemat-dortmund.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -395,6 +464,9 @@ object CommunityCatalog {
             id = "dzemat-dortmund-san",
             name = "Džemat Dortmund SAN",
             address = "Brunnenstrasse 68 44145 Dortmund",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -412,6 +484,9 @@ object CommunityCatalog {
             address = "Ziethenstraße 49 47169 Duisburg",
             phone = "0203406116",
             website = "http://dzemat-duisburg.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -427,6 +502,9 @@ object CommunityCatalog {
             id = "dzemat-duisburg-san",
             name = "Džemat Duisburg SAN",
             address = "Brückenstraße 98 47053 Duisburg",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -445,6 +523,9 @@ object CommunityCatalog {
             email = "generalsektretaer@ikc-d.de",
             phone = "02119304619",
             website = "https://ikc-d.org/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -463,6 +544,9 @@ object CommunityCatalog {
             email = "vorstand@dzemat-essen.de",
             phone = "0201 47673999",
             website = "http://dzemat-essen.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -478,6 +562,9 @@ object CommunityCatalog {
             id = "dzemat-fedzr",
             name = "Džemat Fedžr",
             address = "Drygalski-Allee 33D 81477 München",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -496,6 +583,9 @@ object CommunityCatalog {
             email = "info@dzemat-gaggenau.de",
             phone = "07225 / 913 505",
             website = "https://www.dzemat-gaggenau.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -514,6 +604,9 @@ object CommunityCatalog {
             email = "igbdhagen@gmail.com",
             phone = "02331-371196",
             website = "https://www.igbd-hagen.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -531,6 +624,9 @@ object CommunityCatalog {
             address = "Horner Brückenweg 6 22111 Hamburg",
             email = "info@igbd-hamburg.de",
             phone = "040/2296564",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -546,6 +642,9 @@ object CommunityCatalog {
             id = "dzemat-hamm",
             name = "Džemat Hamm",
             address = "Ahlenerstraße 130 59037 Hamm",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -564,6 +663,9 @@ object CommunityCatalog {
             email = "kontakt@igbd-hannover.de",
             phone = "0511 352 33 47",
             website = "https://igbd-hannover.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -581,6 +683,9 @@ object CommunityCatalog {
             address = "Böckinger Str. 30 74078 Heilbronn",
             email = "info@igbhn.de",
             phone = "07131 165111",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -599,6 +704,9 @@ object CommunityCatalog {
             email = "info@hidaje.de",
             phone = "+ 49 89 219 329 12",
             website = "https://hidaje.de/de",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -616,6 +724,9 @@ object CommunityCatalog {
             address = "Lahnstr. 15 60326 Frankfurt",
             email = "mc333333@hotmail.com",
             phone = "0176 96561659",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -634,6 +745,9 @@ object CommunityCatalog {
             email = "kontakt@ikre.info",
             phone = "089 904 2241 0",
             website = "https://ikre.info/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -651,6 +765,9 @@ object CommunityCatalog {
             address = "Haarbeckstraße 6 47475 Kamp-Lintfort",
             email = "moscheekamplintfort@googlemail.com",
             phone = "02842 9033299",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -669,6 +786,9 @@ object CommunityCatalog {
             email = "info@dzemat-karlsruhe.de",
             phone = "0721 9664524",
             website = "https://www.dzemat-karlsruhe.de",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -686,6 +806,9 @@ object CommunityCatalog {
             address = "Bremer Str. 28 34117 Kassel",
             email = "igbd@dzamija-kassel.de",
             website = "https://dzamija-kassel.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -704,6 +827,9 @@ object CommunityCatalog {
             email = "Islamischegemeindekirchheim@gmail.com",
             phone = "0702182342",
             website = "https://dzemat-kirchheim.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -719,6 +845,9 @@ object CommunityCatalog {
             id = "dzemat-koblenz",
             name = "Džemat Koblenz",
             address = "Hochstr. 83 56070 Koblenz",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -736,6 +865,9 @@ object CommunityCatalog {
             address = "Vogelsangerstr. 210 50825 Köln",
             email = "info@dzemat.de",
             phone = "0221 5461807",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -751,6 +883,9 @@ object CommunityCatalog {
             id = "dzemat-leipzig",
             name = "Džemat Leipzig",
             address = "Apostelstraße 19 04177 Leipzig",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -766,6 +901,9 @@ object CommunityCatalog {
             id = "dzemat-ludwigsburg",
             name = "Džemat Ludwigsburg",
             address = "Harteneckerstraße 23/2 71691 Freiberg am Neckar",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -782,6 +920,9 @@ object CommunityCatalog {
             name = "Džemat Löhne",
             address = "Bahnhofstraße 137 32584 Löhne",
             phone = "05732 688557",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -800,6 +941,9 @@ object CommunityCatalog {
             email = "dzemat-mainz@web.de",
             phone = "06131-625846",
             website = "http://www.dzemat-mainz.de",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -818,6 +962,9 @@ object CommunityCatalog {
             email = "info@dzemat-mannheim.de",
             phone = "062180397840",
             website = "https://dzemat-mannheim.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -834,6 +981,9 @@ object CommunityCatalog {
             name = "Džemat Mülheim a. d. Ruhr",
             address = "Hingbergstraße 163 45470 Mülheim an der Ruhr",
             phone = "0172 9961202",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -849,6 +999,9 @@ object CommunityCatalog {
             id = "dzemat-muenster",
             name = "Džemat Münster",
             address = "Münsterstraße 52b 48167 Münster",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -867,6 +1020,9 @@ object CommunityCatalog {
             email = "info@dzamija.net",
             phone = "+49911/6589571",
             website = "http://www.dzamija.net",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -885,6 +1041,9 @@ object CommunityCatalog {
             email = "dzematoberhausen@gmail.com",
             phone = "0208811000",
             website = "http://www.dzemat-oberhausen.de",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -900,6 +1059,9 @@ object CommunityCatalog {
             id = "dzemat-offenbach",
             name = "Džemat Offenbach",
             address = "Geleitstr. 46 63065 Offenbach",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -915,6 +1077,9 @@ object CommunityCatalog {
             id = "dzemat-osnabrueck-ig",
             name = "Džemat Osnabrück - IG",
             address = "Ackerstraße 55 49084 Osnabrück",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -932,6 +1097,9 @@ object CommunityCatalog {
             address = "Meller Str. 298, 49082 Osnabrück 49082 Osnabrück",
             email = "igbsarajbosna@gmail.com",
             phone = "0541 572904",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -947,6 +1115,9 @@ object CommunityCatalog {
             id = "dzemat-paderborn",
             name = "Džemat Paderborn",
             address = "Stettiner Str. 34 33106 Paderborn",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -965,6 +1136,9 @@ object CommunityCatalog {
             email = "info@islam-penzberg.de",
             phone = "0 885 693 2332",
             website = "https://islam-penzberg.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -980,6 +1154,9 @@ object CommunityCatalog {
             id = "dzemat-pfalzgrafenweiler",
             name = "Džemat Pfalzgrafenweiler",
             address = "Hauptstraße 40 72285 Pfalzgrafenweiler",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -997,6 +1174,9 @@ object CommunityCatalog {
             address = "Bruchstücker 60A 76661 Philippsburg",
             phone = "07256 202369910",
             website = "https://dzemat-philippsburg.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1015,6 +1195,9 @@ object CommunityCatalog {
             email = "izbrv1992@gmail.com",
             phone = "--",
             website = "https://igbrv.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1030,6 +1213,9 @@ object CommunityCatalog {
             id = "dzemat-regensburg",
             name = "Džemat Regensburg",
             address = "Isarstraße 62A, 93057 Regensburg 93059 Regensburg",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1046,6 +1232,9 @@ object CommunityCatalog {
             name = "Džemat Reutlingen",
             address = "Am Kappelbach 20 72800 Eningen unter Achalm",
             phone = "07121880098",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1064,6 +1253,9 @@ object CommunityCatalog {
             email = "info@sabur.de",
             phone = "089 82940369",
             website = "http://www.sabur.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1080,6 +1272,9 @@ object CommunityCatalog {
             name = "Džemat Schwäbisch Gmünd",
             address = "Schindelackerweg 22 73525 Schwäbisch Gmünd",
             phone = "07171 9084806",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1095,6 +1290,9 @@ object CommunityCatalog {
             id = "dzemat-schuettorf",
             name = "Džemat Schüttorf",
             address = "Färbestraße 2 48465 Schüttorf",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1113,6 +1311,9 @@ object CommunityCatalog {
             email = "info@dzemat-siegen.de",
             phone = "01795453338",
             website = "http://www.dzemat-siegen.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1131,6 +1332,9 @@ object CommunityCatalog {
             email = "info@igstuttgart.de",
             phone = "0711 65200831",
             website = "https://igstuttgart.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1147,6 +1351,9 @@ object CommunityCatalog {
             name = "Džemat Stuttgart",
             address = "Haldenstraße 28 70376 Stuttgart",
             phone = "07115498202",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1162,6 +1369,9 @@ object CommunityCatalog {
             id = "dzemat-tevhid",
             name = "Džemat Tevhid",
             address = "Ligsalz str.31a 80339 München",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1179,6 +1389,9 @@ object CommunityCatalog {
             address = "Hinterm Bild 11 78532 Tuttlingen",
             email = "ig.tuttlingen@yahoo.de",
             phone = "07461 71367",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1195,6 +1408,9 @@ object CommunityCatalog {
             name = "Džemat Uhingen, Göppingen, Geislingen",
             address = "Haldenbergstraße 13/a 73066 Uhingen",
             email = "i.z.uhingen@gmail.com",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1213,6 +1429,9 @@ object CommunityCatalog {
             email = "info@igbd-ulm.de",
             phone = "073114414630",
             website = "https://igbd-ulm.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1230,6 +1449,9 @@ object CommunityCatalog {
             address = "Friedrichstraße 34 42551 Velbert",
             email = "ikcvelbert@web.de",
             phone = "02051 8091310",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1248,6 +1470,9 @@ object CommunityCatalog {
             email = "info@igbd-gw.org",
             phone = "0611 168 95 644",
             website = "http://www.igbd-gw.org",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1266,6 +1491,9 @@ object CommunityCatalog {
             email = "info@bkc-witten.de",
             phone = "02302275240",
             website = "https://igbd-witten.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1282,6 +1510,9 @@ object CommunityCatalog {
             name = "Džemat Wuppertal",
             address = "Uellendahler Str. 6A 42107 Wuppertal",
             phone = "0202452113",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1298,6 +1529,9 @@ object CommunityCatalog {
             name = "Džemat Würzburg",
             address = "Dr.Maria-Probst-Str.3 97082 Würzburg",
             phone = "0176 49493555",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1314,6 +1548,9 @@ object CommunityCatalog {
             name = "IGBD-Gemeinde Sandžak-Kassel",
             address = "Schwanenweg 13, 34123 Kassel",
             email = "vorstand@igbdsandzakkassel.de",
+            facebookUrl = "https://www.facebook.com/IKZEbuHanife/",
+            instagramUrl = "https://www.instagram.com/igbdsandzakkassel/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             donationUrl = "https://www.paypal.com/donate?business=ikzsandzakkassel@gmail.com",
             locations = listOf(
                 CommunityLocation(
@@ -1357,6 +1594,9 @@ object CommunityCatalog {
             id = "ikc-saarbruecken",
             name = "IKC Saarbrücken",
             address = "Arndtstr. 14-16 66121 Saarbrücken",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(
@@ -1375,6 +1615,9 @@ object CommunityCatalog {
             email = "kontakt@ikb-berlin.de",
             phone = "(030) 695664-0",
             website = "http://www.ikb-berlin.de/",
+            facebookUrl = "https://www.facebook.com/igbd.org/",
+            instagramUrl = "https://www.instagram.com/igbd_official/",
+            youtubeUrl = "https://www.youtube.com/igbdorg",
             status = CommunityStatus.BLOCKED,
             locations = listOf(
                 CommunityLocation(

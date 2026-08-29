@@ -95,6 +95,17 @@ private const val BOARD_SWITCH_MS = 5_000L
 
 private const val CROSSFADE_MS = 700
 
+/**
+ * The community's name as the board's second line.
+ *
+ * "IGBD" already stands above it in large type, so a leading "IGBD-" would say it twice. Kassel's
+ * hyphen becomes a space because that is how the community writes itself on its own building.
+ */
+private fun boardSubtitle(name: String): String = name
+    .removePrefix("IGBD-")
+    .removePrefix("IGBD ")
+    .replace("Sandžak-Kassel", "Sandžak Kassel")
+
 @Composable
 fun TvDashboardScreen(
     modifier: Modifier = Modifier,
@@ -234,7 +245,12 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
             verticalArrangement = Arrangement.Center,
         ) {
             Image(
-                painter = painterResource(R.drawable.logo_emblem),
+                // Kassel's own crest; every other community carries the federation's, exactly as
+                // the phone does. A board in Nürnberg showing Kassel's coat of arms above
+                // Nürnberg's prayer times would be plainly wrong.
+                painter = painterResource(
+                    if (state.isHomeCommunity) R.drawable.logo_emblem else R.drawable.logo_igbd,
+                ),
                 contentDescription = stringResource(R.string.cd_app_logo),
                 // Sized against the slack under the hero card, measured with the WORST case on
                 // screen (the 3-line German hadith, which makes the band below tallest). Going
@@ -273,7 +289,7 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                     Text(
                         // The big "IGBD" is already above; the subtitle is just the community name
                         // — no repeated "IGBD-", and "Sandžak Kassel" with a space (not a hyphen).
-                        text = "Gemeinde Sandžak Kassel",
+                        text = boardSubtitle(state.communityName),
                         color = BrandGold,
                         // 14sp, not 17: the two download badges narrowed this column, and the name
                         // reads better on one line than wrapped after "Sandžak".

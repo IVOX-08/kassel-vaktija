@@ -70,6 +70,11 @@ class NewsViewModel @Inject constructor(
     }
 
     /** Every listed community — the recipient list the head admin picks from. */
+    /** The community being read — its social accounts sit beside the heading. */
+    val community: StateFlow<Community?> = communityRepository.observeSelection()
+        .map { it?.community }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
     val allCommunities: StateFlow<List<Community>> = communityRepository.observeSelectable()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 

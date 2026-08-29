@@ -22,6 +22,14 @@ data class Community(
     /** The community's own telephone and website, as IGBD's register lists them. */
     val phone: String? = null,
     val website: String? = null,
+    /**
+     * Where the community posts. Shown under the announcements, because that is where someone who
+     * just read one is most likely to want more. A community that has not sent its own carries the
+     * federation's accounts.
+     */
+    val facebookUrl: String? = null,
+    val instagramUrl: String? = null,
+    val youtubeUrl: String? = null,
     /** The community's imam, and the number people may call. Both optional. */
     val imamName: String? = null,
     val imamPhone: String? = null,
@@ -88,6 +96,14 @@ data class CommunityLocation(
     /** The community's own telephone and website, as IGBD's register lists them. */
     val phone: String? = null,
     val website: String? = null,
+    /**
+     * Where the community posts. Shown under the announcements, because that is where someone who
+     * just read one is most likely to want more. A community that has not sent its own carries the
+     * federation's accounts.
+     */
+    val facebookUrl: String? = null,
+    val instagramUrl: String? = null,
+    val youtubeUrl: String? = null,
     /** The community's imam, and the number people may call. Both optional. */
     val imamName: String? = null,
     val imamPhone: String? = null,

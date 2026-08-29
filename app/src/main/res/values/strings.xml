@@ -333,4 +333,6 @@
     <string name="sound_soft">Tihi ton</string>
     <string name="sound_announcement">Standardni ton</string>
     <string name="settings_news_sound">Ton obavijesti</string>
+    <string name="admin_cleanup_communities">Stare duplikate ukloniti</string>
+    <string name="admin_cleanup_done">Uklonjeno: %1$d</string>
 </resources>
