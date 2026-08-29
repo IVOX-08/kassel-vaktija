@@ -203,6 +203,6 @@ private struct LocationPickerSheet: View {
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.moreCard.ignoresSafeArea())
+        .background(Color.appBackground.ignoresSafeArea())
     }
 }

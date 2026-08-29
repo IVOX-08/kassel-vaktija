@@ -139,6 +139,9 @@ enum PrayerTracker {
                        at now: Date = Date(), on day: Date = Date()) -> Bool {
         guard let w = window(prayer, on: day), now >= w.open, now <= w.close else { return false }
         AppGroup.defaults.set(value.rawValue, forKey: key(prayer, day))
+        // Die Flamme steht auch im Widget. Ohne diesen Anstoss zaehlt sie dort erst Stunden
+        // spaeter mit — und wer gerade "Ja" getippt hat, sieht es nicht.
+        WidgetRefresh.now()
         return true
     }
 

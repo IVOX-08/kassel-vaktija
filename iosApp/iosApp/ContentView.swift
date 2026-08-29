@@ -125,7 +125,7 @@ struct ContentView: View {
     /// zweite Klasse.
     private var federationEmblem: some View {
         VStack(spacing: 3) {
-            Image(uiImage: UIImage(named: "logo_igbd") ?? UIImage())
+            Image(uiImage: UIImage(named: scheme == .dark ? "logo_igbd_dark" : "logo_igbd") ?? UIImage())
                 .resizable().scaledToFit()
                 .frame(height: 96)
             Text(CommunityCatalog.shared.selected?.name ?? "")

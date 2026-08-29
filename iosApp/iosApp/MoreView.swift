@@ -29,6 +29,8 @@ struct MoreView: View {
                             .padding(.horizontal, 18).padding(.vertical, 18)
                             .background(Color.moreCard)
                             .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .overlay(RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.cardOutline, lineWidth: 1))
                         }
                     }
                 }
@@ -272,45 +274,67 @@ struct QiblaView: View {
 
     // MARK: - Das Zifferblatt
 
-    /// Der feste Zeiger steht AUSSERHALB des Rings und dreht sich nie: Er zeigt, wohin das Handy
-    /// schaut. Der Ring darunter dreht gegen den Kompass, die Nadel sitzt auf dem Ring. Damit ist
-    /// die Aufgabe für den Nutzer eine einzige — die Nadel unter den Zeiger drehen.
+    /// Der feste Zeiger steht OBEN am Ring und dreht sich nie: Er zeigt, wohin das Handy schaut.
+    /// Der Ring darunter dreht gegen den Kompass, die Nadel sitzt auf dem Ring. Damit hat der
+    /// Nutzer nur eine Aufgabe — die Nadel unter den Zeiger drehen.
     private var dial: some View {
-        ZStack {
-            Circle()
-                .stroke(Color.appOnSurfaceVariant.opacity(0.35), lineWidth: 1.5)
-                .padding(6)
+        GeometryReader { geo in
+            let size = min(geo.size.width, geo.size.height)
+            let radius = size / 2
 
-            CompassTicks()
-                .stroke(Color.appOnSurfaceVariant.opacity(0.55), lineWidth: 1.5)
-                .padding(6)
+            ZStack {
+                // Ring, Striche und Himmelsrichtungen gehoeren zusammen und drehen als EIN Stueck.
+                // Getrennt gedreht liefen sie bei jeder Bewegung auseinander.
+                ZStack {
+                    Circle().stroke(Color.appOnSurfaceVariant.opacity(0.35), lineWidth: 1.5)
+
+                    CompassTicks(skipping: 0)
+                        .stroke(Color.appOnSurfaceVariant.opacity(0.6), lineWidth: 1.5)
+
+                    // Nord ist der einzige rote Strich — der eine Anhaltspunkt, wenn man sich dreht.
+                    NorthTick()
+                        .stroke(Color.qiblaRed, lineWidth: 2.5)
+
+                    ForEach(CompassPoint.all, id: \.label) { point in
+                        Text(point.label)
+                            .font(.inter(17, .semibold))
+                            .foregroundColor(point.isNorth ? .qiblaRed : .appOnSurface)
+                            // Erst versetzen, DANN drehen: So wandert der Buchstabe auf dem Kreis.
+                            // Andersherum bleibt er oben stehen und nur die Schrift kippt — dann
+                            // liegen alle vier uebereinander.
+                            .offset(y: -(radius - 34))
+                            .rotationEffect(.degrees(point.degrees))
+                    }
+                }
                 .rotationEffect(.degrees(-(model.heading ?? 0)))
 
-            // Die Himmelsrichtungen drehen mit dem Ring, nicht mit dem Bildschirm. Nord ist rot,
-            // wie auf jedem Kompass — und der einzige Anhaltspunkt, wenn man das Handy dreht.
-            ForEach(CompassPoint.all, id: \.label) { point in
-                Text(point.label)
-                    .font(.inter(17, .semibold))
-                    .foregroundColor(point.isNorth ? .qiblaRed : .appOnSurface)
-                    .rotationEffect(.degrees(point.degrees))
-                    .offset(y: -108)
-                    .rotationEffect(.degrees(-point.degrees))
-                    .rotationEffect(.degrees(point.degrees))
-            }
-            .rotationEffect(.degrees(-(model.heading ?? 0)))
-
-            // Die Nadel: Strich vom Mittelpunkt zum Rand, am Ende der Punkt mit goldenem Ring.
-            QiblaNeedle()
+                // Die Nadel: Strich vom Mittelpunkt zum Rand, am Ende der Punkt mit goldenem Ring.
+                // Sie dreht um denselben Mittelpunkt wie der Ring, weil beide im selben Quadrat
+                // liegen — ein Rand oder eine abweichende Groesse wuerde sie aus der Mitte ruecken.
+                ZStack {
+                    Capsule()
+                        .fill(Color.brandGreen)
+                        .frame(width: 5, height: radius - 22)
+                        .offset(y: -(radius - 22) / 2)
+                    Circle()
+                        .fill(Color.brandGreen)
+                        .frame(width: 26, height: 26)
+                        .overlay(Circle().stroke(Color.brandGold, lineWidth: 3))
+                        .offset(y: -(radius - 22))
+                }
                 .rotationEffect(.degrees(needle))
 
-            Circle().fill(Color.appOnSurface).frame(width: 9, height: 9)
+                Circle().fill(Color.appOnSurface).frame(width: 9, height: 9)
 
-            VStack {
+                // Der Zeiger sitzt AUF dem Ring, mit der Spitze nach innen. Ausserhalb schwebend
+                // war nicht zu erkennen, worauf er zeigt.
                 Triangle()
                     .fill(aligned ? Color.brandGreen : Color.brandGold)
                     .frame(width: 22, height: 15)
-                Spacer()
+                    .offset(y: -radius + 4)
             }
+            .frame(width: size, height: size)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(width: 300, height: 300)
         .animation(.easeOut(duration: 0.15), value: model.heading ?? 0)
@@ -336,43 +360,40 @@ private struct CompassPoint {
 /// Ohne die Striche ist der Ring eine leere Scheibe, auf der sich nicht ablesen lässt, ob man sich
 /// um zwei oder um zwanzig Grad gedreht hat.
 private struct CompassTicks: Shape {
+    /// Der Grad, an dem kein Strich gezeichnet wird — dort steht der rote Nord-Strich.
+    let skipping: Int
+
     func path(in rect: CGRect) -> Path {
         let center = CGPoint(x: rect.midX, y: rect.midY)
         let radius = min(rect.width, rect.height) / 2
         var path = Path()
-        for degree in stride(from: 0, to: 360, by: 5) {
+        for degree in stride(from: 0, to: 360, by: 5) where degree != skipping {
             let major = degree % 30 == 0
-            let length: CGFloat = major ? 14 : 7
-            let angle = (Double(degree) - 90) * .pi / 180
-            let outer = CGPoint(x: center.x + cos(angle) * radius,
-                                y: center.y + sin(angle) * radius)
-            let inner = CGPoint(x: center.x + cos(angle) * (radius - length),
-                                y: center.y + sin(angle) * (radius - length))
-            path.move(to: inner)
-            path.addLine(to: outer)
+            path.addLine(from: center, radius: radius, degree: Double(degree),
+                         length: major ? 14 : 7)
         }
         return path
     }
 }
 
-/// Der grüne Zeiger zur Kaaba, mit dem Punkt am äußeren Ende.
-private struct QiblaNeedle: View {
-    var body: some View {
-        VStack(spacing: 0) {
-            Circle()
-                .fill(Color.brandGreen)
-                .frame(width: 26, height: 26)
-                .overlay(Circle().stroke(Color.brandGold, lineWidth: 3))
-            Rectangle()
-                .fill(Color.brandGreen)
-                .frame(width: 5)
-            Spacer(minLength: 0)
-        }
-        .frame(width: 300, height: 300)
-        .padding(.top, 12)
-        // Die untere Hälfte bleibt leer: ein Zeiger, der über den Mittelpunkt hinausragt, zeigt in
-        // zwei Richtungen, und eine davon ist falsch.
-        .mask(VStack(spacing: 0) { Rectangle(); Color.clear }.frame(width: 300, height: 300))
+/// Der rote Strich auf Nord. Etwas länger als die übrigen, damit er auch im Augenwinkel auffällt.
+private struct NorthTick: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.addLine(from: CGPoint(x: rect.midX, y: rect.midY),
+                     radius: min(rect.width, rect.height) / 2, degree: 0, length: 18)
+        return path
+    }
+}
+
+private extension Path {
+    /// Ein Strich vom Rand nach innen, an einem Winkel gemessen von oben im Uhrzeigersinn.
+    mutating func addLine(from center: CGPoint, radius: CGFloat, degree: Double, length: CGFloat) {
+        let angle = (degree - 90) * .pi / 180
+        move(to: CGPoint(x: center.x + cos(angle) * (radius - length),
+                         y: center.y + sin(angle) * (radius - length)))
+        addLine(to: CGPoint(x: center.x + cos(angle) * radius,
+                            y: center.y + sin(angle) * radius))
     }
 }
 

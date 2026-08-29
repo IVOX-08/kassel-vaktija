@@ -100,6 +100,8 @@ struct ZakatView: View {
         .padding(18)
         .background(Color.moreCard)
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous)
+            .stroke(Color.cardOutline, lineWidth: 1))
     }
 
     // MARK: Bausteine
@@ -114,6 +116,8 @@ struct ZakatView: View {
         .padding(18)
         .background(Color.moreCard)
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous)
+            .stroke(Color.cardOutline, lineWidth: 1))
     }
 
     /// Ein Eingabefeld: umrandeter Kasten über die ganze Breite, wie auf Android.

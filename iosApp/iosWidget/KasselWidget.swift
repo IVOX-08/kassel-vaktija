@@ -85,6 +85,7 @@ struct Provider: TimelineProvider {
 
 struct KasselWidgetEntryView: View {
     var entry: PrayerEntry
+    @Environment(\.colorScheme) private var scheme
     private let amber = Color(red: 0xE0 / 255.0, green: 0xA9 / 255.0, blue: 0x3A / 255.0) // #E0A93A
 
     /// Kassel trägt sein eigenes Wappen, jede andere Gemeinde das Zeichen des Verbands — dieselbe
@@ -95,58 +96,64 @@ struct KasselWidgetEntryView: View {
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: 14) {
-            // Weißer Kreis unter beiden Zeichen: Das Widget steht auf dem Hintergrundbild des
-            // Nutzers, und ein grünes Wappen auf dunklem Foto verschwindet.
-            Image(uiImage: UIImage(named: isHome ? "widget_crest" : "logo_igbd") ?? UIImage())
-                .resizable().scaledToFit()
-                .padding(isHome ? 0 : 8)
-                // Gleich groß für alle. Ein kleineres Zeichen für die anderen läse sich wie
-                // zweite Klasse.
-                .frame(width: 96, height: 96)
-                .background(Circle().fill(Color.white))
+        HStack(alignment: .top, spacing: 12) {
+            VStack(spacing: 6) {
+                Image(uiImage: UIImage(named: isHome ? "widget_crest"
+                                                     : (scheme == .dark ? "logo_igbd_dark" : "logo_igbd")) ?? UIImage())
+                    .resizable().scaledToFit()
+                    .frame(width: 64, height: 64)
+                // Flamme und Tagesstand direkt unter dem Wappen — die einzige Zahl, die man
+                // mehrmals am Tag sehen will, ohne die App zu öffnen.
+                //
+                // Antworten lässt sich hier NICHT: Knöpfe in einem Widget gibt es erst ab iOS 17,
+                // und die App läuft ab iOS 16. Gefragt wird in der Benachrichtigung.
+                HStack(spacing: 4) {
+                    Text("🔥").font(.system(size: 14))
+                    Text("\(PrayerTracker.streak())")
+                        .font(.system(size: 14, weight: .bold))
+                    Text("·").foregroundStyle(.secondary)
+                    Text("\(PrayerTracker.answeredCount()) / \(TrackedPrayer.allCases.count)")
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .foregroundStyle(.primary)
+                if !isHome, let name = CommunitySelection.communityName, !name.isEmpty {
+                    Text(name)
+                        .font(.system(size: 9, weight: .semibold)).foregroundColor(amber)
+                        .multilineTextAlignment(.center).lineLimit(2)
+                        .frame(maxWidth: 72)
+                }
+            }
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(L(entry.nameKey))
-                    .font(.system(size: 20, weight: .bold)).foregroundColor(amber)
-                    .lineLimit(1).shadow(radius: 2)
+                    .font(.system(size: 19, weight: .bold)).foregroundColor(amber)
+                    .lineLimit(1)
+                // .primary statt Weiß: Das Widget steht auf einem hellen Untergrund, sobald das
+                // Telefon im Hellmodus läuft — weiße Schrift war dort schlicht unsichtbar, und
+                // genau deshalb fehlten Countdown und Uhrzeit ganz.
                 Text(timerInterval: Date()...max(entry.target, Date().addingTimeInterval(1)), countsDown: true)
-                    .font(.system(size: 48, weight: .bold)).foregroundColor(.white)
+                    .font(.system(size: 44, weight: .bold))
+                    .foregroundStyle(.primary)
                     .lineLimit(1).minimumScaleFactor(0.5)
                 Text("\(L("widget_remaining"))  ·  \(entry.timeHHmm)")
-                    .font(.system(size: 16)).foregroundColor(.white)
+                    .font(.system(size: 15))
+                    .foregroundStyle(.secondary)
                     .padding(.top, 2)
             }
             Spacer(minLength: 0)
         }
-        .overlay(alignment: .bottomLeading) { tracker }
-        .padding(8)
+        .padding(10)
         .environment(\.layoutDirection, Localization.shared.layoutDirection)
         .widgetBackgroundClear()
-    }
-
-    /// Flamme und Tagesstand — die einzige Zahl, die man mehrmals am Tag sehen will, ohne die App
-    /// zu öffnen. Links unter dem Wappen, damit sie den Countdown nicht bedrängt.
-    ///
-    /// Antworten lässt sich hier NICHT: Knöpfe in einem Widget gibt es erst ab iOS 17, und die App
-    /// läuft ab iOS 16. Gefragt wird in der Benachrichtigung, dort sind Ja und Nein.
-    private var tracker: some View {
-        HStack(spacing: 6) {
-            Text("🔥").font(.system(size: 17))
-            Text("\(PrayerTracker.streak())")
-                .font(.system(size: 17, weight: .bold)).foregroundColor(.white)
-            Text("·").font(.system(size: 17)).foregroundColor(.white.opacity(0.7))
-            Text("\(PrayerTracker.answeredCount()) / \(TrackedPrayer.allCases.count)")
-                .font(.system(size: 17, weight: .medium)).foregroundColor(.white)
-        }
-        .shadow(radius: 2)
     }
 }
 
 private extension View {
-    // Transparent widget background (spec 7). iOS 17+ requires an explicit container background.
+    // Durchsichtiger Hintergrund wie auf Android. Ab iOS 17 MUSS ein Hintergrund angegeben
+    // werden — ohne Angabe setzt das System einen weißen. Die Fassung mit Verschluss ist die,
+    // die wirklich durchlässt.
     @ViewBuilder func widgetBackgroundClear() -> some View {
-        if #available(iOS 17.0, *) { containerBackground(.clear, for: .widget) } else { self }
+        if #available(iOS 17.0, *) { containerBackground(for: .widget) { Color.clear } } else { self }
     }
 }
 
@@ -156,7 +163,7 @@ struct KasselWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             KasselWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("Kassel Vaktija")
+        .configurationDisplayName("IGBD Vaktija")
         .description("Nächste Gebetszeit mit Countdown.")
         .supportedFamilies([.systemMedium, .systemSmall])
     }

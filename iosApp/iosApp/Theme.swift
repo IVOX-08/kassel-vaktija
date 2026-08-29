@@ -22,9 +22,19 @@ extension Color {
     init(rgb: UInt) { self.init(UIColor(rgb: rgb)) }
 
     // Fixed brand palette
-    static let brandGreen = Color(rgb: 0x2E7D32)
-    static let brandGreenDark = Color(rgb: 0x1B5E20)
-    static let brandGreenLight = Color(rgb: 0x66BB6A)
+    // IZ zelena, Pantone 356 C — die geschuetzte Farbe aus Kapitel 2.1 des Handbuchs der
+    // Islamska zajednica. Vorher stand hier Materials Gruen 800: sah aehnlich aus, war falsch.
+    static let brandGreen = Color(rgb: 0x008348)
+    static let brandGreenDark = Color(rgb: 0x00612F)
+    static let brandGreenLight = Color(rgb: 0x4CB783)
+
+    // Das GOLD DER SCHRIFT bleibt, wie es immer war.
+    //
+    // Es steht nicht im Markenhandbuch und soll es auch nicht: Das Handbuch regelt das ZEICHEN,
+    // nicht die Beschriftung einer App. IZ Zlatna (#A59573) ist ein blasses, graustichiges Gold —
+    // als Schriftfarbe naehme es der App das warme Gold, an dem die Tafel in der Moschee aus der
+    // Entfernung erkannt wird. Auf der Android-Seite wurde das einmal verwechselt und
+    // zurueckgenommen; hier nicht wiederholen.
     static let brandGold = Color(rgb: 0xB8860B)
     static let brandGoldLight = Color(rgb: 0xD4AF37)
     static let qiblaRed = Color(rgb: 0xD32F2F)
@@ -39,7 +49,15 @@ extension Color {
     static let appSurfaceVariant = adaptive(light: 0xF1F4F1, dark: 0x2A2F2A)
     static let appOnSurface = adaptive(light: 0x1A1A1A, dark: 0xECECEC)
     static let appOnSurfaceVariant = adaptive(light: 0x5C615C, dark: 0xB6BBB6)
-    static let moreCard = adaptive(light: 0xE7E0EC, dark: 0x49454F)              // lavender "Mehr" cards (matches Android)
+    /// Die Karten der App: WEISS auf hellgrauer Seite, mit einer Haarlinie.
+    ///
+    /// Vorher lavendel (#E7E0EC). Der Ton stammte aus Materials eigener Grundpalette, weil auf
+    /// Android eine Farbrolle nie gesetzt war — auf einem Bildschirm standen dadurch drei Karten
+    /// in drei Toenen, einer davon deutlich rosa. Das ist dort behoben; nichts in der App darf
+    /// einen Lila- oder Rosastich haben.
+    static let moreCard = adaptive(light: 0xFFFFFF, dark: 0x181D19)
+    /// Die Haarlinie um die Karten. Ohne sie verschwimmt Weiss auf hellem Grau.
+    static let cardOutline = adaptive(light: 0xE4E9E4, dark: 0x272E27)
 
     // Back-compat aliases used by the existing screens
     static let pageBackground = appBackground

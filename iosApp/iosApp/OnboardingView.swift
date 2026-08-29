@@ -45,9 +45,14 @@ private struct IntroSlides: View {
     @Environment(\.colorScheme) private var scheme
     @State private var page = 0
 
+    /// Das Verbandszeichen, nicht Kassels Wappen.
+    ///
+    /// Hier ist noch keine Gemeinde gewaehlt — die Begruessung gehoert dem Verband, nicht einer
+    /// seiner einundachtzig Gemeinden. Im Dunkelmodus die offizielle Negativ-Fassung (weiss,
+    /// Kapitel 2.2.1); das Zeichen wird NICHT umgefaerbt.
     private var logo: UIImage {
-        let name = scheme == .dark ? "logo_community_dark" : "logo_community"
-        return UIImage(named: name) ?? UIImage(named: "logo_community") ?? UIImage()
+        let name = scheme == .dark ? "logo_igbd_dark" : "logo_igbd"
+        return UIImage(named: name) ?? UIImage(named: "logo_igbd") ?? UIImage()
     }
 
     var body: some View {

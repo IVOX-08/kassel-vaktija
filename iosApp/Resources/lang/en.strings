@@ -35,7 +35,7 @@
 "quran_continue" = "Continue reading";
 "quran_bookmarks" = "Bookmarks";
 "onb_welcome_title" = "Welcome";
-"onb_welcome_body" = "The app of the IGBD Sandžak-Kassel community — prayer times, Qur'an, hadith and more, in your language.";
+"onb_welcome_body" = "The app of the IGBD — prayer times, Qur'an, hadith and more, in your language.";
 "onb_notif_title" = "Prayer & Adhan";
 "onb_notif_body" = "Accurate prayer times with notifications. For each prayer choose the Adhan or a short tone and adjust alerts — all in Settings.";
 "onb_content_title" = "Qur'an, Hadith & Dhikr";
@@ -56,7 +56,7 @@
 "onb_perm_widget_title" = "Widget";
 "onb_perm_widget_body" = "Want to see the next prayer time right on your home screen? Add the widget with one tap.";
 "onb_perm_widget_action" = "Add to home screen";
-"onb_perm_widget_unsupported" = "Your home screen doesn't support adding it automatically. You can add the widget manually: long-press the home screen → Widgets → \"Kassel Vaktija\".";
+"onb_perm_widget_unsupported" = "Your home screen doesn't support adding it automatically. You can add the widget manually: long-press the home screen → Widgets → \"IGBD Vaktija\".";
 "prayer_fajr" = "Fajr";
 "prayer_sunrise" = "Sunrise";
 "prayer_dhuhr" = "Dhuhr";

@@ -35,7 +35,7 @@
 "quran_continue" = "Okumaya devam et";
 "quran_bookmarks" = "Yer imleri";
 "onb_welcome_title" = "Hoş geldiniz";
-"onb_welcome_body" = "IGBD Sancak-Kassel cemaatinin uygulaması — namaz vakitleri, Kur'an, hadis ve daha fazlası, kendi dilinizde.";
+"onb_welcome_body" = "IGBD'nin uygulaması — namaz vakitleri, Kur'an, hadis ve daha fazlası, kendi dilinizde.";
 "onb_notif_title" = "Namaz ve Ezan";
 "onb_notif_body" = "Bildirimlerle doğru namaz vakitleri. Her namaz için ezanı ya da kısa bir sesi seçin ve uyarıları ayarlayın — hepsi Ayarlar'da.";
 "onb_content_title" = "Kur'an, Hadis ve Zikir";
@@ -56,7 +56,7 @@
 "onb_perm_widget_title" = "Widget";
 "onb_perm_widget_body" = "Bir sonraki namaz vaktini doğrudan ana ekranında görmek ister misin? Widget'ı tek dokunuşla ekle.";
 "onb_perm_widget_action" = "Ana ekrana ekle";
-"onb_perm_widget_unsupported" = "Ana ekranın otomatik eklemeyi desteklemiyor. Widget'ı elle ekleyebilirsin: Ana ekrana basılı tut → Widget'lar → \"Kassel Vaktija\".";
+"onb_perm_widget_unsupported" = "Ana ekranın otomatik eklemeyi desteklemiyor. Widget'ı elle ekleyebilirsin: Ana ekrana basılı tut → Widget'lar → \"IGBD Vaktija\".";
 "prayer_fajr" = "Sabah";
 "prayer_sunrise" = "Güneş";
 "prayer_dhuhr" = "Öğle";

@@ -11,6 +11,30 @@ struct NewsView: View {
     @State private var showCompose = false
     @State private var pendingDelete: NewsItem?
 
+    /// Instagram, Facebook und YouTube der gewaehlten Gemeinde.
+    ///
+    /// Schlichte einfarbige Zeichen in den Farben der App — KEINE nachgemalten Markenlogos. Die
+    /// echten Logos der drei Netze duerfen nicht nachgezeichnet werden, und eine schlechte Kopie
+    /// waere ohnehin schlechter als ein klares Symbol.
+    @ViewBuilder private var socialLinks: some View {
+        let community = CommunityCatalog.shared.selected
+        HStack(spacing: 14) {
+            socialLink(community?.instagramUrl, "camera")
+            socialLink(community?.facebookUrl, "person.2")
+            socialLink(community?.youtubeUrl, "play.rectangle")
+        }
+    }
+
+    @ViewBuilder private func socialLink(_ raw: String?, _ icon: String) -> some View {
+        if let raw, !raw.isEmpty, let url = URL(string: raw) {
+            Link(destination: url) {
+                Image(systemName: icon)
+                    .font(.system(size: 17, weight: .medium))
+                    .foregroundColor(.brandGreen)
+            }
+        }
+    }
+
     private var deleteDialog: Binding<Bool> {
         Binding(get: { pendingDelete != nil }, set: { if !$0 { pendingDelete = nil } })
     }
@@ -70,6 +94,9 @@ struct NewsView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle(L("nav_news"))
+            // Die Konten der Gemeinde stehen NEBEN der Ueberschrift, nicht am Fuss der Liste:
+            // dort ist jemand, der gerade eine Mitteilung gelesen hat und mehr will.
+            .toolbar { ToolbarItem(placement: .navigationBarTrailing) { socialLinks } }
         }
         .onAppear { store.start(); admin.start() }
         .fullScreenCover(item: $viewerImage) { data in
@@ -98,6 +125,7 @@ private struct NewsCard: View {
     let onReact: (Reaction) -> Void
     let onDelete: () -> Void
 
+    @Environment(\.colorScheme) private var scheme
     @State private var flyer: Data?
     @State private var flyerLoaded = false
 
@@ -148,10 +176,19 @@ private struct NewsCard: View {
     /// etwas steht, das der eigene Vorstand nie geschrieben hat.
     private var senderRow: some View {
         HStack(spacing: 8) {
-            Image(systemName: item.isBroadcast ? "building.2.fill" : "moon.stars.fill")
-                .font(.system(size: 14)).foregroundColor(.brandGreen)
-                .frame(width: 26, height: 26)
-                .background(Color.brandGreen.opacity(0.12)).clipShape(Circle())
+            // Eine Rundnachricht kommt vom VERBAND und traegt sein Zeichen. Vorher stand hier
+            // ein graues Haus-Symbol; auf Android stand sogar Kassels Wappen — jede Mitteilung des
+            // Verbands kam damit an, als haette Kassel sie geschickt.
+            if item.isBroadcast {
+                Image(uiImage: UIImage(named: scheme == .dark ? "logo_igbd_dark" : "logo_igbd") ?? UIImage())
+                    .resizable().scaledToFit()
+                    .frame(width: 26, height: 26)
+            } else {
+                Image(systemName: "moon.stars.fill")
+                    .font(.system(size: 14)).foregroundColor(.brandGreen)
+                    .frame(width: 26, height: 26)
+                    .background(Color.brandGreen.opacity(0.12)).clipShape(Circle())
+            }
             Text(item.isBroadcast
                  ? L("news_sent_by_union")
                  : String(format: L("news_sent_by"), CommunityCatalog.shared.selected?.name ?? ""))

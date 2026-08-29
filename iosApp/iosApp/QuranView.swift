@@ -119,6 +119,9 @@ struct QuranView: View {
 
 private struct SurahReader: View {
     let id: Int; let name: String; let transliteration: String
+    /// Die tatsaechliche Helligkeit der Seite — nicht die Systemeinstellung. Die App hat ihren
+    /// eigenen Hell/Dunkel-Schalter, und die beiden koennen sich widersprechen.
+    @Environment(\.colorScheme) private var scheme
     private let ayahs: [Ayah]
     @ObservedObject private var prefs = QuranReaderPrefs.shared
     @State private var pages: [[Ayah]] = []
@@ -222,9 +225,19 @@ private struct SurahReader: View {
 
     private var controls: some View {
         HStack(spacing: 6) {
-            chip(L("quran_script_ottoman"), on: prefs.ottoman) { prefs.ottoman.toggle() }
-            chip(L("quran_tajweed"), on: prefs.tajweed) { prefs.tajweed.toggle() }
-            Spacer(minLength: 0)
+            // Die Chips scrollen in ihrem EIGENEN Bereich.
+            //
+            // Als eine einzige Reihe gebaut, schoben sie die Zoom-Knoepfe bei laengeren
+            // Beschriftungen ueber den rechten Rand — man konnte den Text verkleinern, aber nie
+            // wieder vergroessern, weil der Plus-Knopf hinter dem Bildschirmrand lag. Genau das
+            // ist auf Android passiert.
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    chip(L("quran_script_ottoman"), on: prefs.ottoman) { prefs.ottoman.toggle() }
+                    chip(L("quran_tajweed"), on: prefs.tajweed) { prefs.tajweed.toggle() }
+                }
+            }
+            // Die Zoom-Knoepfe stehen fest daneben und koennen nicht verdraengt werden.
             zoomButton("minus", enabled: prefs.scale > QuranReaderPrefs.minScale,
                        label: L("quran_smaller")) { prefs.zoom(-QuranReaderPrefs.step) }
             zoomButton("plus", enabled: prefs.scale < QuranReaderPrefs.maxScale,
@@ -301,13 +314,15 @@ private struct SurahReader: View {
         for (idx, ayah) in a.enumerated() {
             if idx > 0 { out.append(AttributedString("  ")) }
             if layout.tajweed, let marked = ayah.marked {
-                out.append(Tajweed.attributed(marked, base: .appOnSurface))
+                out.append(Tajweed.attributed(marked, base: .appOnSurface,
+                                              onDarkPage: scheme == .dark))
             } else {
                 out.append(AttributedString(ayah.t))
             }
             out.append(AttributedString(" "))
             var marker = AttributedString("﴿\(arabicDigits(ayah.n))﴾")
-            marker.foregroundColor = .brandGoldLight
+            // Auf dunklem Grund das helle Gold; das tiefe Gold liest sich dort als Braun.
+            marker.foregroundColor = scheme == .dark ? .brandGoldLight : .brandGold
             out.append(marker)
         }
         return out

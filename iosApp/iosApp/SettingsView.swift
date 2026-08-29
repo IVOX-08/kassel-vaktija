@@ -429,6 +429,8 @@ private struct AboutCard: View {
                 .frame(maxWidth: .infinity).padding(.vertical, 14)
                 .background(Color.moreCard)
                 .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous)
+                    .stroke(Color.cardOutline, lineWidth: 1))
             }
             .padding(.top, 4)
 
@@ -480,10 +482,11 @@ struct SettingCard<Content: View>: View {
         VStack(alignment: .leading, spacing: 10) { content }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(14)
-            // Lavendel wie auf Android. Weiß auf hellgrauem Grund hatte kaum Kontrast — die
-            // Karten liefen ineinander und man sah nicht, was zusammengehört.
+            // Weiss mit Haarlinie. Ohne die Linie verschwimmt die Karte auf dem hellen Grau.
             .background(Color.moreCard)
             .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
+            .overlay(RoundedRectangle(cornerRadius: Radius.smallCard)
+                .stroke(Color.cardOutline, lineWidth: 1))
     }
 }
 

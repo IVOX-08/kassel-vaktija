@@ -43,22 +43,53 @@ enum TajweedRule: Character, CaseIterable {
     /// Verschmolzen mit einem Buchstaben einer nahen Stelle.
     case idghamMutaqaribayn = "b"
 
-    var color: Color {
+    /// Die vertraute Farbe für die HELLE Seite — so, wie gedruckte Mushafs sie seit Jahrzehnten
+    /// setzen. Wer aus einem farbigen Mushaf gelernt hat, erkennt sie ohne Legende.
+    var onLight: Color {
         switch self {
-        case .hamzatWasl, .silent, .lamShamsiyyah: return Color(red: 0x9A / 255, green: 0xA0 / 255, blue: 0xA6 / 255)
-        case .maddNormal: return Color(red: 0x1E / 255, green: 0x88 / 255, blue: 0xE5 / 255)
-        case .maddPermissible: return Color(red: 0x39 / 255, green: 0x49 / 255, blue: 0xAB / 255)
-        case .maddObligatory: return Color(red: 0x6A / 255, green: 0x1B / 255, blue: 0x9A / 255)
-        case .maddNecessary: return Color(red: 0xC6 / 255, green: 0x28 / 255, blue: 0x28 / 255)
-        case .qalqalah: return Color(red: 0x00 / 255, green: 0x89 / 255, blue: 0x7B / 255)
-        case .ghunnah: return Color(red: 0xE6 / 255, green: 0x51 / 255, blue: 0x00 / 255)
-        case .ikhfa, .ikhfaShafawi: return Color(red: 0x7B / 255, green: 0x1F / 255, blue: 0xA2 / 255)
-        case .iqlab: return Color(red: 0x00 / 255, green: 0x83 / 255, blue: 0x8F / 255)
-        case .idghamGhunnah, .idghamShafawi: return Color(red: 0xAD / 255, green: 0x14 / 255, blue: 0x57 / 255)
-        case .idghamNoGhunnah: return Color(red: 0x8D / 255, green: 0x6E / 255, blue: 0x63 / 255)
-        case .idghamMutajanisayn, .idghamMutaqaribayn: return Color(red: 0x5D / 255, green: 0x40 / 255, blue: 0x37 / 255)
+        case .hamzatWasl, .silent, .lamShamsiyyah: return Color(rgb: 0x9AA0A6)
+        case .maddNormal: return Color(rgb: 0x1E88E5)
+        case .maddPermissible: return Color(rgb: 0x3949AB)
+        case .maddObligatory: return Color(rgb: 0x6A1B9A)
+        case .maddNecessary: return Color(rgb: 0xC62828)
+        case .qalqalah: return Color(rgb: 0x00897B)
+        case .ghunnah: return Color(rgb: 0xE65100)
+        case .ikhfa, .ikhfaShafawi: return Color(rgb: 0x7B1FA2)
+        case .iqlab: return Color(rgb: 0x00838F)
+        case .idghamGhunnah, .idghamShafawi: return Color(rgb: 0xAD1457)
+        case .idghamNoGhunnah: return Color(rgb: 0x8D6E63)
+        case .idghamMutajanisayn, .idghamMutaqaribayn: return Color(rgb: 0x5D4037)
         }
     }
+
+    /// Dieselbe Tönung, aufgehellt für die DUNKLE Seite.
+    ///
+    /// Die Farben oben sind für Tinte auf weißem Papier gemischt. Auf einer schwarzen Seite
+    /// verschwinden Dunkelblau, Dunkelrot und Braun fast vollständig — die Regel ist dann zwar
+    /// markiert, aber niemand kann sie lesen.
+    var onDark: Color {
+        switch self {
+        case .hamzatWasl, .silent, .lamShamsiyyah: return Color(rgb: 0x9AA0A6)
+        case .maddNormal: return Color(rgb: 0x64B5F6)
+        case .maddPermissible: return Color(rgb: 0x9FA8DA)
+        case .maddObligatory: return Color(rgb: 0xCE93D8)
+        case .maddNecessary: return Color(rgb: 0xEF9A9A)
+        case .qalqalah: return Color(rgb: 0x4DB6AC)
+        case .ghunnah: return Color(rgb: 0xFFB74D)
+        case .ikhfa, .ikhfaShafawi: return Color(rgb: 0xCE93D8)
+        case .iqlab: return Color(rgb: 0x4DD0E1)
+        case .idghamGhunnah, .idghamShafawi: return Color(rgb: 0xF48FB1)
+        case .idghamNoGhunnah: return Color(rgb: 0xD7CCC8)
+        case .idghamMutajanisayn, .idghamMutaqaribayn: return Color(rgb: 0xBCAAA4)
+        }
+    }
+
+    /// Welche der beiden gilt.
+    ///
+    /// Entschieden wird nach der Helligkeit der TATSÄCHLICHEN Seitenfarbe, nicht nach der
+    /// Systemeinstellung: Die App hat ihren eigenen Hell/Dunkel-Schalter, und die beiden können
+    /// sich widersprechen.
+    func color(onDarkPage: Bool) -> Color { onDarkPage ? onDark : onLight }
 }
 
 enum Tajweed {
@@ -83,7 +114,9 @@ enum Tajweed {
     ///
     /// Was nicht erkannt wird, bleibt als schlichter Text stehen statt verworfen zu werden: Ein
     /// Koran darf niemals einen Buchstaben an einen Lesefehler verlieren.
-    static func attributed(_ marked: String, base: Color) -> AttributedString {
+    /// - Parameter onDarkPage: Ob die Seite dunkel ist. Entscheidet, welche der beiden
+    ///   Farbfassungen jeder Regel gilt.
+    static func attributed(_ marked: String, base: Color, onDarkPage: Bool = false) -> AttributedString {
         let scalars = Array(marked.unicodeScalars)
         var out = AttributedString()
 
@@ -130,7 +163,7 @@ enum Tajweed {
                     continue
                 }
                 append(plainStart..<i, base)
-                render(m.content, base: m.rule.color)
+                render(m.content, base: m.rule.color(onDarkPage: onDarkPage))
                 i = m.next
                 plainStart = i
             }

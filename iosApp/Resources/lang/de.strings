@@ -35,7 +35,7 @@
 "quran_continue" = "Weiterlesen";
 "quran_bookmarks" = "Lesezeichen";
 "onb_welcome_title" = "Willkommen";
-"onb_welcome_body" = "Die App der IGBD-Gemeinde Sandžak-Kassel — Gebetszeiten, Koran, Hadithe und mehr, in Ihrer Sprache.";
+"onb_welcome_body" = "Die App der IGBD — Gebetszeiten, Koran, Hadithe und mehr, in Ihrer Sprache.";
 "onb_notif_title" = "Gebet & Adhan";
 "onb_notif_body" = "Genaue Gebetszeiten mit Benachrichtigungen. Wählen Sie pro Gebet den Adhan oder einen kurzen Ton und passen Sie die Benachrichtigungen an — in den Einstellungen.";
 "onb_content_title" = "Koran, Hadith & Dhikr";
@@ -56,7 +56,7 @@
 "onb_perm_widget_title" = "Widget";
 "onb_perm_widget_body" = "Möchtest du die nächste Gebetszeit direkt auf dem Startbildschirm sehen? Füge das Widget mit einem Tippen hinzu.";
 "onb_perm_widget_action" = "Zum Startbildschirm hinzufügen";
-"onb_perm_widget_unsupported" = "Dein Startbildschirm unterstützt das automatische Hinzufügen nicht. Du kannst das Widget manuell hinzufügen: Startbildschirm gedrückt halten → Widgets → „Kassel Vaktija“.";
+"onb_perm_widget_unsupported" = "Dein Startbildschirm unterstützt das automatische Hinzufügen nicht. Du kannst das Widget manuell hinzufügen: Startbildschirm gedrückt halten → Widgets → „IGBD Vaktija“.";
 "prayer_fajr" = "Morgengebet";
 "prayer_sunrise" = "Sonnenaufgang";
 "prayer_dhuhr" = "Mittagsgebet";

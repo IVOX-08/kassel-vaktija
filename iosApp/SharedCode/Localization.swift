@@ -21,6 +21,8 @@ final class Localization: ObservableObject {
     func set(_ newLang: String) {
         guard newLang != lang else { return }
         AppGroup.defaults.set(newLang, forKey: "app_lang")
+        // Das Widget spricht sonst weiter die alte Sprache — es merkt einen Wechsel nicht selbst.
+        WidgetRefresh.now()
         table = Localization.read(newLang)
         lang = newLang // @Published — triggers the root rebuild (.id(lang))
     }

@@ -1,5 +1,5 @@
 /* bs — generated from values/strings.xml */
-"app_name" = "Kassel Vaktija";
+"app_name" = "IGBD Vaktija";
 "nav_dashboard" = "Početna";
 "nav_qibla" = "Kibla";
 "nav_news" = "Vijesti";
@@ -36,7 +36,7 @@
 "quran_continue" = "Nastavi čitanje";
 "quran_bookmarks" = "Oznake";
 "onb_welcome_title" = "Dobro došli";
-"onb_welcome_body" = "Aplikacija zajednice IGBD Sandžak-Kassel — namaska vremena, Kur'an, hadisi i još mnogo toga, na vašem jeziku.";
+"onb_welcome_body" = "Aplikacija Islamske zajednice Bošnjaka u Njemačkoj — namaska vremena, Kur'an, hadisi i još mnogo toga, na vašem jeziku.";
 "onb_notif_title" = "Namaz i ezan";
 "onb_notif_body" = "Tačna namaska vremena uz obavijesti. Za svaki namaz birajte ezan ili kratki zvuk i podesite obavijesti — sve u Postavkama.";
 "onb_content_title" = "Kur'an, hadis i zikr";
@@ -57,7 +57,7 @@
 "onb_perm_widget_title" = "Widget";
 "onb_perm_widget_body" = "Želiš li vidjeti sljedeće namasko vrijeme direktno na početnom ekranu? Dodaj widget jednim dodirom.";
 "onb_perm_widget_action" = "Dodaj na početni ekran";
-"onb_perm_widget_unsupported" = "Tvoj početni ekran ne podržava automatsko dodavanje. Widget možeš dodati ručno: dugo pritisni početni ekran → Widgeti → „Kassel Vaktija“.";
+"onb_perm_widget_unsupported" = "Tvoj početni ekran ne podržava automatsko dodavanje. Widget možeš dodati ručno: dugo pritisni početni ekran → Widgeti → „IGBD Vaktija“.";
 "prayer_fajr" = "Sabah";
 "prayer_sunrise" = "Izlazak sunca";
 "prayer_dhuhr" = "Podne";

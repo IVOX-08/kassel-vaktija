@@ -28,6 +28,11 @@ struct CommunityInfo: Codable, Identifiable, Equatable {
     let locations: [CommunityLocation]
     let donationUrl: String?
     let logoUrl: String?
+    /// Die Konten der Gemeinde in den sozialen Netzen. Jede Gemeinde traegt die des Verbands,
+    /// bis sie eigene schickt; Kassel hat eigene.
+    let facebookUrl: String?
+    let instagramUrl: String?
+    let youtubeUrl: String?
 
     var isActive: Bool { status == nil || status == "active" }
     var isSuspended: Bool { status == "suspended" }
@@ -80,6 +85,8 @@ final class CommunityCatalog: ObservableObject {
                                location: place?.id,
                                vaktijaSlug: place?.vaktijaSlug,
                                name: community.name)
+        // Wappen, Zeiten und Name im Widget haengen an dieser Wahl.
+        WidgetRefresh.now()
         applySelection()
     }
 
@@ -127,7 +134,10 @@ final class CommunityCatalog: ObservableObject {
             status: d["status"] as? String,
             locations: locations,
             donationUrl: d["donationUrl"] as? String,
-            logoUrl: d["logoUrl"] as? String
+            logoUrl: d["logoUrl"] as? String,
+            facebookUrl: d["facebookUrl"] as? String,
+            instagramUrl: d["instagramUrl"] as? String,
+            youtubeUrl: d["youtubeUrl"] as? String
         )
     }
 }

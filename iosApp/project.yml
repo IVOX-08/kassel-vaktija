@@ -38,7 +38,7 @@ targets:
     info:
       path: iosApp/Info.plist
       properties:
-        CFBundleDisplayName: Kassel Vaktija
+        CFBundleDisplayName: IGBD Vaktija
         UILaunchScreen: {}
         # Die App spricht nur über HTTPS, nutzt also ausschließlich die
         # Standardverschlüsselung des Systems. Mit diesem Eintrag entfällt die
@@ -133,7 +133,7 @@ targets:
     info:
       path: iosWidget/Info.plist
       properties:
-        CFBundleDisplayName: Kassel Vaktija
+        CFBundleDisplayName: IGBD Vaktija
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     settings:

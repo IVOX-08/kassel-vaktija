@@ -152,6 +152,8 @@ final class PrayerStore: ObservableObject {
         official = true
         calibration = calib
         // Keep the scheduled prayer notifications in step with the official times.
+        // Frische Zeiten gehoeren auch ins Widget.
+        WidgetRefresh.now()
         await PrayerStore.onTimesLoaded?(dated)
     }
 
