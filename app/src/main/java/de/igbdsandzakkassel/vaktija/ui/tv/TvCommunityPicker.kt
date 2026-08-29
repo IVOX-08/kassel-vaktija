@@ -46,7 +46,7 @@ import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.community.CommunityCatalog
 import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.ui.community.CommunityPickerViewModel
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreenDark
 import de.igbdsandzakkassel.vaktija.ui.theme.PageBackgroundLight
@@ -97,7 +97,7 @@ fun TvCommunityPicker(
             )
             Text(
                 text = if (picked == null) "Odaberi džemat" else "Odaberi mjesto",
-                color = BrandGoldText,
+                color = BrandGold,
                 fontSize = 26.sp,
                 modifier = Modifier.padding(bottom = 20.dp),
             )
@@ -121,9 +121,9 @@ fun TvCommunityPicker(
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = BrandGreenDark,
                         unfocusedTextColor = BrandGreenDark,
-                        focusedLabelColor = BrandGoldText,
+                        focusedLabelColor = BrandGold,
                         unfocusedLabelColor = Color(0xFF777777),
-                        focusedIndicatorColor = BrandGoldText,
+                        focusedIndicatorColor = BrandGold,
                         unfocusedIndicatorColor = Color(0xFFDDDDDD),
                         cursorColor = BrandGreen,
                     ),
@@ -156,7 +156,13 @@ fun TvCommunityPicker(
                             logo = if (community.id == CommunityCatalog.KASSEL_ID) {
                                 R.drawable.logo_emblem
                             } else {
-                                R.drawable.logo_igbd
+                                R.drawable.logo_igbd_positive
+                            },
+                            logoFocused = if (community.id == CommunityCatalog.KASSEL_ID) {
+                                // Kassel's crest sits on a white disc, so it carries on green as it is.
+                                R.drawable.logo_emblem
+                            } else {
+                                R.drawable.logo_igbd_negative
                             },
                             onSelect = { chosen = community },
                         )
@@ -179,7 +185,7 @@ fun TvCommunityPicker(
             // drawn over it covers the hadith. This is also the moment the remote is in hand.
             Text(
                 text = "Später ändern: OK gedrückt halten · Kasnije promijeniti: držite OK",
-                color = BrandGoldText,
+                color = BrandGold,
                 fontSize = 16.sp,
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 textAlign = TextAlign.End,
@@ -194,6 +200,12 @@ private data class PickerEntry(
     val subtitle: String,
     /** The community's mark, or null on the town step where every row is the same community. */
     @DrawableRes val logo: Int? = null,
+    /**
+     * The mark to use while the row is focused, when its card turns IZ green. The federation's
+     * crescent is green too and would vanish into it; the standards' white negative is what that
+     * background calls for.
+     */
+    @DrawableRes val logoFocused: Int? = null,
     val onSelect: () -> Unit,
 )
 
@@ -234,7 +246,7 @@ private fun PickerRow(row: PickerEntry, modifier: Modifier = Modifier) {
             .background(if (focused) BrandGreen else Color.White)
             .border(
                 width = if (focused) 3.dp else 1.dp,
-                color = if (focused) BrandGoldText else Color(0xFFDDDDDD),
+                color = if (focused) BrandGold else Color(0xFFDDDDDD),
                 shape = RoundedCornerShape(10.dp),
             )
             .onFocusChanged { focused = it.isFocused }
@@ -243,9 +255,10 @@ private fun PickerRow(row: PickerEntry, modifier: Modifier = Modifier) {
             .padding(horizontal = 22.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (row.logo != null) {
+        val logo = if (focused) (row.logoFocused ?: row.logo) else row.logo
+        if (logo != null) {
             Image(
-                painter = painterResource(row.logo),
+                painter = painterResource(logo),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.height(46.dp).padding(end = 18.dp),

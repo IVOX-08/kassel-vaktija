@@ -22,11 +22,11 @@ private val LightColors = lightColorScheme(
     onPrimaryContainer = BrandGreenDark,
     // The readable gold, not the protected one: these roles end up as wording on white cards,
     // where IZ Zlatna reaches only about 3:1. The mark itself always keeps BrandGold.
-    secondary = BrandGoldText,
+    secondary = BrandGold,
     onSecondary = SurfaceLight,
     secondaryContainer = BrandGoldContainer,
     onSecondaryContainer = BrandGoldDeep,
-    tertiary = BrandGoldText,
+    tertiary = BrandGold,
     onTertiary = SurfaceLight,
     tertiaryContainer = BrandGoldContainer,
     onTertiaryContainer = BrandGoldDeep,

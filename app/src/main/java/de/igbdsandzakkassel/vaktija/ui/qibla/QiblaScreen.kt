@@ -47,7 +47,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.TextButton
 import de.igbdsandzakkassel.vaktija.R
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import kotlin.math.abs
 import kotlin.math.atan2
@@ -262,7 +262,7 @@ private fun CompassDial(azimuth: Float, qiblaBearing: Float, aligned: Boolean, m
             )
             drawLine(color = qiblaColor, start = c, end = tip, strokeWidth = 5.dp.toPx(), cap = StrokeCap.Round)
             drawCircle(color = qiblaColor, radius = 11.dp.toPx(), center = tip)
-            drawCircle(color = BrandGoldText, radius = 11.dp.toPx(), center = tip, style = Stroke(width = 2.5.dp.toPx()))
+            drawCircle(color = BrandGold, radius = 11.dp.toPx(), center = tip, style = Stroke(width = 2.5.dp.toPx()))
         }
 
         // Fixed overlay: top reference triangle (align the Qibla marker here) + centre hub.
@@ -275,7 +275,7 @@ private fun CompassDial(azimuth: Float, qiblaBearing: Float, aligned: Boolean, m
                 lineTo(c.x, 15.dp.toPx())
                 close()
             }
-            drawPath(path, color = if (aligned) BrandGreen else BrandGoldText)
+            drawPath(path, color = if (aligned) BrandGreen else BrandGold)
             drawCircle(color = onSurface, radius = 4.dp.toPx(), center = c)
         }
     }

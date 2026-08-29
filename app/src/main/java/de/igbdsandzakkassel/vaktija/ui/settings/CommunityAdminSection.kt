@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.Community
 import de.igbdsandzakkassel.vaktija.data.model.CommunityStatus
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import java.text.Normalizer
 
@@ -170,7 +170,7 @@ fun CommunityAdminSection(
 private fun StatusChip(status: CommunityStatus) {
     val color = when (status) {
         CommunityStatus.ACTIVE -> BrandGreen
-        CommunityStatus.SUSPENDED -> BrandGoldText
+        CommunityStatus.SUSPENDED -> BrandGold
         CommunityStatus.BLOCKED -> MaterialTheme.colorScheme.error
     }
     Text(

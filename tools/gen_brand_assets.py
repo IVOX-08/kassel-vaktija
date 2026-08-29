@@ -114,9 +114,19 @@ def main():
     white = to_white(mark)
     print("Vorlage: %dx%d" % (mark.width, mark.height))
 
-    # --- in-app logo, light and dark ---
+    # --- in-app logo, following the theme ---
     fit(mark, IN_APP, 0.98).save(os.path.join(RES, "drawable-nodpi", "logo_igbd.png"))
     fit(white, IN_APP, 0.98).save(os.path.join(RES, "drawable-night-nodpi", "logo_igbd.png"))
+
+    # --- the same mark with NO night variant ---
+    #
+    # The TV board and its picker always paint a light page, whatever the television's own
+    # day/night setting is. Asking for logo_igbd there hands back the white negative on a TV in
+    # night mode — white on a white card, invisible. This one is always the positive.
+    fit(mark, IN_APP, 0.98).save(os.path.join(RES, "drawable-nodpi", "logo_igbd_positive.png"))
+    # And the white negative, likewise fixed: it is needed on the picker's green focused row even
+    # when the television is in day mode.
+    fit(white, IN_APP, 0.98).save(os.path.join(RES, "drawable-nodpi", "logo_igbd_negative.png"))
 
     # --- launcher icon ---
     for density, size in FOREGROUND.items():

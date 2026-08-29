@@ -75,7 +75,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.FilterChip
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 
@@ -196,7 +196,7 @@ private fun BookmarkCard(surah: SurahMeta, ayah: Int, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Icon(Icons.Filled.Bookmark, contentDescription = null, tint = BrandGoldText)
+            Icon(Icons.Filled.Bookmark, contentDescription = null, tint = BrandGold)
             Text(
                 text = "${surah.transliteration} · ﴿${toArabicIndic(ayah)}﴾",
                 style = MaterialTheme.typography.titleMedium,
@@ -290,7 +290,7 @@ fun QuranSurahScreen(
                 Icon(
                     imageVector = if (bookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                     contentDescription = stringResource(R.string.quran_bookmarks),
-                    tint = if (bookmarked) BrandGoldText else MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = if (bookmarked) BrandGold else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -549,7 +549,7 @@ private fun pageText(
     baseColor: Color,
     darkPage: Boolean = false,
 ): AnnotatedString = buildAnnotatedString {
-    val medallionGold = if (darkPage) BrandGoldLight else BrandGoldText
+    val medallionGold = if (darkPage) BrandGoldLight else BrandGold
     ayahs.forEachIndexed { i, ayah ->
         // Falls back to the plain text when this ayah has no marked edition, rather than showing
         // nothing or colouring by guesswork.

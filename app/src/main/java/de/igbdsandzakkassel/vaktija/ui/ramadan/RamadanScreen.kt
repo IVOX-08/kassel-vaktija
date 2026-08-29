@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
-import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldText
+import de.igbdsandzakkassel.vaktija.ui.theme.BrandGold
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGoldLight
 import de.igbdsandzakkassel.vaktija.ui.theme.BrandGreen
 import java.time.LocalDate
@@ -129,7 +129,7 @@ private fun RamadanBadge(state: RamadanUiState) {
             text = stringResource(R.string.ramadan_mubarak),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
-            color = BrandGoldText,
+            color = BrandGold,
         )
     }
 }
@@ -251,7 +251,7 @@ private fun IftarDuaCard() {
                     style = MaterialTheme.typography.bodyMedium,
                     fontStyle = FontStyle.Italic,
                     textAlign = TextAlign.Center,
-                    color = BrandGoldText,
+                    color = BrandGold,
                 )
                 Text(
                     text = stringResource(R.string.ramadan_dua_meaning),

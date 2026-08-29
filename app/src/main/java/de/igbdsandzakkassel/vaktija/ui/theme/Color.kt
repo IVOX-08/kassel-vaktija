@@ -12,23 +12,22 @@ import androidx.compose.ui.graphics.Color
 //   IZ zlatna   Pantone 871 C   #A59573
 //   Crna        Pantone Black   #000000
 val BrandGreen = Color(0xFF008348)
-val BrandGold = Color(0xFFA59573)
+
+/**
+ * The gold the app is SET in — unchanged, and deliberately so.
+ *
+ * The protected IZ Zlatna (#A59573) belongs to the mark and is baked into the mark's artwork. It is
+ * a pale, greyish gold: as the app's lettering it washed the prayer names and Iqamah times out, and
+ * the TV board lost the warm gold it is read by from across the prayer hall. The wording keeps the
+ * gold it has always had.
+ */
+val BrandGold = Color(0xFFB8860B)
 
 /** Darker and lighter greens for pressed states, dark mode and headings. */
 val BrandGreenDark = Color(0xFF00612F)
 val BrandGreenLight = Color(0xFF4CB783)
 
-/**
- * Gold for TEXT.
- *
- * The protected gold is a light colour: as small print on a white card it reaches about 3:1, which
- * is under the line for body text. The mark always uses [BrandGold]; wording uses this darker
- * shade of the same hue on light surfaces and [BrandGoldLight] on dark ones.
- */
-val BrandGoldText = Color(0xFF7C6C45)
-// A light tint of the same gold, for wording ON the green card and on black. At #C9BC9A a prayer
-// name sat at 2.4:1 against IZ Zelena; this clears 3:1.
-val BrandGoldLight = Color(0xFFDCD2B8)
+val BrandGoldLight = Color(0xFFD4AF37)
 
 /** Tinted fills behind brand-coloured content — kept away from Material's lavender containers. */
 val BrandGreenContainer = Color(0xFFDCEBDD)
