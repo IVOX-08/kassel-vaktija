@@ -55,15 +55,53 @@ Die Markenfarben, die erlaubten Fassungen des Zeichens und die Regeln aus dem Ha
 Islamska zajednica stehen in **`docs/marke/README.md`**. Dort liegen auch die Originaldateien.
 Kurz:
 
-| | Hex |
+| Wofür | Hex |
 |---|---|
-| IZ zelena (Pantone 356 C) | `#008348` |
-| IZ zlatna (Pantone 871 C) | `#A59573` |
-| Gold für Text auf hellem Grund | `#7C6C45` |
-| Gold für Text auf grünem/schwarzem Grund | `#DCD2B8` |
+| das **Zeichen** — IZ zelena (Pantone 356 C) | `#008348` |
+| das **Zeichen** — IZ zlatna (Pantone 871 C) | `#A59573` |
+| **Schrift** der App, Gold | `#B8860B` |
+| **Schrift** der App, helles Gold | `#D4AF37` |
+| App-Grün | `#008348` |
 
-Auf hellem Grund die positive Fassung, auf schwarzem die offizielle Negativ-Fassung (weiß). Das
-Zeichen wird **nicht** umgefärbt.
+⚠️ **Die Markenfarben gelten für das Zeichen, nicht für die Schrift.** Die Schrift behält das warme
+Gold, das die App immer hatte. Auf der Android-Seite wurde das einmal verwechselt und die ganze App
+umgefärbt — die Tafel in der Moschee verlor damit das Gold, an dem sie aus der Entfernung erkannt
+wird. Ist zurückgenommen; nicht wiederholen.
+
+Auf hellem Grund die positive Fassung des Zeichens, auf schwarzem die offizielle Negativ-Fassung
+(weiß). Das Zeichen wird **nicht** umgefärbt.
+
+**Falle beim Zeichen auf dem Fernseher:** Die TV-Tafel malt immer eine helle Seite, unabhängig
+davon, was der Fernseher selbst für Tag/Nacht eingestellt hat. Wer dort das
+theme-abhängige Zeichen anfordert, bekommt auf einem Gerät im Nachtmodus die weiße Fassung — weiß
+auf weißer Karte. Der Fernseher braucht eine feste positive Fassung. Umgekehrt wird die markierte
+Zeile der Auswahl IZ-grün: dort gehört die weiße Fassung hin, sonst verschwindet der Halbmond.
+
+---
+
+## 2b · Aussehen und Aufbau
+
+**Der Name der App ist „IGBD Vaktija".** Die Paketkennung `de.igbdsandzakkassel.vaktija` bleibt,
+wie sie ist — sie ist die Identität im Store und lässt sich nach der Veröffentlichung nicht mehr
+ändern. Auf iOS gilt dasselbe für die Bundle-ID.
+
+**Karten sind weiß auf hellgrauer Seite**, mit einer Haarlinie. Nichts darf einen Lila- oder
+Rosastich haben. Auf Android kam der daher, dass Material jede nicht gesetzte Farbrolle aus seiner
+eigenen Palette füllt und `Card` auf `surfaceContainerLow` zeichnet — eine Rolle, die niemand
+gesetzt hatte. Wenn iOS eine ähnliche Automatik hat, gilt dasselbe: nichts der Voreinstellung
+überlassen.
+
+**Zeilen für Gemeinde und Sprache:** rundes Symbol links, der **Wert** als grüne Überschrift, das
+Etikett als graue Zeile darunter, Pfeil rechts. Der Blick fällt auf „Kassel" und „Deutsch", nicht
+auf die Wörter „Gemeinde" und „Sprache".
+
+**Social-Links** — Instagram, Facebook, YouTube — stehen neben der Überschrift der Mitteilungen,
+nicht am Fuß der Liste. Jede Gemeinde trägt die Konten des Verbands, bis sie eigene schickt;
+Kassel hat eigene. Die Symbole sind schlichte einfarbige Zeichen in den Farben der App, keine
+nachgemalten Markenlogos.
+
+**Die TV-Auswahl hat ein Suchfeld.** Einundachtzig Gemeinden sind zu viele, um mit dem Steuerkreuz
+daran vorbeizulaufen.
 
 ---
 

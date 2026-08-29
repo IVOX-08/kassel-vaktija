@@ -23,22 +23,28 @@ Das sind keine Näherungen. Sie stehen so in Kapitel 2.1 und werden nicht versch
 | **IZ zlatna** | 871 C | 165 · 149 · 115 | `#A59573` |
 | **Crna** | Black | 0 · 0 · 0 | `#000000` |
 
-Die App hat vorher Materials Grün 800 (`#2E7D32`) und ein dunkles Goldgelb (`#B8860B`) benutzt.
-Das sah ähnlich aus und war falsch.
+Das **Zeichen** wurde vorher aus einer Website-Grafik gebaut, deren Grün fast schwarz war. Jetzt
+kommt es aus dem Vektor und trägt diese Farben exakt.
 
-### Gold für Text ist eine andere Sache
+### ⚠️ Diese Farben gelten für das ZEICHEN — nicht für die Schrift der App
 
-IZ Zlatna ist eine helle Farbe. Als kleiner Text auf einer weißen Karte kommt sie auf etwa **3:1**
-— unter der Grenze für Fließtext. Deshalb gilt in beiden Apps:
+Das ist der wichtigste Satz auf dieser Seite.
+
+Das Handbuch regelt das **Zeichen**. Die Beschriftung einer App regelt es nicht. IZ Zlatna ist ein
+blasses, graustichiges Gold; als Schriftfarbe nimmt es der App das warme Gold, an dem die Tafel in
+der Moschee aus der Entfernung erkannt wird.
 
 | Verwendung | Farbe |
 |---|---|
-| das **Zeichen** | `#A59573` — immer, ohne Ausnahme |
-| Text auf hellem Grund | `#7C6C45` |
-| Text auf grünem oder schwarzem Grund | `#DCD2B8` |
+| das **Zeichen** | `#008348` / `#A59573` — die geschützten Farben, ohne Ausnahme |
+| **Schrift** in der App und auf der TV-Tafel | `#B8860B`, hell `#D4AF37` — unverändert |
 
-Das Handbuch regelt die Farben **des Zeichens**. Für Beschriftungen in einer App gilt es nicht —
-dort zählt Lesbarkeit, und ein Gebetsname, den man nicht lesen kann, ist ein Fehler.
+Die Schriftfarben stehen nicht im Handbuch und sollen es auch nicht. Sie sind seit der ersten
+Fassung der App so und bleiben so.
+
+**Das war ein Fehler auf der Android-Seite:** Die Markenfarben wurden aus dem Handbuch auf die ganze
+App übertragen, auch auf die Schrift. Das ist zurückgenommen. Die iOS-Seite darf ihn nicht
+wiederholen.
 
 ---
 
