@@ -263,3 +263,7 @@
 "qibla_calibrate" = "Kompass ungenau – bewege das Handy in einer 8-Form.";
 "qibla_use_device" = "Meinen Standort verwenden";
 "qibla_use_mosque" = "Moschee verwenden";
+"admin_import_communities" = "Gemeinden in die Datenbank übertragen";
+"admin_import_done" = "%1$d Gemeinden geschrieben.";
+"admin_cleanup_communities" = "Alte Doppel-Einträge entfernen";
+"admin_cleanup_done" = "Entfernt: %1$d";

@@ -34,6 +34,15 @@ struct CommunityInfo: Codable, Identifiable, Equatable {
     let instagramUrl: String?
     let youtubeUrl: String?
 
+    /// Ikamet und Dzuma, mit denen eine Gemeinde ANFAENGT. Nur fuer den Import: Sobald die
+    /// Gemeinde ihre eigenen Zeiten gesetzt hat, gilt das Dokument in Firestore, nicht das hier.
+    let fajrIqamah: String?
+    let jumua: String?
+    let dhuhrOffsetMin: Int?
+    let asrOffsetMin: Int?
+    let maghribOffsetMin: Int?
+    let ishaOffsetMin: Int?
+
     var isActive: Bool { status == nil || status == "active" }
     var isSuspended: Bool { status == "suspended" }
     var isBlocked: Bool { status == "blocked" }
@@ -137,7 +146,11 @@ final class CommunityCatalog: ObservableObject {
             logoUrl: d["logoUrl"] as? String,
             facebookUrl: d["facebookUrl"] as? String,
             instagramUrl: d["instagramUrl"] as? String,
-            youtubeUrl: d["youtubeUrl"] as? String
+            youtubeUrl: d["youtubeUrl"] as? String,
+            // Nicht aus Firestore: die gelebten Regeln stehen in `config/rules` und werden von
+            // CommunityRuleStore gelesen. Hier stehen nur die Startwerte aus dem Paket.
+            fajrIqamah: nil, jumua: nil,
+            dhuhrOffsetMin: nil, asrOffsetMin: nil, maghribOffsetMin: nil, ishaOffsetMin: nil
         )
     }
 }

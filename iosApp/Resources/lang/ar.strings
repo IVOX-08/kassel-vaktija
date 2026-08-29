@@ -260,3 +260,7 @@
 "qibla_calibrate" = "البوصلة غير دقيقة – حرّك الهاتف على شكل الرقم 8.";
 "qibla_use_device" = "استخدم موقعي";
 "qibla_use_mosque" = "استخدم المسجد";
+"admin_import_communities" = "استيراد الجماعات إلى قاعدة البيانات";
+"admin_import_done" = "تمت كتابة %1$d جماعة.";
+"admin_cleanup_communities" = "إزالة المكررات القديمة";
+"admin_cleanup_done" = "تمت الإزالة: %1$d";

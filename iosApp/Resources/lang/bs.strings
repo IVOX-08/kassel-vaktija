@@ -280,3 +280,7 @@
 "qibla_calibrate" = "Kompas je neprecizan – pomjeraj telefon u obliku osmice (8).";
 "qibla_use_device" = "Koristi moj položaj";
 "qibla_use_mosque" = "Koristi džamiju";
+"admin_import_communities" = "Prenesi džemate u bazu";
+"admin_import_done" = "%1$d džemata upisano.";
+"admin_cleanup_communities" = "Stare duplikate ukloniti";
+"admin_cleanup_done" = "Uklonjeno: %1$d";

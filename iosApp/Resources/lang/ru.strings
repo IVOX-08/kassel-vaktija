@@ -260,3 +260,7 @@
 "qibla_calibrate" = "Компас неточен – подвигай телефон в форме восьмёрки.";
 "qibla_use_device" = "Использовать моё местоположение";
 "qibla_use_mosque" = "Использовать мечеть";
+"admin_import_communities" = "Импортировать общины в базу";
+"admin_import_done" = "Записано общин: %1$d.";
+"admin_cleanup_communities" = "Удалить старые дубликаты";
+"admin_cleanup_done" = "Удалено: %1$d";

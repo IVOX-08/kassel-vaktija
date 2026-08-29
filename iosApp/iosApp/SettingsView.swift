@@ -15,9 +15,6 @@ struct SettingsView: View {
     /// Meldungen ab, auch den Adhan.
     @AppStorage(NotificationScheduler.trackerAskKey) private var trackerAsk = true
     // 6.3 auto-mute
-    @AppStorage("automute_on") private var autoMute = false
-    @AppStorage("automute_before") private var muteBefore = 5
-    @AppStorage("automute_after") private var muteAfter = 10
     // 6.4 announcements
     @AppStorage("msg_notif") private var msgNotif = true
     @AppStorage("weekly_reminder") private var weekly = true
@@ -51,7 +48,6 @@ struct SettingsView: View {
                     if admin.canBroadcast { HeadAdminSection() }
                     designSection
                     prayerNotifSection
-                    autoMuteSection
                     announcementsSection
                     if !notifGranted { permissionsSection }
                     // Gemeinde und Sprache stehen zusammen unten: beides wird einmal im Leben der
@@ -176,24 +172,6 @@ struct SettingsView: View {
         }
     }
 
-    // 6.3 Auto-Stummschaltung
-    private var autoMuteSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            SettingHeader(L("settings_autosilence"))
-            SettingCard {
-                Toggle(L("settings_autosilence"), isOn: $autoMute)
-                    .tint(.brandGreen).font(.inter(15, .medium))
-                if autoMute {
-                    Divider()
-                    Text(L("settings_silence_before")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
-                    ChipRow(options: SettingsView.muteMins, intSelection: $muteBefore)
-                    Text(L("settings_silence_after")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
-                    ChipRow(options: SettingsView.muteMins, intSelection: $muteAfter)
-                }
-            }
-        }
-    }
-
     // 6.4 Mitteilungen
     private var announcementsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -286,7 +264,6 @@ struct SettingsView: View {
         ("dhuhr", "prayer_dhuhr"), ("asr", "prayer_asr"),
         ("maghrib", "prayer_maghrib"), ("isha", "prayer_isha"),
     ]
-    static let muteMins: [(String, String)] = [("5", "5"), ("10", "10"), ("15", "15"), ("20", "20"), ("30", "30")]
 }
 
 private func minutesLabel(_ v: Int) -> String { String(format: L("settings_minutes"), v) }

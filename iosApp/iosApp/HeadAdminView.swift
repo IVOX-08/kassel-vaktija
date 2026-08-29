@@ -20,6 +20,29 @@ struct HeadAdminSection: View {
     @State private var pending: CommunityInfo?
     @State private var busy = false
     @State private var failed: String?
+    /// Das Ergebnis des letzten Wartungslaufs — „81 Gemeinden geschrieben."
+    @State private var maintenance: String?
+
+    /// Ein Wartungsknopf: laeuft, meldet die Zahl, sperrt sich waehrenddessen.
+    @ViewBuilder private func maintenanceButton(_ title: String, _ doneFormat: String,
+                                                action: @escaping () async -> Int) -> some View {
+        Button {
+            busy = true
+            Task {
+                let count = await action()
+                maintenance = String(format: doneFormat, count)
+                busy = false
+            }
+        } label: {
+            HStack {
+                Text(title).font(.inter(15, .medium)).foregroundColor(.brandGreen)
+                Spacer()
+                if busy { ProgressView().controlSize(.small) }
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(busy)
+    }
 
     private var matches: [CommunityInfo] {
         let q = query.trimmingCharacters(in: .whitespaces).lowercased()
@@ -46,6 +69,19 @@ struct HeadAdminSection: View {
                 if let failed {
                     Text(failed).font(.inter(12)).foregroundColor(.qiblaRed)
                 }
+                #if DEBUG
+                // NUR in der Entwicklungsfassung, genau wie auf Android: In einer
+                // veroeffentlichten App koennte ein Fehlgriff das lebende Verzeichnis mit dem
+                // ueberschreiben, was zufaellig einkompiliert war.
+                Divider()
+                maintenanceButton(L("admin_import_communities"), L("admin_import_done"),
+                                  action: CommunityImport.run)
+                maintenanceButton(L("admin_cleanup_communities"), L("admin_cleanup_done"),
+                                  action: CommunityImport.removeSuperseded)
+                if let maintenance {
+                    Text(maintenance).font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                }
+                #endif
                 Divider()
                 Button(L("admin_sign_out")) { admin.signOut() }
                     .font(.inter(15, .semibold)).foregroundColor(.brandGreen)

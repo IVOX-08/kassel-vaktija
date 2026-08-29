@@ -260,3 +260,7 @@
 "qibla_calibrate" = "Busulla është e pasaktë – lëviz telefonin në formë tetëshi (8).";
 "qibla_use_device" = "Përdor vendndodhjen time";
 "qibla_use_mosque" = "Përdor xhaminë";
+"admin_import_communities" = "Importo xhematet në bazë";
+"admin_import_done" = "%1$d xhemate u shkruan.";
+"admin_cleanup_communities" = "Hiq dublikatat e vjetra";
+"admin_cleanup_done" = "U hoqën: %1$d";

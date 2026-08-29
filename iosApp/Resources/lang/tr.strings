@@ -260,3 +260,7 @@
 "qibla_calibrate" = "Pusula hassas değil – telefonu 8 çizer gibi hareket ettir.";
 "qibla_use_device" = "Konumumu kullan";
 "qibla_use_mosque" = "Camiyi kullan";
+"admin_import_communities" = "Cemaatleri veritabanına aktar";
+"admin_import_done" = "%1$d cemaat yazıldı.";
+"admin_cleanup_communities" = "Eski kopyaları kaldır";
+"admin_cleanup_done" = "Kaldırıldı: %1$d";

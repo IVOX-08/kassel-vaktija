@@ -260,3 +260,7 @@
 "qibla_calibrate" = "قطب نما درست نہیں – فون کو 8 کی شکل میں گھمائیں۔";
 "qibla_use_device" = "میرا مقام استعمال کریں";
 "qibla_use_mosque" = "مسجد استعمال کریں";
+"admin_import_communities" = "جماعتیں ڈیٹا بیس میں درآمد کریں";
+"admin_import_done" = "%1$d جماعتیں لکھی گئیں۔";
+"admin_cleanup_communities" = "پرانے دوہرے اندراج حذف کریں";
+"admin_cleanup_done" = "حذف شدہ: %1$d";
