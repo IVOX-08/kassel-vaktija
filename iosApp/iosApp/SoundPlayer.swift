@@ -48,30 +48,17 @@ enum NotifSound: String, CaseIterable {
     var ext: String { self == .adhan ? "mp3" : "wav" }
 }
 
-/// Der Ton, mit dem eine Mitteilung der Gemeinde ankommt.
+/// Der Ton, mit dem eine Mitteilung der Gemeinde ankommt: der LEISE TON, fuer alle gleich.
 ///
-/// Eine EIGENE Wahl, nicht dieselbe wie beim Adhan: Beide werden in ganz verschiedenen Lagen
-/// gehoert. Der Adhan ruft zum Gebet, eine Mitteilung sagt, dass die Moschee etwas geschrieben
-/// hat. Wer den Adhan auf eine schlichte Glocke gestellt hat, will die Mitteilung vielleicht
-/// trotzdem anders hoeren — oder umgekehrt.
-enum NewsSound: String, CaseIterable {
-    case standard, bell, soft
-
-    var label: String {
-        switch self {
-        case .standard: return L("sound_announcement")
-        case .bell: return L("sound_bell")
-        case .soft: return L("sound_soft")
-        }
-    }
-
-    var file: String {
-        switch self {
-        case .standard: return "announcement"
-        case .bell: return "tone_bell"
-        case .soft: return "tone_soft"
-        }
-    }
-
-    var ext: String { self == .standard ? "mp3" : "wav" }
+/// Keine Einstellung, weil es auf iOS keine geben kann: Apple laesst den ABSENDER den Ton einer
+/// Push-Meldung bestimmen, nicht das Telefon. Ein Schalter in den Einstellungen haette etwas
+/// versprochen, das nie gewirkt haette.
+///
+/// Gesetzt wird er in der Cloud Function (`functions/index.js`, `apns.payload.aps.sound`). Der
+/// Name muss genau auf diese Datei zeigen — findet iOS sie nicht, klingelt still der Standardton.
+///
+/// Auf Android bleibt die Wahl bestehen: dort haengt der Ton am Kanal, und das Telefon entscheidet.
+enum NewsSound {
+    static let file = "tone_soft"
+    static let ext = "wav"
 }

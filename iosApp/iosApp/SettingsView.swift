@@ -7,8 +7,6 @@ struct SettingsView: View {
     @AppStorage("appColorScheme") private var theme = "system"
     // 6.2 prayer notifications
     @AppStorage("notif_sound") private var soundRaw = NotifSound.adhan.rawValue
-    // Getrennt vom Adhan-Ton: beide werden in verschiedenen Lagen gehoert.
-    @AppStorage("news_sound") private var newsSoundRaw = NewsSound.standard.rawValue
     @AppStorage("notif_silent") private var playInSilent = false
     /// Die Frage des Trackers nach jedem Gebet. Standardmaessig an, aber abschaltbar: Wer den
     /// Tracker nicht nutzt, wuerde sonst fuenfmal taeglich gefragt — und schaltete am Ende alle
@@ -27,7 +25,6 @@ struct SettingsView: View {
     @StateObject private var store = PrayerStore()
 
     private var sound: NotifSound { NotifSound(rawValue: soundRaw) ?? .adhan }
-    private var newsSound: NewsSound { NewsSound(rawValue: newsSoundRaw) ?? .standard }
 
     /// Any change to the notification settings (or the language) must re-arm the scheduled
     /// notifications so they fire with the new texts, sound and pre-warn times.
@@ -179,24 +176,6 @@ struct SettingsView: View {
             SettingCard {
                 Toggle(L("settings_news_notifications"), isOn: $msgNotif)
                     .tint(.brandGreen).font(.inter(15, .medium))
-                if msgNotif {
-                    Divider()
-                    HStack {
-                        Text(L("settings_news_sound")).font(.inter(15))
-                        Spacer()
-                        Menu {
-                            ForEach(NewsSound.allCases, id: \.self) { s in
-                                // Die Auswahl spielt den Ton gleich ab. Ein eigener Probeknopf
-                                // haette einen neuen Text gebraucht, und Texte werden nicht neu
-                                // erfunden — sie kommen aus den Android-Ressourcen.
-                                Button(s.label) {
-                                    newsSoundRaw = s.rawValue
-                                    SoundPlayer.shared.play(s.file, ext: s.ext)
-                                }
-                            }
-                        } label: { PillLabel(newsSound.label) }
-                    }
-                }
                 Divider()
                 Toggle(L("settings_weekly_reminder"), isOn: $weekly)
                     .tint(.brandGreen).font(.inter(15, .medium))

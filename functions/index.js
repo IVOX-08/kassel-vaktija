@@ -33,6 +33,17 @@ async function notify(snap, fallbackTitle) {
       priority: "high",
       notification: { channelId: "news_announcements_v2" },
     },
+    // Auf iOS bestimmt der ABSENDER den Ton, nicht das Telefon: Apple laesst eine App den Ton
+    // einer eingehenden Push-Meldung nicht selbst waehlen. Ohne diese Zeile klingelt jede
+    // Mitteilung mit dem Standardton des Systems, egal was in den Einstellungen steht.
+    //
+    // "tone_soft.wav" liegt im App-Paket. Der Name muss genau stimmen — findet iOS die Datei
+    // nicht, faellt es still auf den Standardton zurueck.
+    //
+    // Android bleibt unberuehrt: dort haengt der Ton am Kanal, und der gewinnt.
+    apns: {
+      payload: { aps: { sound: "tone_soft.wav" } },
+    },
     data: { type: snap.ref.parent.id, id: snap.id },
   });
 }
