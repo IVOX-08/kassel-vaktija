@@ -1,6 +1,7 @@
 package de.igbdsandzakkassel.vaktija.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,7 +47,14 @@ fun SettingsNavRow(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            // White on the light-grey page, with a hairline. The old fill was a hair away from the
+            // page colour, so the row read as loose text rather than as something to tap.
+            .background(MaterialTheme.colorScheme.surface)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant,
+                shape = RoundedCornerShape(16.dp),
+            )
             .clickable(onClick = onClick)
             .padding(horizontal = 14.dp, vertical = 13.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -56,7 +64,7 @@ fun SettingsNavRow(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surface),
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)),
                 contentAlignment = Alignment.Center,
                 content = { leading() },
             )
@@ -68,11 +76,13 @@ fun SettingsNavRow(
         ) {
             Text(
                 text = title,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
+                // The VALUE is the headline and the label sits under it, so the eye lands on
+                // "Kassel" and "Deutsch" rather than on the words "Gemeinde" and "Sprache".
+                color = MaterialTheme.colorScheme.primary,
             )
             if (!subtitle.isNullOrBlank()) {
                 Text(
