@@ -19,18 +19,19 @@ struct NewsView: View {
     @ViewBuilder private var socialLinks: some View {
         let community = CommunityCatalog.shared.selected
         HStack(spacing: 14) {
-            socialLink(community?.instagramUrl, "camera")
-            socialLink(community?.facebookUrl, "person.2")
-            socialLink(community?.youtubeUrl, "play.rectangle")
+            socialLink(community?.instagramUrl,
+                       SocialIconShape(paths: SocialIcon.instagram, dot: (17.8, 5.1, 1.1)))
+            socialLink(community?.facebookUrl, SocialIconShape(paths: SocialIcon.facebook))
+            socialLink(community?.youtubeUrl, SocialIconShape(paths: SocialIcon.youtube))
         }
     }
 
-    @ViewBuilder private func socialLink(_ raw: String?, _ icon: String) -> some View {
+    @ViewBuilder private func socialLink(_ raw: String?, _ shape: SocialIconShape) -> some View {
         if let raw, !raw.isEmpty, let url = URL(string: raw) {
             Link(destination: url) {
-                Image(systemName: icon)
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundColor(.brandGreen)
+                shape
+                    .fill(Color.brandGreen, style: FillStyle(eoFill: true))
+                    .frame(width: 22, height: 22)
             }
         }
     }

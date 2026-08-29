@@ -82,7 +82,7 @@ final class CommunityCatalog: ObservableObject {
                 guard let docs = snapshot?.documents, !docs.isEmpty else { return }
                 let live = docs.compactMap(Self.parse)
                 Task { @MainActor in
-                    self?.all = live.sorted { $0.name < $1.name }
+                    self?.all = Self.merged(live).sorted { $0.name < $1.name }
                     self?.applySelection()
                 }
             }
@@ -116,6 +116,39 @@ final class CommunityCatalog: ObservableObject {
     }
 
     // MARK: Quellen
+
+    /// Legt die Werte aus Firestore ueber die mitgelieferten.
+    ///
+    /// Firestore gewinnt fuer alles, was dort steht — eine Gemeinde, die ihre Adresse oder ihre
+    /// Konten aendert, soll das sofort sehen. Was dort FEHLT, kommt weiter aus dem Paket.
+    ///
+    /// Ohne diesen Schritt verschwanden die Konten der sozialen Netze, sobald Firestore antwortete:
+    /// Die Dokumente dort tragen die Felder gar nicht, und die Liste wurde vorher komplett
+    /// ersetzt. In der App hiess das: beim Start drei Symbole, eine Sekunde spaeter keine mehr.
+    private static func merged(_ live: [CommunityInfo]) -> [CommunityInfo] {
+        let seed = Dictionary(bundled().map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
+        return live.map { remote in
+            guard let base = seed[remote.id] else { return remote }
+            return CommunityInfo(
+                id: remote.id,
+                name: remote.name,
+                address: remote.address ?? base.address,
+                status: remote.status ?? base.status,
+                locations: remote.locations.isEmpty ? base.locations : remote.locations,
+                donationUrl: remote.donationUrl ?? base.donationUrl,
+                logoUrl: remote.logoUrl ?? base.logoUrl,
+                facebookUrl: remote.facebookUrl ?? base.facebookUrl,
+                instagramUrl: remote.instagramUrl ?? base.instagramUrl,
+                youtubeUrl: remote.youtubeUrl ?? base.youtubeUrl,
+                fajrIqamah: base.fajrIqamah,
+                jumua: base.jumua,
+                dhuhrOffsetMin: base.dhuhrOffsetMin,
+                asrOffsetMin: base.asrOffsetMin,
+                maghribOffsetMin: base.maghribOffsetMin,
+                ishaOffsetMin: base.ishaOffsetMin
+            )
+        }
+    }
 
     private static func bundled() -> [CommunityInfo] {
         guard let url = Bundle.main.url(forResource: "communities", withExtension: "json"),
