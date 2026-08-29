@@ -179,7 +179,9 @@ fun TvDashboardScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
-                    painter = painterResource(R.drawable.logo_emblem),
+                    // Nothing is loaded yet, so the community is not known — the federation's mark
+                    // is the only one that can honestly stand here.
+                    painter = painterResource(R.drawable.logo_igbd),
                     contentDescription = stringResource(R.string.cd_app_logo),
                     modifier = Modifier.size(200.dp),
                 )

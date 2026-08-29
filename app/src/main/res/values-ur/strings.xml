@@ -43,7 +43,7 @@
     <string name="quran_continue">پڑھنا جاری رکھیں</string>
     <string name="quran_bookmarks">بک مارکس</string>
     <string name="onb_welcome_title">خوش آمدید</string>
-    <string name="onb_welcome_body">IGBD سنجاک-کاسل کمیونٹی کی ایپ — نماز کے اوقات، قرآن، حدیث اور بہت کچھ، آپ کی اپنی زبان میں۔</string>
+    <string name="onb_welcome_body">IGBD کی ایپ — نماز کے اوقات، قرآن، حدیث اور بہت کچھ، آپ کی اپنی زبان میں۔</string>
     <string name="onb_notif_title">نماز اور اذان</string>
     <string name="onb_notif_body">اطلاعات کے ساتھ نماز کے درست اوقات۔ ہر نماز کے لیے اذان یا مختصر دھن منتخب کریں اور یاد دہانیاں ترتیب دیں — سب کچھ ترتیبات میں۔</string>
     <string name="onb_content_title">قرآن، حدیث اور ذکر</string>
@@ -64,7 +64,7 @@
     <string name="onb_perm_widget_title">ویجٹ</string>
     <string name="onb_perm_widget_body">کیا آپ اگلی نماز کا وقت براہِ راست اپنی ہوم اسکرین پر دیکھنا چاہتے ہیں؟ ایک ٹیپ سے وجٹ شامل کریں۔</string>
     <string name="onb_perm_widget_action">ہوم اسکرین پر شامل کریں</string>
-    <string name="onb_perm_widget_unsupported">آپ کی ہوم اسکرین خودکار طور پر شامل کرنے کی سہولت نہیں دیتی۔ آپ وجٹ خود سے شامل کر سکتے ہیں: ہوم اسکرین کو دبائے رکھیں ← وجٹس ← ”Kassel Vaktija“۔</string>
+    <string name="onb_perm_widget_unsupported">آپ کی ہوم اسکرین خودکار طور پر شامل کرنے کی سہولت نہیں دیتی۔ آپ وجٹ خود سے شامل کر سکتے ہیں: ہوم اسکرین کو دبائے رکھیں ← وجٹس ← ”IGBD Vaktija“۔</string>
 
     <string name="prayer_fajr">فجر</string>
     <string name="prayer_sunrise">طلوعِ آفتاب</string>

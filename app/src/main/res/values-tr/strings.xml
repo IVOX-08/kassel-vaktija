@@ -43,7 +43,7 @@
     <string name="quran_continue">Okumaya devam et</string>
     <string name="quran_bookmarks">Yer imleri</string>
     <string name="onb_welcome_title">Hoş geldiniz</string>
-    <string name="onb_welcome_body">IGBD Sancak-Kassel cemaatinin uygulaması — namaz vakitleri, Kur\'an, hadis ve daha fazlası, kendi dilinizde.</string>
+    <string name="onb_welcome_body">IGBD\'nin uygulaması — namaz vakitleri, Kur\'an, hadis ve daha fazlası, kendi dilinizde.</string>
     <string name="onb_notif_title">Namaz ve Ezan</string>
     <string name="onb_notif_body">Bildirimlerle doğru namaz vakitleri. Her namaz için ezanı ya da kısa bir sesi seçin ve uyarıları ayarlayın — hepsi Ayarlar\'da.</string>
     <string name="onb_content_title">Kur\'an, Hadis ve Zikir</string>
@@ -64,7 +64,7 @@
     <string name="onb_perm_widget_title">Widget</string>
     <string name="onb_perm_widget_body">Bir sonraki namaz vaktini doğrudan ana ekranında görmek ister misin? Widget\'ı tek dokunuşla ekle.</string>
     <string name="onb_perm_widget_action">Ana ekrana ekle</string>
-    <string name="onb_perm_widget_unsupported">Ana ekranın otomatik eklemeyi desteklemiyor. Widget\'ı elle ekleyebilirsin: Ana ekrana basılı tut → Widget\'lar → \"Kassel Vaktija\".</string>
+    <string name="onb_perm_widget_unsupported">Ana ekranın otomatik eklemeyi desteklemiyor. Widget\'ı elle ekleyebilirsin: Ana ekrana basılı tut → Widget\'lar → \"IGBD Vaktija\".</string>
 
     <string name="prayer_fajr">Sabah</string>
     <string name="prayer_sunrise">Güneş</string>

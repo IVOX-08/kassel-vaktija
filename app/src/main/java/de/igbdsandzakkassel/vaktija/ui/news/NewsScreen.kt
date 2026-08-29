@@ -338,9 +338,11 @@ private fun SenderLine(item: NewsItem, senderName: String?, senderLogoUrl: Strin
             contentAlignment = Alignment.Center,
         ) {
             when {
-                // A federation notice is signed with the app's own emblem, which is the IGBD one.
+                // A federation notice is signed with the federation's own mark. It used to carry
+                // logo_emblem — Kassel's coat of arms — so every announcement from IGBD arrived
+                // looking as though Kassel had sent it.
                 item.isBroadcast || senderLogoUrl == null -> Image(
-                    painter = painterResource(R.drawable.logo_emblem),
+                    painter = painterResource(R.drawable.logo_igbd),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.size(34.dp).clip(CircleShape),

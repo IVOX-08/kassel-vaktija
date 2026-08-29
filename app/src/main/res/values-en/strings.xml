@@ -43,7 +43,7 @@
     <string name="quran_continue">Continue reading</string>
     <string name="quran_bookmarks">Bookmarks</string>
     <string name="onb_welcome_title">Welcome</string>
-    <string name="onb_welcome_body">The app of the IGBD Sandžak-Kassel community — prayer times, Qur\'an, hadith and more, in your language.</string>
+    <string name="onb_welcome_body">The app of the IGBD — prayer times, Qur\'an, hadith and more, in your language.</string>
     <string name="onb_notif_title">Prayer &amp; Adhan</string>
     <string name="onb_notif_body">Accurate prayer times with notifications. For each prayer choose the Adhan or a short tone and adjust alerts — all in Settings.</string>
     <string name="onb_content_title">Qur\'an, Hadith &amp; Dhikr</string>
@@ -64,7 +64,7 @@
     <string name="onb_perm_widget_title">Widget</string>
     <string name="onb_perm_widget_body">Want to see the next prayer time right on your home screen? Add the widget with one tap.</string>
     <string name="onb_perm_widget_action">Add to home screen</string>
-    <string name="onb_perm_widget_unsupported">Your home screen doesn\'t support adding it automatically. You can add the widget manually: long-press the home screen → Widgets → \"Kassel Vaktija\".</string>
+    <string name="onb_perm_widget_unsupported">Your home screen doesn\'t support adding it automatically. You can add the widget manually: long-press the home screen → Widgets → \"IGBD Vaktija\".</string>
 
     <string name="prayer_fajr">Fajr</string>
     <string name="prayer_sunrise">Sunrise</string>

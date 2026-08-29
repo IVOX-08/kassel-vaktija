@@ -48,7 +48,7 @@ fun CommunityBlockedScreen(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(R.drawable.logo_emblem),
+            painter = painterResource(R.drawable.logo_igbd),
             contentDescription = null,
             modifier = Modifier.height(96.dp),
         )

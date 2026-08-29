@@ -43,7 +43,7 @@
     <string name="quran_continue">Vazhdo leximin</string>
     <string name="quran_bookmarks">Faqeshënuesit</string>
     <string name="onb_welcome_title">Mirë se vini</string>
-    <string name="onb_welcome_body">Aplikacioni i bashkësisë IGBD Sanxhak-Kassel — kohët e namazit, Kur\'ani, hadithet dhe më shumë, në gjuhën tuaj.</string>
+    <string name="onb_welcome_body">Aplikacioni i IGBD-së — kohët e namazit, Kur\'ani, hadithet dhe më shumë, në gjuhën tuaj.</string>
     <string name="onb_notif_title">Namazi dhe Ezani</string>
     <string name="onb_notif_body">Kohë të sakta të namazit me njoftime. Për çdo namaz zgjidhni ezanin ose një tingull të shkurtër dhe rregulloni njoftimet — të gjitha te Cilësimet.</string>
     <string name="onb_content_title">Kur\'ani, Hadithi dhe Dhikri</string>
@@ -64,7 +64,7 @@
     <string name="onb_perm_widget_title">Widget-i</string>
     <string name="onb_perm_widget_body">A dëshiron ta shohësh kohën e namazit të radhës drejtpërdrejt në ekranin bazë? Shtoje widget-in me një prekje.</string>
     <string name="onb_perm_widget_action">Shto në ekranin bazë</string>
-    <string name="onb_perm_widget_unsupported">Ekrani yt bazë nuk e mbështet shtimin automatik. Mund ta shtosh widget-in edhe vetë: mbaje shtypur ekranin bazë → Widget-e → „Kassel Vaktija“.</string>
+    <string name="onb_perm_widget_unsupported">Ekrani yt bazë nuk e mbështet shtimin automatik. Mund ta shtosh widget-in edhe vetë: mbaje shtypur ekranin bazë → Widget-e → „IGBD Vaktija“.</string>
 
     <string name="prayer_fajr">Sabahu</string>
     <string name="prayer_sunrise">Lindja e diellit</string>

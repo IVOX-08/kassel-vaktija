@@ -43,7 +43,7 @@
     <string name="quran_continue">Продолжить чтение</string>
     <string name="quran_bookmarks">Закладки</string>
     <string name="onb_welcome_title">Добро пожаловать</string>
-    <string name="onb_welcome_body">Приложение общины IGBD Санджак-Кассель — время намаза, Коран, хадисы и многое другое на вашем языке.</string>
+    <string name="onb_welcome_body">Приложение IGBD — время намаза, Коран, хадисы и многое другое на вашем языке.</string>
     <string name="onb_notif_title">Намаз и азан</string>
     <string name="onb_notif_body">Точное время намаза с уведомлениями. Для каждого намаза выберите азан или короткий сигнал и настройте оповещения — всё в настройках.</string>
     <string name="onb_content_title">Коран, хадисы и зикр</string>
@@ -64,7 +64,7 @@
     <string name="onb_perm_widget_title">Виджет</string>
     <string name="onb_perm_widget_body">Хочешь видеть время следующего намаза прямо на главном экране? Добавь виджет одним касанием.</string>
     <string name="onb_perm_widget_action">Добавить на главный экран</string>
-    <string name="onb_perm_widget_unsupported">Твой главный экран не поддерживает автоматическое добавление. Виджет можно добавить вручную: нажми и удерживай главный экран → Виджеты → «Kassel Vaktija».</string>
+    <string name="onb_perm_widget_unsupported">Твой главный экран не поддерживает автоматическое добавление. Виджет можно добавить вручную: нажми и удерживай главный экран → Виджеты → «IGBD Vaktija».</string>
 
     <string name="prayer_fajr">Фаджр</string>
     <string name="prayer_sunrise">Восход солнца</string>

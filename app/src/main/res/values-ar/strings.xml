@@ -43,7 +43,7 @@
     <string name="quran_continue">متابعة القراءة</string>
     <string name="quran_bookmarks">العلامات المرجعية</string>
     <string name="onb_welcome_title">أهلاً وسهلاً</string>
-    <string name="onb_welcome_body">تطبيق جماعة سنجق-كاسل (IGBD): مواقيت الصلاة، والقرآن الكريم، والحديث، والمزيد، بلغتك.</string>
+    <string name="onb_welcome_body">تطبيق الجالية البوسنية في ألمانيا (IGBD): مواقيت الصلاة، والقرآن الكريم، والحديث، والمزيد، بلغتك.</string>
     <string name="onb_notif_title">الصلاة والأذان</string>
     <string name="onb_notif_body">مواقيت دقيقة للصلاة مع التنبيهات. اختر لكل صلاة الأذان أو نغمة قصيرة، واضبط التنبيهات، كل ذلك من الإعدادات.</string>
     <string name="onb_content_title">القرآن والحديث والذكر</string>
@@ -64,7 +64,7 @@
     <string name="onb_perm_widget_title">الأداة المصغّرة</string>
     <string name="onb_perm_widget_body">هل تريد أن ترى وقت الصلاة القادم مباشرةً على الشاشة الرئيسية؟ أضِف الأداة المصغّرة بنقرة واحدة.</string>
     <string name="onb_perm_widget_action">إضافة إلى الشاشة الرئيسية</string>
-    <string name="onb_perm_widget_unsupported">شاشتك الرئيسية لا تدعم الإضافة التلقائية. يمكنك إضافة الأداة المصغّرة يدويًا: اضغط مطوّلًا على الشاشة الرئيسية ← الأدوات المصغّرة ← «Kassel Vaktija».</string>
+    <string name="onb_perm_widget_unsupported">شاشتك الرئيسية لا تدعم الإضافة التلقائية. يمكنك إضافة الأداة المصغّرة يدويًا: اضغط مطوّلًا على الشاشة الرئيسية ← الأدوات المصغّرة ← «IGBD Vaktija».</string>
 
     <string name="prayer_fajr">الفجر</string>
     <string name="prayer_sunrise">الشروق</string>

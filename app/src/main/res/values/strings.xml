@@ -2,7 +2,7 @@
 <!-- Bosnian (bs) — PRIMARY language. All other values-XX/ files mirror these keys. -->
 <resources>
     <!-- Brand name: kept identical across all locales. -->
-    <string name="app_name" translatable="false">Kassel Vaktija</string>
+    <string name="app_name" translatable="false">IGBD Vaktija</string>
 
     <!-- Bottom navigation -->
     <string name="nav_dashboard">Početna</string>
@@ -53,7 +53,7 @@
 
     <!-- Onboarding -->
     <string name="onb_welcome_title">Dobro došli</string>
-    <string name="onb_welcome_body">Aplikacija zajednice IGBD Sandžak-Kassel — namaska vremena, Kur\'an, hadisi i još mnogo toga, na vašem jeziku.</string>
+    <string name="onb_welcome_body">Aplikacija Islamske zajednice Bošnjaka u Njemačkoj — namaska vremena, Kur\'an, hadisi i još mnogo toga, na vašem jeziku.</string>
     <string name="onb_notif_title">Namaz i ezan</string>
     <string name="onb_notif_body">Tačna namaska vremena uz obavijesti. Za svaki namaz birajte ezan ili kratki zvuk i podesite obavijesti — sve u Postavkama.</string>
     <string name="onb_content_title">Kur\'an, hadis i zikr</string>
@@ -74,7 +74,7 @@
     <string name="onb_perm_widget_title">Widget</string>
     <string name="onb_perm_widget_body">Želiš li vidjeti sljedeće namasko vrijeme direktno na početnom ekranu? Dodaj widget jednim dodirom.</string>
     <string name="onb_perm_widget_action">Dodaj na početni ekran</string>
-    <string name="onb_perm_widget_unsupported">Tvoj početni ekran ne podržava automatsko dodavanje. Widget možeš dodati ručno: dugo pritisni početni ekran → Widgeti → „Kassel Vaktija“.</string>
+    <string name="onb_perm_widget_unsupported">Tvoj početni ekran ne podržava automatsko dodavanje. Widget možeš dodati ručno: dugo pritisni početni ekran → Widgeti → „IGBD Vaktija“.</string>
 
     <!-- Prayer names -->
     <string name="prayer_fajr">Sabah</string>
