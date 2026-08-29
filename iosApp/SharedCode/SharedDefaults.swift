@@ -18,9 +18,20 @@ enum AppGroup {
 
     /// Der geteilte Speicher — oder der eigene, falls die Gruppe (noch) nicht eingerichtet ist.
     ///
-    /// Der Rückfall ist Absicht: Die App soll dann weiterlaufen wie bisher, statt beim Start zu
-    /// verschwinden. Nur das Widget bleibt in dem Fall auf den alten Stand.
-    static let defaults: UserDefaults = UserDefaults(suiteName: id) ?? .standard
+    /// Geprüft wird am CONTAINER, nicht am Rückgabewert von `UserDefaults(suiteName:)`. Der ist
+    /// nämlich auch dann nicht `nil`, wenn die App das Gruppen-Recht gar nicht hat — sie schriebe
+    /// dann in eine eigene Datei, die zufällig so heißt wie die Gruppe. Das Widget läse nebenan
+    /// ins Leere, und beim späteren Nachrüsten der Gruppe wäre alles Gespeicherte auf einmal weg,
+    /// weil der Umzug schon als erledigt gilt.
+    ///
+    /// Ohne Gruppe läuft die App also genau wie vorher weiter. Nur das Widget bleibt dann auf dem
+    /// alten Stand — kein Datenverlust, kein halber Zustand.
+    static let defaults: UserDefaults = {
+        guard FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: id) != nil,
+              let shared = UserDefaults(suiteName: id)
+        else { return .standard }
+        return shared
+    }()
 
     /// Die Schluessel, die dieser App gehoeren.
     ///
