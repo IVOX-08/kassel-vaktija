@@ -15,12 +15,15 @@ struct PrayerEntry: TimelineEntry {
     let nameKey: String
     let timeHHmm: String
     let target: Date        // moment of the next prayer (drives the live countdown)
+    /// Das Gebet, dessen Fenster gerade offen und noch unbeantwortet ist — sonst `nil`.
+    /// Nur dann stehen Ja und Nein im Widget.
+    let asking: TrackedPrayer?
 }
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> PrayerEntry {
         PrayerEntry(date: Date(), nameKey: "prayer_maghrib", timeHHmm: "21:15",
-                    target: Date().addingTimeInterval(3600))
+                    target: Date().addingTimeInterval(3600), asking: nil)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (PrayerEntry) -> Void) {
@@ -29,9 +32,23 @@ struct Provider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<PrayerEntry>) -> Void) {
         let entry = currentEntry()
-        // Reload just after this prayer passes so the widget rolls over to the next one.
-        let reload = entry.target.addingTimeInterval(2)
-        completion(Timeline(entries: [entry], policy: .after(reload)))
+        // Neu zeichnen, sobald dieses Gebet vorbei ist — ODER sobald sich ein Tracker-Fenster
+        // oeffnet oder schliesst. Ohne den zweiten Fall erschiene die Frage erst beim naechsten
+        // Gebetsruf, also lange nach dem Ikamet, zu dem gefragt werden soll.
+        let reload = min(entry.target, Self.nextWindowChange() ?? entry.target)
+        completion(Timeline(entries: [entry], policy: .after(reload.addingTimeInterval(2))))
+    }
+
+    /// Der naechste Zeitpunkt, an dem sich ein Fenster oeffnet oder schliesst.
+    private static func nextWindowChange() -> Date? {
+        let now = Date()
+        var moments: [Date] = []
+        for prayer in TrackedPrayer.allCases {
+            guard let w = PrayerTracker.window(prayer) else { continue }
+            if w.open > now { moments.append(w.open) }
+            if w.close > now { moments.append(w.close) }
+        }
+        return moments.min()
     }
 
     /// Das nächste Gebet aus DEN GELADENEN Zeiten der gewählten Gemeinde.
@@ -63,12 +80,21 @@ struct Provider: TimelineProvider {
             guard let at = cal.date(from: c), at > now else { continue }
             return PrayerEntry(date: now, nameKey: key,
                                timeHHmm: String(format: "%02d:%02d", minutes / 60, minutes % 60),
-                               target: at)
+                               target: at, asking: Self.openQuestion())
         }
 
         let n = NextPrayerKt.nextPrayerNow()
         return PrayerEntry(date: now, nameKey: Self.key(n.name), timeHHmm: n.time,
-                           target: now.addingTimeInterval(Double(n.inSeconds)))
+                           target: now.addingTimeInterval(Double(n.inSeconds)),
+                           asking: Self.openQuestion())
+    }
+
+    /// Welches Gebet gerade gefragt werden darf: Fenster offen und noch keine Antwort.
+    private static func openQuestion() -> TrackedPrayer? {
+        TrackedPrayer.allCases.first {
+            if case .open = PrayerTracker.state($0) { return true }
+            return false
+        }
     }
 
     private static func key(_ s: String) -> String {
@@ -104,9 +130,6 @@ struct KasselWidgetEntryView: View {
                     .frame(width: 64, height: 64)
                 // Flamme und Tagesstand direkt unter dem Wappen — die einzige Zahl, die man
                 // mehrmals am Tag sehen will, ohne die App zu öffnen.
-                //
-                // Antworten lässt sich hier NICHT: Knöpfe in einem Widget gibt es erst ab iOS 17,
-                // und die App läuft ab iOS 16. Gefragt wird in der Benachrichtigung.
                 HStack(spacing: 4) {
                     Text("🔥").font(.system(size: 14))
                     Text("\(PrayerTracker.streak())")
@@ -125,20 +148,13 @@ struct KasselWidgetEntryView: View {
             }
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(L(entry.nameKey))
-                    .font(.system(size: 19, weight: .bold)).foregroundColor(amber)
-                    .lineLimit(1)
-                // .primary statt Weiß: Das Widget steht auf einem hellen Untergrund, sobald das
-                // Telefon im Hellmodus läuft — weiße Schrift war dort schlicht unsichtbar, und
-                // genau deshalb fehlten Countdown und Uhrzeit ganz.
-                Text(timerInterval: Date()...max(entry.target, Date().addingTimeInterval(1)), countsDown: true)
-                    .font(.system(size: 44, weight: .bold))
-                    .foregroundStyle(.primary)
-                    .lineLimit(1).minimumScaleFactor(0.5)
-                Text("\(L("widget_remaining"))  ·  \(entry.timeHHmm)")
-                    .font(.system(size: 15))
-                    .foregroundStyle(.secondary)
-                    .padding(.top, 2)
+                // Steht ein Fenster offen, gehoert dem Widget die Frage — der Countdown laeuft
+                // ohnehin weiter und ist in dem Moment nicht das Wichtigere.
+                if let prayer = entry.asking {
+                    question(prayer)
+                } else {
+                    countdown
+                }
             }
             Spacer(minLength: 0)
         }
@@ -146,14 +162,69 @@ struct KasselWidgetEntryView: View {
         .environment(\.layoutDirection, Localization.shared.layoutDirection)
         .widgetBackgroundClear()
     }
+
+    /// Die Frage mit Ja und Nein.
+    ///
+    /// Die Knoepfe loesen eine Absicht aus (AnswerPrayerIntent); ein Widget kann keinen eigenen
+    /// Code ausfuehren. Die Antwort wird dort noch einmal gegen das Fenster geprueft — ein Widget
+    /// kann lange unangetastet auf dem Bildschirm stehen.
+    @ViewBuilder private func question(_ prayer: TrackedPrayer) -> some View {
+        Text(String(format: L("tracker_ask_title"), L(prayer.nameKey)))
+            .font(.system(size: 17, weight: .bold))
+            .foregroundStyle(.primary)
+            .lineLimit(2).minimumScaleFactor(0.8)
+            .fixedSize(horizontal: false, vertical: true)
+        HStack(spacing: 8) {
+            answerButton(L("action_yes"), prayer: prayer, answer: .yes, filled: true)
+            answerButton(L("action_no"), prayer: prayer, answer: .no, filled: false)
+        }
+        .padding(.top, 8)
+        Text(L(entry.nameKey) + "  ·  " + entry.timeHHmm)
+            .font(.system(size: 13)).foregroundStyle(.secondary)
+            .padding(.top, 6)
+    }
+
+    private func answerButton(_ title: String, prayer: TrackedPrayer, answer: TrackerAnswer,
+                              filled: Bool) -> some View {
+        Button(intent: AnswerPrayerIntent(prayer: prayer, answer: answer)) {
+            Text(title)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(filled ? .white : .primary)
+                .padding(.horizontal, 18).padding(.vertical, 7)
+                .background(
+                    Capsule().fill(filled ? Color(red: 0, green: 0x83 / 255.0, blue: 0x48 / 255.0)
+                                          : Color.primary.opacity(0.12))
+                )
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder private var countdown: some View {
+        Group {
+            Text(L(entry.nameKey))
+                .font(.system(size: 19, weight: .bold)).foregroundColor(amber)
+                .lineLimit(1)
+                // .primary statt Weiß: Das Widget steht auf einem hellen Untergrund, sobald das
+                // Telefon im Hellmodus läuft — weiße Schrift war dort schlicht unsichtbar, und
+                // genau deshalb fehlten Countdown und Uhrzeit ganz.
+                Text(timerInterval: Date()...max(entry.target, Date().addingTimeInterval(1)), countsDown: true)
+                    .font(.system(size: 44, weight: .bold))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1).minimumScaleFactor(0.5)
+            Text("\(L("widget_remaining"))  ·  \(entry.timeHHmm)")
+                .font(.system(size: 15))
+                .foregroundStyle(.secondary)
+                .padding(.top, 2)
+        }
+    }
 }
 
 private extension View {
-    // Durchsichtiger Hintergrund wie auf Android. Ab iOS 17 MUSS ein Hintergrund angegeben
-    // werden — ohne Angabe setzt das System einen weißen. Die Fassung mit Verschluss ist die,
-    // die wirklich durchlässt.
-    @ViewBuilder func widgetBackgroundClear() -> some View {
-        if #available(iOS 17.0, *) { containerBackground(for: .widget) { Color.clear } } else { self }
+    // Durchsichtiger Hintergrund wie auf Android. iOS verlangt eine ausdrueckliche Angabe —
+    // ohne sie setzt das System einen weissen Hintergrund, und weisse Schrift darauf ist
+    // unsichtbar. Genau das hatte das Widget: Countdown und Uhrzeit fehlten scheinbar ganz.
+    func widgetBackgroundClear() -> some View {
+        containerBackground(for: .widget) { Color.clear }
     }
 }
 

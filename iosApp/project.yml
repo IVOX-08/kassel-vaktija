@@ -3,8 +3,11 @@
 name: iosApp
 options:
   bundleIdPrefix: de.igbdsandzakkassel.vaktija
+  # iOS 17, wegen der Ja/Nein-Knoepfe im Widget: Knoepfe in einem Widget gibt es erst ab
+  # iOS 17 (AppIntents), vorher konnte ein Widget nur anzeigen. Der Preis sind iPhone 8,
+  # 8 Plus und X — ab iPhone XS/XR laeuft alles weiter.
   deploymentTarget:
-    iOS: "16.0"
+    iOS: "17.0"
 # Same Firebase project as Android (`kassel-vaktija`) — see docs/ios/FIREBASE-HANDOFF.md.
 packages:
   Firebase:
