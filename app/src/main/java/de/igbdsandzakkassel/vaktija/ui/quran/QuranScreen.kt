@@ -2,6 +2,7 @@ package de.igbdsandzakkassel.vaktija.ui.quran
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Box
@@ -42,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -380,10 +382,19 @@ private fun ReaderControls(context: android.content.Context) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 12.dp, end = 8.dp, bottom = 6.dp),
+            .padding(start = 12.dp, end = 4.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
+        // The chips scroll; the zoom buttons do not. Laid out as one row, a long label in some
+        // languages pushed the "+" clean off the right edge — the reader could shrink the text but
+        // never enlarge it again, because the button that does it was past the screen.
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .horizontalScroll(rememberScrollState()),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
         FilterChip(
             selected = QuranReaderPrefs.script == QuranScript.OTTOMAN,
             onClick = {
@@ -400,18 +411,26 @@ private fun ReaderControls(context: android.content.Context) {
             onClick = { QuranReaderPrefs.setTajweed(context, !QuranReaderPrefs.tajweed) },
             label = { Text(stringResource(R.string.quran_tajweed)) },
         )
-        Spacer(Modifier.weight(1f))
+        }
         IconButton(
             onClick = { QuranReaderPrefs.zoom(context, -QuranReaderPrefs.STEP) },
             enabled = QuranReaderPrefs.scale > QuranReaderPrefs.MIN_SCALE,
         ) {
-            Icon(Icons.Filled.Remove, contentDescription = stringResource(R.string.quran_smaller))
+            Icon(
+                Icons.Filled.Remove,
+                contentDescription = stringResource(R.string.quran_smaller),
+                tint = MaterialTheme.colorScheme.primary,
+            )
         }
         IconButton(
             onClick = { QuranReaderPrefs.zoom(context, QuranReaderPrefs.STEP) },
             enabled = QuranReaderPrefs.scale < QuranReaderPrefs.MAX_SCALE,
         ) {
-            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.quran_larger))
+            Icon(
+                Icons.Filled.Add,
+                contentDescription = stringResource(R.string.quran_larger),
+                tint = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }
@@ -447,7 +466,14 @@ private fun QuranPage(
                 if (surahId != 1 && surahId != 9 && !compactTitle) BismillahHeader()
             }
             Text(
-                text = pageText(ayahs, tajweed, MaterialTheme.colorScheme.onSurface),
+                text = pageText(
+                    ayahs,
+                    tajweed,
+                    MaterialTheme.colorScheme.onSurface,
+                    // Luminance of the actual page colour, not the system setting: the app has its
+                    // own light/dark selector, and the two can disagree.
+                    darkPage = MaterialTheme.colorScheme.surface.luminance() < 0.5f,
+                ),
                 fontSize = fontSize,
                 lineHeight = fontSize * lineMult,
                 textAlign = TextAlign.Justify,
@@ -521,17 +547,20 @@ private fun pageText(
     ayahs: List<Ayah>,
     tajweed: Boolean,
     baseColor: Color,
+    darkPage: Boolean = false,
 ): AnnotatedString = buildAnnotatedString {
+    val medallionGold = if (darkPage) BrandGoldLight else BrandGold
     ayahs.forEachIndexed { i, ayah ->
         // Falls back to the plain text when this ayah has no marked edition, rather than showing
         // nothing or colouring by guesswork.
         if (tajweed && ayah.tajweed.isNotBlank()) {
-            append(tajweedAnnotated(ayah.tajweed, baseColor))
+            append(tajweedAnnotated(ayah.tajweed, baseColor, darkPage))
         } else {
             append(ayah.text)
         }
         append(" ")
-        withStyle(SpanStyle(color = BrandGold, fontWeight = FontWeight.Bold)) {
+        // Deep gold reads as brown on a black page; the light gold carries on both.
+        withStyle(SpanStyle(color = medallionGold, fontWeight = FontWeight.Bold)) {
             append("﴿${toArabicIndic(ayah.number)}﴾")
         }
         if (i != ayahs.lastIndex) append("  ")
