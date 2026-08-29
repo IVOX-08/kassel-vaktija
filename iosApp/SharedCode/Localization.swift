@@ -12,7 +12,7 @@ final class Localization: ObservableObject {
     private var fallback: [String: String] = [:]
 
     private init() {
-        lang = UserDefaults.standard.string(forKey: "app_lang") ?? "bs"
+        lang = AppGroup.defaults.string(forKey: "app_lang") ?? "bs"
         fallback = Localization.read("bs")
         table = Localization.read(lang)
     }
@@ -20,7 +20,7 @@ final class Localization: ObservableObject {
     /// Switch language: persist, reload the table, and publish so the UI rebuilds.
     func set(_ newLang: String) {
         guard newLang != lang else { return }
-        UserDefaults.standard.set(newLang, forKey: "app_lang")
+        AppGroup.defaults.set(newLang, forKey: "app_lang")
         table = Localization.read(newLang)
         lang = newLang // @Published — triggers the root rebuild (.id(lang))
     }

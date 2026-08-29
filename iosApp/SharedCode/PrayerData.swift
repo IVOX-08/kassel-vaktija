@@ -128,8 +128,9 @@ final class PrayerStore: ObservableObject {
     @Published private(set) var official = false
     @Published private(set) var calibration: [Int]
 
-    private static let cacheKey = "vaktija_today"
-    private static let calibKey = "vaktija_calibration" // 6 ints, minutes
+    // `nonisolated`: Beide Schluessel werden auch aus dem Hintergrund gelesen (times(on:)).
+    nonisolated private static let cacheKey = "vaktija_today"
+    nonisolated private static let calibKey = "vaktija_calibration" // 6 ints, minutes
 
     init() {
         today = PrayerStore.cachedOfficial() ?? PrayerStore.localToday()
@@ -142,41 +143,53 @@ final class PrayerStore: ObservableObject {
         // Key by the device's current date (vaktija's startDate can lag around midnight).
         let dated = DayTimes(date: PrayerStore.isoToday(), fajr: off.fajr, sunrise: off.sunrise,
                              dhuhr: off.dhuhr, asr: off.asr, maghrib: off.maghrib, isha: off.isha)
-        if let data = try? JSONEncoder().encode(dated) { UserDefaults.standard.set(data, forKey: PrayerStore.cacheKey) }
+        if let data = try? JSONEncoder().encode(dated) { AppGroup.defaults.set(data, forKey: PrayerStore.cacheKey) }
         // Calibration = official − local(raw) today, per prayer.
         let raw = PrayerStore.localToday()
         let calib = zip(dated.asArray, raw.asArray).map { $0 - $1 }
-        UserDefaults.standard.set(calib, forKey: PrayerStore.calibKey)
+        AppGroup.defaults.set(calib, forKey: PrayerStore.calibKey)
         today = dated
         official = true
         calibration = calib
         // Keep the scheduled prayer notifications in step with the official times.
-        await NotificationScheduler.reschedule(times: dated)
+        await PrayerStore.onTimesLoaded?(dated)
     }
 
-    var rows: [PrayerRow] { PrayerModel.rows(today, rule: CommunityRuleStore.shared.rule) }
+    /// Was nach frisch geladenen Zeiten zu tun ist. Die App haengt hier den
+    /// Benachrichtigungs-Planer ein (siehe iOSApp.swift); im Widget bleibt es leer — dort gibt es
+    /// nichts zu planen. Ohne diesen Haken zoege der gemeinsame Code den ganzen Planer samt
+    /// Firestore ins Widget.
+    static var onTimesLoaded: ((DayTimes) async -> Void)?
 
-    static func calibration() -> [Int] {
-        (UserDefaults.standard.array(forKey: calibKey) as? [Int]) ?? [0, 0, 0, 0, 0, 0]
+    nonisolated static func calibration() -> [Int] {
+        (AppGroup.defaults.array(forKey: calibKey) as? [Int]) ?? [0, 0, 0, 0, 0, 0]
     }
 
     // MARK: helpers
 
-    private static func isoToday() -> String {
+    nonisolated static func iso(_ date: Date) -> String {
         let f = DateFormatter(); f.calendar = Calendar(identifier: .gregorian)
         f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"
-        return f.string(from: Date())
+        return f.string(from: date)
     }
 
-    private static func cachedOfficial() -> DayTimes? {
-        guard let data = UserDefaults.standard.data(forKey: cacheKey),
+    nonisolated private static func isoToday() -> String { iso(Date()) }
+
+    // Nicht mehr privat: Der Gebetstracker braucht dieselben Zeiten fuer seine Fenster. Zwei
+    // Quellen fuer dieselben Zahlen waeren die sicherste Art, sie auseinanderlaufen zu lassen.
+    //
+    // `nonisolated`, weil auch der Benachrichtigungs-Planer sie liest. Der laeuft nicht auf dem
+    // Hauptthread, und diese Funktionen ruehren nichts an, was dort liegt: UserDefaults und die
+    // Rechnung aus dem geteilten Kotlin-Modul.
+    nonisolated static func cachedOfficial() -> DayTimes? {
+        guard let data = AppGroup.defaults.data(forKey: cacheKey),
               let t = try? JSONDecoder().decode(DayTimes.self, from: data),
               t.date == isoToday() else { return nil }
         return t
     }
 
     // Local adhan fallback via the shared Kotlin dashboard rows ("HH:MM" strings → minutes).
-    static func localToday() -> DayTimes {
+    nonisolated static func localToday() -> DayTimes {
         let rows = DashboardDataKt.dashboardRowsForToday()
         func mins(_ name: String) -> Int {
             guard let r = rows.first(where: { $0.name == name }) else { return 0 }
@@ -185,5 +198,52 @@ final class PrayerStore: ObservableObject {
         }
         return DayTimes(date: isoToday(), fajr: mins("Fajr"), sunrise: mins("Sunrise"),
                         dhuhr: mins("Dhuhr"), asr: mins("Asr"), maghrib: mins("Maghrib"), isha: mins("Isha"))
+    }
+
+    /// Die Zeiten eines beliebigen Tages.
+    ///
+    /// Fuer heute stehen die offiziellen Zeiten von vaktija.eu im Zwischenspeicher. Fuer jeden
+    /// anderen Tag gibt es im Geraet keine offizielle Quelle, also wird lokal gerechnet und die
+    /// heutige Abweichung (offiziell − lokal) je Gebet aufgeschlagen — dieselbe Rechnung, die der
+    /// Kalender anzeigt. Zwei Bildschirme mit unterschiedlichen Zahlen fuer denselben Tag waeren
+    /// schlimmer als ein paar Minuten Ungenauigkeit.
+    ///
+    /// Ohne diesen Weg wuerden Benachrichtigungen und Tracker-Fenster eine Woche lang die Zeiten
+    /// von heute wiederholen — im Fruehjahr sind das am siebten Tag gut zwanzig Minuten daneben.
+    nonisolated static func times(on day: Date) -> DayTimes {
+        let key = iso(day)
+        if key == isoToday() { return cachedOfficial() ?? localToday() }
+        guard let d = localDay(day) else { return cachedOfficial() ?? localToday() }
+        let c = calibration()
+        func m(_ hhmm: String, _ i: Int) -> Int {
+            let p = hhmm.split(separator: ":")
+            let raw = (Int(p.first ?? "0") ?? 0) * 60 + (Int(p.last ?? "0") ?? 0)
+            return raw + (c.indices.contains(i) ? c[i] : 0)
+        }
+        return DayTimes(date: key, fajr: m(d.fajr, 0), sunrise: m(d.sunrise, 1), dhuhr: m(d.dhuhr, 2),
+                        asr: m(d.asr, 3), maghrib: m(d.maghrib, 4), isha: m(d.isha, 5))
+    }
+
+    // Der Monat wird gepuffert: Der Planer fragt fuer sieben Tage je fuenf Gebete nach Zeiten, und
+    // ohne Puffer wuerde derselbe Monat dutzendfach neu gerechnet.
+    nonisolated(unsafe) private static var monthCache: [String: [CalendarDay]] = [:]
+    nonisolated(unsafe) private static let monthLock = NSLock()
+
+    nonisolated private static func localDay(_ day: Date) -> CalendarDay? {
+        let cal = Calendar.current
+        let year = cal.component(.year, from: day)
+        let month = cal.component(.month, from: day)
+        let key = "\(year)-\(month)"
+        monthLock.lock()
+        defer { monthLock.unlock() }
+        let days: [CalendarDay]
+        if let cached = monthCache[key] {
+            days = cached
+        } else {
+            days = CalendarDataKt.monthForDisplay(year: Int32(year), month: Int32(month))
+            monthCache[key] = days
+        }
+        let dayOfMonth = cal.component(.day, from: day)
+        return days.first { Int($0.day) == dayOfMonth }
     }
 }

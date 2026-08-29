@@ -37,7 +37,7 @@ struct RamadanView: View {
         .navigationTitle(L("library_ramadan")).navigationBarTitleDisplayMode(.inline)
         .onReceive(ticker) { now = $0 }
         .task { await store.refresh() }
-        .onAppear { fastedToday = UserDefaults.standard.bool(forKey: fastKey()) }
+        .onAppear { fastedToday = AppGroup.defaults.bool(forKey: fastKey()) }
     }
 
     // a) Day badge
@@ -130,7 +130,7 @@ struct RamadanView: View {
                 .font(.inter(16, .bold)).foregroundColor(.brandGreen)
             Toggle(L("ramadan_fasted_today"), isOn: Binding(
                 get: { fastedToday },
-                set: { fastedToday = $0; UserDefaults.standard.set($0, forKey: fastKey()) }
+                set: { fastedToday = $0; AppGroup.defaults.set($0, forKey: fastKey()) }
             )).font(.inter(15)).tint(.brandGreen)
         }
         .padding()
@@ -167,7 +167,7 @@ struct RamadanView: View {
         var count = 0
         for i in 0..<ramadanLength {
             if let d = greg.date(byAdding: .day, value: i, to: start),
-               UserDefaults.standard.bool(forKey: "f_\(isoKey(d))") { count += 1 }
+               AppGroup.defaults.bool(forKey: "f_\(isoKey(d))") { count += 1 }
         }
         return count
     }

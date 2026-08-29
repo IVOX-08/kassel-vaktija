@@ -7,7 +7,27 @@ import SwiftUI
 private struct Surah: Decodable, Identifiable {
     let id: Int; let name: String; let transliteration: String; let total_verses: Int
 }
-private struct Ayah: Decodable { let n: Int; let t: String }
+private struct Ayah: Decodable {
+    let n: Int
+    let t: String
+    /// Die MARKIERTE Fassung derselben Ajah (siehe Tajweed.swift) — aber nur, wenn sie sich
+    /// restlos lesen ließ. Sonst `nil`, und dann wird der schlichte Text gezeigt: nie geraten
+    /// eingefärbt, nie eine Klammer im Korantext.
+    ///
+    /// Einmal beim Laden geprüft, nicht bei jedem Seitenumbruch: Der Umbruch misst dieselbe Ajah
+    /// dutzendfach.
+    let marked: String?
+
+    private enum CodingKeys: String, CodingKey { case n, t, tj }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        n = try c.decode(Int.self, forKey: .n)
+        t = try c.decode(String.self, forKey: .t)
+        let raw = try c.decodeIfPresent(String.self, forKey: .tj)
+        marked = raw.flatMap { $0.isEmpty || !Tajweed.isUsable($0) ? nil : $0 }
+    }
+}
 private struct SurahContent: Decodable { let ayahs: [Ayah] }
 
 private enum QuranLoader {
@@ -21,18 +41,54 @@ private enum QuranLoader {
 }
 
 private enum QuranStore {
-    static func resume(_ s: Int) -> Int { UserDefaults.standard.integer(forKey: "q_resume_\(s)") }
-    static func setResume(_ s: Int, _ p: Int) { UserDefaults.standard.set(p, forKey: "q_resume_\(s)") }
-    static func marks() -> Set<String> { Set(UserDefaults.standard.stringArray(forKey: "q_bm") ?? []) }
+    static func resume(_ s: Int) -> Int { AppGroup.defaults.integer(forKey: "q_resume_\(s)") }
+    static func setResume(_ s: Int, _ p: Int) { AppGroup.defaults.set(p, forKey: "q_resume_\(s)") }
+    static func marks() -> Set<String> { Set(AppGroup.defaults.stringArray(forKey: "q_bm") ?? []) }
     static func isMarked(_ k: String) -> Bool { marks().contains(k) }
     static func toggle(_ k: String) {
         var b = marks(); if b.contains(k) { b.remove(k) } else { b.insert(k) }
-        UserDefaults.standard.set(Array(b), forKey: "q_bm")
+        AppGroup.defaults.set(Array(b), forKey: "q_bm")
     }
 }
 
-private let readerFontSize: CGFloat = 25
-private let readerLineSpacing: CGFloat = 12
+/// Grosse, gut lesbare arabische Schrift, damit die Harakat und die Tedschwid-Zeichen deutlich
+/// zu sehen sind — danach hat die Gemeinde ausdruecklich gefragt. Die Seiten werden auf genau
+/// diese Groesse umbrochen, ohne Scrollen (siehe `paginate`).
+private let readerBaseFontSize: CGFloat = 25
+
+/// Schrift, Groesse und Tedschwid.
+///
+/// Steht im Leser und nicht in den Einstellungen: Das sind Entscheidungen, die beim Lesen fallen —
+/// der Text ist eine Spur zu klein, oder die Regeln sollen fuer diese Sitzung sichtbar sein. Wer
+/// dafuer die Sure verlassen muss, aendert es schlicht nicht.
+final class QuranReaderPrefs: ObservableObject {
+    static let shared = QuranReaderPrefs()
+
+    static let minScale: CGFloat = 0.7
+    static let maxScale: CGFloat = 1.8
+    static let step: CGFloat = 0.1
+
+    @Published var ottoman: Bool { didSet { AppGroup.defaults.set(ottoman, forKey: "q_ottoman") } }
+    @Published var tajweed: Bool { didSet { AppGroup.defaults.set(tajweed, forKey: "q_tajweed") } }
+    @Published var scale: CGFloat { didSet { AppGroup.defaults.set(Double(scale), forKey: "q_scale") } }
+
+    private init() {
+        ottoman = AppGroup.defaults.bool(forKey: "q_ottoman")
+        tajweed = AppGroup.defaults.bool(forKey: "q_tajweed")
+        let stored = AppGroup.defaults.object(forKey: "q_scale") as? Double
+        scale = min(max(CGFloat(stored ?? 1), QuranReaderPrefs.minScale), QuranReaderPrefs.maxScale)
+    }
+
+    func zoom(_ delta: CGFloat) {
+        scale = min(max(scale + delta, QuranReaderPrefs.minScale), QuranReaderPrefs.maxScale)
+    }
+}
+
+/// Amiri Quran — der klassische Nasch-Schnitt osmanischer und tuerkischer Druck-Mushafs, unter der
+/// SIL Open Font Licence mitgeliefert. Er steht neben der Systemschrift, weil beide sehr
+/// unterschiedlich gelesen werden: Wer aus einem tuerkischen Mushaf gelernt hat, findet hier die
+/// Buchstabenformen, die er kennt.
+private let ottomanFontName = "Amiri Quran"
 
 private func arabicDigits(_ n: Int) -> String {
     let m: [Character: Character] = ["0": "٠", "1": "١", "2": "٢", "3": "٣", "4": "٤", "5": "٥", "6": "٦", "7": "٧", "8": "٨", "9": "٩"]
@@ -64,6 +120,7 @@ struct QuranView: View {
 private struct SurahReader: View {
     let id: Int; let name: String; let transliteration: String
     private let ayahs: [Ayah]
+    @ObservedObject private var prefs = QuranReaderPrefs.shared
     @State private var pages: [[Ayah]] = []
     @State private var current: Int
     @State private var marked = false
@@ -75,29 +132,54 @@ private struct SurahReader: View {
     }
 
     var body: some View {
-        GeometryReader { geo in
-            let contentWidth = geo.size.width - 36
-            ZStack {
-                Color.appBackground.ignoresSafeArea()
-                if pages.isEmpty {
-                    ProgressView().onAppear {
-                        pages = paginate(width: contentWidth, height: geo.size.height * 0.82,
-                                         firstExtra: (id == 1 || id == 9) ? 90 : 150)
-                        if current >= pages.count { current = max(0, pages.count - 1) }
-                        marked = QuranStore.isMarked("\(id):\(current)")
+        VStack(spacing: 0) {
+            controls
+            Divider()
+            GeometryReader { geo in
+                // Querformat ist kaum 400 Punkte hoch. Dort muss der Titelblock schrumpfen und die
+                // Zeilen enger stehen, sonst passen zwischen Bedienleiste und Seitenzahl knapp zwei
+                // Zeilen — und Lesen im Querformat wird langsamer statt schneller.
+                let compact = geo.size.height < 520
+                let layout = Layout(scale: prefs.scale, ottoman: prefs.ottoman,
+                                    tajweed: prefs.tajweed, compact: compact)
+                let contentWidth = geo.size.width - 36
+                let availableHeight = geo.size.height - (compact ? 34 : 64)
+                ZStack {
+                    Color.appBackground.ignoresSafeArea()
+                    if pages.isEmpty {
+                        ProgressView()
+                    } else {
+                        TabView(selection: $current) {
+                            ForEach(pages.indices, id: \.self) { i in
+                                page(i, layout: layout, compact: compact).tag(i)
+                            }
+                        }
+                        .tabViewStyle(.page(indexDisplayMode: .never))
+                        .environment(\.layoutDirection, .rightToLeft)
+                        .onChange(of: current) { v in
+                            QuranStore.setResume(id, v); marked = QuranStore.isMarked("\(id):\(v)")
+                        }
                     }
-                } else {
-                    TabView(selection: $current) {
-                        ForEach(pages.indices, id: \.self) { i in page(i).tag(i) }
-                    }
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                    .environment(\.layoutDirection, .rightToLeft)
-                    .onChange(of: current) { v in
-                        QuranStore.setResume(id, v); marked = QuranStore.isMarked("\(id):\(v)")
-                    }
+                }
+                // Neu umbrechen, sobald sich irgendetwas am Aussehen aendert. Schrift, Groesse,
+                // Zeilenabstand und Tedschwid gehen ALLE in die Messung ein — bliebe einer davon
+                // aussen vor, braechen die Seiten an falschen Stellen.
+                .task(id: RelayoutKey(scale: prefs.scale, ottoman: prefs.ottoman,
+                                      tajweed: prefs.tajweed, width: contentWidth,
+                                      height: availableHeight)) {
+                    pages = paginate(width: contentWidth, height: availableHeight,
+                                     firstExtra: compact ? 74 : ((id == 1 || id == 9) ? 90 : 150),
+                                     layout: layout)
+                    if current >= pages.count { current = max(0, pages.count - 1) }
+                    marked = QuranStore.isMarked("\(id):\(current)")
                 }
             }
         }
+        .background(Color.appBackground.ignoresSafeArea())
+        // Nur hier darf sich der Bildschirm drehen. Beim Verlassen wird das Hochformat wieder
+        // erzwungen — sonst stuende die naechste Seite quer, ohne dafuer gebaut zu sein.
+        .onAppear { AppDelegate.allowLandscape(true) }
+        .onDisappear { AppDelegate.allowLandscape(false) }
         .navigationTitle(transliteration).navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -108,20 +190,90 @@ private struct SurahReader: View {
         }
     }
 
-    private func page(_ i: Int) -> some View {
-        VStack(spacing: 12) {
+    /// Was in die Messung UND in die Zeichnung geht — beides aus einer Quelle, damit sie nicht
+    /// auseinanderlaufen koennen.
+    private struct Layout {
+        let font: UIFont
+        let lineSpacing: CGFloat
+        let tajweed: Bool
+
+        init(scale: CGFloat, ottoman: Bool, tajweed: Bool, compact: Bool) {
+            let size = readerBaseFontSize * scale
+            self.font = (ottoman ? UIFont(name: ottomanFontName, size: size) : nil)
+                ?? UIFont.systemFont(ofSize: size)
+            // 1,95 Zeilenabstand gibt den Harakat im Hochformat Luft. Im Querformat ist das fast
+            // die ganze Seite, deshalb dort 1,45.
+            let multiple = compact ? 1.45 : 1.95
+            // SwiftUI und UIKit rechnen `lineSpacing` als ZUSATZ zwischen den Zeilen, Android als
+            // Gesamthoehe. Ohne diesen Abzug stuenden die Zeilen um die Zeilenhoehe zu weit
+            // auseinander und jede Seite haette ein Drittel weniger Text.
+            self.lineSpacing = max(0, size * multiple - self.font.lineHeight)
+            self.tajweed = tajweed
+        }
+    }
+
+    /// Alles, was einen neuen Umbruch erzwingt. Als eigener Wert, damit `.task(id:)` ihn vergleichen kann.
+    private struct RelayoutKey: Equatable {
+        let scale: CGFloat; let ottoman: Bool; let tajweed: Bool
+        let width: CGFloat; let height: CGFloat
+    }
+
+    // MARK: - Bedienleiste
+
+    private var controls: some View {
+        HStack(spacing: 6) {
+            chip(L("quran_script_ottoman"), on: prefs.ottoman) { prefs.ottoman.toggle() }
+            chip(L("quran_tajweed"), on: prefs.tajweed) { prefs.tajweed.toggle() }
+            Spacer(minLength: 0)
+            zoomButton("minus", enabled: prefs.scale > QuranReaderPrefs.minScale,
+                       label: L("quran_smaller")) { prefs.zoom(-QuranReaderPrefs.step) }
+            zoomButton("plus", enabled: prefs.scale < QuranReaderPrefs.maxScale,
+                       label: L("quran_larger")) { prefs.zoom(QuranReaderPrefs.step) }
+        }
+        .padding(.leading, 12).padding(.trailing, 8).padding(.vertical, 6)
+    }
+
+    private func chip(_ title: String, on: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.inter(13, .semibold))
+                .foregroundColor(on ? .white : .appOnSurface)
+                .padding(.horizontal, 12).padding(.vertical, 7)
+                .background(Capsule().fill(on ? Color.brandGreen : Color.appSurfaceVariant))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func zoomButton(_ icon: String, enabled: Bool, label: String,
+                            action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: icon).font(.system(size: 16, weight: .semibold))
+                .foregroundColor(enabled ? .brandGreen : .appOnSurfaceVariant.opacity(0.4))
+                .frame(width: 34, height: 34)
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled)
+        .accessibilityLabel(label)
+    }
+
+    // MARK: - Seite
+
+    private func page(_ i: Int, layout: Layout, compact: Bool) -> some View {
+        VStack(spacing: compact ? 6 : 12) {
             if i == 0 {
-                Text(name).font(.system(size: 30, weight: .bold)).foregroundColor(.brandGoldLight)
-                    .frame(maxWidth: .infinity).padding(.vertical, 14)
+                Text(name)
+                    .font(.system(size: compact ? 20 : 30, weight: .bold))
+                    .foregroundColor(.brandGoldLight)
+                    .frame(maxWidth: .infinity).padding(.vertical, compact ? 6 : 14)
                     .background(Color.brandGreen).clipShape(RoundedRectangle(cornerRadius: 16))
                 if id != 1 && id != 9 {
                     Text("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ")
-                        .font(.system(size: 22, weight: .bold)).foregroundColor(.brandGreen)
+                        .font(.system(size: compact ? 17 : 22, weight: .bold)).foregroundColor(.brandGreen)
                 }
             }
-            Text(flowingAttributed(pages[i]))
-                .font(.system(size: readerFontSize))
-                .lineSpacing(readerLineSpacing)
+            Text(flowingAttributed(pages[i], layout: layout))
+                .font(Font(layout.font))
+                .lineSpacing(layout.lineSpacing)
                 .foregroundColor(.appOnSurface)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .topTrailing)
@@ -133,17 +285,27 @@ private struct SurahReader: View {
         .padding(.horizontal, 18).padding(.vertical, 8)
     }
 
-    private func flowing(_ a: [Ayah]) -> String {
-        a.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
+    /// Der Text einer Ajah, so wie er gezeichnet wird.
+    ///
+    /// Mit Tedschwid ist es die markierte Fassung — sie schreibt manche Buchstaben anders (`ـٰ`
+    /// statt `ٰ`) und ist deshalb NICHT gleich lang wie die schlichte. Wo keine markierte Fassung
+    /// vorliegt, steht der schlichte Text: nie geraten eingefaerbt.
+    private static func text(_ a: Ayah, tajweed: Bool) -> String {
+        guard tajweed, let marked = a.marked else { return a.t }
+        return Tajweed.plain(marked)
     }
 
-    /// Same text as `flowing`, but the ayah marker ﴿n﴾ (brackets included) is gold.
-    /// Character-for-character identical to `flowing`, so the pagination measurement stays valid.
-    private func flowingAttributed(_ a: [Ayah]) -> AttributedString {
+    /// Derselbe Text wie `text`, Zeichen fuer Zeichen — nur farbig. Damit bleibt die Messung gueltig.
+    private func flowingAttributed(_ a: [Ayah], layout: Layout) -> AttributedString {
         var out = AttributedString()
         for (idx, ayah) in a.enumerated() {
             if idx > 0 { out.append(AttributedString("  ")) }
-            out.append(AttributedString("\(ayah.t) "))
+            if layout.tajweed, let marked = ayah.marked {
+                out.append(Tajweed.attributed(marked, base: .appOnSurface))
+            } else {
+                out.append(AttributedString(ayah.t))
+            }
+            out.append(AttributedString(" "))
             var marker = AttributedString("﴿\(arabicDigits(ayah.n))﴾")
             marker.foregroundColor = .brandGoldLight
             out.append(marker)
@@ -151,28 +313,40 @@ private struct SurahReader: View {
         return out
     }
 
-    // Greedily pack complete ayahs onto each page until the next one would overflow.
-    private func paginate(width: CGFloat, height: CGFloat, firstExtra: CGFloat) -> [[Ayah]] {
+    /// Greedily pack complete ayahs onto each page until the next one would overflow.
+    ///
+    /// Gemessen wird mit GENAU dem Stil, in dem auch gezeichnet wird — eine andere Schrift oder
+    /// Groesse an dieser Stelle braeche die Seiten an falschen Stellen, und jede Seite liefe
+    /// entweder ueber oder endete zu frueh.
+    private func paginate(width: CGFloat, height: CGFloat, firstExtra: CGFloat,
+                          layout: Layout) -> [[Ayah]] {
+        guard width > 0, height > 0 else { return [] }
         let para = NSMutableParagraphStyle()
         para.baseWritingDirection = .rightToLeft
-        para.lineSpacing = readerLineSpacing
-        let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: readerFontSize), .paragraphStyle: para]
+        para.lineSpacing = layout.lineSpacing
+        let attrs: [NSAttributedString.Key: Any] = [.font: layout.font, .paragraphStyle: para]
         let sizer = UILabel()
         sizer.numberOfLines = 0
         func textHeight(_ t: String) -> CGFloat {
             sizer.attributedText = NSAttributedString(string: t, attributes: attrs)
             return sizer.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude)).height
         }
+        // Einmal je Ajah, nicht einmal je Messung: Der gierige Umbruch misst dieselbe Ajah sonst
+        // dutzendfach, und bei Al-Baqarah mit 286 Ajahs wird daraus eine spuerbare Wartezeit.
+        let lines = ayahs.map { "\(Self.text($0, tajweed: layout.tajweed)) ﴿\(arabicDigits($0.n))﴾" }
+
         var result: [[Ayah]] = []; var cur: [Ayah] = []
+        var currentLines: [String] = []
         var limit = height - firstExtra
-        for a in ayahs {
-            let candidate = cur + [a]
-            let text = candidate.map { "\($0.t) ﴿\(arabicDigits($0.n))﴾" }.joined(separator: "  ")
+        for (index, a) in ayahs.enumerated() {
+            let text = (currentLines + [lines[index]]).joined(separator: "  ")
             // Small safety margin so we under-fill slightly rather than truncate the last ayah.
             if !cur.isEmpty && textHeight(text) * 1.06 > limit {
-                result.append(cur); cur = [a]; limit = height
+                result.append(cur)
+                cur = [a]; currentLines = [lines[index]]
+                limit = height
             } else {
-                cur = candidate
+                cur.append(a); currentLines.append(lines[index])
             }
         }
         if !cur.isEmpty { result.append(cur) }

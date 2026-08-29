@@ -29,6 +29,32 @@ final class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
         return true
     }
 
+    // MARK: Ausrichtung
+
+    /// Welche Ausrichtungen gerade erlaubt sind.
+    ///
+    /// Die App ist fuer das Hochformat gestaltet: gedrehte Gebetszeiten, ein gedrehter Kalender und
+    /// ein gedrehter Qibla-Kompass waeren schlechter, nicht besser. Der Koran-Leser ist die
+    /// Ausnahme — quer gehalten passt deutlich mehr in eine Zeile.
+    static var allowedOrientations: UIInterfaceOrientationMask = .portrait
+
+    func application(_ application: UIApplication,
+                     supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        AppDelegate.allowedOrientations
+    }
+
+    /// Gibt das Querformat frei bzw. nimmt es zurueck — und dreht beim Zurueckgehen selbst wieder
+    /// auf Hochformat. Ohne das bliebe die naechste Seite quer stehen, obwohl sie dafuer nicht
+    /// gebaut ist.
+    @MainActor
+    static func allowLandscape(_ allow: Bool) {
+        allowedOrientations = allow ? [.portrait, .landscapeLeft, .landscapeRight] : .portrait
+        guard !allow,
+              let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        else { return }
+        scene.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+    }
+
     // MARK: APNs token
 
     func application(_ application: UIApplication,

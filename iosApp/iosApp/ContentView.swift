@@ -25,8 +25,14 @@ struct ContentView: View {
                     countdownCard.padding(.horizontal, 12)
                     // The announced Eid prayer is the community's most-asked question, so it leads.
                     if let bajram = activeBajram { bajramCard(bajram) }
-                    if !isFriday { jumuaCard }
+                    // Das Freitagsgebet steht AM FREITAG oben und an jedem anderen Tag unten.
+                    //
+                    // An sechs von sieben Tagen ist es eine Information für später und darf den
+                    // Zeiten des heutigen Tages nicht den Platz wegnehmen. Am Freitag ist es das
+                    // Einzige, weswegen die meisten die App an diesem Tag öffnen.
+                    if isFriday { jumuaCard }
                     VStack(spacing: 12) { ForEach(rows) { prayerCard($0) } }
+                    if !isFriday { jumuaCard }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -48,7 +54,9 @@ struct ContentView: View {
                         Text(headerAddress).font(.inter(11, .medium)).foregroundColor(.appPrimary).multilineTextAlignment(.center)
                     }.frame(maxWidth: .infinity)
                 }
-                communityEmblem.frame(height: 96)
+                // Kassels Wappen ist genau 96 hoch; beim Verbandszeichen kommt der Gemeindename
+                // darunter, deshalb nur eine Mindesthöhe statt einer festen.
+                communityEmblem.frame(minHeight: 96)
                 linkBlock(url: donateURL) {
                     VStack(spacing: 3) {
                         Image(systemName: "heart.fill").font(.system(size: 30)).foregroundColor(.appPrimary)
@@ -83,11 +91,15 @@ struct ContentView: View {
         return URL(string: "https://www.google.com/maps/search/?api=1&query=\(encoded)")
     }
 
-    /// Das Wappen der gewählten Gemeinde.
+    /// Das Zeichen der gewählten Gemeinde.
     ///
-    /// Dieselbe Regel wie auf Android, und sie ist wichtig: Wer noch kein Logo hinterlegt hat,
-    /// bekommt ein neutrales Zeichen — NICHT Kassels Wappen geliehen. Ein fremdes Wappen über den
-    /// eigenen Gebetszeiten wäre schlimmer als gar keins.
+    /// Kassel behält sein eigenes Wappen. Jede andere Gemeinde trägt das Verbandszeichen der IGBD
+    /// mit ihrem NAMEN darunter — sie gehören alle dazu, und keine hat ein eigenes Logo
+    /// hinterlegt. Ein Mond-Symbol sagte nichts darüber, wessen Zeiten auf dem Schirm stehen;
+    /// der Name sagt es.
+    ///
+    /// Kassels Wappen wird NICHT verliehen: ein fremdes Wappen über den eigenen Gebetszeiten
+    /// wäre schlimmer als gar keins.
     @ViewBuilder private var communityEmblem: some View {
         if isHomeCommunity {
             Image(uiImage: logoImage).resizable().scaledToFit()
@@ -96,21 +108,34 @@ struct ContentView: View {
             AsyncImage(url: url) { phase in
                 switch phase {
                 case .success(let image): image.resizable().scaledToFit()
-                // Beim Laden und beim Fehlschlag dasselbe neutrale Zeichen — ein leerer Platz
-                // liesse die Kopfzeile bei jedem Start springen.
-                default: neutralEmblem
+                // Beim Laden und beim Fehlschlag dasselbe Zeichen — ein leerer Platz liesse die
+                // Kopfzeile bei jedem Start springen.
+                default: federationEmblem
                 }
             }
         } else {
-            neutralEmblem
+            federationEmblem
         }
     }
 
-    private var neutralEmblem: some View {
-        Image(systemName: "moon.stars.fill")
-            .resizable().scaledToFit()
-            .foregroundColor(.brandGreen)
-            .padding(12)
+    /// Verbandszeichen plus Gemeindename.
+    ///
+    /// Das Zeichen bekommt dieselbe Höhe wie Kassels Wappen. Es in eine feste Box mit dem Namen
+    /// zu quetschen, machte es sichtbar kleiner als das der Heimatgemeinde — das liest sich wie
+    /// zweite Klasse.
+    private var federationEmblem: some View {
+        VStack(spacing: 3) {
+            Image(uiImage: UIImage(named: "logo_igbd") ?? UIImage())
+                .resizable().scaledToFit()
+                .frame(height: 96)
+            Text(CommunityCatalog.shared.selected?.name ?? "")
+                .font(.inter(11, .semibold)).foregroundColor(.brandGreen)
+                .multilineTextAlignment(.center)
+                // Zwei Zeilen: „Islamski kulturni centar Bošnjaka u Berlinu" passt nicht auf eine,
+                // und einen Gemeindenamen auf drei Punkte zu kürzen ist keine gute Begrüßung.
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 
     /// Kassel ist die Heimatgemeinde dieser App — nur sie hat ihr Wappen im Paket.

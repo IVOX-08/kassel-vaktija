@@ -3,33 +3,26 @@ import CoreLocation
 import Shared
 
 // "Mehr" hub (spec section 5): a list of cards to every extra feature.
+//
+// Die Ziele sind Werte (MoreDestination), keine fertigen Ansichten. Nur so kann eine angetippte
+// Benachrichtigung eine der Seiten aufschlagen, ohne dass jemand die Liste vorher gesehen hat —
+// die Tracker-Frage muss beim Tracker landen, nicht auf der Startseite.
 struct MoreView: View {
-    private struct Item: Identifiable {
-        let id = UUID(); let title: String; let icon: String; let dest: AnyView
-    }
-    private var items: [Item] {
-        [
-            Item(title: L("library_quran"), icon: "book.fill", dest: AnyView(QuranView())),
-            Item(title: L("library_hadith"), icon: "text.quote", dest: AnyView(HadithView())),
-            Item(title: L("library_dhikr"), icon: "figure.mind.and.body", dest: AnyView(DhikrView())),
-            Item(title: L("library_tasbih"), icon: "target", dest: AnyView(TasbihView())),
-            Item(title: L("library_tracker"), icon: "checkmark.circle", dest: AnyView(TrackerView())),
-            Item(title: L("library_ramadan"), icon: "moon.fill", dest: AnyView(RamadanView())),
-            Item(title: L("library_zakat"), icon: "plusminus.circle", dest: AnyView(ZakatView())),
-            Item(title: L("nav_qibla"), icon: "safari", dest: AnyView(QiblaView())),
-        ]
-    }
+    @ObservedObject private var route = AppRoute.shared
+    /// Der Weg im Reiter. Ein Array, kein einzelner Wert: Sonst liesse sich eine geoeffnete Seite
+    /// nicht wieder verlassen, ohne den Reiter zu wechseln.
+    @State private var path: [MoreDestination] = []
 
     // Lavender cards mirroring the Android "Mehr" hub (icon · title · chevron).
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 VStack(spacing: 12) {
-                    ForEach(items) { item in
-                        NavigationLink(destination: item.dest) {
+                    ForEach(MoreDestination.allCases, id: \.self) { item in
+                        NavigationLink(value: item) {
                             HStack(spacing: 16) {
                                 Image(systemName: item.icon).font(.system(size: 22)).foregroundColor(.appPrimary).frame(width: 28)
-                                Text(item.title).font(.inter(17, .medium)).foregroundColor(.appOnSurface)
+                                Text(L(item.titleKey)).font(.inter(17, .medium)).foregroundColor(.appOnSurface)
                                 Spacer()
                                 Image(systemName: "chevron.right").font(.system(size: 14, weight: .semibold)).foregroundColor(.appOnSurfaceVariant)
                             }
@@ -43,6 +36,13 @@ struct MoreView: View {
             }
             .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle(L("nav_more"))
+            .navigationDestination(for: MoreDestination.self) { $0.view }
+        }
+        // Aus der Benachrichtigung. Der Wunsch wird danach geloescht, sonst springt der Reiter bei
+        // jedem Hinsehen wieder auf dieselbe Seite zurueck.
+        .onReceive(route.$pendingMore.compactMap { $0 }) { destination in
+            path = [destination]
+            route.pendingMore = nil
         }
     }
 }
@@ -117,80 +117,10 @@ struct TasbihView: View {
     }
 }
 
-// MARK: - 5.5 Gebets-Tracker (5-bit mask per day + streak)
+// MARK: - 5.5 Gebets-Tracker
 
-struct TrackerView: View {
-    // The five daily prayers in the selected app language (sunrise is not tracked).
-    private var names: [String] {
-        ["prayer_fajr", "prayer_dhuhr", "prayer_asr", "prayer_maghrib", "prayer_isha"].map { L($0) }
-    }
-    @State private var mask = TrackerStore.maskFor(TrackerStore.today())
-    private var doneCount: Int { (0..<5).filter { mask & (1 << $0) != 0 }.count }
-    private var streak: Int { TrackerStore.streak() }
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                // Streak card
-                HStack {
-                    Text("🔥").font(.system(size: 40))
-                    VStack(alignment: .leading) {
-                        Text("\(streak)").font(.inter(32, .bold)).foregroundColor(.brandGreen)
-                        Text(L("tracker_streak")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
-                    }
-                    Spacer()
-                    Text("\(doneCount) / 5").font(.inter(24, .bold)).foregroundColor(doneCount == 5 ? .brandGold : .appOnSurfaceVariant)
-                }
-                .padding().background(Color.brandGreen.opacity(0.12)).clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
-
-                Text(L("tracker_today")).font(.inter(17, .bold)).foregroundColor(.appOnSurface).frame(maxWidth: .infinity, alignment: .leading)
-
-                VStack(spacing: 0) {
-                    ForEach(0..<5, id: \.self) { i in
-                        Button { toggle(i) } label: {
-                            HStack {
-                                Image(systemName: mask & (1 << i) != 0 ? "checkmark.circle.fill" : "circle")
-                                    .foregroundColor(mask & (1 << i) != 0 ? .brandGreen : .appOnSurfaceVariant)
-                                Text(names[i]).font(.inter(16)).foregroundColor(.appOnSurface)
-                                Spacer()
-                            }.padding(.vertical, 12)
-                        }
-                        if i < 4 { Divider() }
-                    }
-                }.padding(.horizontal, 16).background(Color.appSurface).clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
-            }.padding()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.appBackground.ignoresSafeArea())
-        .navigationTitle(L("library_tracker")).navigationBarTitleDisplayMode(.inline)
-    }
-
-    private func toggle(_ i: Int) {
-        mask ^= (1 << i)
-        TrackerStore.setMask(mask, for: TrackerStore.today())
-    }
-}
-
-enum TrackerStore {
-    static func today() -> String { key(for: Date()) }
-    private static func key(for date: Date) -> String {
-        let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"; return "d_" + f.string(from: date)
-    }
-    static func maskFor(_ k: String) -> Int { UserDefaults.standard.integer(forKey: k) }
-    static func setMask(_ m: Int, for k: String) { UserDefaults.standard.set(m, forKey: k) }
-    static func streak() -> Int {
-        var n = 0
-        let cal = Calendar.current
-        var day = Date()
-        // if today isn't complete, start counting from yesterday
-        if maskFor(key(for: day)) != 31 { day = cal.date(byAdding: .day, value: -1, to: day)! }
-        while maskFor(key(for: day)) == 31 {
-            n += 1
-            day = cal.date(byAdding: .day, value: -1, to: day)!
-        }
-        return n
-    }
-}
+// TrackerView liegt in einer eigenen Datei (TrackerView.swift): Seit die Gebete feste
+// Zeitfenster haben, ist daraus ein eigener Bildschirm geworden.
 
 // MARK: - 5.6 Ramadan (countdown to iftar / sehur + 3 rows + fasted toggle)
 
@@ -265,61 +195,184 @@ final class HeadingModel: NSObject, ObservableObject, CLLocationManagerDelegate 
 
 struct QiblaView: View {
     @StateObject private var model = HeadingModel()
-    /// Vom eigenen Standort, sobald einer vorliegt — sonst von der Moschee. Der feste Wert war
-    /// innerhalb Deutschlands knapp daneben, aber ab Sarajevo oder Istanbul deutlich falsch.
+
+    /// Ob nach dem eigenen Standort gerechnet wird oder nach der Moschee.
+    ///
+    /// Eine WAHL, kein Automatismus: Beide Zahlen sind richtig, nur für verschiedene Orte. Wer in
+    /// der Moschee steht, will die Zahl der Moschee — die hängt dort an der Wand. Wer unterwegs
+    /// ist, will die für den Ort, an dem er betet. Ohne die Zeile darunter wäre nicht erklärbar,
+    /// warum die Zahl heute eine andere ist als gestern.
+    @AppStorage("qibla_use_device") private var useDevice = false
+
+    private var coordinate: CLLocationCoordinate2D? { useDevice ? model.coordinate : nil }
+
     private var qibla: Double {
-        guard let c = model.coordinate else { return QiblaKt.qiblaDegrees() }
+        guard let c = coordinate else { return QiblaKt.qiblaDegrees() }
         return QiblaKt.qiblaDegrees(latitude: c.latitude, longitude: c.longitude)
     }
-    private var usingDeviceLocation: Bool { model.coordinate != nil }
-    private var aligned: Bool { guard let h = model.heading else { return false }; return abs(angleDiff(qibla, h)) < 5 }
-    private func angleDiff(_ a: Double, _ b: Double) -> Double { var d = (a - b).truncatingRemainder(dividingBy: 360); if d > 180 { d -= 360 }; if d < -180 { d += 360 }; return d }
+
+    /// Wohin die Nadel auf dem Zifferblatt zeigt.
+    ///
+    /// Die Qibla wird gegen GEOGRAFISCH Nord gerechnet, der Kompass meldet gegen MAGNETISCH Nord.
+    /// Die Nadel muss deshalb mit dem drehen, was der Kompass sagt; die Gradzahl oben bleibt die
+    /// wahre Richtung, weil das die Zahl ist, die für eine Stadt veröffentlicht wird.
+    private var needle: Double { qibla - (model.heading ?? 0) }
+
+    private var aligned: Bool {
+        guard model.heading != nil else { return false }
+        return abs(angleDiff(needle, 0)) < 5
+    }
+
+    private func angleDiff(_ a: Double, _ b: Double) -> Double {
+        var d = (a - b).truncatingRemainder(dividingBy: 360)
+        if d > 180 { d -= 360 }
+        if d < -180 { d += 360 }
+        return d
+    }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text(L("nav_qibla")).font(.inter(22, .bold)).foregroundColor(.appPrimary)
-            Text("\(Int(qibla.rounded()))°").font(.inter(17)).foregroundColor(.appSecondary)
-            // Welche der beiden Quellen gerade gilt — sonst wäre nicht erklärbar, warum die Zahl
-            // unterwegs eine andere ist als zu Hause.
-            Text(L(usingDeviceLocation ? "qibla_from_device" : "qibla_from_mosque"))
-                .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
-            ZStack {
-                Circle().stroke(Color.appOnSurfaceVariant.opacity(0.3), lineWidth: 2)
-                // North marker (red)
-                VStack { Text("N").font(.inter(14, .bold)).foregroundColor(.qiblaRed); Spacer() }
-                // Qibla marker (green line + gold dot)
-                VStack {
-                    Circle().fill(Color.brandGoldLight).frame(width: 16, height: 16)
-                        .overlay(Circle().stroke(Color.brandGold, lineWidth: 2))
-                    Rectangle().fill(Color.brandGreen).frame(width: 4, height: 120)
-                    Spacer()
-                }
-                .rotationEffect(.degrees(qibla - (model.heading ?? 0)))
-                // Fixed top pointer
-                VStack {
-                    Triangle().fill(aligned ? Color.brandGreen : Color.brandGold).frame(width: 22, height: 16)
-                    Spacer()
-                }.offset(y: -22)
-            }
-            .frame(width: 300, height: 300)
-            .rotationEffect(.degrees(-(model.heading ?? 0)))   // dial counter-rotates with the device
+        ScrollView {
+            VStack(spacing: 0) {
+                Text(L("nav_qibla"))
+                    .font(.inter(30, .bold)).foregroundColor(.brandGreen)
+                    .padding(.top, 28)
+                Text("\(Int(qibla.rounded()))°")
+                    .font(.inter(22, .bold)).foregroundColor(.brandGold)
+                    .padding(.top, 6)
+                Text(L(coordinate != nil ? "qibla_from_device" : "qibla_from_mosque"))
+                    .font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
+                    .padding(.top, 2)
 
-            if model.heading != nil {
-                Text(aligned ? "Du schaust Richtung Qibla" : "Halte das Handy flach und drehe dich, bis der Pfeil nach oben zeigt.")
-                    .font(.inter(15, aligned ? .bold : .regular))
-                    .foregroundColor(aligned ? .brandGreen : .appOnSurfaceVariant)
+                Button {
+                    useDevice.toggle()
+                    if useDevice { model.start() }
+                } label: {
+                    Text(L(useDevice ? "qibla_use_mosque" : "qibla_use_device"))
+                        .font(.inter(16, .semibold)).foregroundColor(.brandGreen)
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 18)
+
+                dial.padding(.top, 20)
+
+                Text(model.heading == nil ? L("qibla_no_sensor")
+                                          : (aligned ? L("qibla_facing") : L("qibla_hint")))
+                    .font(.inter(17, aligned ? .bold : .regular))
+                    .foregroundColor(aligned ? .brandGreen : .appOnSurface)
                     .multilineTextAlignment(.center)
-            } else {
-                Text(L("qibla_no_sensor"))
-                    .font(.inter(14)).foregroundColor(.appOnSurfaceVariant).multilineTextAlignment(.center)
+                    .padding(.horizontal, 24).padding(.top, 24).padding(.bottom, 24)
             }
+            .frame(maxWidth: .infinity)
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.appBackground.ignoresSafeArea())
         .navigationTitle(L("nav_qibla")).navigationBarTitleDisplayMode(.inline)
         .onAppear { model.start() }
         .onDisappear { model.stop() }
+    }
+
+    // MARK: - Das Zifferblatt
+
+    /// Der feste Zeiger steht AUSSERHALB des Rings und dreht sich nie: Er zeigt, wohin das Handy
+    /// schaut. Der Ring darunter dreht gegen den Kompass, die Nadel sitzt auf dem Ring. Damit ist
+    /// die Aufgabe für den Nutzer eine einzige — die Nadel unter den Zeiger drehen.
+    private var dial: some View {
+        ZStack {
+            Circle()
+                .stroke(Color.appOnSurfaceVariant.opacity(0.35), lineWidth: 1.5)
+                .padding(6)
+
+            CompassTicks()
+                .stroke(Color.appOnSurfaceVariant.opacity(0.55), lineWidth: 1.5)
+                .padding(6)
+                .rotationEffect(.degrees(-(model.heading ?? 0)))
+
+            // Die Himmelsrichtungen drehen mit dem Ring, nicht mit dem Bildschirm. Nord ist rot,
+            // wie auf jedem Kompass — und der einzige Anhaltspunkt, wenn man das Handy dreht.
+            ForEach(CompassPoint.all, id: \.label) { point in
+                Text(point.label)
+                    .font(.inter(17, .semibold))
+                    .foregroundColor(point.isNorth ? .qiblaRed : .appOnSurface)
+                    .rotationEffect(.degrees(point.degrees))
+                    .offset(y: -108)
+                    .rotationEffect(.degrees(-point.degrees))
+                    .rotationEffect(.degrees(point.degrees))
+            }
+            .rotationEffect(.degrees(-(model.heading ?? 0)))
+
+            // Die Nadel: Strich vom Mittelpunkt zum Rand, am Ende der Punkt mit goldenem Ring.
+            QiblaNeedle()
+                .rotationEffect(.degrees(needle))
+
+            Circle().fill(Color.appOnSurface).frame(width: 9, height: 9)
+
+            VStack {
+                Triangle()
+                    .fill(aligned ? Color.brandGreen : Color.brandGold)
+                    .frame(width: 22, height: 15)
+                Spacer()
+            }
+        }
+        .frame(width: 300, height: 300)
+        .animation(.easeOut(duration: 0.15), value: model.heading ?? 0)
+    }
+}
+
+/// Eine Himmelsrichtung auf dem Ring.
+private struct CompassPoint {
+    let label: String
+    let degrees: Double
+    var isNorth: Bool { degrees == 0 }
+
+    static let all = [
+        CompassPoint(label: "N", degrees: 0),
+        CompassPoint(label: "E", degrees: 90),
+        CompassPoint(label: "S", degrees: 180),
+        CompassPoint(label: "W", degrees: 270),
+    ]
+}
+
+/// Der Skalenring: alle 5 Grad ein Strich, alle 30 Grad ein längerer.
+///
+/// Ohne die Striche ist der Ring eine leere Scheibe, auf der sich nicht ablesen lässt, ob man sich
+/// um zwei oder um zwanzig Grad gedreht hat.
+private struct CompassTicks: Shape {
+    func path(in rect: CGRect) -> Path {
+        let center = CGPoint(x: rect.midX, y: rect.midY)
+        let radius = min(rect.width, rect.height) / 2
+        var path = Path()
+        for degree in stride(from: 0, to: 360, by: 5) {
+            let major = degree % 30 == 0
+            let length: CGFloat = major ? 14 : 7
+            let angle = (Double(degree) - 90) * .pi / 180
+            let outer = CGPoint(x: center.x + cos(angle) * radius,
+                                y: center.y + sin(angle) * radius)
+            let inner = CGPoint(x: center.x + cos(angle) * (radius - length),
+                                y: center.y + sin(angle) * (radius - length))
+            path.move(to: inner)
+            path.addLine(to: outer)
+        }
+        return path
+    }
+}
+
+/// Der grüne Zeiger zur Kaaba, mit dem Punkt am äußeren Ende.
+private struct QiblaNeedle: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            Circle()
+                .fill(Color.brandGreen)
+                .frame(width: 26, height: 26)
+                .overlay(Circle().stroke(Color.brandGold, lineWidth: 3))
+            Rectangle()
+                .fill(Color.brandGreen)
+                .frame(width: 5)
+            Spacer(minLength: 0)
+        }
+        .frame(width: 300, height: 300)
+        .padding(.top, 12)
+        // Die untere Hälfte bleibt leer: ein Zeiger, der über den Mittelpunkt hinausragt, zeigt in
+        // zwei Richtungen, und eine davon ist falsch.
+        .mask(VStack(spacing: 0) { Rectangle(); Color.clear }.frame(width: 300, height: 300))
     }
 }
 

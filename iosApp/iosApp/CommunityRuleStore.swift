@@ -9,30 +9,6 @@ import FirebaseFirestore
 //
 // Cached in UserDefaults so a cold start offline still shows the board's values rather than
 // snapping back to the built-in defaults.
-struct CommunityRule: Codable, Equatable {
-    var fajrIqamah: String      // "HH:mm"
-    var jumua: String           // "HH:mm"
-    var dhuhrOffsetMin: Int
-    var asrOffsetMin: Int
-    var maghribOffsetMin: Int
-    var ishaOffsetMin: Int
-    /// Announced Eid prayer — both appear and disappear together, so treat them as one.
-    var bajramDate: String?     // ISO yyyy-MM-dd
-    var bajramTime: String?     // "HH:mm"
-    var updatedAt: Int64
-
-    /// What the app used before the board could edit anything; also the offline fallback.
-    static let fallback = CommunityRule(
-        fajrIqamah: "04:30", jumua: "13:30",
-        dhuhrOffsetMin: 10, asrOffsetMin: 10, maghribOffsetMin: 5, ishaOffsetMin: 0,
-        bajramDate: nil, bajramTime: nil, updatedAt: 0
-    )
-
-    var bajram: (date: String, time: String)? {
-        guard let d = bajramDate, let t = bajramTime, !d.isEmpty, !t.isEmpty else { return nil }
-        return (d, t)
-    }
-}
 
 @MainActor
 final class CommunityRuleStore: ObservableObject {
@@ -40,11 +16,10 @@ final class CommunityRuleStore: ObservableObject {
 
     @Published private(set) var rule: CommunityRule
 
-    private static let cacheKey = "community_rule"
     private var listener: ListenerRegistration?
 
     private init() {
-        rule = Self.cached() ?? .fallback
+        rule = CommunityRule.cachedRule()
     }
 
     deinit { listener?.remove() }
@@ -57,9 +32,7 @@ final class CommunityRuleStore: ObservableObject {
                 guard let data = snapshot?.data() else { return }
                 let parsed = Self.parse(data)
                 self?.rule = parsed
-                if let encoded = try? JSONEncoder().encode(parsed) {
-                    UserDefaults.standard.set(encoded, forKey: Self.cacheKey)
-                }
+                CommunityRule.cache(parsed)
             }
     }
 
@@ -78,8 +51,5 @@ final class CommunityRuleStore: ObservableObject {
         )
     }
 
-    private static func cached() -> CommunityRule? {
-        guard let data = UserDefaults.standard.data(forKey: cacheKey) else { return nil }
-        return try? JSONDecoder().decode(CommunityRule.self, from: data)
-    }
+    private static func cached() -> CommunityRule? { CommunityRule.cached() }
 }

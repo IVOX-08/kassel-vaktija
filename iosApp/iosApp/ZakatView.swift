@@ -52,11 +52,18 @@ struct ZakatView: View {
                 card(L("zakat_nisab")) {
                     field(L("zakat_nisab_value"), $nisab)
                     Text(L("zakat_nisab_hint"))
-                        .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                        .font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
                 resultCard
+
+                // Der Hinweis steht AUSSERHALB der Karte, wie auf Android: Er gehört nicht zur
+                // Rechnung, sondern sagt, was diese Rechnung nicht ist.
+                Text(L("zakat_disclaimer"))
+                    .font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 4).padding(.top, 4)
             }
             .padding(16)
         }
@@ -66,47 +73,55 @@ struct ZakatView: View {
     }
 
     private var resultCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             line(L("zakat_total_assets"), assets)
             line(L("zakat_net"), net)
             Divider()
-            if let due {
-                HStack {
-                    Text(L("zakat_due")).font(.inter(16, .bold)).foregroundColor(.appPrimary)
-                    Spacer()
-                    Text(Self.euro(due)).font(.inter(20, .bold)).foregroundColor(.brandGreen)
-                }
+            // Die Zeile steht IMMER da, auch mit 0,00 €. Sie erst erscheinen zu lassen, wenn
+            // etwas faellig ist, laesst den Rechner unfertig aussehen — und „0" ist hier eine
+            // Antwort, keine fehlende Angabe.
+            HStack(alignment: .firstTextBaseline) {
+                Text(L("zakat_due")).font(.inter(17, .bold)).foregroundColor(.appOnSurface)
+                Spacer()
+                Text(Self.euro(due ?? 0)).font(.inter(24, .bold)).foregroundColor(.brandGreen)
+            }
+            if due != nil {
                 Text(L("zakat_above_nisab")).font(.inter(13)).foregroundColor(.brandGreen)
+                    .fixedSize(horizontal: false, vertical: true)
             } else if nisabValue <= 0 {
                 Text(L("zakat_enter_nisab")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+                    .fixedSize(horizontal: false, vertical: true)
             } else {
                 Text(L("zakat_below_nisab")).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            Text(L("zakat_disclaimer"))
-                .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 4)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .background(Color.appSurface)
-        .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
+        .padding(18)
+        .background(Color.moreCard)
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     // MARK: Bausteine
 
     private func card<Content: View>(_ title: String,
                                      @ViewBuilder _ content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(title).font(.inter(13, .semibold)).foregroundColor(.appSecondary)
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title).font(.inter(15, .bold)).foregroundColor(.brandGreen)
             content()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .background(Color.appSurface)
-        .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard, style: .continuous))
+        .padding(18)
+        .background(Color.moreCard)
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
+    /// Ein Eingabefeld: umrandeter Kasten über die ganze Breite, wie auf Android.
+    ///
+    /// Solange nichts drinsteht, steht der Name IM Kasten. Sobald etwas drinsteht, rutscht er
+    /// klein nach oben — sonst wüsste man bei sechs Kästen untereinander nicht mehr, welche Zahl
+    /// wozu gehört.
+    ///
     /// Gefiltert wird beim Tippen, nicht erst beim Rechnen — sonst könnte im Feld etwas stehen,
     /// das die Rechnung still als null liest. Komma ist erlaubt, so schreibt man Beträge hier.
     private func field(_ label: String, _ value: Binding<String>) -> some View {
@@ -114,23 +129,35 @@ struct ZakatView: View {
             get: { value.wrappedValue },
             set: { value.wrappedValue = $0.filter { $0.isNumber || $0 == "." || $0 == "," } }
         )
-        return HStack {
-            Text(label).font(.inter(15)).foregroundColor(.appOnSurface)
-            Spacer(minLength: 12)
-            TextField("0", text: filtered)
-                .keyboardType(.decimalPad)
-                .multilineTextAlignment(.trailing)
-                .font(.inter(15, .medium))
-                .frame(maxWidth: 110)
-            Text("€").font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
+        let empty = value.wrappedValue.isEmpty
+        return VStack(alignment: .leading, spacing: 2) {
+            if !empty {
+                Text(label).font(.inter(12)).foregroundColor(.brandGreen)
+            }
+            HStack(spacing: 6) {
+                TextField(label, text: filtered)
+                    .keyboardType(.decimalPad)
+                    .font(.inter(17))
+                    .foregroundColor(.appOnSurface)
+                if !empty {
+                    Text("€").font(.inter(17)).foregroundColor(.appOnSurfaceVariant)
+                }
+            }
         }
+        .padding(.horizontal, 16)
+        .frame(height: 62)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(
+            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                .stroke(Color.appOnSurfaceVariant.opacity(0.7), lineWidth: 1)
+        )
     }
 
     private func line(_ label: String, _ value: Double) -> some View {
         HStack {
-            Text(label).font(.inter(14)).foregroundColor(.appOnSurfaceVariant)
+            Text(label).font(.inter(16)).foregroundColor(.appOnSurface)
             Spacer()
-            Text(Self.euro(value)).font(.inter(15, .semibold)).foregroundColor(.appOnSurface)
+            Text(Self.euro(value)).font(.inter(17, .semibold)).foregroundColor(.appOnSurface)
         }
     }
 

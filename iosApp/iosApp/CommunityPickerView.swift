@@ -19,6 +19,15 @@ struct CommunityPickerView: View {
     /// Gesetzt, sobald eine Gemeinde mit mehreren Orten gewählt wurde.
     @State private var pendingLocations: CommunityInfo?
 
+    /// Namen, die mehr als einmal vorkommen — im GANZEN Verzeichnis, nicht nur im Suchergebnis.
+    /// Sonst waere dieselbe Zeile mal mit Ort und mal mit Strasse beschriftet, je nachdem, was
+    /// gerade im Suchfeld steht.
+    private var ambiguousNames: Set<String> {
+        var seen = Set<String>(), twice = Set<String>()
+        for c in catalog.selectable where !seen.insert(c.name).inserted { twice.insert(c.name) }
+        return twice
+    }
+
     private var matches: [CommunityInfo] {
         let q = query.trimmingCharacters(in: .whitespaces).lowercased()
         guard !q.isEmpty else { return catalog.selectable }
@@ -117,7 +126,11 @@ struct CommunityPickerView: View {
                     .multilineTextAlignment(.leading)
                 // Alle Orte, nicht nur der erste: die Zeile beantwortet die Frage „ist meine
                 // Stadt dabei?", und die stellt sich vor dem Antippen.
-                Text(c.locations.map(\.name).joined(separator: " · "))
+                //
+                // Ausnahme: Zwei Gemeinden heissen „Džemat Stuttgart" und liegen beide in
+                // Stuttgart. Untereinander waeren sie Wort fuer Wort dieselbe Zeile. Dann
+                // entscheidet die Strasse — das ist das Einzige, was sie unterscheidet.
+                Text(subtitle(c))
                     .font(.inter(15)).foregroundColor(.appOnSurfaceVariant)
                     .lineLimit(1)
             }
@@ -125,6 +138,13 @@ struct CommunityPickerView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 10)
+    }
+
+    private func subtitle(_ c: CommunityInfo) -> String {
+        if ambiguousNames.contains(c.name), let address = c.address, !address.isEmpty {
+            return address
+        }
+        return c.locations.map(\.name).joined(separator: " · ")
     }
 
     private func pick(_ c: CommunityInfo) {

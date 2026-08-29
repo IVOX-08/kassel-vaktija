@@ -37,45 +37,6 @@ struct CommunityInfo: Codable, Identifiable, Equatable {
     var primaryLocation: CommunityLocation? { locations.first }
 }
 
-/// Die gewählte Gemeinde. Bewusst über UserDefaults und nicht über den ObservableObject-Speicher
-/// erreichbar, weil Code ausserhalb der Oberfläche sie braucht — Firestore-Pfade, die Zeitquelle
-/// und die geplanten Benachrichtigungen.
-enum CommunitySelection {
-    private static let communityKey = "selected_community_id"
-    private static let locationKey = "selected_location_id"
-    private static let slugKey = "selected_vaktija_slug"
-
-    /// Kassel bleibt der Ausgangspunkt: die App war bis hierher Kassels App, und ein Bestandsnutzer
-    /// soll nach dem Update nicht vor einer Auswahl stehen, die er nie getroffen hat.
-    static let fallbackCommunityId = "igbd-gemeinde-sandzak-kassel"
-
-    static var communityId: String {
-        UserDefaults.standard.string(forKey: communityKey) ?? fallbackCommunityId
-    }
-
-    static var locationId: String? {
-        UserDefaults.standard.string(forKey: locationKey)
-    }
-
-    /// Das Kürzel liegt bewusst mit in den Voreinstellungen: die Zeitquelle wird auch aus dem
-    /// Hintergrund geholt (Silent Push, geplante Benachrichtigungen), und der Katalog hängt am
-    /// Hauptthread. So kommt jeder Aufrufer ohne Umweg an den richtigen Ort.
-    static var vaktijaSlug: String {
-        UserDefaults.standard.string(forKey: slugKey) ?? "kassel"
-    }
-
-    static func set(community: String, location: String?, vaktijaSlug: String?) {
-        UserDefaults.standard.set(community, forKey: communityKey)
-        UserDefaults.standard.set(location, forKey: locationKey)
-        if let vaktijaSlug { UserDefaults.standard.set(vaktijaSlug, forKey: slugKey) }
-    }
-
-    /// Ob der Nutzer je selbst gewählt hat — sonst zeigt das Onboarding die Auswahl.
-    static var hasChosen: Bool {
-        UserDefaults.standard.string(forKey: communityKey) != nil
-    }
-}
-
 @MainActor
 final class CommunityCatalog: ObservableObject {
     static let shared = CommunityCatalog()
@@ -117,7 +78,8 @@ final class CommunityCatalog: ObservableObject {
         let place = location ?? community.primaryLocation
         CommunitySelection.set(community: community.id,
                                location: place?.id,
-                               vaktijaSlug: place?.vaktijaSlug)
+                               vaktijaSlug: place?.vaktijaSlug,
+                               name: community.name)
         applySelection()
     }
 
@@ -132,7 +94,8 @@ final class CommunityCatalog: ObservableObject {
         // soll die Zeitquelle ohne erneutes Auswählen stimmen.
         if let place {
             CommunitySelection.set(community: found?.id ?? CommunitySelection.communityId,
-                                   location: place.id, vaktijaSlug: place.vaktijaSlug)
+                                   location: place.id, vaktijaSlug: place.vaktijaSlug,
+                                   name: found?.name)
         }
     }
 

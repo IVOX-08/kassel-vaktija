@@ -17,6 +17,9 @@ targets:
     platform: iOS
     sources:
       - path: iosApp
+      # Code, den App UND Widget brauchen (App-Gruppe, Sprache, Gemeindewahl). Liegt bewusst
+      # ausserhalb von iosApp/, damit klar ist, dass er zu beiden gehoert.
+      - path: SharedCode
       - path: Resources/hadith
         type: folder
       - path: Resources/quran
@@ -42,11 +45,19 @@ targets:
         # Ausfuhrkontroll-Frage bei jedem Upload.
         ITSAppUsesNonExemptEncryption: false
         # Pflichtangabe für den App-Store-Upload ("No orientations were specified").
-        # Die App ist durchgehend im Hochformat gestaltet.
+        #
+        # Die App ist durchgehend im Hochformat gestaltet — bis auf den Koran-Leser. Quer gehalten
+        # passen deutlich mehr Wörter in eine Zeile, und lange Ajahs zerfallen nicht in Schnipsel.
+        # Damit sich nicht die ganze App mitdreht, erlaubt der AppDelegate das Querformat nur,
+        # solange der Leser offen ist (siehe PushService.swift).
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
         UIAppFonts:
           - Inter.ttf
+          # Amiri Quran (SIL OFL) — die osmanische/tuerkische Schrift im Koran-Leser.
+          - AmiriQuran.ttf
         NSLocationWhenInUseUsageDescription: "Für die Qibla-Anzeige wird die Kompassrichtung verwendet."
         # Silent push for prayer-time changes (onConfigUpdated sends content-available).
         UIBackgroundModes:
@@ -115,6 +126,10 @@ targets:
     platform: iOS
     sources:
       - path: iosWidget
+      - path: SharedCode
+      # Die Texte. Das Widget stand bisher fest auf Deutsch, waehrend die App acht Sprachen kann.
+      - path: Resources/lang
+        type: folder
     info:
       path: iosWidget/Info.plist
       properties:
@@ -125,6 +140,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.igbdsandzakkassel.vaktija.ios.widget
         GENERATE_INFOPLIST_FILE: "NO"
+        # Gemeinsamer Speicher mit der App — siehe SharedCode/SharedDefaults.swift.
+        CODE_SIGN_ENTITLEMENTS: iosWidget/iosWidget.entitlements
         # Muss zur App passen, sonst lehnt die Validierung das Paket ab.
         TARGETED_DEVICE_FAMILY: "1"
         SKIP_INSTALL: "YES"

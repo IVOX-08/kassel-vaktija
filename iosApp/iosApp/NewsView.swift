@@ -125,6 +125,11 @@ private struct NewsCard: View {
                 Text(body).font(.inter(15)).foregroundColor(.appOnSurface)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            // Ein Video- oder Beitragslink im Text bekommt eine Karte. Der Vorstand muss dafür
+            // nichts Zusätzliches ausfüllen — er schreibt den Link einfach mit hinein.
+            if let link = SocialLink.first(in: body) {
+                SocialLinkCard(link: link)
+            }
             if item.hasImage {
                 flyerSlot
             }

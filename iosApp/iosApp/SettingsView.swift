@@ -7,7 +7,13 @@ struct SettingsView: View {
     @AppStorage("appColorScheme") private var theme = "system"
     // 6.2 prayer notifications
     @AppStorage("notif_sound") private var soundRaw = NotifSound.adhan.rawValue
+    // Getrennt vom Adhan-Ton: beide werden in verschiedenen Lagen gehoert.
+    @AppStorage("news_sound") private var newsSoundRaw = NewsSound.standard.rawValue
     @AppStorage("notif_silent") private var playInSilent = false
+    /// Die Frage des Trackers nach jedem Gebet. Standardmaessig an, aber abschaltbar: Wer den
+    /// Tracker nicht nutzt, wuerde sonst fuenfmal taeglich gefragt — und schaltete am Ende alle
+    /// Meldungen ab, auch den Adhan.
+    @AppStorage(NotificationScheduler.trackerAskKey) private var trackerAsk = true
     // 6.3 auto-mute
     @AppStorage("automute_on") private var autoMute = false
     @AppStorage("automute_before") private var muteBefore = 5
@@ -24,6 +30,7 @@ struct SettingsView: View {
     @StateObject private var store = PrayerStore()
 
     private var sound: NotifSound { NotifSound(rawValue: soundRaw) ?? .adhan }
+    private var newsSound: NewsSound { NewsSound(rawValue: newsSoundRaw) ?? .standard }
 
     /// Any change to the notification settings (or the language) must re-arm the scheduled
     /// notifications so they fire with the new texts, sound and pre-warn times.
@@ -66,6 +73,7 @@ struct SettingsView: View {
         .sheet(isPresented: $showCommunityPicker) { CommunityPickerView() }
         .onAppear { refreshAuth(); admin.start(); catalog.start() }
         .onChange(of: soundRaw) { _ in rearm() }
+        .onChange(of: trackerAsk) { _ in rearm() }
         .fullScreenCover(isPresented: $showLangPicker) {
             LanguagePickerView(
                 showClose: true,
@@ -80,8 +88,9 @@ struct SettingsView: View {
     }
 
     // 6.1 Design
-    /// Die eigene Gemeinde — steht ganz oben, weil daran alles hängt: Gebetszeiten, Mitteilungen,
-    /// Adresse und Logo. Wer die falsche gewählt hat, sieht überall die falschen Zahlen.
+    /// Die eigene Gemeinde. An ihr haengt alles — Gebetszeiten, Mitteilungen, Adresse und Wappen —,
+    /// und genau deshalb steht sie unten: Wer sie versehentlich wechselt, sieht ab dann still die
+    /// Zeiten einer fremden Stadt.
     private var communitySection: some View {
         VStack(alignment: .leading, spacing: 8) {
             SettingHeader(L("settings_community_header"))
@@ -142,6 +151,13 @@ struct SettingsView: View {
                     Text(L("settings_play_when_silent_hint"))
                         .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
                 }
+                Divider()
+                VStack(alignment: .leading, spacing: 4) {
+                    Toggle(L("settings_tracker_ask"), isOn: $trackerAsk)
+                        .tint(.brandGreen).font(.inter(15, .medium))
+                    Text(L("settings_tracker_ask_hint"))
+                        .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                }
             }
             Group {
                 ForEach(SettingsView.prayers, id: \.0) { key, nameKey in
@@ -185,6 +201,24 @@ struct SettingsView: View {
             SettingCard {
                 Toggle(L("settings_news_notifications"), isOn: $msgNotif)
                     .tint(.brandGreen).font(.inter(15, .medium))
+                if msgNotif {
+                    Divider()
+                    HStack {
+                        Text(L("settings_news_sound")).font(.inter(15))
+                        Spacer()
+                        Menu {
+                            ForEach(NewsSound.allCases, id: \.self) { s in
+                                // Die Auswahl spielt den Ton gleich ab. Ein eigener Probeknopf
+                                // haette einen neuen Text gebraucht, und Texte werden nicht neu
+                                // erfunden — sie kommen aus den Android-Ressourcen.
+                                Button(s.label) {
+                                    newsSoundRaw = s.rawValue
+                                    SoundPlayer.shared.play(s.file, ext: s.ext)
+                                }
+                            }
+                        } label: { PillLabel(newsSound.label) }
+                    }
+                }
                 Divider()
                 Toggle(L("settings_weekly_reminder"), isOn: $weekly)
                     .tint(.brandGreen).font(.inter(15, .medium))
@@ -267,33 +301,52 @@ private struct PrayerNotifCard: View {
     @AppStorage private var enabled: Bool
     @AppStorage private var warn: Int
 
+    /// Der Sonnenaufgang ist die eine Zeile, die anders vorbelegt ist und andere Vorwarnzeiten
+    /// anbietet — deshalb steht die Ausnahme hier und nicht an fuenf Stellen im Code.
+    private let warnValues: [Int]
+
     init(title: String, key: String, hint: String? = nil, onChange: @escaping () -> Void) {
         self.title = title
         self.hint = hint
         self.onChange = onChange
-        _enabled = AppStorage(wrappedValue: true, "pn_\(key)")
+        // Der Sonnenaufgang ist standardmaessig AUS. Ein ungefragter Ruf bei Tagesanbruch weckt
+        // Leute, die ihn nie wollten — und wer einmal so geweckt wurde, schaltet die
+        // Benachrichtigungen ganz ab und verliert damit auch den Adhan.
+        _enabled = AppStorage(wrappedValue: !PrayerNotifCard.defaultsOff.contains(key), "pn_\(key)")
         _warn = AppStorage(wrappedValue: 0, "pw_\(key)")
+        // Beim Sonnenaufgang ist die Vorwarnung keine Erinnerung, sondern die Restzeit fuer das
+        // Morgengebet: Eine Stunde vorher ist die sinnvolle Obergrenze, fuenf Minuten waeren zu
+        // knapp, um noch aufzustehen und zu beten.
+        self.warnValues = key == "sunrise" ? [0, 10, 20, 30, 40, 50, 60]
+                                           : [0, 5, 10, 15, 20, 25, 30]
     }
 
-    private let warnValues = [0, 5, 10, 15, 20, 25, 30]
+    /// Zeilen, die ausgeschaltet beginnen. Muss mit dem Zeitplan uebereinstimmen —
+    /// siehe `NotificationScheduler.enabledByDefault`.
+    static let defaultsOff: Set<String> = ["sunrise"]
 
     var body: some View {
         SettingCard {
-            Toggle(title, isOn: $enabled).tint(.brandGreen).font(.inter(15, .medium))
-            if enabled {
-                Divider()
-                HStack {
-                    Text(L("settings_prewarn")).font(.inter(15))
-                    Spacer()
+            // Name, Vorwarnung und Schalter in EINER Zeile.
+            //
+            // Vorher brauchte jedes Gebet zwei Zeilen und eine eigene Karte; sechs Gebete fuellten
+            // damit zwei Bildschirme. Wer eine Vorwarnung setzen will, vergleicht sie mit den
+            // anderen — und dafuer muessen sie zusammen sichtbar sein.
+            HStack(spacing: 10) {
+                Text(title).font(.inter(16, .medium)).foregroundColor(.appOnSurface)
+                    .lineLimit(2).fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 4)
+                if enabled {
                     Menu {
                         ForEach(warnValues, id: \.self) { v in
                             Button(minutesLabel(v)) { warn = v }
                         }
                     } label: { PillLabel(minutesLabel(warn)) }
                 }
+                Toggle("", isOn: $enabled).labelsHidden().tint(.brandGreen)
             }
             if let hint {
-                Text(hint).font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                Text(hint).font(.inter(13)).foregroundColor(.appOnSurfaceVariant)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -427,7 +480,9 @@ struct SettingCard<Content: View>: View {
         VStack(alignment: .leading, spacing: 10) { content }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(14)
-            .background(Color.appSurface)
+            // Lavendel wie auf Android. Weiß auf hellgrauem Grund hatte kaum Kontrast — die
+            // Karten liefen ineinander und man sah nicht, was zusammengehört.
+            .background(Color.moreCard)
             .clipShape(RoundedRectangle(cornerRadius: Radius.smallCard))
     }
 }
@@ -437,13 +492,12 @@ private struct PillLabel: View {
     init(_ text: String) { self.text = text }
     var body: some View {
         HStack(spacing: 4) {
-            Text(text).font(.inter(14, .medium))
-            Image(systemName: "chevron.up.chevron.down").font(.system(size: 11))
+            Text(text).font(.inter(14, .medium)).lineLimit(1)
+            Image(systemName: "chevron.down").font(.system(size: 11, weight: .semibold))
         }
-        .foregroundColor(.appPrimary)
-        .padding(.horizontal, 12).padding(.vertical, 6)
-        .background(Color.brandGreen.opacity(0.12))
-        .clipShape(Capsule())
+        .foregroundColor(.brandGreen)
+        .padding(.horizontal, 12).padding(.vertical, 7)
+        .overlay(Capsule().stroke(Color.appOnSurfaceVariant.opacity(0.5), lineWidth: 1))
     }
 }
 
