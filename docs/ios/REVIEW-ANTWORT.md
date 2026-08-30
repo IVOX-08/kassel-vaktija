@@ -88,17 +88,22 @@ Tested on:
 
 ---
 
-## Punkte 2–7 — Text für Apple (Englisch, zum Kopieren)
+## Punkte 1–7 — Text für Apple (Englisch, zum Kopieren)
 
-⚠️ **Das Antwortfeld nimmt höchstens 4000 Zeichen.** Dieser Text hat 3999 — er passt,
-aber knapp. Wenn du etwas ergänzt, musst du an anderer Stelle kürzen.
+⚠️ **Das Antwortfeld nimmt höchstens 4000 Zeichen.** Dieser Text hat 3996.
+Wenn du etwas ergänzt, musst du an anderer Stelle kürzen.
 
-Vor dem Absenden zwei Stellen ausfüllen: `[MODEL]` und `[VERSION]` in Punkt 2,
-`[PASSWORT]` in Punkt 4.
+Punkt 1 ist die Bildschirmaufnahme — kein Text, sondern die Datei unter „Datei anhängen".
+Die Zeile steht trotzdem im Text, damit der Prüfer nicht denkt, der Punkt sei übersprungen.
+
+Vor dem Absenden: `[PASSWORT]` in Punkt 4 ersetzen. Die Geräte in Punkt 2 sind eingetragen.
 
 ```
+1. SCREEN RECORDING
+Attached to this reply. Recorded on a physical iPhone, starting from launch.
+
 2. TESTED ON
-- iPhone [MODEL], iOS [VERSION] - physical device via TestFlight
+- iPhone 17 Pro Max, iOS 26.6.1 - physical device via TestFlight
 - iPhone 16 Pro, iOS 18.6 - Simulator (development)
 
 3. FUNCTIONS AND TARGET AUDIENCE
@@ -116,20 +121,20 @@ No account needed. On first launch the app asks for a language, then a community
 ADMIN ACCESS (optional, not needed to use the app). Board members sign in to edit their community's Iqamah times and post announcements. Button at the bottom of Settings.
   E-mail: appreview@igbdsandzakkassel.de
   Password: [PASSWORT]
-This account administers one community only. A higher role exists for the head administrator, reached by tapping the version number in Settings seven times. We do not provide credentials for it because it can message all 81 communities at once; it adds no user-facing screens.
+This account administers one community only. A higher role exists for the head administrator (tap the version number in Settings seven times). We do not provide credentials for it: it can message all 81 communities at once and adds no user-facing screens.
 
 No paid content, so no purchase or subscription flow exists.
 
 5. EXTERNAL SERVICES
-- vaktija.eu - the published prayer-time source these communities use. Read only, no account, no personal data sent.
-- Google Firebase (Firestore, Auth, Cloud Messaging) - stores the community directory, each community's Iqamah times and announcements; delivers notifications. Ordinary users are signed in anonymously; only board members have an account.
+- vaktija.eu - the prayer-time source these communities publish. Read only, no account, no personal data sent.
+- Google Firebase (Firestore, Auth, Cloud Messaging) - stores the community directory, Iqamah times and announcements; delivers notifications. Ordinary users are signed in anonymously; only board members have an account.
 - Google Gemini API - used ONCE by an administrator when posting an announcement, to translate it into the eight languages. Readers never contact it. Only the text just typed is sent; no user data.
 - YouTube - a link in an announcement plays in the standard embedded player.
-- PayPal - the Donate button opens the community's donation page in the browser. No payment is processed in the app.
+- PayPal - the Donate button opens the community's donation page in the browser. No payment happens in the app.
 
-Permissions: Notifications, for prayer times and announcements. Location (when in use) ONLY for the Qibla compass, to compute the direction to the Kaaba from where the user stands; used on the device, never stored, never transmitted. If declined, the compass uses the mosque's address.
+Permissions: Notifications, for prayer times and announcements. Location (when in use) ONLY for the Qibla compass, to compute the direction to the Kaaba from where the user stands; used on the device, never stored or transmitted. If declined, the compass uses the mosque's address.
 
-USER-GENERATED CONTENT: only a community's board can write announcements, using an account the association issues. Users cannot post text, images or comments. They can react with a like or dislike, an anonymous counter showing no identity. Nothing to report or block.
+USER-GENERATED CONTENT: only a community's board can write announcements, using an account the association issues. Users cannot post text, images or comments. They can only react with an anonymous like or dislike. Nothing to report or block.
 
 6. REGIONAL DIFFERENCES
 None. The app is identical in every region. The chosen community decides which times and announcements appear - a user choice, not a regional one.
@@ -139,9 +144,9 @@ None. The app is identical in every region. The chosen community decides which t
 - Qur'anic text: Uthmani from the public alquran.cloud dataset; tajweed markup from the open quran-tajweed project.
 - Typeface: Amiri Quran, SIL Open Font License.
 - The call to prayer was recorded by the community's own muezzin.
-- The emblem belongs to the publishing association.
+- The emblem belongs to the association.
 
-Not a regulated industry. No medical, financial or legal advice. The Zakat calculator is labelled in the app as a calculation aid, not a ruling.
+Not a regulated industry. No medical or legal advice. The Zakat calculator is labelled in the app as a calculation aid, not a ruling.
 ```
 
 ---
