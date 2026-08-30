@@ -10,6 +10,9 @@ Zu tun sind drei Dinge:
 3. **Den Text unten** in die Antwort im Resolution Center kopieren **und** dauerhaft in
    App Store Connect → App-Prüfungs-Informationen → **Anmerkungen**
 
+> **Das Antwortfeld nimmt höchstens 4000 Zeichen.** Der Text unten ist darauf gekürzt (3999).
+> Die erste, ausführlichere Fassung war 5729 Zeichen lang und ließ sich nicht absenden.
+
 ---
 
 ## Zuerst: das Demo-Konto
@@ -85,126 +88,60 @@ Tested on:
 
 ---
 
-## Punkte 3–7 — Text für Apple (Englisch, zum Kopieren)
+## Punkte 2–7 — Text für Apple (Englisch, zum Kopieren)
+
+⚠️ **Das Antwortfeld nimmt höchstens 4000 Zeichen.** Dieser Text hat 3999 — er passt,
+aber knapp. Wenn du etwas ergänzt, musst du an anderer Stelle kürzen.
+
+Vor dem Absenden zwei Stellen ausfüllen: `[MODEL]` und `[VERSION]` in Punkt 2,
+`[PASSWORT]` in Punkt 4.
 
 ```
+2. TESTED ON
+- iPhone [MODEL], iOS [VERSION] - physical device via TestFlight
+- iPhone 16 Pro, iOS 18.6 - Simulator (development)
+
 3. FUNCTIONS AND TARGET AUDIENCE
+IGBD Vaktija is a free prayer-time app for the member communities of the IGBD, the federation of Bosnian Muslim communities in Germany. Published by the non-profit association IGBD - Gemeinde Sandzak-Kassel e.V.
 
-IGBD Vaktija is a free prayer-time app for the member communities of the IGBD
-(Islamische Gemeinschaft der Bosniaken in Deutschland), the federation of Bosnian
-Muslim communities in Germany. It is published by the registered non-profit
-association IGBD - Gemeinde Sandzak-Kassel e.V.
+Every community announces its own Iqamah times, which differ from calculated times and change through the year; members previously had to check the mosque noticeboard.
 
-Problem it solves: each community announces its own prayer (Iqamah) times, which
-differ from astronomically calculated times and change through the year. Members
-previously had to check a noticeboard in the mosque or ask. The app shows the
-times their own community has published, so nobody arrives late or prays at the
-wrong time.
+Users pick their community once from a list of 81. Features: prayer times with countdown and Iqamah, per-prayer notifications, Hijri calendar, announcements, Qur'an in Arabic with optional tajweed colouring, hadith, dhikr, tasbih, prayer tracker, Ramadan overview, Zakat calculator, Qibla compass, home-screen widget.
 
-Users pick their community once from a list of 81 (or the town within it), and
-from then on see that community's times, address and announcements.
+Audience: members of these mosque communities in Germany. Eight languages: Bosnian, German, English, Arabic, Turkish, Albanian, Urdu, Russian. No advertising, no analytics.
 
-Features:
-- Daily prayer times with a live countdown, plus the community's Iqamah times
-- Notifications per prayer, with an optional advance reminder
-- Hijri calendar with a month view
-- Announcements from the community board
-- Qur'an (Arabic, with optional tajweed colouring and a second Arabic typeface)
-- Hadith collection, dhikr, digital tasbih counter
-- Prayer tracker with a daily streak
-- Ramadan overview, Zakat calculator, Qibla compass
-- Home-screen widget with the next prayer
+4. SETUP AND ACCESS
+No account needed. On first launch the app asks for a language, then a community. Choose "IGBD-Gemeinde Sandzak-Kassel" and the town "Kassel" for a fully populated community. The "More" tab holds Qur'an, hadith, dhikr, tasbih, tracker, Ramadan, Zakat, Qibla.
 
-Target audience: members of these mosque communities in Germany — Bosnian,
-German, Albanian, Turkish, Arabic, Urdu, Russian and English speaking. All eight
-languages are included.
-
-The app is completely free. There are no purchases, no subscriptions, no
-advertising and no analytics.
-
-
-4. HOW TO SET UP AND ACCESS THE MAIN FEATURES
-
-No account is needed. On first launch the app asks for a language, then for the
-community. Choose "IGBD-Gemeinde Sandzak-Kassel" and the town "Kassel" to see a
-fully populated community. Everything else is reachable from the five tabs at the
-bottom; the "More" tab holds Qur'an, hadith, dhikr, tasbih, prayer tracker,
-Ramadan, Zakat and Qibla.
-
-ADMIN ACCESS (optional, not needed to use the app)
-
-Community board members can sign in to edit their own community's Iqamah times
-and to post announcements. The button is at the bottom of the Settings screen.
-
-  Demo account (community administrator):
-  E-mail:   [E-MAIL DES PRUEF-KONTOS]
+ADMIN ACCESS (optional, not needed to use the app). Board members sign in to edit their community's Iqamah times and post announcements. Button at the bottom of Settings.
+  E-mail: appreview@igbdsandzakkassel.de
   Password: [PASSWORT]
+This account administers one community only. A higher role exists for the head administrator, reached by tapping the version number in Settings seven times. We do not provide credentials for it because it can message all 81 communities at once; it adds no user-facing screens.
 
-This account administers one community only. There is a second, higher role for
-the federation's head administrator; it is reached by tapping the version number
-at the very bottom of Settings seven times. We are not providing credentials for
-that role because it can send a message to all 81 communities at once. It grants
-no additional user-facing screens beyond community management.
+No paid content, so no purchase or subscription flow exists.
 
-There is no paid content, so no purchase or subscription flow exists.
+5. EXTERNAL SERVICES
+- vaktija.eu - the published prayer-time source these communities use. Read only, no account, no personal data sent.
+- Google Firebase (Firestore, Auth, Cloud Messaging) - stores the community directory, each community's Iqamah times and announcements; delivers notifications. Ordinary users are signed in anonymously; only board members have an account.
+- Google Gemini API - used ONCE by an administrator when posting an announcement, to translate it into the eight languages. Readers never contact it. Only the text just typed is sent; no user data.
+- YouTube - a link in an announcement plays in the standard embedded player.
+- PayPal - the Donate button opens the community's donation page in the browser. No payment is processed in the app.
 
+Permissions: Notifications, for prayer times and announcements. Location (when in use) ONLY for the Qibla compass, to compute the direction to the Kaaba from where the user stands; used on the device, never stored, never transmitted. If declined, the compass uses the mosque's address.
 
-5. EXTERNAL SERVICES USED
-
-- vaktija.eu — the published prayer-time source used by these communities. Read
-  only, no account, no personal data sent.
-- Google Firebase (Firestore, Authentication, Cloud Messaging) — stores the
-  community directory, the Iqamah times each community sets, and its
-  announcements; delivers announcement notifications. Ordinary users are signed
-  in anonymously; only board members have an e-mail account.
-- Google Gemini API — used ONCE by an administrator when posting an announcement,
-  to translate it into the app's eight languages. The translated text is stored
-  with the announcement. Readers never contact this service, and no user data is
-  sent to it — only the announcement text the administrator just typed.
-- YouTube — if an announcement contains a YouTube link, the video plays inside
-  the app in the standard embedded player. No account, no data collection by us.
-- PayPal — the "Donate" button opens the community's public donation page in the
-  browser. No payment is processed inside the app.
-
-Permissions requested:
-- Notifications — for prayer times and community announcements.
-- Location (when in use) — ONLY for the Qibla compass, to compute the direction
-  to the Kaaba from where the user stands. The location is used on the device,
-  is never stored and never leaves the phone. If the user declines, the compass
-  falls back to the mosque's address.
-
-USER-GENERATED CONTENT
-
-Announcements can only be written by a community's board, who are authenticated
-with an account the association issues. Ordinary users cannot post text, images
-or comments. They can only react to an announcement with a like or a dislike,
-which is a single anonymous counter and shows no user identity. There is
-therefore no user-to-user content and nothing for users to report or block.
-
+USER-GENERATED CONTENT: only a community's board can write announcements, using an account the association issues. Users cannot post text, images or comments. They can react with a like or dislike, an anonymous counter showing no identity. Nothing to report or block.
 
 6. REGIONAL DIFFERENCES
-
-None. The app behaves identically in every region and every App Store territory.
-The content is the same everywhere; only the chosen community determines which
-prayer times and announcements are shown, and that is a user choice, not a
-regional one. All eight languages are available everywhere.
-
+None. The app is identical in every region. The chosen community decides which times and announcements appear - a user choice, not a regional one.
 
 7. RIGHTS TO THIRD-PARTY MATERIAL
+- Published by IGBD - Gemeinde Sandzak-Kassel e.V., a member community of the IGBD, using the federation's name and emblem with its authorisation.
+- Qur'anic text: Uthmani from the public alquran.cloud dataset; tajweed markup from the open quran-tajweed project.
+- Typeface: Amiri Quran, SIL Open Font License.
+- The call to prayer was recorded by the community's own muezzin.
+- The emblem belongs to the publishing association.
 
-- The app is published by IGBD - Gemeinde Sandzak-Kassel e.V., a member community
-  of the IGBD, and uses the federation's name and emblem with its authorisation.
-- The Qur'anic text is the Uthmani text from the public alquran.cloud dataset,
-  with tajweed markup from the open quran-tajweed project.
-- The Arabic typeface is Amiri Quran, licensed under the SIL Open Font License.
-- The recorded call to prayer is used with the permission of the muezzin who
-  recorded it for the community.
-- The community emblem belongs to the publishing association itself.
-
-The app is not part of a regulated industry. It provides no medical, financial or
-legal advice. The Zakat calculator is explicitly labelled inside the app as a
-calculation aid and not a religious ruling, and it asks the user to consult their
-imam.
+Not a regulated industry. No medical, financial or legal advice. The Zakat calculator is labelled in the app as a calculation aid, not a ruling.
 ```
 
 ---
