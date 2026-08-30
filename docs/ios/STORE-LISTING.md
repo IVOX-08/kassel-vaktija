@@ -1,158 +1,190 @@
-# App Store Connect — Eintrag „Kassel Vaktija"
+# App Store Connect — der komplette Eintrag
 
-Alles hier zum Kopieren. Sprache: Deutsch (Primärsprache des Eintrags).
+Alles zum Kopieren. Primärsprache des Eintrags: **Deutsch**.
 
-## Untertitel (max. 30 Zeichen)
+Wo: https://appstoreconnect.apple.com → **Apps** → IGBD Vaktija
+
+---
+
+## 1 · Name und Untertitel
+
+**App-Name** (max. 30 Zeichen) — steht unter dem Symbol auf dem Homescreen und im Store:
+```
+IGBD Vaktija
+```
+
+**Untertitel** (max. 30 Zeichen) — die graue Zeile unter dem Namen:
+```
+Gebetszeiten deiner Gemeinde
+```
+(28 Zeichen)
+
+> Der Name im Store heißt noch „Kassel Vaktija". Ändern kannst du ihn, solange die Version nicht
+> freigegeben ist — und das ist sie gerade nicht. Also jetzt.
+
+---
+
+## 2 · Werbetext (max. 170 Zeichen)
+
+Steht ganz oben in der Beschreibung. **Lässt sich jederzeit ändern, ohne neue Prüfung** — gut für
+Hinweise auf Bajram oder besondere Termine.
 
 ```
-Gebetszeiten für Kassel
+Die offiziellen Gebetszeiten deiner IGBD-Gemeinde — mit Widget, Adhan, Koran, Qibla und Gebets-Tracker. Werbefrei, ohne Konto, in acht Sprachen.
 ```
-(23 Zeichen)
+(144 Zeichen)
 
-## Werbetext (max. 170 Zeichen, jederzeit änderbar)
+---
 
-```
-Offizielle Gebetszeiten der IGBD-Gemeinde Sandžak-Kassel — mit Widget, Adhan-Erinnerung, Koran, Hadith und Ramadan-Kalender. In 8 Sprachen.
-```
-(137 Zeichen)
-
-## Beschreibung (max. 4000 Zeichen)
+## 3 · Beschreibung (max. 4000 Zeichen)
 
 ```
-Kassel Vaktija zeigt die offiziellen Gebetszeiten der IGBD-Gemeinde Sandžak-Kassel — zuverlässig, werbefrei und ohne Benutzerkonto.
+IGBD Vaktija zeigt die Gebetszeiten deiner eigenen Gemeinde — so, wie sie in der Moschee aushängen. Werbefrei, kostenlos und ohne Benutzerkonto.
+
+DEINE GEMEINDE
+Beim ersten Start wählst du deine Gemeinde aus 81 Mitgliedsgemeinden der IGBD. Ab dann zeigt die App deren Gebetszeiten, deren Adresse und deren Mitteilungen. Betreut eine Gemeinde mehrere Orte, wählst du auch den Ort.
 
 GEBETSZEITEN
-Die Zeiten stammen direkt von der Gemeinde und stimmen mit dem Aushang in der Moschee überein. Ein Countdown zeigt jederzeit, wie lange es bis zum nächsten Gebet dauert. Die Zeiten werden gespeichert und sind auch ohne Internet verfügbar.
+Adhan und Ikamet nebeneinander, wie auf dem Aushang. Ein Countdown zeigt jederzeit, wie lange es bis zum nächsten Gebet dauert. Die Zeiten werden gespeichert und stehen auch ohne Internet bereit. Am Freitag steht die Džuma ganz oben.
 
 ERINNERUNGEN
-Für jedes der fünf Gebete lässt sich einzeln einstellen, ob und wann erinnert wird — auf Wunsch mit Vorwarnung von 5 bis 30 Minuten. Der Adhan erklingt im gewählten Ton; auf Wunsch schaltet die App zur Gebetszeit automatisch stumm.
+Jedes Gebet lässt sich einzeln ein- und ausschalten, mit Vorwarnung von 5 bis 30 Minuten. Zur Auswahl stehen der kurze Adhan, ein Signalton, Glocke, Gong und ein leiser Ton — für alle, die den Adhan bei der Arbeit oder in der Schule nicht laut abspielen können. Der Sonnenaufgang lässt sich getrennt einstellen und ist standardmäßig aus.
 
 WIDGET
-Das Home-Bildschirm-Widget zeigt das nächste Gebet und den laufenden Countdown, ohne dass die App geöffnet werden muss.
-
-KALENDER
-Der Monatskalender zeigt alle Gebetszeiten auf einen Blick, abgeglichen mit den offiziellen Zeiten der Gemeinde.
+Das nächste Gebet mit laufendem Countdown direkt auf dem Startbildschirm, dazu die Flamme des Gebets-Trackers.
 
 KORAN
-Der vollständige Koran im Mushaf-Layout mit seitenweisem Blättern von rechts nach links, wie im gedruckten Buch. Lesezeichen merken sich die Stelle.
+Der vollständige Koran auf Arabisch, in zwei Schriften: der Systemschrift und Amiri Quran, dem klassischen Naskh-Schnitt osmanischer und türkischer Druckausgaben. Auf Wunsch mit Tedschwid-Farben, die mit dem Text kommen und nicht geraten werden. Der Text lässt sich vergrößern, und im Querformat passt mehr auf eine Zeile.
 
-RAMADAN
-Fortschrittsring über den Monat, Sehur- und Iftar-Zeiten, Teravih, das Iftar-Bittgebet auf Arabisch mit Umschrift und Bedeutung sowie ein Zähler für die gefasteten Tage.
+GEBETS-TRACKER
+Nach jedem Gebet fragt die App: „Hast du gebetet?" — mit Ja und Nein direkt in der Benachrichtigung und im Widget. Beantworten lässt sich das nur im Zeitfenster des Gebets, vom Ikamet bis zum nächsten Adhan. Wer alle fünf schafft, sammelt Tage; nach dreißig Tagen wartet ein Geschenk der Gemeinde. Alles bleibt auf dem Telefon.
+
+QIBLA
+Der Kompass zeigt die Richtung zur Kaaba — wahlweise ab der Adresse deiner Moschee oder ab deinem Standort.
+
+MITTEILUNGEN
+Der Vorstand deiner Gemeinde schreibt Ankündigungen direkt in die App. Sie kommen in deiner Sprache an.
 
 WEITERES
-• Hadith-Sammlung
-• Dhikr und digitale Tasbih
-• Gebets-Tracker
-• Qibla-Kompass
-• Mitteilungen der Gemeinde
+Hidschri-Kalender mit Monatsansicht, Hadithe, Dhikr, digitale Tasbih, Ramadan-Übersicht und ein Zakat-Rechner.
 
 ACHT SPRACHEN
-Bosnisch, Deutsch, Arabisch, Türkisch, Albanisch, Englisch, Urdu und Russisch — Arabisch und Urdu in korrekter Leserichtung von rechts nach links.
+Bosnisch, Deutsch, Englisch, Arabisch, Türkisch, Albanisch, Urdu und Russisch.
 
-DATENSCHUTZ
-Kein Benutzerkonto, keine Anmeldung, keine Werbung, kein Tracking. Der Standort wird ausschließlich auf dem Gerät für den Qibla-Kompass verwendet und nicht übertragen.
-
-Herausgegeben von der IGBD-Gemeinde Sandžak-Kassel, Schwanenweg 13, 34123 Kassel.
+Herausgegeben von der IGBD-Gemeinde Sandžak-Kassel e. V. Keine Werbung, keine Abonnements, keine Verfolgung deines Verhaltens.
 ```
 
-## Keywords (max. 100 Zeichen, mit Komma getrennt, keine Leerzeichen)
+---
+
+## 4 · Schlüsselwörter (max. 100 Zeichen)
+
+**Ohne Leerzeichen nach den Kommas** — Leerzeichen zählen mit und verschenken Platz.
+Wörter, die schon im Namen oder Untertitel stehen, gehören **nicht** hierhin: Apple durchsucht die
+ohnehin.
 
 ```
-namaz,vakat,ezan,adhan,gebet,moschee,islam,muslim,kuran,quran,ramadan,kibla,qibla,sandzak,bosna
+namaz,ezan,vakat,vaktija,gebetszeiten,muslim,islam,koran,kuran,adhan,qibla,ramadan,hadith,dzemat
 ```
-(95 Zeichen)
+(96 Zeichen)
 
-## URLs
+---
+
+## 5 · URLs
 
 | Feld | Wert |
 |---|---|
-| Support-URL | `https://ivox-08.github.io/Kassel-Datenschutz/` |
-| Marketing-URL | leer lassen |
-| Datenschutzrichtlinien-URL | `https://ivox-08.github.io/Kassel-Datenschutz/` |
+| **Support-URL** (Pflicht) | `https://www.igbdsandzakkassel.de` |
+| **Marketing-URL** (freiwillig) | leer lassen |
+| **Datenschutzrichtlinie** (Pflicht) | `https://ivox-08.github.io/Kassel-Datenschutz/` |
 
-> Besser wäre eine eigene Support-Seite oder die Vereins-Website. Solange es die
-> nicht gibt, ist die Datenschutzseite als Support-URL zulässig.
+> Prüf die Support-Adresse einmal im Browser. Führt sie ins Leere, ist das ein Ablehnungsgrund.
+> Notfalls dieselbe Adresse wie beim Datenschutz eintragen.
 
-## Altersfreigabe
+---
 
-Alle Fragen mit **Nein** / **Keine** beantworten → Ergebnis **4+**.
-Die App enthält keine Gewalt, keinen Alkohol, kein Glücksspiel, keine
-nutzergenerierten Inhalte und keinen ungefilterten Web-Zugriff.
+## 6 · Kategorie, Alter, Urheberrecht
 
-## App-Datenschutz (wichtig wegen Firebase)
+| Feld | Wert |
+|---|---|
+| **Primäre Kategorie** | Lifestyle |
+| **Sekundäre Kategorie** | Nachschlagewerke |
+| **Urheberrecht** | `2026 IGBD - Gemeinde Sandžak-Kassel e. V.` |
 
-Die App nutzt Firebase Messaging (Push), Firestore (Mitteilungen) und Auth
-(nur Admin-Login). Anzugeben ist:
+**Altersfreigabe:** Fragebogen ausfüllen, überall **„Nie"** bzw. **„Nein"**. Ergebnis: **4+**.
+Es gibt keine Gewalt, keine Nutzerinhalte, keine Werbung und keine Käufe.
 
-| Datentyp | Erfasst? | Zweck | Mit Identität verknüpft? | Tracking? |
-|---|---|---|---|---|
-| Kennungen → Geräte-ID (Push-Token) | Ja | App-Funktionalität | Nein | Nein |
-| Kontaktinfo → E-Mail-Adresse | Ja, **nur Admins** | App-Funktionalität | Ja | Nein |
-| Diagnose → Absturzdaten | **Nein** — Crashlytics ist nicht eingebunden | — | — | — |
-| Standort | **Nein** — verlässt das Gerät nicht | — | — | — |
+---
 
-Auf die Frage nach **Tracking** überall **Nein** — die App verfolgt niemanden
-über andere Apps oder Websites hinweg.
+## 7 · Screenshots
 
-## Exportkonformität (Frage beim Build)
+**Pflicht ist nur die Größe 6,9 Zoll** (iPhone 16 Pro Max / 17 Pro Max) — Apple rechnet sie für
+kleinere Geräte selbst herunter. Format: **1320 × 2868** oder **1290 × 2796** Punkte.
 
-Die App nutzt nur HTTPS. Antwort: **Ja**, sie verwendet Verschlüsselung, aber
-**nur die von Apple bereitgestellte Standardverschlüsselung** → damit ist sie
-von der Ausfuhrgenehmigung befreit.
+⚠️ **Apple lehnt Screenshots ab, die nur Titelbild, Anmeldung oder Startbildschirm zeigen.**
+Sie müssen die App im Gebrauch zeigen. Nimm diese fünf:
 
-## Was Apple oft bemängelt — vorher prüfen
+1. **Startseite** mit Gebetszeiten und Countdown
+2. **Koran**, eine geöffnete Sure mit Tedschwid-Farben
+3. **Qibla**-Kompass
+4. **Kalender**, Monatsansicht
+5. **Einstellungen** oder **Gebets-Tracker**
 
-1. **Admin-Bereich.** Der Prüfer muss ihn erreichen können, sonst gilt die App
-   als „unvollständige Funktionalität". Entweder Zugangsdaten im Feld
-   *Anmerkungen für die App-Prüfung* hinterlegen, oder dort erklären, dass der
-   Bereich ausschließlich dem Gemeindevorstand vorbehalten ist.
-   Der Zugang ist über 7 Tipps auf „Über uns" versteckt — **das muss man
-   dazuschreiben**, sonst findet der Prüfer ihn nicht.
-2. **Religiöse Inhalte** sind unproblematisch, solange nichts zu Hass aufruft.
-3. **Screenshots** müssen aus der echten App stammen, keine Montagen.
+**So aufnehmen:** auf dem iPhone Seitentaste + Lauter gleichzeitig. Die Bilder haben dann von
+selbst die richtige Größe. Über AirDrop auf den Mac und hochladen.
 
-## Anmerkungen für die App-Prüfung (App Review Information → Notes)
+---
 
-Wörtlich in das Feld kopieren. Englisch, weil die Prüfer kein Deutsch lesen.
-Kein Demo-Zugang — der Admin-Bereich ist dem Gemeindevorstand vorbehalten (Variante B).
+## 8 · Wo die Bildschirmaufnahme hingehört
 
-```
-Kassel Vaktija is a free prayer-time app for the IGBD Sandzak-Kassel mosque
-community in Kassel, Germany. No account, no login, no purchases: every
-feature you see on first launch is fully available.
+Das ist **kein** Screenshot und **keine** App-Vorschau. Sie gehört an zwei Stellen:
 
-STAFF-ONLY AREA
-The app contains a small administration area used exclusively by the elected
-board of the association to publish announcements and adjust the community's
-prayer times. It is intentionally not advertised in the UI.
+**a) Als Antwort auf die Ablehnung** — das ist der Weg, den Apple gerade erwartet:
+App Store Connect → die App → links **App-Prüfung** (Resolution Center) → die Nachricht von Apple
+öffnen → **Antworten** → Text einfügen und die Videodatei anhängen.
 
-To view it: open "Mehr" -> "Über uns" and tap the community crest 7 times.
-A sign-in screen appears.
+**b) Dauerhaft, damit die Frage nicht wiederkommt:**
+Version-Seite → ganz unten **App-Prüfungs-Informationen** → Feld **Anmerkungen** (Text) und
+**Anhang** (das Video).
 
-We are not able to provide credentials for it. Access is restricted to a
-single Firebase account belonging to the board, enforced server-side by
-Firestore security rules. That account can post announcements to every
-installed device, so sharing its password would put the community's
-communication channel at risk.
+Format: normales `.mov` vom iPhone. Direkt vom Gerät oder über AirDrop auf den Mac.
 
-The area contains no additional user-facing functionality — nothing is
-unlocked, purchased or hidden behind it. Regular users are never asked to
-sign in anywhere in the app.
+---
 
-If you do need to inspect it, please let us know and we will arrange access.
+## 9 · App-Prüfungs-Informationen
 
-NOTIFICATIONS
-Prayer reminders are scheduled locally on the device. Push (Firebase Cloud
-Messaging) is used only for community announcements sent by the board.
+Auf der Version-Seite ganz unten.
 
-PRAYER TIMES
-Times are published by the mosque itself and fetched from vaktija.eu/kassel.
-They are cached so the app works offline.
+| Feld | Wert |
+|---|---|
+| **Anmelden erforderlich** | ✅ anhaken |
+| **Benutzername** | `appreview@igbdsandzakkassel.de` |
+| **Passwort** | das Passwort des Prüf-Kontos |
+| **Kontakt Vorname / Nachname** | deiner |
+| **Telefon** | deine Nummer mit +49 |
+| **E-Mail** | deine E-Mail |
+| **Anmerkungen** | der englische Text aus `REVIEW-ANTWORT.md`, Punkte 2–7 |
+| **Anhang** | die Bildschirmaufnahme |
 
-Contact: vorstand@igbdsandzakkassel.de
-```
+---
 
-**Falls Apple doch einen Zugang verlangt** (kommt vor, Richtlinie 2.1): Antwort im
-Resolution Center abwarten, dann im Vorstand entscheiden, ob ihr die Zugangsdaten
-herausgebt. Ein zweites Admin-Konto anzulegen geht nicht ohne Weiteres — die Admin-UID
-`1a7xqRgIYDR0RZqa3KghBlz98PK2` steht fest in den Firestore-Regeln.
+## 10 · Preis und Verfügbarkeit
+
+- **Preis:** kostenlos
+- **Verfügbarkeit:** alle Länder und Regionen
+
+Die Gemeinden liegen in Deutschland, aber Mitglieder sind im Urlaub oder studieren im Ausland. Der
+Eintrag auf Deutschland zu beschränken hieße, dass die App dort nicht einmal zu finden ist.
+
+---
+
+## Reihenfolge zum Abarbeiten
+
+1. Name auf **IGBD Vaktija** ändern (Abschnitt 1)
+2. Untertitel, Werbetext, Beschreibung, Schlüsselwörter (2–4)
+3. URLs prüfen und eintragen (5)
+4. Kategorie, Altersfragebogen, Urheberrecht (6)
+5. Fünf Screenshots aufnehmen und hochladen (7)
+6. Prüf-Konto und Anmerkungen eintragen (9)
+7. Bildschirmaufnahme aufnehmen und anhängen (8)
+8. Build **6** auswählen
+9. **Zur Überprüfung senden**
