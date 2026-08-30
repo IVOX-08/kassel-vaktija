@@ -209,19 +209,14 @@ imam.
 
 ---
 
-## Was du vor dem Absenden prüfen musst
+## Punkt 7 — vom Vorstand bestätigt (30.08.2026)
 
-**Punkt 7 ist der einzige, der wirklich schiefgehen kann.** Drei Fragen an den Vorstand:
+- **Name und Zeichen der IGBD:** Die Kasseler Gemeinde ist Mitglied der IGBD und darf beides
+  führen. Kein offenes Thema.
+- **Die Adhan-Aufnahme** stammt vom eigenen Muezzin der Gemeinde. Sie ist nicht heruntergeladen.
+- **Das Wappen** gehört dem Herausgeber selbst.
 
-1. **Darf die App den Namen und das Zeichen der IGBD tragen?** Sie heißt „IGBD Vaktija" und
-   bedient 81 Gemeinden, wird aber von der Kasseler Gemeinde herausgegeben. Das sind zwei
-   verschiedene Vereine. Apple fragt in Punkt 7 genau danach. **Eine kurze schriftliche Zusage der
-   IGBD sollte vorliegen** — nicht unbedingt für Apple, aber falls jemand nachfragt.
-2. **Gehört die Adhan-Aufnahme wirklich der Gemeinde?** Wenn sie irgendwo heruntergeladen wurde,
-   muss sie ersetzt werden.
-3. **Ist das Wappen freigegeben?** Für Kassel selbst ja — das ist der Herausgeber.
+Damit ist der Text zu Punkt 7 so, wie er an Apple gehen kann.
 
-Wenn eine dieser Fragen unklar ist: **schreib mir vorher**, statt es Apple zu schreiben.
-
-**Und die Screenshots im Store** (Richtlinie 2.3.3): Sie müssen die App im Gebrauch zeigen — nicht
+**Die Screenshots im Store** (Richtlinie 2.3.3): Sie müssen die App im Gebrauch zeigen — nicht
 den Startbildschirm, nicht die Sprachauswahl. Also Gebetszeiten, Kalender, Koran, Qibla.
