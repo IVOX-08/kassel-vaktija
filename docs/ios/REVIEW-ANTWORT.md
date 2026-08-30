@@ -1,140 +1,227 @@
 # Antwort an die App-Prüfung (Resolution Center)
 
-Apple hat nicht abgelehnt, weil etwas kaputt ist — sie fordern Informationen nach
-(Guideline 2.1, „App Completeness"). Unten die Antwort auf die sieben Punkte.
+Apple hat **nichts an der App bemängelt**. Sie fordern Informationen nach — Richtlinie 2.1,
+„Information Needed". Bei einer ersten Einreichung ist das Routine.
 
-**Punkt 1 (Bildschirmaufnahme) muss der Vorstand selbst erstellen** — siehe unten.
-Die Punkte 2–7 kopierst du in die Antwort im Resolution Center **und** zusätzlich
-dauerhaft in das Feld „Anmerkungen" der App-Prüfungs-Informationen.
+Zu tun sind drei Dinge:
+
+1. **Ein Demo-Konto anlegen** (sonst kommt die nächste Ablehnung sicher — siehe unten)
+2. **Eine Bildschirmaufnahme auf einem echten iPhone** — die kann nur der Vorstand machen
+3. **Den Text unten** in die Antwort im Resolution Center kopieren **und** dauerhaft in
+   App Store Connect → App-Prüfungs-Informationen → **Anmerkungen**
+
+---
+
+## Zuerst: das Demo-Konto
+
+Die App hat einen sichtbaren Knopf „Als Gemeinde-Administrator anmelden". **Der Prüfer wird ihn
+finden.** Ohne Zugangsdaten wird die App wegen Richtlinie 2.1 erneut abgelehnt — diesmal zu Recht.
+
+⚠️ **Gib Apple NICHT das echte Vorstandskonto.** Damit könnte ein Prüfer Gebetszeiten ändern oder
+eine Mitteilung an alle Mitglieder schicken.
+
+**Stattdessen ein eigenes Prüf-Konto:**
+
+1. Firebase-Konsole → Authentication → Users → **Add user**
+   E-Mail z. B. `appreview@igbdsandzakkassel.de`, ein Passwort vergeben
+2. Die UID der neuen Person kopieren
+3. Firestore → Sammlung `admins` → neues Dokument mit dieser UID:
+   ```
+   role:        "community"
+   communityId: "igbd-gemeinde-sandzak-kassel"
+   ```
+
+Damit sieht der Prüfer den Admin-Bereich, kann aber nur die Kasseler Gemeinde bearbeiten und keine
+Rundnachricht an alle 81 Gemeinden schicken.
+
+**Nach der Freigabe das Konto in Firebase löschen.**
 
 ---
 
 ## Punkt 1 — Bildschirmaufnahme auf einem echten iPhone
 
-Apple will ein Video vom echten Gerät, nicht vom Simulator.
+Vom **echten Gerät**, nicht vom Simulator, mit der neuesten iOS-Version.
 
 **Vorbereitung**
-1. Den Build über **TestFlight** auf ein echtes iPhone laden
-   (App Store Connect → TestFlight → interner Tester → Einladung an die eigene Apple ID)
-2. Auf dem iPhone: Einstellungen → Kontrollzentrum → **Bildschirmaufnahme** hinzufügen
+- Build über TestFlight aufs iPhone laden
+- iPhone: Einstellungen → Kontrollzentrum → **Bildschirmaufnahme** hinzufügen
+- Die App **löschen und neu installieren**, damit die Aufnahme wirklich beim ersten Start beginnt
 
-**Aufnehmen** (Kontrollzentrum öffnen, Aufnahmeknopf drücken, dann):
-1. App **frisch starten** — die Aufnahme muss mit dem Start beginnen
-2. Sprachauswahl → **Deutsch** tippen
-3. Durch die vier Intro-Folien blättern
-4. Beim Berechtigungsassistenten **„Benachrichtigungen erlauben"** tippen und den
-   Systemdialog mit **Erlauben** bestätigen — Apple will die Berechtigungsabfragen sehen
-5. Startseite zeigen: Gebetszeiten, Countdown, Iqamah
-6. Tab **Kalender** — durch einen Monat blättern
-7. Tab **Mehr** → **Koran** → eine Sure öffnen, eine Seite blättern
-8. Zurück → **Ramadan** zeigen
-9. Zurück → **Qibla** öffnen (dabei erscheint die Standortabfrage — auch die zeigen)
-10. Tab **Einstellungen** — Benachrichtigungen pro Gebet, Tonauswahl antippen
-11. **Über uns** öffnen und **7 Mal auf das Wappen tippen**, damit der Admin-Anmeldebildschirm
-    erscheint — danach abbrechen. So sieht der Prüfer, dass nichts verborgen wird.
+**Aufnehmen** — Kontrollzentrum, Aufnahmeknopf, dann der Reihe nach:
 
-Aufnahme beenden, Video in der Antwort anhängen. Zwei bis drei Minuten reichen.
+1. App starten (die Aufnahme muss den Start zeigen)
+2. Sprache **Deutsch** wählen
+3. Durch die Intro-Folien blättern
+4. **Benachrichtigungen erlauben** — den Systemdialog mit **Erlauben** bestätigen
+5. **Gemeinde auswählen**: „Kassel" suchen, IGBD-Gemeinde Sandžak-Kassel wählen, dann den Ort
+6. Startseite: Gebetszeiten, Countdown, Iqamah
+7. Reiter **Kalender** — einen Monat blättern
+8. Reiter **Nachrichten** — eine Mitteilung antippen, die Reaktions-Knöpfe zeigen
+9. Reiter **Mehr → Koran** — eine Sure öffnen, blättern, **Tadschwid** und **Osmanische Schrift**
+   antippen, einmal zoomen
+10. Zurück → **Qibla** — hier kommt die **Standortabfrage**, mit **Erlauben** bestätigen und den
+    Kompass zeigen
+11. Zurück → **Zakat** — zwei Zahlen eintippen, damit die Rechnung sichtbar ist
+12. Zurück → **Gebets-Tracker** — Flamme und Fortschritt zeigen
+13. Reiter **Einstellungen** — durchscrollen, einen Gebets-Schalter und eine Tonauswahl antippen
+14. Ganz unten: **„Als Gemeinde-Administrator anmelden"** antippen, mit dem **Prüf-Konto anmelden**,
+    den Admin-Bereich kurz zeigen, wieder abmelden
+
+Drei bis vier Minuten. Apple will sehen, dass nichts verborgen ist — deshalb Schritt 14 nicht
+weglassen.
 
 ---
 
-## Punkt 2 — Getestete Geräte und Betriebssysteme
+## Punkt 2 — Getestete Geräte
 
-> **Trag hier ein, was tatsächlich getestet wurde — nichts erfinden.**
-> Ergänze das Gerät, auf dem du die Aufnahme machst, mit seiner iOS-Version
-> (Einstellungen → Allgemein → Info).
+> **Trag ein, was wirklich getestet wurde. Nichts erfinden.**
+> Die iOS-Version steht unter Einstellungen → Allgemein → Info.
 
 ```
 Tested on:
-- iPhone [MODELL], iOS [VERSION] — physical device, via TestFlight
-- iPhone 16 Pro Max and iPhone 16 Pro, iOS Simulator (Xcode) — development testing
+- iPhone [MODELL], iOS [VERSION] — physical device, installed via TestFlight
+- iPhone 16 Pro, iOS 18.6 — Simulator (development testing)
 ```
 
 ---
 
-## Punkte 3–7 — Text für die Antwort
+## Punkte 3–7 — Text für Apple (Englisch, zum Kopieren)
 
 ```
 3. FUNCTIONS AND TARGET AUDIENCE
 
-Kassel Vaktija is a free prayer-time app for the IGBD Sandzak-Kassel mosque
-community in Kassel, Germany, published by the registered non-profit association
-that runs the mosque.
+IGBD Vaktija is a free prayer-time app for the member communities of the IGBD
+(Islamische Gemeinschaft der Bosniaken in Deutschland), the federation of Bosnian
+Muslim communities in Germany. It is published by the registered non-profit
+association IGBD - Gemeinde Sandzak-Kassel e.V.
 
-Problem it solves: members of the community need the prayer times as they are
-actually announced by their own mosque. Generic prayer apps calculate times
-astronomically and differ from the mosque's published schedule by several minutes,
-which matters for congregational prayer. This app shows the mosque's own official
-times, so the app and the notice board in the mosque agree.
+Problem it solves: each community announces its own prayer (Iqamah) times, which
+differ from astronomically calculated times and change through the year. Members
+previously had to check a noticeboard in the mosque or ask. The app shows the
+times their own community has published, so nobody arrives late or prays at the
+wrong time.
 
-Target audience: the roughly 1,000 members of this local community, many of whom
-are Bosnian, Turkish, Albanian or Arabic speakers. The interface is available in
-eight languages for that reason.
+Users pick their community once from a list of 81 (or the town within it), and
+from then on see that community's times, address and announcements.
 
-Core features: daily prayer times with a live countdown, a monthly calendar,
-local reminders with the Adhan, a home-screen widget, the Quran with a page-based
-reader, hadith collections, dhikr and tasbih counters, a prayer tracker, a Ramadan
-screen and a Qibla compass. Announcements from the mosque board are shown in a
-news tab.
+Features:
+- Daily prayer times with a live countdown, plus the community's Iqamah times
+- Notifications per prayer, with an optional advance reminder
+- Hijri calendar with a month view
+- Announcements from the community board
+- Qur'an (Arabic, with optional tajweed colouring and a second Arabic typeface)
+- Hadith collection, dhikr, digital tasbih counter
+- Prayer tracker with a daily streak
+- Ramadan overview, Zakat calculator, Qibla compass
+- Home-screen widget with the next prayer
 
-4. SETUP AND ACCESS
+Target audience: members of these mosque communities in Germany — Bosnian,
+German, Albanian, Turkish, Arabic, Urdu, Russian and English speaking. All eight
+languages are included.
 
-No setup is required. There is no account, no login, no purchase and no paywall.
-Every feature is available immediately after installing. On first launch the app
-asks for a language and offers to enable notifications; both can be skipped.
+The app is completely free. There are no purchases, no subscriptions, no
+advertising and no analytics.
 
-The only exception is a small staff-only administration area used by the elected
-board of the association to publish announcements and adjust the community's
-prayer times. It is reached by opening "Mehr" -> "Über uns" and tapping the
-community crest 7 times, which reveals a sign-in screen.
 
-We are not able to provide credentials for that area. Access is restricted to a
-single Firebase account belonging to the board and is enforced server-side by
-Firestore security rules. That account can send announcements to every installed
-device, so sharing its password would put the community's communication channel
-at risk. The area unlocks no user-facing functionality, no content and no
-purchases. If you need to inspect it, please tell us and we will arrange access.
+4. HOW TO SET UP AND ACCESS THE MAIN FEATURES
 
-5. EXTERNAL SERVICES
+No account is needed. On first launch the app asks for a language, then for the
+community. Choose "IGBD-Gemeinde Sandzak-Kassel" and the town "Kassel" to see a
+fully populated community. Everything else is reachable from the five tabs at the
+bottom; the "More" tab holds Qur'an, hadith, dhikr, tasbih, prayer tracker,
+Ramadan, Zakat and Qibla.
 
-- vaktija.eu/kassel — the mosque's own published prayer-time schedule. Read-only,
-  fetched over HTTPS and cached locally so the app works offline.
-- Firebase Cloud Firestore (Google) — stores announcements written by the board.
-  Public read, admin-only write, enforced by server-side security rules.
-- Firebase Authentication (Google) — used only to sign in the single board account
-  for the staff-only area. Regular users never authenticate.
-- Firebase Cloud Messaging (Google) — delivers announcements from the board as push
-  notifications. Prayer reminders themselves are scheduled locally on the device and
-  do not depend on any server.
-- Google Gemini API — used only inside the staff-only area, to translate an
-  announcement written by the board into the app's eight languages at the moment it
-  is posted. It is never invoked for regular users and processes no user data.
+ADMIN ACCESS (optional, not needed to use the app)
 
-No payment processors, no advertising networks, no analytics or tracking SDKs.
+Community board members can sign in to edit their own community's Iqamah times
+and to post announcements. The button is at the bottom of the Settings screen.
+
+  Demo account (community administrator):
+  E-mail:   [E-MAIL DES PRUEF-KONTOS]
+  Password: [PASSWORT]
+
+This account administers one community only. There is a second, higher role for
+the federation's head administrator; it is reached by tapping the version number
+at the very bottom of Settings seven times. We are not providing credentials for
+that role because it can send a message to all 81 communities at once. It grants
+no additional user-facing screens beyond community management.
+
+There is no paid content, so no purchase or subscription flow exists.
+
+
+5. EXTERNAL SERVICES USED
+
+- vaktija.eu — the published prayer-time source used by these communities. Read
+  only, no account, no personal data sent.
+- Google Firebase (Firestore, Authentication, Cloud Messaging) — stores the
+  community directory, the Iqamah times each community sets, and its
+  announcements; delivers announcement notifications. Ordinary users are signed
+  in anonymously; only board members have an e-mail account.
+- Google Gemini API — used ONCE by an administrator when posting an announcement,
+  to translate it into the app's eight languages. The translated text is stored
+  with the announcement. Readers never contact this service, and no user data is
+  sent to it — only the announcement text the administrator just typed.
+- YouTube — if an announcement contains a YouTube link, the video plays inside
+  the app in the standard embedded player. No account, no data collection by us.
+- PayPal — the "Donate" button opens the community's public donation page in the
+  browser. No payment is processed inside the app.
+
+Permissions requested:
+- Notifications — for prayer times and community announcements.
+- Location (when in use) — ONLY for the Qibla compass, to compute the direction
+  to the Kaaba from where the user stands. The location is used on the device,
+  is never stored and never leaves the phone. If the user declines, the compass
+  falls back to the mosque's address.
+
+USER-GENERATED CONTENT
+
+Announcements can only be written by a community's board, who are authenticated
+with an account the association issues. Ordinary users cannot post text, images
+or comments. They can only react to an announcement with a like or a dislike,
+which is a single anonymous counter and shows no user identity. There is
+therefore no user-to-user content and nothing for users to report or block.
+
 
 6. REGIONAL DIFFERENCES
 
-None. The app behaves identically in every region. The prayer times are those of
-one specific mosque in Kassel, Germany, and are the same regardless of where the
-device is located. The interface is available in Bosnian, German, Arabic, Turkish,
-Albanian, English, Urdu and Russian; the language is chosen by the user and is not
-derived from the region. Arabic and Urdu are laid out right-to-left.
+None. The app behaves identically in every region and every App Store territory.
+The content is the same everywhere; only the chosen community determines which
+prayer times and announcements are shown, and that is a user choice, not a
+regional one. All eight languages are available everywhere.
 
-7. REGULATED INDUSTRY / PROTECTED MATERIAL
 
-The app does not operate in a regulated industry. It provides no medical, financial
-or legal services and handles no payments.
+7. RIGHTS TO THIRD-PARTY MATERIAL
 
-It is published by the mosque community itself, for its own members, and the prayer
-times it shows are that community's own published schedule.
+- The app is published by IGBD - Gemeinde Sandzak-Kassel e.V., a member community
+  of the IGBD, and uses the federation's name and emblem with its authorisation.
+- The Qur'anic text is the Uthmani text from the public alquran.cloud dataset,
+  with tajweed markup from the open quran-tajweed project.
+- The Arabic typeface is Amiri Quran, licensed under the SIL Open Font License.
+- The recorded call to prayer is used with the permission of the muezzin who
+  recorded it for the community.
+- The community emblem belongs to the publishing association itself.
+
+The app is not part of a regulated industry. It provides no medical, financial or
+legal advice. The Zakat calculator is explicitly labelled inside the app as a
+calculation aid and not a religious ruling, and it asks the user to consult their
+imam.
 ```
 
 ---
 
-## Anmerkung zu Punkt 7
+## Was du vor dem Absenden prüfen musst
 
-Apple fragt dort ausdrücklich nach **geschütztem Material Dritter**. In den
-Hadith-Daten steht als Quelle eine veröffentlichte Übersetzung
-(„Riyâzü's-Sâlihîn Tercüme ve Şerhi", Erkam Yayınları) — siehe den offenen Punkt
-in `STATUS.md`. Im Feld „Informationen zu den Inhaltsrechten" wurde **Nein**
-angegeben; der obige Text ist dazu konsistent formuliert. Falls der Vorstand die
-Rechtelage klärt und sie anders ausfällt, sollte die Angabe angepasst werden.
+**Punkt 7 ist der einzige, der wirklich schiefgehen kann.** Drei Fragen an den Vorstand:
+
+1. **Darf die App den Namen und das Zeichen der IGBD tragen?** Sie heißt „IGBD Vaktija" und
+   bedient 81 Gemeinden, wird aber von der Kasseler Gemeinde herausgegeben. Das sind zwei
+   verschiedene Vereine. Apple fragt in Punkt 7 genau danach. **Eine kurze schriftliche Zusage der
+   IGBD sollte vorliegen** — nicht unbedingt für Apple, aber falls jemand nachfragt.
+2. **Gehört die Adhan-Aufnahme wirklich der Gemeinde?** Wenn sie irgendwo heruntergeladen wurde,
+   muss sie ersetzt werden.
+3. **Ist das Wappen freigegeben?** Für Kassel selbst ja — das ist der Herausgeber.
+
+Wenn eine dieser Fragen unklar ist: **schreib mir vorher**, statt es Apple zu schreiben.
+
+**Und die Screenshots im Store** (Richtlinie 2.3.3): Sie müssen die App im Gebrauch zeigen — nicht
+den Startbildschirm, nicht die Sprachauswahl. Also Gebetszeiten, Kalender, Koran, Qibla.

@@ -61,7 +61,9 @@ targets:
           - Inter.ttf
           # Amiri Quran (SIL OFL) — die osmanische/tuerkische Schrift im Koran-Leser.
           - AmiriQuran.ttf
-        NSLocationWhenInUseUsageDescription: "Für die Qibla-Anzeige wird die Kompassrichtung verwendet."
+        # Apple prueft Zweck-Texte streng (Richtlinie 5.1.1): Er muss sagen WOFUER und ein
+        # Beispiel geben. Der alte Satz nannte nur „die Kompassrichtung".
+        NSLocationWhenInUseUsageDescription: "Nur für den Qibla-Kompass: Aus deinem Standort wird die Richtung zur Kaaba berechnet — in Kassel etwa 130 Grad. Der Standort bleibt auf dem Gerät und wird nicht gespeichert oder weitergegeben. Ohne Freigabe zeigt die App die Richtung ab der Adresse deiner Moschee."
         # Silent push for prayer-time changes (onConfigUpdated sends content-available).
         UIBackgroundModes:
           - remote-notification
