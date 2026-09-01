@@ -28,6 +28,8 @@ import de.igbdsandzakkassel.vaktija.service.notification.NewsNotifier
 import de.igbdsandzakkassel.vaktija.data.settings.AlarmSettings
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
+import de.igbdsandzakkassel.vaktija.data.store.StoreLinks
+import de.igbdsandzakkassel.vaktija.data.store.StoreLinksRepository
 import de.igbdsandzakkassel.vaktija.service.alarm.AlarmScheduler
 import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
@@ -49,10 +51,25 @@ class SettingsViewModel @Inject constructor(
     private val communityRepository: CommunityRepository,
     private val alertRepository: AdminAlertRepository,
     private val communityRuleProvider: CommunityRuleProvider,
+    private val storeLinksRepository: StoreLinksRepository,
 ) : ViewModel() {
 
     val settings: StateFlow<AlarmSettings> = settingsRepository.observe()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AlarmSettings())
+
+    /**
+     * The App Store link the TV boards put behind their iPhone code. Empty until the listing is
+     * live; see [StoreLinksRepository] for why this is not simply built into the app.
+     */
+    val storeLinks: StateFlow<StoreLinks> = storeLinksRepository.observe()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            StoreLinks(android = StoreLinksRepository.PLAY_URL, ios = ""),
+        )
+
+    /** Head admin only: publish the App Store link to every TV board at once. */
+    fun setIosStoreLink(url: String) = storeLinksRepository.setIosLink(url)
 
     val themeMode: StateFlow<ThemeMode> = settingsRepository.observeThemeMode()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ThemeMode.SYSTEM)

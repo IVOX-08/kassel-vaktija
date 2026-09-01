@@ -276,6 +276,9 @@
     <string name="admin_status_suspended_hint">Nema u izboru, bez logotipa, donacija i obavijesti — namaska vremena i dalje rade.</string>
     <string name="admin_status_blocked_hint">Aplikacija prikazuje samo obavijest. Reverzibilno.</string>
     <string name="admin_manage_communities">Džemati</string>
+    <string name="admin_ios_link_header">iPhone veza za TV ploču</string>
+    <string name="admin_ios_link_explain">Kada ovdje stoji veza na App Store, svaka TV ploča odmah pokazuje iPhone kôd — bez ažuriranja aplikacije. Dok je polje prazno, tamo piše „Uskoro dostupno”.</string>
+    <string name="admin_ios_link_hint">https://apps.apple.com/de/app/id…</string>
     <string name="admin_wrong_community">Ovaj pristup pripada drugom džematu. Vratite se na svoj džemat da biste upravljali.</string>
     <string name="admin_alerts_header">Pokušaji prijave</string>
     <string name="admin_alert_wrong_community">%1$s se pokušao prijaviti kod %2$s.</string>

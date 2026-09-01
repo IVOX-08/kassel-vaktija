@@ -210,6 +210,9 @@
     <string name="admin_status_suspended_hint">Нет в списке, без логотипа, пожертвований и объявлений — время намаза работает.</string>
     <string name="admin_status_blocked_hint">Приложение показывает только уведомление. Обратимо.</string>
     <string name="admin_manage_communities">Управление общинами</string>
+    <string name="admin_ios_link_header">Ссылка для iPhone на ТВ-табло</string>
+    <string name="admin_ios_link_explain">Как только здесь появится ссылка на App Store, каждое ТВ-табло сразу покажет код для iPhone — без обновления приложения. Пока поле пустое, там написано «Скоро».</string>
+    <string name="admin_ios_link_hint">https://apps.apple.com/de/app/id…</string>
     <string name="admin_wrong_community">Эта учётная запись принадлежит другой общине. Перейдите к своей, чтобы управлять ею.</string>
     <string name="admin_alerts_header">Попытки входа</string>
     <string name="admin_alert_wrong_community">%1$s пытался войти в %2$s.</string>

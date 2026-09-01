@@ -210,6 +210,9 @@
     <string name="admin_status_suspended_hint">فہرست سے باہر، لوگو، عطیات اور اعلانات بند — نماز کے اوقات چلتے رہیں گے۔</string>
     <string name="admin_status_blocked_hint">ایپ صرف ایک اطلاع دکھاتی ہے۔ واپس کیا جا سکتا ہے۔</string>
     <string name="admin_manage_communities">جماعتوں کا انتظام</string>
+    <string name="admin_ios_link_header">ٹی وی بورڈ کے لیے آئی فون لنک</string>
+    <string name="admin_ios_link_explain">جیسے ہی یہاں App Store کا لنک آ جائے، ہر ٹی وی بورڈ فوراً آئی فون کوڈ دکھا دے گا — ایپ اپ ڈیٹ کے بغیر۔ جب تک خانہ خالی ہے، وہاں «جلد آ رہا ہے» لکھا رہے گا۔</string>
+    <string name="admin_ios_link_hint">https://apps.apple.com/de/app/id…</string>
     <string name="admin_wrong_community">یہ اکاؤنٹ کسی دوسری جماعت کا ہے۔ انتظام کے لیے اپنی جماعت پر جائیں۔</string>
     <string name="admin_alerts_header">سائن ان کی کوششیں</string>
     <string name="admin_alert_wrong_community">%1$s نے %2$s پر سائن ان کرنے کی کوشش کی۔</string>

@@ -222,6 +222,9 @@
     <string name="admin_status_suspended_hint">Nicht in der Auswahl, kein Logo, keine Spenden, keine Mitteilungen — Gebetszeiten laufen weiter.</string>
     <string name="admin_status_blocked_hint">Die App zeigt nur noch einen Hinweis. Rücknehmbar.</string>
     <string name="admin_manage_communities">Gemeinden verwalten</string>
+    <string name="admin_ios_link_header">iPhone-Link für die TV-Tafel</string>
+    <string name="admin_ios_link_explain">Sobald hier der App-Store-Link steht, zeigt jede TV-Tafel sofort den iPhone-Code — ohne App-Update. Solange das Feld leer ist, steht dort „Bald verfügbar“.</string>
+    <string name="admin_ios_link_hint">https://apps.apple.com/de/app/id…</string>
     <string name="admin_wrong_community">Dieser Zugang gehört zu einer anderen Gemeinde. Wechseln Sie zu Ihrer Gemeinde, um sie zu verwalten.</string>
     <string name="admin_alerts_header">Anmeldeversuche</string>
     <string name="admin_alert_wrong_community">%1$s hat versucht, sich bei %2$s anzumelden.</string>

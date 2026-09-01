@@ -168,4 +168,9 @@ dependencies {
     // --- On-device translation (auto-translate announcements; models download on demand) ---
     implementation(libs.mlkit.translate)
     implementation(libs.mlkit.language.id)
+
+    // --- QR codes on the TV board, drawn from a link that Firestore can change ---
+    // Pure Java, no Android dependency: the encoder only turns a string into a bit matrix and
+    // we paint it ourselves, so nothing here has to be kept in step with the Compose version.
+    implementation(libs.zxing.core)
 }

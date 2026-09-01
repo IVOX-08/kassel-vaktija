@@ -222,6 +222,9 @@
     <string name="admin_status_suspended_hint">Out of the picker, no logo, donations or announcements — prayer times keep working.</string>
     <string name="admin_status_blocked_hint">The app shows only a notice. Reversible.</string>
     <string name="admin_manage_communities">Manage communities</string>
+    <string name="admin_ios_link_header">iPhone link for the TV board</string>
+    <string name="admin_ios_link_explain">Once the App Store link is here, every TV board shows the iPhone code straight away — with no app update. While the field is empty it says “Coming soon”.</string>
+    <string name="admin_ios_link_hint">https://apps.apple.com/de/app/id…</string>
     <string name="admin_wrong_community">This account belongs to another community. Switch to your own to administer it.</string>
     <string name="admin_alerts_header">Sign-in attempts</string>
     <string name="admin_alert_wrong_community">%1$s tried to sign in at %2$s.</string>

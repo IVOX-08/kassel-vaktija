@@ -210,6 +210,9 @@
     <string name="admin_status_suspended_hint">خارج القائمة، بلا شعار أو تبرعات أو إعلانات — مواقيت الصلاة تستمر.</string>
     <string name="admin_status_blocked_hint">يعرض التطبيق إشعارًا فقط. يمكن التراجع.</string>
     <string name="admin_manage_communities">إدارة الجماعات</string>
+    <string name="admin_ios_link_header">رابط الآيفون للوحة التلفزيون</string>
+    <string name="admin_ios_link_explain">بمجرد وضع رابط App Store هنا، تعرض كل لوحة تلفزيون رمز الآيفون فورًا — دون تحديث للتطبيق. وما دام الحقل فارغًا فسيظهر فيها «قريبًا».</string>
+    <string name="admin_ios_link_hint">https://apps.apple.com/de/app/id…</string>
     <string name="admin_wrong_community">هذا الحساب يخص جماعة أخرى. انتقل إلى جماعتك لإدارتها.</string>
     <string name="admin_alerts_header">محاولات تسجيل الدخول</string>
     <string name="admin_alert_wrong_community">حاول %1$s تسجيل الدخول لدى %2$s.</string>

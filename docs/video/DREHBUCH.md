@@ -67,7 +67,7 @@ Leuchtring oder Fingertipp-Kreis. Der Zuschauer muss sehen, *wohin* er tippen so
 |---|---|
 | **Kassel Vaktija** — besplatno na Play Store-u. Neka Allah primi. | **Kassel Vaktija** — kostenlos im Play Store. Möge Allah es annehmen. |
 
-Zum Schluss: Wappen, App-Name, **QR-Code** (`app/src/main/res/drawable-nodpi/tv_qr_play.png`,
+Zum Schluss: Wappen, App-Name, **QR-Code** (`docs/video/qr_play.png`,
 führt direkt zur Play-Store-Seite) und „IGBD-Gemeinde Sandžak-Kassel".
 
 ---

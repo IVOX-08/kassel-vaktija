@@ -2,7 +2,6 @@ package de.igbdsandzakkassel.vaktija.ui.tv
 
 import android.content.Context
 import android.content.res.Configuration
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -48,7 +47,9 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,6 +62,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.igbdsandzakkassel.vaktija.R
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import de.igbdsandzakkassel.vaktija.data.store.StoreLinks
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardUiState
 import de.igbdsandzakkassel.vaktija.ui.dashboard.DashboardViewModel
 import de.igbdsandzakkassel.vaktija.ui.dashboard.PrayerRowUi
@@ -87,6 +89,16 @@ import java.util.Locale
  * German "Sonnenaufgang"; in Bosnian everything is Bosnian (Sabah/Podne/Ikindija/Akšam/Jacija,
  * Izlazak sunca, IKAMET, petak…). The system locale is ignored — only these two languages show.
  */
+/**
+ * Edge length of a download code on the board.
+ *
+ * Not "big enough to read on a laptop" — what matters is how much of the wall it covers. At 72.dp
+ * on a 1080p television it is roughly 7 % of the screen width, about a hand's breadth on a 55"
+ * panel, which scans comfortably from the middle of the prayer hall. Larger would start eating into
+ * the prayer grid, which is what people actually came to look at.
+ */
+private val QR_SIZE = 72.dp
+
 private val HM: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 private val CARD_SHAPE = RoundedCornerShape(20.dp)
 private val GERMAN: Locale = Locale.GERMAN
@@ -237,6 +249,11 @@ fun TvDashboardScreen(
 
 @Composable
 private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
+    // Read live: a board that has hung on the wall for months picks the iPhone link up on its own,
+    // seconds after it is entered in Firestore. See StoreLinksRepository for why it is not baked in.
+    val storeLinks: TvStoreLinksViewModel = hiltViewModel()
+    val links by storeLinks.links.collectAsStateWithLifecycle()
+
     Row(
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(28.dp),
@@ -277,7 +294,7 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                 StoreBadge(
                     label = "Android",
                     caption = if (german) "App scannen" else "Skeniraj app",
-                    qr = R.drawable.tv_qr_play,
+                    link = links.android,
                 )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
@@ -302,13 +319,17 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
-                // No iOS build exists yet, so there is deliberately no QR here — a code that
-                // scans into nothing is worse than none. Swap `qr = R.drawable.tv_qr_ios` in once
-                // the App Store listing is live.
+                // The iPhone code needs no app update: it appears here the moment the head admin
+                // puts the App Store link into `config/apps`. Until then the slot stays a
+                // placeholder — a code that scans into nothing is worse than none.
                 StoreBadge(
                     label = "iPhone",
-                    caption = if (german) "Bald verfügbar" else "Uskoro dostupno",
-                    qr = null,
+                    caption = when {
+                        !links.iosLive -> if (german) "Bald verfügbar" else "Uskoro dostupno"
+                        german -> "App scannen"
+                        else -> "Skeniraj app"
+                    },
+                    link = links.ios,
                 )
             }
             Spacer(Modifier.height(6.dp))
@@ -597,13 +618,18 @@ private fun DailyHadithBand(
 /**
  * A download badge flanking the community name: platform label, QR code, and a short call to action.
  *
- * Sized for the wall: the code is 112.dp (a bit over 2x the old inline one) because this TV hangs
- * high and gets scanned from the prayer hall, not from arm's length. A [qr] of null renders the slot
- * as a placeholder — used for iOS until that build ships, so the layout stays symmetrical and the
- * community can see it is coming without anyone scanning into a dead end.
+ * The code is drawn from [link] rather than shipped as a picture, so the head admin can change
+ * where it points without a new build reaching every wall-mounted TV. A blank [link] — or one that
+ * cannot be encoded — renders the slot as a placeholder instead, which is what the iPhone side
+ * shows until the App Store listing is live: the layout stays symmetrical and the community can see
+ * it is coming, with nobody scanning into a dead end.
  */
 @Composable
-private fun StoreBadge(label: String, caption: String, @DrawableRes qr: Int?) {
+private fun StoreBadge(label: String, caption: String, link: String) {
+    // Encoded at the pixel size it is painted at, so the modules land on whole pixels and stay
+    // hard-edged on the panel. Scaling a finished code is what makes one hard to scan.
+    val sizePx = with(LocalDensity.current) { QR_SIZE.roundToPx() }
+    val qr by rememberQrBitmap(link, sizePx)
     // Laid out side-by-side rather than stacked: this row sits above the prayer grid, so every dp
     // of badge height is taken straight off the grid. Horizontal keeps the code big (the wall TV is
     // scanned from across the room) while staying roughly as tall as the IGBD heading beside it.
@@ -614,16 +640,20 @@ private fun StoreBadge(label: String, caption: String, @DrawableRes qr: Int?) {
             .padding(horizontal = 9.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (qr != null) {
+        val code = qr
+        if (code != null) {
             Image(
-                painter = painterResource(qr),
+                bitmap = code,
                 contentDescription = null,
-                modifier = Modifier.size(72.dp),
+                // No smoothing: the bitmap is already the right size, and filtering would soften
+                // exactly the edges a camera needs.
+                filterQuality = FilterQuality.None,
+                modifier = Modifier.size(QR_SIZE),
             )
         } else {
             Box(
                 modifier = Modifier
-                    .size(72.dp)
+                    .size(QR_SIZE)
                     .clip(RoundedCornerShape(10.dp))
                     .background(PageBackgroundLight),
                 contentAlignment = Alignment.Center,

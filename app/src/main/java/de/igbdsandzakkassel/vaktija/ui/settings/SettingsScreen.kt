@@ -110,6 +110,7 @@ fun SettingsScreen(
     val adminCommunityName by viewModel.adminCommunityName.collectAsStateWithLifecycle()
     val canManageCommunities by viewModel.canManageCommunities.collectAsStateWithLifecycle()
     val allCommunities by viewModel.allCommunities.collectAsStateWithLifecycle()
+    val storeLinks by viewModel.storeLinks.collectAsStateWithLifecycle()
     val adminAlerts by viewModel.adminAlerts.collectAsStateWithLifecycle()
     val selection by viewModel.selection.collectAsStateWithLifecycle()
     val communityRules by viewModel.communityRules.collectAsStateWithLifecycle()
@@ -225,6 +226,25 @@ fun SettingsScreen(
                         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     ) { Text(stringResource(R.string.admin_cleanup_communities)) }
                 }
+
+                // Not behind BuildConfig.DEBUG, unlike the two import buttons above it: this is
+                // pressed once, on the day the iPhone app appears in the App Store, and the debug
+                // build will very likely not be the one installed by then.
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = stringResource(R.string.admin_ios_link_header),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(bottom = 6.dp),
+                )
+                val savedMsg = stringResource(R.string.admin_saved)
+                AppStoreLinkSection(
+                    currentLink = storeLinks.ios,
+                    onSave = { link ->
+                        viewModel.setIosStoreLink(link)
+                        Toast.makeText(context, savedMsg, Toast.LENGTH_SHORT).show()
+                    },
+                )
                 Spacer(Modifier.height(8.dp))
             }
             // The head admin has no editor, so his sign-out cannot live inside one.

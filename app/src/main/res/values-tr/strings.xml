@@ -210,6 +210,9 @@
     <string name="admin_status_suspended_hint">Seçimde yok; logo, bağış ve duyurular kapalı — namaz vakitleri çalışmaya devam eder.</string>
     <string name="admin_status_blocked_hint">Uygulama yalnızca bir bildirim gösterir. Geri alınabilir.</string>
     <string name="admin_manage_communities">Cemaatleri yönet</string>
+    <string name="admin_ios_link_header">TV panosu için iPhone bağlantısı</string>
+    <string name="admin_ios_link_explain">App Store bağlantısı buraya girildiği anda her TV panosu iPhone karekodunu gösterir — uygulama güncellemesi gerekmez. Alan boşken „Yakında“ yazar.</string>
+    <string name="admin_ios_link_hint">https://apps.apple.com/de/app/id…</string>
     <string name="admin_wrong_community">Bu hesap başka bir cemaate ait. Yönetmek için kendi cemaatinize geçin.</string>
     <string name="admin_alerts_header">Giriş denemeleri</string>
     <string name="admin_alert_wrong_community">%1$s, %2$s cemaatinde giriş yapmayı denedi.</string>

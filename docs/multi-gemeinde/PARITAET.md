@@ -203,6 +203,44 @@ je weiter östlich oder nördlich.
 
 ---
 
+## 9b · Der QR-Code auf der TV-Tafel
+
+Die Tafel zeigt oben zwei Felder: **Android** und **iPhone**. Der Code wird auf dem Gerät
+**gezeichnet**, nicht als Bild mitgeliefert, und die Adresse dahinter kommt aus Firestore:
+
+```
+config/apps
+  androidUrl : String   (leer → der feste Play-Link)
+  iosUrl     : String   (leer → statt Code steht dort „Bald verfügbar")
+```
+
+**Warum das so ist — der Punkt, auf den es ankommt.** Die Tafel hängt an einer Wand. Niemand fasst
+sie nach der Montage noch einmal an, und ein Android-Fernseher holt sich Updates nicht zuverlässig
+von allein. Wäre der Link fest eingebaut, müsste am Tag der iPhone-Veröffentlichung **jede** der 81
+Gemeinden erst ein App-Update bekommen, bevor ihre Tafel den iPhone-Code zeigen könnte. So gibt der
+Hauptadministrator die Adresse **einmal** ein — Einstellungen → Gemeinden verwalten → *iPhone-Link
+für die TV-Tafel* — und Sekunden später zeigt jede Tafel im ganzen Verband den Code.
+
+Die Regel dafür ist bereits veröffentlicht: `match /config/{docId}`, lesen dürfen alle, schreiben
+nur der Hauptadministrator. **An den Firestore-Regeln ändert sich nichts.**
+
+Für iOS gilt dasselbe Feld, falls dort je eine Tafel dazukommt — und wichtiger: **niemand baut den
+Link fest ein.** Auch nicht „nur vorübergehend".
+
+Drei Feinheiten, die beim Bauen aufgefallen sind und die auf iOS genauso gelten:
+
+- **Niedrigste Fehlerkorrektur (L), nicht die höchste.** Klingt falsch, ist hier richtig: eine
+  höhere Stufe presst mehr Module in dasselbe Quadrat, jedes Modul wird also **kleiner** — und auf
+  einer Wand entscheidet die Modulgröße darüber, ob eine Kamera aus drei Metern noch etwas
+  erkennt. Die Tafel ist sauberes Glas, kein zerknitterter Zettel; es gibt nichts zu reparieren.
+- **In genau der Pixelgröße erzeugen, in der er gezeichnet wird**, und ohne Glättung anzeigen.
+  Einen fertigen Code nachträglich zu skalieren weicht genau die Kanten auf, die der Scanner
+  braucht.
+- **Ein leeres Feld ist kein Fehler, sondern der Normalfall vor der Veröffentlichung.** Ein Code,
+  der ins Leere führt, ist für die Gemeinde schlimmer als gar keiner.
+
+---
+
 ## 10 · Texte
 
 Acht Sprachen: **bs (Standard), de, en, ar, tr, sq, ur, ru.**
