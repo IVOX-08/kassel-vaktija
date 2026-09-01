@@ -63,7 +63,7 @@ QIBLA
 Der Kompass zeigt die Richtung zur Kaaba — wahlweise ab der Adresse deiner Moschee oder ab deinem Standort.
 
 MITTEILUNGEN
-Der Vorstand deiner Gemeinde schreibt Ankündigungen direkt in die App. Sie kommen in deiner Sprache an.
+Der Vorstand deiner Gemeinde schreibt Ankündigungen direkt in die App. Sie kommen in deiner Sprache an. Dazu die Wege zu Instagram, Facebook und YouTube — immer die der Gemeinde, die du gewählt hast.
 
 WEITERES
 Hidschri-Kalender mit Monatsansicht, Hadithe, Dhikr, digitale Tasbih, Ramadan-Übersicht und ein Zakat-Rechner.
@@ -162,7 +162,7 @@ Auf der Version-Seite ganz unten.
 | **Kontakt Vorname / Nachname** | deiner |
 | **Telefon** | deine Nummer mit +49 |
 | **E-Mail** | deine E-Mail |
-| **Anmerkungen** | der englische Text aus `REVIEW-ANTWORT.md`, Punkte 2–7 |
+| **Anmerkungen** | der englische Text aus `REVIEW-ANTWORT.md`, Punkte 1–7 |
 | **Anhang** | die Bildschirmaufnahme |
 
 ---
