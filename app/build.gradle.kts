@@ -33,8 +33,8 @@ android {
         applicationId = "de.igbdsandzakkassel.vaktija"
         minSdk = 26
         targetSdk = 36
-        versionCode = 15
-        versionName = "1.2.0"
+        versionCode = 16
+        versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -64,9 +64,16 @@ android {
             isDebuggable = true
         }
         release {
-            // R8/minify can be enabled later after a full release QA pass; off for now to avoid
-            // shipping a subtly-stripped build without device verification.
-            isMinifyEnabled = false
+            // R8 on. Play measures how much of the code is obfuscated and warns below 25 %; with
+            // this off it sat at 1 %. See proguard-rules.pro — every keep rule there answers a
+            // specific place where the app would otherwise break, and the dangerous one is enum
+            // constant names, which are written into DataStore, Intents and Firestore as text.
+            isMinifyEnabled = true
+            // Deliberately NOT enabled: the adhan and notification sounds are looked up by name at
+            // runtime (resources.getIdentifier(..., "raw", ...)), so every sound file looks unused
+            // to the resource shrinker. It would drop them and the app would simply stay silent at
+            // prayer time. This is unrelated to the Play warning, which is about code.
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
