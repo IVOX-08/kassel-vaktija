@@ -3,18 +3,17 @@ import FirebaseCore
 import FirebaseMessaging
 import UserNotifications
 
-// Firebase Cloud Messaging, the iOS half of what Android already does (see
-// docs/ios/FIREBASE-HANDOFF.md §4). Two kinds of message arrive here:
+// Firebase Cloud Messaging, die iOS-Seite dessen, was Android schon tut (siehe
+// docs/ios/FIREBASE-HANDOFF.md §4). Zwei Arten von Meldung kommen hier an:
 //
-//   • `onNewsCreated` — a normal notification payload. iOS displays it by itself; the only
-//     thing we must get right is that APNs knows this device.
-//   • `onConfigUpdated` — a data-only message telling us the community changed the prayer
-//     times. It only reaches us when the server sends `content-available: 1`, which the
-//     handover notes as still missing on the server side. The handler below is written so it
-//     works the moment the server is fixed, and costs nothing until then.
+//   • Mitteilungen — eine normale Meldung mit Text. iOS zeigt sie selbst an; richtig sein muss
+//     nur, dass APNs dieses Geraet kennt.
+//   • Zeitaenderungen — eine reine Datenmeldung. Sie erreicht uns nur, wenn der Server
+//     `content-available: 1` mitschickt (siehe functions/index.js).
 //
-// Both platforms listen on the single topic `announcements` — do not rename it, the Android
-// app and the Cloud Function both hardcode it.
+// DIE THEMEN: Bis hierher hing jedes Geraet am einen Thema `announcements`. Damit haette jeder
+// Nutzer in Deutschland jede Mitteilung jeder der 81 Gemeinden bekommen. Jetzt sind es drei,
+// und sie tragen Gemeinde und Sprache im Namen — siehe PushTopics unten.
 final class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
 
     func application(_ application: UIApplication,
@@ -26,6 +25,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
         // Safe to call unconditionally: this asks APNs for a device token and never prompts the
         // user. The alert permission is a separate thing, handled by NotificationScheduler.
         application.registerForRemoteNotifications()
+        PushTopics.observeChanges()
         return true
     }
 
@@ -73,10 +73,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
 
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard fcmToken != nil else { return }
-        // Subscribing needs a token first, which is why it lives here and not in didFinishLaunching.
-        Messaging.messaging().subscribe(toTopic: "announcements") { error in
-            if let error { NSLog("[Push] topic subscribe failed: \(error.localizedDescription)") }
-        }
+        // Anmelden geht erst mit Token, deshalb steht es hier und nicht in didFinishLaunching.
+        PushTopics.resync()
     }
 
     // MARK: silent push — prayer times changed
@@ -91,5 +89,59 @@ final class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
             await PrayerStore().refresh()
             completionHandler(.newData)
         }
+    }
+}
+
+/// Woran dieses Geraet haengt.
+///
+/// Drei Themen, und sie muessen sich aendern, wenn sich die Gemeinde oder die Sprache aendert:
+///
+///   c_<gemeinde>            Datenmeldung: die Zeiten dieser Gemeinde haben sich geaendert
+///   c_<gemeinde>_<sprache>  Mitteilungen dieser Gemeinde, im richtigen Wortlaut
+///   b_<sprache>             verbandsweite Mitteilungen des Hauptadministrators
+///
+/// Die Sprache steckt im Namen, weil der Text schon beim Verfassen in alle acht Sprachen
+/// uebersetzt wird. So steht die Mitteilung gleich in der Leiste richtig da und nicht erst,
+/// nachdem jemand die App geoeffnet hat.
+///
+/// Was einmal angemeldet wurde, bleibt es bei Firebase — bis es ausdruecklich abgemeldet wird.
+/// Deshalb merkt sich diese Stelle, woran sie das Geraet gehaengt hat: Ohne das bekaeme jemand,
+/// der zweimal die Gemeinde wechselt, die Mitteilungen von drei Gemeinden.
+enum PushTopics {
+    private static let storeKey = "push_topics"
+
+    private static var desired: [String] {
+        let community = CommunitySelection.communityId
+        let lang = Localization.shared.lang
+        return ["c_\(community)", "c_\(community)_\(lang)", "b_\(lang)"]
+    }
+
+    static func observeChanges() {
+        for name in [Notification.Name.communityDidChange, .appLanguageDidChange] {
+            NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { _ in
+                resync()
+            }
+        }
+    }
+
+    static func resync() {
+        guard FirebaseApp.app() != nil else { return }
+        let want = Set(desired)
+        let have = Set(AppGroup.defaults.stringArray(forKey: storeKey) ?? [])
+        guard want != have else { return }
+
+        for topic in have.subtracting(want) {
+            Messaging.messaging().unsubscribe(fromTopic: topic) { error in
+                if let error { NSLog("[Push] Abmelden von \(topic) fehlgeschlagen: \(error.localizedDescription)") }
+            }
+        }
+        for topic in want.subtracting(have) {
+            Messaging.messaging().subscribe(toTopic: topic) { error in
+                if let error { NSLog("[Push] Anmelden an \(topic) fehlgeschlagen: \(error.localizedDescription)") }
+            }
+        }
+        // Auch dann merken, wenn eine einzelne Anmeldung scheitert: Firebase versucht es von
+        // selbst weiter, und ein zweiter Durchlauf wuerde sonst dieselben Themen doppelt melden.
+        AppGroup.defaults.set(Array(want), forKey: storeKey)
     }
 }

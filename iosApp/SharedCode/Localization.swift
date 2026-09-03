@@ -1,5 +1,11 @@
 import SwiftUI
 
+extension Notification.Name {
+    /// Die Sprache der App hat gewechselt. Die Themen fuer Push tragen die Sprache im Namen —
+    /// ohne dieses Signal kaeme die naechste Mitteilung weiter in der alten Sprache an.
+    static let appLanguageDidChange = Notification.Name("de.igbdsandzakkassel.vaktija.appLanguageDidChange")
+}
+
 // Runtime language switch (spec 6.6 + update prompt #3): the chosen app language overrides the
 // system language, applies immediately (incl. RTL for ar/ur), and persists across restarts.
 // Strings come from the bundled Resources/lang/<tag>.strings (converted from the Android resources),
@@ -25,6 +31,7 @@ final class Localization: ObservableObject {
         WidgetRefresh.now()
         table = Localization.read(newLang)
         lang = newLang // @Published — triggers the root rebuild (.id(lang))
+        NotificationCenter.default.post(name: .appLanguageDidChange, object: nil)
     }
 
     func string(_ key: String) -> String { table[key] ?? fallback[key] ?? key }

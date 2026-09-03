@@ -1,33 +1,74 @@
-# Instant push notifications — setup
+# Push-Mitteilungen — Einrichtung
 
-The app side is **done**: every install subscribes to the `announcements` topic and shows a
-notification the moment a push arrives (`PushMessagingService` + the news channel). It only needs the
-server side switched on — that's the part below.
+> **Stand 04.09.2026 — wichtig:** Seit dem Umbau auf mehrere Gemeinden ging zu **keiner**
+> Mitteilung eine Push-Meldung raus. Die Auslöser horchten auf `news/{id}` und `config/community`;
+> geschrieben wird seitdem nach `communities/{id}/news`, `broadcasts` und
+> `communities/{id}/config/rules`. Beide Pfade existierten nicht mehr, also feuerte nichts — auf
+> beiden Plattformen, ohne Fehlermeldung. `functions/index.js` ist deshalb neu geschrieben.
+>
+> **Der Code ist fertig, aber noch nicht bereitgestellt.** Bis jemand `firebase deploy` ausführt,
+> bleibt es dabei, dass niemand von einer neuen Mitteilung erfährt.
 
-## What's still needed (one-time, needs the imam's account)
-Sending push requires a **Cloud Function**, which requires the Firebase **Blaze (pay-as-you-go)**
-plan. At this community's volume it is **effectively free** (the free monthly quota far exceeds a few
-announcements), but Blaze requires a **billing account with a payment method** — so an **adult**
-(the imam / the account holder) has to enable it.
+---
 
-> Until this is enabled, announcements still arrive via the existing **poll-on-wake** check — just
-> not instantly (they show up within a few hours, at the next prayer alarm / refresh).
+## Die Themen
 
-## Steps (do together when the Firebase account is ready)
-1. In the [Firebase console](https://console.firebase.google.com) → the `kassel-vaktija` project →
-   **Upgrade** to the **Blaze** plan (add the imam's payment method; you can set a low budget alert).
-2. Install the Firebase CLI on the PC: `npm install -g firebase-tools`, then `firebase login`.
-3. From the project root: `firebase use kassel-vaktija`, then `cd functions && npm install`.
-4. Deploy: `firebase deploy --only functions`.
-5. Test: post a community announcement in the app → every device with the app should get an instant
-   notification.
+Jedes Gerät hängt an genau drei Themen. Sie tragen Gemeinde und Sprache im Namen:
 
-The function code is in **`functions/index.js`** (triggers on new `news` documents, sends an FCM push
-to the `announcements` topic with the source-language title/body; the app opens to the translated
-content).
+| Thema | Inhalt |
+|---|---|
+| `c_<gemeinde>` | Datenmeldung: die Gebetszeiten dieser Gemeinde haben sich geändert |
+| `c_<gemeinde>_<sprache>` | Mitteilungen dieser Gemeinde, im richtigen Wortlaut |
+| `b_<sprache>` | verbandsweite Mitteilungen des Hauptadministrators |
 
-## Possible later refinement
-For the **tray text itself** to be in each user's language (not just the in-app content), switch to
-per-language topics: the app subscribes to `news_<lang>` and the function loops over the per-language
-maps, sending each translation to its `news_<lang>` topic. Small change on both sides — not needed
-for v1.
+Vorher hing jedes Gerät am einen Thema `announcements`. Damit hätte jeder Nutzer in Deutschland
+jede Mitteilung jeder der 81 Gemeinden bekommen.
+
+Die **Sprache steht im Namen**, weil der Text schon beim Verfassen in alle acht Sprachen übersetzt
+und mitgespeichert wird. Die Meldung steht dadurch gleich in der Leiste richtig da — nicht erst,
+nachdem jemand die App geöffnet hat. Acht Sendungen je Mitteilung, das ist der ganze Aufwand.
+
+Das alte Thema `announcements` bekommt weiterhin die Mitteilungen **der Kasseler Gemeinde**, damit
+die veröffentlichte Android-Version 1.1.3 nicht stumm bleibt. Die Zeile in `functions/index.js`
+darf weg, sobald niemand mehr auf 1.1.3 ist.
+
+---
+
+## Bereitstellen
+
+Braucht den **Blaze-Tarif** (pay-as-you-go). Bei diesem Aufkommen ist er praktisch kostenlos — das
+monatliche Freikontingent liegt weit über ein paar Mitteilungen —, aber er verlangt ein
+Zahlungsmittel im Konto.
+
+1. [Firebase-Konsole](https://console.firebase.google.com) → Projekt `kassel-vaktija` →
+   **Upgrade** auf **Blaze** (Budgetwarnung setzen, z. B. 5 €)
+2. Auf dem Mac: `npm install -g firebase-tools`, dann `firebase login`
+3. Im Projektordner: `firebase use kassel-vaktija`, dann `cd functions && npm install`
+4. Bereitstellen:
+
+```bash
+firebase deploy --only functions
+```
+
+5. Prüfen: eine Mitteilung in der App veröffentlichen → jedes Gerät dieser Gemeinde bekommt sofort
+   eine Meldung, in seiner eigenen Sprache.
+
+### Beim ersten Bereitstellen nach dem Umbau
+
+Firebase fragt, ob die alten Funktionen **`onConfigUpdated`** gelöscht werden sollen. **Ja.** Sie
+horcht auf einen Pfad, den es nicht mehr gibt. Neu dazu kommen `onBroadcastCreated` und
+`onRulesUpdated`.
+
+---
+
+## Wenn nichts ankommt
+
+| Beobachtung | Ursache |
+|---|---|
+| Gar keine Meldung, auf keinem Gerät | Nicht bereitgestellt, oder Blaze nicht aktiv |
+| Android bekommt, iPhone nicht | Der APNs-Schlüssel (`.p8`) fehlt im Firebase-Projekt |
+| Meldung kommt, aber mit dem Standardton | `tone_soft.wav` liegt nicht im App-Paket — der Name muss genau stimmen |
+| Meldung in der falschen Sprache | Das Gerät hängt noch am alten Thema; ein Sprachwechsel in der App meldet es um |
+
+Die Protokolle stehen in der Firebase-Konsole unter **Functions → Logs**. Eine fehlgeschlagene
+Sendung wird dort mit dem Thema genannt, das sie nicht erreicht hat.

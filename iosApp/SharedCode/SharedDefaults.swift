@@ -44,15 +44,21 @@ enum AppGroup {
         "pw_",          // Vorwarnung
         "q_",           // Koran: Lesezeichen, Schrift, Zoom, Tedschwid, Leseposition
         "tracker_",     // Antworten des Gebetstrackers, je Tag
-        "selected_",    // gewaehlte Gemeinde, Ort, Kuerzel, Name
-        "automute_",
-        "vaktija_",     // geladene Zeiten und Kalibrierung
+        // Die abgehakten Fastentage des Ramadan (f_2026-03-14). Fehlten hier: Wer die App schon
+        // hatte, verlor beim Update auf die Fassung mit Widget seine gesamte Aufzeichnung — ohne
+        // Meldung, ohne Weg zurueck.
+        "f_",
+        "selected_",    // gewaehlte Gemeinde, Ort, Kuerzel, Name, Koordinaten
+        "vaktija_",     // geladene Zeiten und Kalibrierung, je Gemeinde
     ]
 
     private static let ownKeys: Set<String> = [
         "appColorScheme", "app_lang", "onboarding_done", "ob_phase",
-        "notif_sound", "news_sound", "notif_silent", "msg_notif", "weekly_reminder",
+        "notif_sound", "msg_notif", "weekly_reminder",
         "community_rule", "dhikr_ptr", "tasbih_count", "tasbih_target", "qibla_use_device",
+        // Die Themen, an denen dieses Geraet gerade haengt — sonst bliebe es nach dem Update an
+        // den alten angemeldet und bekaeme Mitteilungen doppelt.
+        "push_topics",
     ]
 
     private static func isOwn(_ key: String) -> Bool {
