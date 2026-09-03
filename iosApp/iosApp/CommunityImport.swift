@@ -36,6 +36,16 @@ enum CommunityImport {
             if let v = community.youtubeUrl { data["youtubeUrl"] = v }
             if let v = community.donationUrl { data["donationUrl"] = v }
             if let v = community.logoUrl { data["logoUrl"] = v }
+            // Kontakt und Imam. Diese fuenf Felder sind der Grund, warum eine neue Gemeinde
+            // kuenftig ohne App-Update auskommt: Der Vorstand traegt sie in Firestore ein, und die
+            // Kontaktkarte zeigt sie. `merge: true` sorgt dafuer, dass ein spaeter dort
+            // eingetragener Wert von einem erneuten Import nicht ueberschrieben wird — der Import
+            // schickt nur, was im Paket steht, und das Paket kennt keine leeren Felder.
+            if let v = community.phone { data["phone"] = v }
+            if let v = community.email { data["email"] = v }
+            if let v = community.website { data["website"] = v }
+            if let v = community.imamName { data["imamName"] = v }
+            if let v = community.imamPhone { data["imamPhone"] = v }
 
             let document = db.collection("communities").document(community.id)
             guard let snapshot = try? await document.getDocument() else { continue }

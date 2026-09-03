@@ -13,8 +13,6 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var scheme
     private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
-    private let mapsURL = URL(string: "https://www.google.com/maps/search/?api=1&query=Schwanenweg+13%2C+34123+Kassel")
-    private let donateURL = URL(string: "https://www.paypal.com/donate/?business=ikzsandzakkassel@gmail.com&currency_code=EUR")
 
     var body: some View {
         ZStack {
@@ -57,7 +55,7 @@ struct ContentView: View {
                 // Kassels Wappen ist genau 96 hoch; beim Verbandszeichen kommt der Gemeindename
                 // darunter, deshalb nur eine Mindesthöhe statt einer festen.
                 communityEmblem.frame(minHeight: 96)
-                linkBlock(url: donateURL) {
+                linkBlock(url: donateURLForSelection) {
                     VStack(spacing: 3) {
                         Image(systemName: "heart.fill").font(.system(size: 30)).foregroundColor(.appPrimary)
                         Text(L("action_donate")).font(.inter(16, .bold)).foregroundColor(.appPrimary)
@@ -79,6 +77,21 @@ struct ContentView: View {
             return address.replacingOccurrences(of: ", ", with: "\n")
         }
         return catalog.selectedLocation?.name ?? ""
+    }
+
+    /// Der Spendenlink der GEWÄHLTEN Gemeinde.
+    ///
+    /// Hier stand Kassels PayPal-Konto fest im Code — bei allen einundachtzig Gemeinden. Die
+    /// Adresse daneben folgte längst der Auswahl, das Herz nicht: Wer in Nürnberg spendete,
+    /// spendete nach Kassel.
+    ///
+    /// Ohne hinterlegten Link bleibt das Herz stehen, führt aber nirgendwohin (`linkBlock` macht
+    /// dann keinen Link daraus). Ein Knopf, der zur falschen Kasse führt, wäre schlimmer als
+    /// einer, der wartet, bis die Gemeinde ihren Link schickt.
+    private var donateURLForSelection: URL? {
+        guard let raw = CommunityCatalog.shared.selected?.donationUrl,
+              !raw.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
+        return URL(string: raw)
     }
 
     /// Karten-Link auf die gewählte Gemeinde statt fest auf Kassel.

@@ -173,7 +173,7 @@ actor GeminiTranslator {
     private static func buildPrompt(title: String, body: String) -> String {
         """
         You are a professional translator for the mobile app of the Bosniak (Sandžak) Muslim community
-        mosque "IGBD-Gemeinde Sandžak-Kassel" in Kassel, Germany. You translate short community
+        mosque "\(CommunitySelection.communityName ?? "IGBD")" in Germany. You translate short community
         announcements (prayer/event notices) for ordinary members.
 
         Translate the announcement below into ALL of these languages and return STRICT JSON.

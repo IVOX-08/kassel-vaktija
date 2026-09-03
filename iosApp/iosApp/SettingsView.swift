@@ -352,24 +352,75 @@ private struct AboutCard: View {
     @State private var showCommunityLogin = false
     @State private var showHeadLogin = false
 
-    private let maps = "https://www.google.com/maps/search/?api=1&query=Schwanenweg+13%2C+34123+Kassel"
-    private let donate = "https://www.paypal.com/donate/?business=ikzsandzakkassel@gmail.com&currency_code=EUR"
+    /// Alles in dieser Karte kommt aus dem Verzeichnis, nichts mehr aus dem Quelltext.
+    ///
+    /// Vorher standen Name, Adresse, E-Mail, Spendenlink und der Imam als feste Zeichenketten
+    /// hier — Kassels Daten, gezeigt bei allen einundachtzig Gemeinden. Wer in Berlin seine
+    /// Gemeinde gewaehlt hatte, rief bei einem Anruf auf den Imam Kassels Imam an, und eine
+    /// Spende ging an Kassels Konto.
+    ///
+    /// Eine neue Gemeinde braucht deshalb keinen Codeeingriff mehr: Spendenlink, E-Mail und
+    /// Nummer des Imams gehoeren in `communities/{id}` — siehe docs/multi-gemeinde/GEMEINDE-DATEN.md.
+    @ObservedObject private var catalog = CommunityCatalog.shared
+
+    private var community: CommunityInfo? { catalog.selected }
 
     private var version: String {
         (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0"
+    }
+
+    /// Zeigt nur, was wirklich hinterlegt ist. Eine leere Zeile „E-Mail:" ohne Adresse ist
+    /// schlechter als gar keine — sie sieht aus wie ein Fehler der App.
+    private func filled(_ value: String?) -> String? {
+        guard let v = value?.trimmingCharacters(in: .whitespacesAndNewlines), !v.isEmpty else { return nil }
+        return v
+    }
+
+    /// Kartenlink auf die Adresse der Gemeinde.
+    private var mapsURL: String? {
+        guard let query = filled(community?.address) ?? filled(catalog.selectedLocation?.name),
+              let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        else { return nil }
+        return "https://www.google.com/maps/search/?api=1&query=\(encoded)"
+    }
+
+    /// Aus „0176 3037 2402" wird „tel:017630372402" — Leerzeichen und Striche muss man
+    /// wegnehmen, sonst oeffnet iOS den Waehler gar nicht.
+    private func telURL(_ number: String) -> String {
+        "tel:" + number.filter { $0.isNumber || $0 == "+" }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             SettingHeader(L("settings_about_header"))
             SettingCard {
-                Text("IGBD-Gemeinde Sandžak-Kassel")
+                Text(community?.name ?? L("community_none_selected"))
                     .font(.inter(16, .bold)).foregroundColor(.appPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
                 Divider()
-                row("mappin.and.ellipse", "Schwanenweg 13\n34123 Kassel") { open(maps) }
-                row("envelope.fill", "vorstand@igbdsandzakkassel.de") { open("mailto:vorstand@igbdsandzakkassel.de") }
-                row("heart.fill", L("action_donate")) { open(donate) }
-                row("person.fill", "\(L("about_imam")): Alen Golac\n0176 3037 2402") { open("tel:017630372402") }
+                if let address = filled(community?.address) {
+                    row("mappin.and.ellipse", address.replacingOccurrences(of: ", ", with: "\n")) {
+                        if let u = mapsURL { open(u) }
+                    }
+                }
+                if let email = filled(community?.email) {
+                    row("envelope.fill", email) { open("mailto:\(email)") }
+                }
+                if let phone = filled(community?.phone) {
+                    row("phone.fill", phone) { open(telURL(phone)) }
+                }
+                if let website = filled(community?.website) {
+                    row("globe", website) { open(website) }
+                }
+                if let donate = filled(community?.donationUrl) {
+                    row("heart.fill", L("action_donate")) { open(donate) }
+                }
+                if let imam = filled(community?.imamName) {
+                    let number = filled(community?.imamPhone)
+                    row("person.fill", "\(L("about_imam")): \(imam)" + (number.map { "\n" + $0 } ?? "")) {
+                        if let number { open(telURL(number)) }
+                    }
+                }
             }
 
             // Sichtbar für alle Gemeinden: hier meldet sich der Vorstand einer Gemeinde an.
