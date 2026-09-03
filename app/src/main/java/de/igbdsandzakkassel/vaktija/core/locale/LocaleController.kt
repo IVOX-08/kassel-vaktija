@@ -45,6 +45,26 @@ object LocaleController {
             .apply()
     }
 
+    /**
+     * The language to use for anything built OUTSIDE an Activity — a notification, a widget.
+     *
+     * Ask this, never [current], anywhere a background wake-up is possible. [current] falls back to
+     * [AppLanguage.DEFAULT] (Bosnian) when `AppCompatDelegate` reads empty, and it reads empty
+     * exactly in the situations background code runs in. A fallback is the right answer for a
+     * screen, which has to render something; it is the wrong answer for a stored setting, because
+     * it is indistinguishable from a real choice once written down.
+     *
+     * That is not hypothetical: the tracker asked "Jesi li klanjao Akšam?" of a user who had set
+     * the app to German. The guessed tag had been written over his real one.
+     *
+     * Returns null only when the app has genuinely never been told a language.
+     */
+    fun resolvedTag(context: Context): String? {
+        val locales = AppCompatDelegate.getApplicationLocales()
+        if (!locales.isEmpty) return locales[0]?.language
+        return persistedTag(context)
+    }
+
     /** The last selected language tag, or null if none was ever persisted. */
     fun persistedTag(context: Context): String? =
         context.applicationContext

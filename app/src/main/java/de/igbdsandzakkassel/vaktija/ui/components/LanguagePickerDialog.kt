@@ -61,54 +61,7 @@ fun LanguageFlag(
     )
 }
 
-/**
- * Language selection dialog. Applying a choice calls [LocaleController.set], which persists the
- * selection and recreates the activity so the new locale + layout direction take effect.
- */
-@Composable
-fun LanguagePickerDialog(onDismiss: () -> Unit) {
-    var selected by remember { mutableStateOf(LocaleController.current()) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.language_picker_title)) },
-        text = {
-            Column {
-                AppLanguage.entries.forEach { language ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = selected == language,
-                                onClick = { selected = language },
-                            )
-                            .padding(vertical = 8.dp),
-                    ) {
-                        RadioButton(
-                            selected = selected == language,
-                            onClick = { selected = language },
-                        )
-                        LanguageFlag(language)
-                        Text(stringResource(language.displayNameRes))
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = {
-                LocaleController.set(selected)
-                onDismiss()
-            }) { Text(stringResource(android.R.string.ok)) }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(android.R.string.cancel)) }
-        },
-    )
-}
-
-/** Small pill button (current flag + label) that opens the [LanguagePickerDialog]. */
+/** Small pill button (current flag + label) that opens the in-app language picker. */
 @Composable
 fun ChangeLanguagePill(modifier: Modifier = Modifier) {
     val context = LocalContext.current

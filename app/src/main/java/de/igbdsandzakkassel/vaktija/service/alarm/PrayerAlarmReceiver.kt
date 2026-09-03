@@ -18,6 +18,7 @@ import de.igbdsandzakkassel.vaktija.service.audio.AdhanForegroundService
 import de.igbdsandzakkassel.vaktija.service.dnd.DndController
 import de.igbdsandzakkassel.vaktija.data.tracker.PrayerLogRepository
 import de.igbdsandzakkassel.vaktija.service.notification.PrayerNotifier
+import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.service.tracker.TrackerNotifier
 import java.time.LocalDate
 import de.igbdsandzakkassel.vaktija.service.widget.PrayerTimesWidgetReceiver
@@ -174,7 +175,13 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                                 context,
                                 prayer,
                                 LocalDate.now(),
-                                settingsRepository.getLanguageTag(),
+                                // The persisted tag first, exactly like the news notifier, the
+                                // push service and the widget already do. This one line was the
+                                // odd one out: it read only the settings copy, which a
+                                // locale-change recreate could have overwritten with a guessed
+                                // Bosnian -- and then the question arrived in the wrong language.
+                                LocaleController.resolvedTag(context)
+                                    ?: settingsRepository.getLanguageTag(),
                             )
                         }
                         // Only one window is ever open, so every other question in the shade is

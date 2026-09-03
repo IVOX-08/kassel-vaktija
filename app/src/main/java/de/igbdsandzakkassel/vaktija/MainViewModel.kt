@@ -1,8 +1,10 @@
 package de.igbdsandzakkassel.vaktija
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.settings.SettingsRepository
 import de.igbdsandzakkassel.vaktija.data.settings.ThemeMode
@@ -17,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val settingsRepository: SettingsRepository,
     communityRepository: CommunityRepository,
 ) : ViewModel() {
@@ -33,9 +36,20 @@ class MainViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     init {
-        // Persist the current app-language tag so background workers can localize notifications
-        // (read reliably here with an Activity present, unlike on a cold background wake-up).
-        viewModelScope.launch { settingsRepository.setLanguageTag(LocaleController.current().tag) }
+        // Mirror the app-language tag into settings so background code can localize notifications.
+        //
+        // The `?.let` is the whole point of this line. It used to write
+        // `LocaleController.current().tag`, which falls back to Bosnian whenever
+        // AppCompatDelegate reads empty — and it reads empty for a moment right after a
+        // locale-change Activity recreate, which is precisely when this runs. So a user who had
+        // just chosen German got "bs" written over his real choice, and the prayer tracker then
+        // asked him "Jesi li klanjao Akšam?" for good.
+        //
+        // A guess must never be stored as if it were an answer. When we do not know, we leave
+        // what is there.
+        viewModelScope.launch {
+            LocaleController.resolvedTag(context)?.let { settingsRepository.setLanguageTag(it) }
+        }
     }
 
     fun completeOnboarding() {
