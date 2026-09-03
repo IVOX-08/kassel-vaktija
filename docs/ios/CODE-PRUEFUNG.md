@@ -7,9 +7,91 @@ Geprüft: 7540 Zeilen Swift (47 Dateien), 728 Zeilen gemeinsames Kotlin, `functi
 
 **39 Befunde.** Nichts davon ist erfunden — jeder Punkt nennt Datei und Zeile.
 
+> ## Stand 04.09.2026: 38 von 39 behoben
+>
+> Die Zeilennummern unten beschreiben den Zustand **vor** der Änderung. Was daraus geworden ist,
+> steht in der Tabelle gleich darunter und ausführlich in den Commit-Botschaften.
+>
+> **Nicht geändert wurde Punkt 31** (der Gemini-Schlüssel im App-Paket) — mit Begründung, siehe
+> unten.
+>
+> **Noch nicht wirksam ist Abschnitt C:** Die Cloud Functions sind neu geschrieben, aber
+> `firebase deploy` ist noch nicht gelaufen. Bis dahin erfährt weiterhin niemand von einer neuen
+> Mitteilung.
+
 > **Das Ziel dieser Prüfung:** In Zukunft sollen für eine Gemeinde nur noch Spendenlink,
 > E-Mail und Imam-Nummer eingetragen werden — als Daten, ohne dass jemand Code anfasst.
 > Abschnitt A sagt, was dem heute im Weg steht.
+
+---
+
+## Was aus den 39 Punkten geworden ist
+
+| | Befund | Stand |
+|---|---|---|
+| 1 | Kontaktkarte fest auf Kassel | behoben — kommt aus dem Verzeichnis |
+| 2 | Spendenknopf immer nach Kassel | behoben — `donationUrl` der Gemeinde |
+| 3 | `phone`/`email`/`website` weggeworfen | behoben — in `CommunityInfo` aufgenommen |
+| 4 | Spendenlink nur bei einer Gemeinde | Felder da, **Daten fehlen** → Aufgabe des Verbands |
+| 5 | Zeiten für Kassel gerechnet | behoben — Koordinaten durchgereicht, 3 Tests |
+| 6 | Qibla ab Kassel | behoben |
+| 7 | Übersetzer hält alle für Kassel | behoben |
+| 8 | Mitteilungen bleiben bei der alten Gemeinde | behoben — `.communityDidChange` |
+| 9 | Ikamet bleibt bei der alten Gemeinde | behoben |
+| 10 | Zwischenspeicher ohne Gemeinde | behoben — Gemeinde im Schlüssel |
+| 11 | Gemeinden verschwinden aus der Liste | behoben |
+| 12 | Kopfbereich stimmt nur durch Zufall | behoben — Katalog wird beobachtet |
+| 13 | Auslöser für Mitteilungen feuert nie | behoben — **noch bereitzustellen** |
+| 14 | dito bei den Gebetszeiten | behoben — **noch bereitzustellen** |
+| 15 | ein Thema für alle 81 Gemeinden | behoben — drei Themen je Gerät |
+| 16 | leiser Ton nicht ausgerollt | Code fertig — **noch bereitzustellen** |
+| 17 | Rückfalltitel nur auf Deutsch | behoben — je Sprache gesendet |
+| 18 | Ramadan-Aufzeichnung geht verloren | behoben — `f_` in der Umzugsliste |
+| 19 | Schalter „Ton im Lautlos-Modus" ohne Wirkung | entfernt |
+| 20 | `news_sound` tot | entfernt |
+| 21 | gerechnete Zeiten nicht erkennbar | behoben — Hinweis auf der Startseite |
+| 22 | Isha nach Mitternacht nicht bestätigbar | behoben — `activeDay()` |
+| 23 | „Adhan testen" stoppt Musik dauerhaft | behoben — Sitzung wird zurückgegeben |
+| 24 | Absturz bei falschem Kürzel | behoben — kein Ausrufezeichen mehr |
+| 25 | verbandsweite Mitteilungen nicht löschbar | behoben |
+| 26 | Android 1.1.3 ohne Ikamet-Änderungen | behoben — `config/community` wird mitgeschrieben |
+| 27 | negative Vorwarnminuten | behoben |
+| 28 | Ramadan-Suche im Sekundentakt | behoben — je Tag gepuffert |
+| 29 | ein Lesevorgang je Beitrag, immer wieder | behoben — einmal je Beitrag |
+| 30 | neuer `DateFormatter` je Aufruf | behoben |
+| 31 | Gemini-Schlüssel im App-Paket | **offen, mit Absicht** — siehe unten |
+| 32 | toter Kartenlink | entfernt |
+| 33 | `_check` im Verzeichnis | entfernt |
+| 34 | drei Texte fehlen in fünf Sprachen | ergänzt |
+| 35 | 17 Übersetzungen ohne Verwendung | entfernt |
+| 36 | Widget-Beschreibung nur auf Deutsch | behoben — acht Sprachen |
+| 37 | Widget für die kleine Größe nicht gebaut | behoben — eigene Fassung |
+| 38 | Kommentar stimmt nicht mehr | berichtigt |
+| 39 | zwei Kürzel je Stadt | vereinheitlicht |
+
+Alle acht Sprachdateien tragen jetzt **exakt dieselben 264 Schlüssel**. Die Typprüfung gegen das
+iOS-SDK meldet **null Fehler und null Warnungen**; die Kotlin-Tests laufen durch, drei davon neu.
+
+---
+
+## Warum Punkt 31 offen bleibt
+
+Der Gemini-Schlüssel liegt im App-Paket und lässt sich aus der IPA auslesen. Die saubere Lösung
+ist bekannt: Das Übersetzen wandert in eine Cloud Function, der Schlüssel bleibt auf dem Server,
+und die App schickt nur noch den Text hin.
+
+Das ist aber **keine Änderung, die eine Seite allein machen kann**:
+
+1. Der heutige Schlüssel steckt in bereits ausgelieferten Builds — beider Plattformen. Er muss
+   **ersetzt** werden, sonst ändert sich nichts an der Gefahr. Das kann nur der Kontoinhaber.
+2. Solange die Android-App den Schlüssel weiter im APK mitliefert, ist er weiter auslesbar. Ein
+   Umbau nur auf iOS beseitigt die Sache nicht, er verdoppelt nur die Wege.
+3. Die App liegt gerade bei Apple zur Prüfung. Der Prüfer geht mit dem Demo-Konto durch den
+   Verwaltungsbereich. Das Verfassen einer Mitteilung ausgerechnet jetzt umzubauen, wäre der
+   falsche Zeitpunkt.
+
+**Vorschlag:** nach der Freigabe, gemeinsam mit der Android-Seite, in dieser Reihenfolge —
+Cloud Function schreiben, beide Apps umstellen, dann den alten Schlüssel sperren.
 
 ---
 
