@@ -180,3 +180,51 @@ eigener Trefferbereich in der Play-Suche, kostet aber nichts als die Übersetzun
 - **Der Signaturschlüssel.** Ein anderer Schlüssel bedeutet eine andere App, und die bestehenden
   Nutzer bekämen nie wieder ein Update.
 - **Die Kategorie und die Altersfreigabe**, solange sich am Inhalt nichts ändert.
+
+---
+
+## 6 · Versionshinweise („Was ist neu") für 1.2.1
+
+Grenze: 500 Zeichen je Sprache. Geprüft: Deutsch 499, Bosnisch 438.
+
+**Deutsch**
+
+```
+Neu: IGBD Vaktija – jetzt für alle Gemeinden der IGBD in Deutschland.
+
+• Gemeinde auswählen: die Zeiten deiner eigenen Moschee, mit Iqamah und Džuma
+• Gebets-Tracker: nach jedem Gebet eine kurze Frage, dazu deine Serie
+• Koran in zwei Schriftarten, mit Tedschwid-Farben und Querformat
+• Ruhige Klingeltöne statt Adhan, für Arbeit und Schule
+• Mitteilungen deiner Gemeinde mit Instagram, Facebook und YouTube
+• Hadith des Tages: 286 statt 12
+• Qibla genauer, neues Symbol, kleinere und schnellere App
+```
+
+**Bosanski**
+
+```
+Novo: IGBD Vaktija – sada za sve džemate IGBD-a u Njemačkoj.
+
+• Odabir džemata: vaktovi tvoje džamije, sa ikametima i džumom
+• Praćenje namaza: kratko pitanje poslije svakog namaza i tvoj niz
+• Kur'an u dva pisma, sa tedžvidskim bojama i vodoravnim prikazom
+• Tihi tonovi umjesto ezana, za posao i školu
+• Obavijesti džemata uz Instagram, Facebook i YouTube
+• Hadis dana: 286 umjesto 12
+• Tačnija kibla, novi znak, manja i brža aplikacija
+```
+
+---
+
+## 7 · Reihenfolge beim Hochladen
+
+Die Reihenfolge ist nicht beliebig: die **verwaltete Veröffentlichung** muss VOR dem Einreichen
+eingeschaltet sein, sonst geht die Version sofort live und wartet nicht auf die iPhone-App.
+
+1. Offenen Versionsentwurf verwerfen (Produktion → Releases → Entwurf → verwerfen).
+2. Veröffentlichungen – Übersicht → **verwaltete Veröffentlichung EIN**.
+3. Interner Test → neues Release → `app-release.aab` → auf dem eigenen Telefon installieren.
+4. Erst wenn das läuft: Produktion → neues Release → dieselbe Datei → Versionshinweise oben.
+5. Google prüft. Die Version bleibt stehen, bis du drückst.
+6. iPhone-App ist live → App-Store-Link in der App eintragen → in Play auf Veröffentlichen drücken.
