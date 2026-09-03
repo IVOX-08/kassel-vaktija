@@ -148,8 +148,6 @@
 "news_delete" = "حذف";
 "news_delete_confirm" = "حذف هذا الإعلان؟";
 "settings_notification_sound" = "صوت التنبيه";
-"settings_play_when_silent" = "تشغيل الأذان في الوضع الصامت";
-"settings_play_when_silent_hint" = "عند الإيقاف: إذا كان الهاتف صامتًا أو على الاهتزاز، يظهر إشعار صامت فقط.";
 "sound_short_adhan" = "أذان قصير";
 "sound_chime" = "نغمة تنبيه";
 "notif_channel_news" = "إعلانات الجماعة";
@@ -256,7 +254,6 @@
 "sound_gong" = "غونغ";
 "sound_soft" = "نغمة هادئة";
 "sound_announcement" = "النغمة الافتراضية";
-"settings_news_sound" = "نغمة الإعلانات";
 "qibla_calibrate" = "البوصلة غير دقيقة – حرّك الهاتف على شكل الرقم 8.";
 "qibla_use_device" = "استخدم موقعي";
 "qibla_use_mosque" = "استخدم المسجد";
@@ -264,3 +261,7 @@
 "admin_import_done" = "تمت كتابة %1$d جماعة.";
 "admin_cleanup_communities" = "إزالة المكررات القديمة";
 "admin_cleanup_done" = "تمت الإزالة: %1$d";
+"news_translating" = "جارٍ الترجمة…";
+"news_translate_partial" = "تعذّرت الترجمة إلى بعض اللغات. أتريد النشر رغم ذلك؟";
+"news_post_failed" = "تعذّر إرسال الإعلان.";
+"widget_description" = "وقت الصلاة القادم مع العد التنازلي.";

@@ -24,6 +24,18 @@ struct ContentView: View {
             ScrollView {
                 VStack(spacing: 14) {
                     header
+                    // Die App hatte den Unterschied die ganze Zeit gewusst und nie gezeigt:
+                    // `official` wurde gepflegt und von keiner Ansicht gelesen. Wenn vaktija.eu
+                    // nicht erreichbar ist, stehen gerechnete Zeiten auf dem Schirm — und die
+                    // koennen in unseren Breiten um Minuten danebenliegen. Wer das nicht weiss,
+                    // haelt sie fuer die Zeiten seiner Moschee.
+                    if !store.official {
+                        Text(L("cache_stale_warning"))
+                            .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 16)
+                    }
                     countdownCard.padding(.horizontal, 12)
                     // The announced Eid prayer is the community's most-asked question, so it leads.
                     if let bajram = activeBajram { bajramCard(bajram) }

@@ -148,8 +148,6 @@
 "news_delete" = "Fshi";
 "news_delete_confirm" = "Të fshihet ky njoftim?";
 "settings_notification_sound" = "Tingulli i njoftimit";
-"settings_play_when_silent" = "Luaje ezanin edhe në modalitetin pa zë";
-"settings_play_when_silent_hint" = "Çaktivizuar: kur telefoni është pa zë ose me dridhje, shfaqet vetëm një njoftim i heshtur.";
 "sound_short_adhan" = "Ezan i shkurtër";
 "sound_chime" = "Tingull sinjali";
 "notif_channel_news" = "Njoftime";
@@ -256,7 +254,6 @@
 "sound_gong" = "Gong";
 "sound_soft" = "Ton i butë";
 "sound_announcement" = "Toni standard";
-"settings_news_sound" = "Toni i njoftimeve";
 "qibla_calibrate" = "Busulla është e pasaktë – lëviz telefonin në formë tetëshi (8).";
 "qibla_use_device" = "Përdor vendndodhjen time";
 "qibla_use_mosque" = "Përdor xhaminë";
@@ -264,3 +261,7 @@
 "admin_import_done" = "%1$d xhemate u shkruan.";
 "admin_cleanup_communities" = "Hiq dublikatat e vjetra";
 "admin_cleanup_done" = "U hoqën: %1$d";
+"news_translating" = "Duke përkthyer…";
+"news_translate_partial" = "Përkthimi në disa gjuhë dështoi. Ta publikojmë gjithsesi?";
+"news_post_failed" = "Njoftimi nuk u dërgua.";
+"widget_description" = "Koha e ardhshme e namazit me numërim mbrapsht.";

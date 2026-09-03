@@ -221,6 +221,15 @@ final class AdminStore: ObservableObject {
         do {
             try await Community.rules
                 .setData(data, merge: true)
+            // Die veroeffentlichte Android-Version 1.1.3 kennt keine Gemeindeauswahl und liest
+            // weiterhin `config/community`. Seit dem Umbau schreibt dort niemand mehr hin —
+            // ihre Nutzer saehen also eingefrorene Ikamet-Zeiten. Nur fuer die Heimatgemeinde,
+            // denn nur die kannte die alte Fassung, und ohne Abwarten: Ein Fehlschlag hier darf
+            // das Speichern nicht scheitern lassen.
+            if Community.id == CommunitySelection.fallbackCommunityId {
+                Firestore.firestore().collection("config").document("community")
+                    .setData(data, merge: true) { _ in }
+            }
             return true
         } catch {
             return false
@@ -266,11 +275,18 @@ final class AdminStore: ObservableObject {
 
     /// Deletes an announcement and its image. The image delete is best-effort: a leftover image
     /// document without its announcement is invisible to readers.
-    func deleteNews(_ id: String) async -> Bool {
+    ///
+    /// `broadcast` entscheidet ueber den Pfad. Vorher loeschte diese Zeile immer unter
+    /// `communities/{id}/news`, und der Loeschknopf war bei verbandsweiten Mitteilungen deshalb
+    /// ausgeblendet: Der Hauptadministrator konnte an einundachtzig Gemeinden senden und es
+    /// danach nicht mehr zuruecknehmen.
+    func deleteNews(_ id: String, broadcast: Bool = false) async -> Bool {
         guard FirebaseApp.app() != nil else { return false }
+        let collection = broadcast ? Community.broadcasts : Community.news
+        let images = broadcast ? Community.broadcastImages : Community.newsImages
         do {
-            try await Community.news.document(id).delete()
-            try? await Community.newsImages.document(id).delete()
+            try await collection.document(id).delete()
+            try? await images.document(id).delete()
             return true
         } catch {
             return false

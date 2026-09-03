@@ -102,7 +102,7 @@ struct NewsComposeView: View {
         }
         .tint(.brandGreen)
         // Single-parameter onChange: the two-parameter form needs iOS 17, we ship iOS 16.
-        .onChange(of: pickerItem) { item in
+        .onChange(of: pickerItem) { _, item in
             Task { @MainActor in
                 let data = await NewsComposeView.jpeg(from: item)
                 imageData = data

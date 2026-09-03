@@ -303,8 +303,12 @@ enum NotificationScheduler {
                              minutes: Int, day: Date, sound: UNNotificationSound) -> [Planned] {
         let cal = Calendar.current
         var comps = cal.dateComponents([.year, .month, .day], from: day)
-        comps.hour = (minutes / 60) % 24
-        comps.minute = minutes % 60
+        // Auf den Tag zurechtgebogen. Eine Vorwarnung kann rechnerisch vor Mitternacht fallen
+        // (Gebetszeit minus Vorwarnzeit), und negative Minuten landeten dann am VORTAG — also in
+        // der Vergangenheit und damit im Papierkorb, ohne dass etwas darauf hinwies.
+        let m = ((minutes % 1440) + 1440) % 1440
+        comps.hour = m / 60
+        comps.minute = m % 60
         guard let fire = cal.date(from: comps), fire > Date() else { return [] }
 
         let content = UNMutableNotificationContent()

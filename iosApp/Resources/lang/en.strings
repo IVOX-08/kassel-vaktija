@@ -151,8 +151,6 @@
 "admin_save" = "Save";
 "admin_saved" = "Saved";
 "settings_notification_sound" = "Notification sound";
-"settings_play_when_silent" = "Play Adhan in silent mode";
-"settings_play_when_silent_hint" = "Off: when the phone is muted or on vibrate, only a quiet notification is shown.";
 "sound_short_adhan" = "Short Adhan";
 "sound_chime" = "Chime";
 "notif_channel_news" = "Announcements";
@@ -259,7 +257,6 @@
 "sound_gong" = "Gong";
 "sound_soft" = "Soft tone";
 "sound_announcement" = "Default tone";
-"settings_news_sound" = "Announcement tone";
 "qibla_calibrate" = "Compass inaccurate – move your phone in a figure-8 motion.";
 "qibla_use_device" = "Use my location";
 "qibla_use_mosque" = "Use the mosque";
@@ -267,3 +264,4 @@
 "admin_import_done" = "%1$d communities written.";
 "admin_cleanup_communities" = "Remove old duplicates";
 "admin_cleanup_done" = "Removed: %1$d";
+"widget_description" = "Next prayer time with a countdown.";

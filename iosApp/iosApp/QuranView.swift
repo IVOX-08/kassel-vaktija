@@ -159,7 +159,7 @@ private struct SurahReader: View {
                         }
                         .tabViewStyle(.page(indexDisplayMode: .never))
                         .environment(\.layoutDirection, .rightToLeft)
-                        .onChange(of: current) { v in
+                        .onChange(of: current) { _, v in
                             QuranStore.setResume(id, v); marked = QuranStore.isMarked("\(id):\(v)")
                         }
                     }

@@ -7,7 +7,6 @@ struct SettingsView: View {
     @AppStorage("appColorScheme") private var theme = "system"
     // 6.2 prayer notifications
     @AppStorage("notif_sound") private var soundRaw = NotifSound.adhan.rawValue
-    @AppStorage("notif_silent") private var playInSilent = false
     /// Die Frage des Trackers nach jedem Gebet. Standardmaessig an, aber abschaltbar: Wer den
     /// Tracker nicht nutzt, wuerde sonst fuenfmal taeglich gefragt — und schaltete am Ende alle
     /// Meldungen ab, auch den Adhan.
@@ -65,8 +64,8 @@ struct SettingsView: View {
         .tint(.brandGreen)
         .sheet(isPresented: $showCommunityPicker) { CommunityPickerView() }
         .onAppear { refreshAuth(); admin.start(); catalog.start() }
-        .onChange(of: soundRaw) { _ in rearm() }
-        .onChange(of: trackerAsk) { _ in rearm() }
+        .onChange(of: soundRaw) { rearm() }
+        .onChange(of: trackerAsk) { rearm() }
         .fullScreenCover(isPresented: $showLangPicker) {
             LanguagePickerView(
                 showClose: true,
@@ -137,13 +136,11 @@ struct SettingsView: View {
                         }
                     } label: { PillLabel(sound.label) }
                 }
-                Divider()
-                VStack(alignment: .leading, spacing: 4) {
-                    Toggle(L("settings_play_when_silent"), isOn: $playInSilent)
-                        .tint(.brandGreen).font(.inter(15, .medium))
-                    Text(L("settings_play_when_silent_hint"))
-                        .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
-                }
+                // Hier stand ein Schalter „Ton im Lautlos-Modus". Er wurde geschrieben und von
+                // keiner Zeile gelesen — er KONNTE nichts bewirken: iOS laesst keine App den
+                // Lautlos-Schalter uebergehen. Derselbe Fall wie die Auto-Stummschaltung, die
+                // vorher schon herausgenommen wurde. Ein Versprechen, das die Oberflaeche nicht
+                // halten kann, ist schlimmer als eine fehlende Einstellung.
                 Divider()
                 VStack(alignment: .leading, spacing: 4) {
                     Toggle(L("settings_tracker_ask"), isOn: $trackerAsk)
@@ -306,8 +303,8 @@ private struct PrayerNotifCard: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .onChange(of: enabled) { _ in onChange() }
-        .onChange(of: warn) { _ in onChange() }
+        .onChange(of: enabled) { onChange() }
+        .onChange(of: warn) { onChange() }
     }
 }
 

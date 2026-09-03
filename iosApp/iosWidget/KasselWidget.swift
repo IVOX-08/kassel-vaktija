@@ -114,6 +114,11 @@ struct Provider: TimelineProvider {
 struct KasselWidgetEntryView: View {
     var entry: PrayerEntry
     @Environment(\.colorScheme) private var scheme
+    /// Das kleine Widget ist 155 mal 155 Punkte. Der Aufbau darunter war waagerecht — Wappen,
+    /// Flamme und Gemeindename links, daneben ein Countdown in 44 Punkt. Das passt in der
+    /// mittleren Groesse und in der kleinen nicht. Statt die kleine Groesse zu streichen, bekommt
+    /// sie eine eigene, senkrechte Fassung: dieselben Angaben, nur untereinander und kleiner.
+    @Environment(\.widgetFamily) private var family
     private let amber = Color(red: 0xE0 / 255.0, green: 0xA9 / 255.0, blue: 0x3A / 255.0) // #E0A93A
 
     /// Kassel trägt sein eigenes Wappen, jede andere Gemeinde das Zeichen des Verbands — dieselbe
@@ -124,10 +129,64 @@ struct KasselWidgetEntryView: View {
     }
 
     var body: some View {
+        Group {
+            if family == .systemSmall { small } else { medium }
+        }
+        .environment(\.layoutDirection, Localization.shared.layoutDirection)
+        .widgetBackgroundClear()
+    }
+
+    // MARK: klein
+
+    @ViewBuilder private var small: some View {
+        VStack(spacing: 4) {
+            Image(uiImage: UIImage(named: crestName) ?? UIImage())
+                .resizable().scaledToFit().frame(height: 30)
+            if let prayer = entry.asking {
+                Text(String(format: L("tracker_ask_title"), L(prayer.nameKey)))
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.primary)
+                    .lineLimit(2).minimumScaleFactor(0.7)
+                    .multilineTextAlignment(.center)
+                HStack(spacing: 6) {
+                    answerButton(L("action_yes"), prayer: prayer, answer: .yes, filled: true, compact: true)
+                    answerButton(L("action_no"), prayer: prayer, answer: .no, filled: false, compact: true)
+                }
+            } else {
+                Text(L(entry.nameKey))
+                    .font(.system(size: 13, weight: .bold)).foregroundColor(amber)
+                    .lineLimit(1).minimumScaleFactor(0.7)
+                Text(timerInterval: Date()...max(entry.target, Date().addingTimeInterval(1)), countsDown: true)
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1).minimumScaleFactor(0.5)
+                Text(entry.timeHHmm)
+                    .font(.system(size: 12)).foregroundStyle(.secondary)
+            }
+            HStack(spacing: 3) {
+                Text("🔥").font(.system(size: 11))
+                Text("\(PrayerTracker.streak())").font(.system(size: 11, weight: .bold))
+                Text("·").foregroundStyle(.secondary)
+                Text("\(PrayerTracker.answeredCount()) / \(TrackedPrayer.allCases.count)")
+                    .font(.system(size: 11, weight: .medium))
+            }
+            .foregroundStyle(.primary)
+            .lineLimit(1).minimumScaleFactor(0.8)
+        }
+        .padding(8)
+    }
+
+    /// Kassel traegt sein Wappen, jede andere Gemeinde das Zeichen des Verbands.
+    private var crestName: String {
+        isHome ? "widget_crest" : (scheme == .dark ? "logo_igbd_dark" : "logo_igbd")
+    }
+
+    // MARK: mittel
+
+    @ViewBuilder private var medium: some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(spacing: 6) {
-                Image(uiImage: UIImage(named: isHome ? "widget_crest"
-                                                     : (scheme == .dark ? "logo_igbd_dark" : "logo_igbd")) ?? UIImage())
+                Image(uiImage: UIImage(named: crestName) ?? UIImage())
                     .resizable().scaledToFit()
                     .frame(width: 64, height: 64)
                 // Flamme und Tagesstand direkt unter dem Wappen — die einzige Zahl, die man
@@ -161,8 +220,6 @@ struct KasselWidgetEntryView: View {
             Spacer(minLength: 0)
         }
         .padding(10)
-        .environment(\.layoutDirection, Localization.shared.layoutDirection)
-        .widgetBackgroundClear()
     }
 
     /// Die Frage mit Ja und Nein.
@@ -187,12 +244,12 @@ struct KasselWidgetEntryView: View {
     }
 
     private func answerButton(_ title: String, prayer: TrackedPrayer, answer: TrackerAnswer,
-                              filled: Bool) -> some View {
+                              filled: Bool, compact: Bool = false) -> some View {
         Button(intent: AnswerPrayerIntent(prayer: prayer, answer: answer)) {
             Text(title)
-                .font(.system(size: 15, weight: .semibold))
+                .font(.system(size: compact ? 12 : 15, weight: .semibold))
                 .foregroundColor(filled ? .white : .primary)
-                .padding(.horizontal, 18).padding(.vertical, 7)
+                .padding(.horizontal, compact ? 10 : 18).padding(.vertical, compact ? 5 : 7)
                 .background(
                     Capsule().fill(filled ? Color(red: 0, green: 0x83 / 255.0, blue: 0x48 / 255.0)
                                           : Color.primary.opacity(0.12))
@@ -236,8 +293,10 @@ struct KasselWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             KasselWidgetEntryView(entry: entry)
         }
+        // Der Name ist ein Eigenname und bleibt in jeder Sprache gleich; die Zeile darunter nicht.
+        // Sie stand fest auf Deutsch — auch fuer jemanden, der die App auf Arabisch benutzt.
         .configurationDisplayName("IGBD Vaktija")
-        .description("Nächste Gebetszeit mit Countdown.")
+        .description(L("widget_description"))
         .supportedFamilies([.systemMedium, .systemSmall])
     }
 }

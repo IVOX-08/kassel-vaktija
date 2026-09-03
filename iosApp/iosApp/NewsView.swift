@@ -10,7 +10,7 @@ struct NewsView: View {
     /// muessen beim Wechsel mitwandern.
     @ObservedObject private var catalog = CommunityCatalog.shared
     @State private var showBroadcast = false
-    @State private var viewerImage: Data?
+    @State private var viewerImage: FlyerImage?
     @State private var showCompose = false
     @State private var pendingDelete: NewsItem?
 
@@ -57,10 +57,13 @@ struct NewsView: View {
                     ScrollView {
                         LazyVStack(spacing: 12) {
                             ForEach(list) { item in
-                                NewsCard(item: item, canDelete: admin.canPostNews && !item.isBroadcast,
+                                // Verbandsweite Mitteilungen darf loeschen, wer sie senden darf — der
+                                // Hauptadministrator. Die Beitraege der Gemeinde ihr Vorstand.
+                                NewsCard(item: item,
+                                         canDelete: item.isBroadcast ? admin.canBroadcast : admin.canPostNews,
                                          myReaction: store.myReactions[item.id],
                                          loadImage: store.image,
-                                         onImageTap: { viewerImage = $0 },
+                                         onImageTap: { viewerImage = FlyerImage(data: $0) },
                                          onReact: { choice in
                                              Task { await store.react(item, choice) }
                                          },
@@ -102,16 +105,18 @@ struct NewsView: View {
             // dort ist jemand, der gerade eine Mitteilung gelesen hat und mehr will.
             .toolbar { ToolbarItem(placement: .navigationBarTrailing) { socialLinks } }
         }
-        .onAppear { store.start(); admin.start() }
-        .fullScreenCover(item: $viewerImage) { data in
-            FullScreenImageViewer(data: data) { viewerImage = nil }
+        .onAppear { store.start(); admin.start(); catalog.start() }
+        .fullScreenCover(item: $viewerImage) { flyer in
+            FullScreenImageViewer(data: flyer.data) { viewerImage = nil }
         }
         .sheet(isPresented: $showCompose) { NewsComposeView() }
         .sheet(isPresented: $showBroadcast) { NewsComposeView(broadcast: true) }
         .confirmationDialog(L("news_delete_confirm"), isPresented: deleteDialog, titleVisibility: .visible) {
             Button(L("news_delete"), role: .destructive) {
-                if let id = pendingDelete?.id {
-                    Task { _ = await AdminStore.shared.deleteNews(id) }
+                if let item = pendingDelete {
+                    // Der Pfad haengt an der Art der Mitteilung — verbandsweite liegen unter
+                    // `broadcasts`, nicht unter der Gemeinde.
+                    Task { _ = await AdminStore.shared.deleteNews(item.id, broadcast: item.isBroadcast) }
                 }
                 pendingDelete = nil
             }
@@ -303,7 +308,13 @@ private struct FullScreenImageViewer: View {
     }
 }
 
-// Lets `Data` drive .fullScreenCover(item:).
-extension Data: Identifiable {
-    public var id: Int { hashValue }
+/// Traegt das Bild in `.fullScreenCover(item:)`.
+///
+/// Vorher wurde `Data` selbst zu `Identifiable` erklaert. Das ist eine fremde Erweiterung an
+/// einem fremden Typ: Sobald Foundation dieselbe Konformitaet selbst mitbringt, verhaelt sich
+/// die App unvorhersehbar — und der Uebersetzer warnt genau davor. Eine eigene Huelle kostet
+/// nichts und gehoert uns.
+struct FlyerImage: Identifiable {
+    let data: Data
+    var id: Int { data.hashValue }
 }

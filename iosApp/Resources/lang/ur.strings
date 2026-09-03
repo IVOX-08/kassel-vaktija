@@ -148,8 +148,6 @@
 "news_delete" = "حذف کریں";
 "news_delete_confirm" = "کیا یہ اعلان حذف کریں؟";
 "settings_notification_sound" = "اطلاع کی آواز";
-"settings_play_when_silent" = "خاموش موڈ میں اذان چلائیں";
-"settings_play_when_silent_hint" = "بند: اگر فون خاموش یا وائبریشن پر ہو تو صرف خاموش اطلاع دکھائی جاتی ہے۔";
 "sound_short_adhan" = "مختصر اذان";
 "sound_chime" = "گھنٹی";
 "notif_channel_news" = "اعلانات";
@@ -256,7 +254,6 @@
 "sound_gong" = "گونگ";
 "sound_soft" = "نرم آواز";
 "sound_announcement" = "طے شدہ آواز";
-"settings_news_sound" = "اعلان کی آواز";
 "qibla_calibrate" = "قطب نما درست نہیں – فون کو 8 کی شکل میں گھمائیں۔";
 "qibla_use_device" = "میرا مقام استعمال کریں";
 "qibla_use_mosque" = "مسجد استعمال کریں";
@@ -264,3 +261,7 @@
 "admin_import_done" = "%1$d جماعتیں لکھی گئیں۔";
 "admin_cleanup_communities" = "پرانے دوہرے اندراج حذف کریں";
 "admin_cleanup_done" = "حذف شدہ: %1$d";
+"news_translating" = "ترجمہ ہو رہا ہے…";
+"news_translate_partial" = "کچھ زبانوں میں ترجمہ نہیں ہو سکا۔ پھر بھی شائع کریں؟";
+"news_post_failed" = "اعلان بھیجا نہیں جا سکا۔";
+"widget_description" = "اگلی نماز کا وقت اور الٹی گنتی۔";

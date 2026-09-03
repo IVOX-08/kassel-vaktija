@@ -151,8 +151,6 @@
 "admin_save" = "Speichern";
 "admin_saved" = "Gespeichert";
 "settings_notification_sound" = "Benachrichtigungston";
-"settings_play_when_silent" = "Adhan auch im Lautlos-Modus abspielen";
-"settings_play_when_silent_hint" = "Aus: Ist das Handy stumm oder auf Vibration, kommt nur eine stille Benachrichtigung.";
 "sound_short_adhan" = "Kurzer Adhan";
 "sound_chime" = "Signalton";
 "notif_channel_news" = "Mitteilungen";
@@ -259,7 +257,6 @@
 "sound_gong" = "Gong";
 "sound_soft" = "Leiser Ton";
 "sound_announcement" = "Standardton";
-"settings_news_sound" = "Ton für Mitteilungen";
 "qibla_calibrate" = "Kompass ungenau – bewege das Handy in einer 8-Form.";
 "qibla_use_device" = "Meinen Standort verwenden";
 "qibla_use_mosque" = "Moschee verwenden";
@@ -267,3 +264,4 @@
 "admin_import_done" = "%1$d Gemeinden geschrieben.";
 "admin_cleanup_communities" = "Alte Doppel-Einträge entfernen";
 "admin_cleanup_done" = "Entfernt: %1$d";
+"widget_description" = "Nächste Gebetszeit mit Countdown.";

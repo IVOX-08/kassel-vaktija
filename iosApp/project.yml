@@ -80,6 +80,10 @@ targets:
         CODE_SIGN_ENTITLEMENTS: iosApp/iosApp.entitlements
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
+        # Ausdruecklich Swift 5. Ohne die Zeile entscheidet die gerade installierte Xcode-Fassung,
+        # und der Wechsel auf Swift 6 bringt strenge Nebenlaeufigkeitspruefungen mit, an denen der
+        # Cloud-Build ohne Vorwarnung scheitern wuerde -- auf einem Rechner, an dem niemand sitzt.
+        SWIFT_VERSION: "5.0"
         # IGBD - Gemeinde Sandzak-Kassel e.V. (Company-Account).
         DEVELOPMENT_TEAM: RM3FWBH4T7
         # Allow the Gradle build-script phase below to run (Xcode 15+ sandboxing would block it).
@@ -154,6 +158,10 @@ targets:
         # Muss zur App passen, sonst weist App Store Connect das Paket zurück.
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
+        # Ausdruecklich Swift 5. Ohne die Zeile entscheidet die gerade installierte Xcode-Fassung,
+        # und der Wechsel auf Swift 6 bringt strenge Nebenlaeufigkeitspruefungen mit, an denen der
+        # Cloud-Build ohne Vorwarnung scheitern wuerde -- auf einem Rechner, an dem niemand sitzt.
+        SWIFT_VERSION: "5.0"
         # IGBD - Gemeinde Sandzak-Kassel e.V. (Company-Account).
         DEVELOPMENT_TEAM: RM3FWBH4T7
         FRAMEWORK_SEARCH_PATHS:

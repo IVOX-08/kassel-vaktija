@@ -141,29 +141,61 @@ struct RamadanView: View {
 
     // MARK: - Hijri / progress helpers
 
-    private var islamic: Calendar { Calendar(identifier: .islamicUmmAlQura) }
+    /// EIN Kalender statt bei jedem Zugriff ein neuer.
+    ///
+    /// `Calendar(identifier:)` ist nicht billig, und diese Zeile wurde in Schleifen ueber bis zu
+    /// 400 Tage gelesen — in einer Ansicht, die sich wegen des Countdowns jede Sekunde neu
+    /// zeichnet.
+    private static let islamicCalendar = Calendar(identifier: .islamicUmmAlQura)
+    private var islamic: Calendar { Self.islamicCalendar }
+
+    /// Ergebnisse der Ramadan-Suche, gepuffert je Kalendertag.
+    ///
+    /// Beide Suchen (vorwaerts bis zum naechsten ersten Ramadantag, rueckwaerts bis zum
+    /// diesjaehrigen) gehen ueber bis zu 400 Tage mit je zwei Umrechnungen. Bei einem Neuzeichnen
+    /// pro Sekunde waren das grob achthundert Umrechnungen in der Sekunde, den ganzen Bildschirm
+    /// lang. Am Ergebnis aendert sich innerhalb eines Tages nichts.
+    ///
+    /// `nonisolated(unsafe)`: nur aus der Oberflaeche gelesen und geschrieben, also vom
+    /// Hauptthread.
+    nonisolated(unsafe) private static var searchCache: [String: Int] = [:]
+
+    private func cachedSearch(_ name: String, _ compute: () -> Int) -> Int {
+        let key = PrayerTracker.dayKey(now) + "/" + name
+        if let hit = Self.searchCache[key] { return hit }
+        let value = compute()
+        // Ein Eintrag je Tag und Suche; mehr als eine Handvoll kommt nie zusammen.
+        if Self.searchCache.count > 8 { Self.searchCache.removeAll() }
+        Self.searchCache[key] = value
+        return value
+    }
     private var isRamadan: Bool { islamic.component(.month, from: now) == 9 }
     private var hijriDay: Int { islamic.component(.day, from: now) }
     private var hijriYear: Int { islamic.component(.year, from: now) }
     private var ramadanLength: Int { islamic.range(of: .day, in: .month, for: now)?.count ?? 30 }
 
     private var daysUntilRamadan: Int {
-        let greg = Calendar.current
-        for i in 0...400 {
-            guard let d = greg.date(byAdding: .day, value: i, to: now) else { continue }
-            if islamic.component(.month, from: d) == 9 && islamic.component(.day, from: d) == 1 { return i }
+        cachedSearch("forward") {
+            let greg = Calendar.current
+            for i in 0...400 {
+                guard let d = greg.date(byAdding: .day, value: i, to: now) else { continue }
+                if islamic.component(.month, from: d) == 9 && islamic.component(.day, from: d) == 1 { return i }
+            }
+            return 0
         }
-        return 0
     }
 
     private var fastedCount: Int {
         // Count fasted-day flags within the current Ramadan.
         let greg = Calendar.current
-        guard let firstOffset = (0...400).first(where: { i in
-            guard let d = greg.date(byAdding: .day, value: -i, to: now) else { return false }
-            return islamic.component(.month, from: d) == 9 && islamic.component(.day, from: d) == 1
-        }) else { return 0 }
-        guard let start = greg.date(byAdding: .day, value: -firstOffset, to: now) else { return 0 }
+        let firstOffset = cachedSearch("back") {
+            (0...400).first(where: { i in
+                guard let d = greg.date(byAdding: .day, value: -i, to: now) else { return false }
+                return islamic.component(.month, from: d) == 9 && islamic.component(.day, from: d) == 1
+            }) ?? -1
+        }
+        guard firstOffset >= 0,
+              let start = greg.date(byAdding: .day, value: -firstOffset, to: now) else { return 0 }
         var count = 0
         for i in 0..<ramadanLength {
             if let d = greg.date(byAdding: .day, value: i, to: start),

@@ -3,14 +3,14 @@ import FirebaseFirestore
 
 // Am 26.08.2026 hat die Android-Seite die Datenbank von EINER Gemeinde auf ZWANZIG umgebaut
 // (docs/multi-gemeinde/FUER-DIE-IOS-APP.md). Alles, was vorher flach lag, hängt jetzt unter
-// `communities/{id}`. Diese App zeigt weiterhin fest auf Kassel — eine Gemeindeauswahl wie auf
-// Android gibt es hier noch nicht.
+// `communities/{id}`. Diese App hat die Gemeindeauswahl inzwischen ebenfalls; welche Gemeinde
+// gerade gilt, steht in CommunitySelection und damit auch im Widget und im Hintergrund.
 //
 // Warum an einer Stelle: vorher standen dieselben Pfade als Zeichenketten in vier Dateien. Beim
 // nächsten Umzug wäre wieder jede einzeln zu finden.
 enum Community {
-    /// Die aktuell gewählte Gemeinde. War bis zum 26.08.2026 eine Konstante auf Kassel — mit
-    /// zwanzig und bald vierundachtzig Gemeinden ist sie eine Auswahl des Nutzers.
+    /// Die aktuell gewählte Gemeinde. War bis zum 26.08.2026 eine Konstante auf Kassel — bei
+    /// einundachtzig Gemeinden ist sie eine Auswahl des Nutzers.
     static var id: String { CommunitySelection.communityId }
 
     private static var db: Firestore { Firestore.firestore() }

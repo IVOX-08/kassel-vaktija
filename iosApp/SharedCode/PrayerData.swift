@@ -66,13 +66,21 @@ enum VaktijaEuSource {
     /// stehen, während die Auswahl eine andere Gemeinde zeigt, sähe der Nutzer den richtigen
     /// Gemeindenamen über Kassels Gebetszeiten. Nichts wirkt kaputt, niemand meldet es, und
     /// gebetet wird trotzdem zur falschen Zeit.
-    static var url: URL {
-        URL(string: "https://vaktija.eu/\(CommunitySelection.vaktijaSlug)")!
+    /// Kein Ausrufezeichen: Das Kuerzel kommt auch aus Firestore. Traegt dort jemand ein
+    /// Leerzeichen ein, gaebe `URL(string:)` nichts zurueck — und ein erzwungenes Auspacken
+    /// beendete die App bei JEDEM Start aufs Neue, ohne Weg zurueck.
+    static var url: URL? {
+        let slug = CommunitySelection.vaktijaSlug
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        guard !slug.isEmpty else { return nil }
+        return URL(string: "https://vaktija.eu/\(slug)")
     }
     static let userAgent =
         "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36 KasselVaktija"
 
     static func fetchToday() async throws -> DayTimes {
+        guard let url else { throw Err.badSlug }
         var req = URLRequest(url: url, timeoutInterval: 15)
         req.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         req.setValue("bs,hr,sr", forHTTPHeaderField: "Accept-Language")
@@ -81,7 +89,7 @@ enum VaktijaEuSource {
         return try parse(html)
     }
 
-    enum Err: Error { case empty, noJSONLD, structure }
+    enum Err: Error { case empty, noJSONLD, structure, badSlug }
 
     static func parse(_ html: String) throws -> DayTimes {
         // Extract the application/ld+json <script> block.
@@ -263,7 +271,7 @@ final class PrayerStore: ObservableObject {
     // Der Monat wird gepuffert: Der Planer fragt fuer sieben Tage je fuenf Gebete nach Zeiten, und
     // ohne Puffer wuerde derselbe Monat dutzendfach neu gerechnet.
     nonisolated(unsafe) private static var monthCache: [String: [CalendarDay]] = [:]
-    nonisolated(unsafe) private static let monthLock = NSLock()
+    nonisolated private static let monthLock = NSLock()
 
     /// Ein ganzer Monat, gepuffert.
     ///

@@ -63,6 +63,9 @@ final class NewsStore: ObservableObject {
     @Published private(set) var items: [NewsItem]?
     /// Was dieses Gerät bei welchem Beitrag gewählt hat, für den gedrückten Zustand der Knöpfe.
     @Published private(set) var myReactions: [String: Reaction] = [:]
+    /// Beiträge, deren eigene Reaktion schon nachgeschlagen wurde — auch die ohne Reaktion.
+    /// Ohne diese Menge fragte jede Aktualisierung des Feeds erneut für JEDEN Beitrag nach.
+    private var reactionsChecked: Set<String> = []
 
     private var newsListener: ListenerRegistration?
     private var broadcastListener: ListenerRegistration?
@@ -100,6 +103,8 @@ final class NewsStore: ObservableObject {
         communityItems = []
         broadcastItems = []
         imageCache = [:]
+        myReactions = [:]
+        reactionsChecked = []
         items = nil
         start()
     }
@@ -173,19 +178,28 @@ final class NewsStore: ObservableObject {
         item.isBroadcast ? Community.broadcasts.document(item.id) : Community.news.document(item.id)
     }
 
-    /// Einmal pro Feed-Aktualisierung: was hat dieses Gerät bei welchem Beitrag gewählt.
-    /// Ein Lesevorgang je Beitrag — die Liste ist kurz, und ein Listener pro Karte wäre teurer.
+    /// Was dieses Gerät bei welchem Beitrag gewählt hat — EINMAL je Beitrag.
+    ///
+    /// Vorher lief das nach jeder Feed-Aktualisierung für die ganze Liste durch, also ein
+    /// Firestore-Lesevorgang je Beitrag, immer wieder. Bei vierzig Mitteilungen und zwei Quellen
+    /// waren das schnell hunderte Lesevorgänge je Sitzung, die alle gegen das Kontingent zählen.
+    ///
+    /// Der eigene Druck auf einen Knopf steht ohnehin sofort in `myReactions` (siehe `react`),
+    /// nachzulesen ist also nur, was ein anderes Gerät desselben Nutzers getan hat.
     private func loadMyReactions() async {
         guard let uid = Auth.auth().currentUser?.uid, let items else { return }
+        let pending = items.filter { !reactionsChecked.contains($0.id) }
+        guard !pending.isEmpty else { return }
         var found: [String: Reaction] = [:]
-        for item in items {
+        for item in pending {
             let ref = parent(item).collection("reactions").document(uid)
             if let snap = try? await ref.getDocument(),
                let value = Reaction.from(snap.data()?["value"] as? String) {
                 found[item.id] = value
             }
         }
-        myReactions = found
+        for id in pending.map(\.id) { reactionsChecked.insert(id) }
+        myReactions.merge(found) { _, new in new }
     }
 
     /// Setzt, wechselt oder nimmt eine Reaktion zurück — dieselbe Logik wie Android.

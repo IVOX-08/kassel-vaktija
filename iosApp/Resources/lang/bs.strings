@@ -1,5 +1,4 @@
 /* bs — generated from values/strings.xml */
-"app_name" = "IGBD Vaktija";
 "nav_dashboard" = "Početna";
 "nav_qibla" = "Kibla";
 "nav_news" = "Vijesti";
@@ -68,23 +67,8 @@
 "bajram_prayer" = "Bajram-namaz";
 "admin_bajram_set" = "Najavi Bajram-namaz (datum i vrijeme)";
 "admin_bajram_remove" = "Ukloni Bajram-najavu";
-"tv_prayer_fajr" = "Fajr";
-"tv_prayer_dhuhr" = "Dhuhr";
-"tv_prayer_asr" = "Asr";
-"tv_prayer_maghrib" = "Maghrib";
-"tv_prayer_isha" = "Isha";
-"tv_prayer_jumua" = "Jumu'ah";
 "action_change_language" = "Promijeni jezik";
 "language_picker_title" = "Jezik";
-"lang_bs" = "Bosanski";
-"lang_de" = "Deutsch";
-"lang_ar" = "العربية";
-"lang_tr" = "Türkçe";
-"lang_sq" = "Shqip";
-"lang_en" = "English";
-"lang_ur" = "اردو";
-"lang_ru" = "Русский";
-"header_subtitle" = "IGBD-Gemeinde Sandžak-Kassel";
 "dashboard_next_prayer_in" = "SLJEDEĆI NAMAZ ZA";
 "label_iqamah" = "IKAMET";
 "cache_stale_warning" = "Vremena možda nisu ažurna (offline).";
@@ -111,8 +95,6 @@
 "settings_minutes" = "%1$d min";
 "settings_test_adhan" = "Testiraj ezan";
 "settings_notification_sound" = "Zvuk obavijesti";
-"settings_play_when_silent" = "Pusti ezan i kad je telefon utišan";
-"settings_play_when_silent_hint" = "Isključeno: ako je telefon na nečujno ili vibraciju, stiže samo tiha obavijest.";
 "sound_short_adhan" = "Kratki ezan";
 "sound_chime" = "Zvono";
 "settings_permissions_header" = "Dozvole";
@@ -129,7 +111,6 @@
 "cd_back" = "Nazad";
 "action_donate" = "Doniraj";
 "action_cancel" = "Otkaži";
-"community_address" = "Schwanenweg 13\n34123 Kassel";
 "qibla_hint" = "Drži telefon vodoravno i okreći se dok strelica ne pokaže prema gore.";
 "qibla_facing" = "Okrenuti ste prema Kibli";
 "qibla_no_sensor" = "Senzor kompasa nije dostupan na ovom uređaju.";
@@ -276,7 +257,6 @@
 "sound_gong" = "Gong";
 "sound_soft" = "Tihi ton";
 "sound_announcement" = "Standardni ton";
-"settings_news_sound" = "Ton obavijesti";
 "qibla_calibrate" = "Kompas je neprecizan – pomjeraj telefon u obliku osmice (8).";
 "qibla_use_device" = "Koristi moj položaj";
 "qibla_use_mosque" = "Koristi džamiju";
@@ -284,3 +264,4 @@
 "admin_import_done" = "%1$d džemata upisano.";
 "admin_cleanup_communities" = "Stare duplikate ukloniti";
 "admin_cleanup_done" = "Uklonjeno: %1$d";
+"widget_description" = "Sljedeći namaz s odbrojavanjem.";

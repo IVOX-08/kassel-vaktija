@@ -106,6 +106,25 @@ enum PrayerTracker {
         return (a, b)
     }
 
+    /// Der Tag, auf den sich eine Frage nach diesem Gebet GERADE bezieht.
+    ///
+    /// Fuer vier der fuenf Gebete ist das immer heute. Isha ist die Ausnahme: Sein Fenster reicht
+    /// bis zum Fajr des Folgetags, also gehoert eine Antwort um halb eins noch zum GESTRIGEN Tag.
+    ///
+    /// Ohne diese Unterscheidung wurde ein „Ja" nach Mitternacht still verworfen — geprueft wurde
+    /// gegen das Isha-Fenster des neuen Abends, und das war noch nicht offen. Der Nutzer tippte,
+    /// nichts geschah, der Tag zaehlte als unvollstaendig und die Flamme riss. Im Sommer liegt
+    /// Isha gegen halb zwoelf und das Fenster offen bis gegen drei; der Fall trat regelmaessig ein.
+    static func activeDay(_ prayer: TrackedPrayer, at now: Date = Date()) -> Date {
+        let cal = Calendar.current
+        if let w = window(prayer, on: now), now >= w.open, now <= w.close { return now }
+        if let yesterday = cal.date(byAdding: .day, value: -1, to: now),
+           let w = window(prayer, on: yesterday), now >= w.open, now <= w.close {
+            return yesterday
+        }
+        return now
+    }
+
     // MARK: Antworten
 
     private static func key(_ prayer: TrackedPrayer, _ day: Date) -> String {
@@ -116,13 +135,18 @@ enum PrayerTracker {
     ///
     /// Fest auf gregorianisch und POSIX: Ohne das schreibt ein Geraet mit arabischer Sprache
     /// „٢٠٢٦-٠٨-٢٩" und faende die eigenen Antworten nach einem Sprachwechsel nicht wieder.
-    static func dayKey(_ date: Date) -> String {
+    static func dayKey(_ date: Date) -> String { isoDay.string(from: date) }
+
+    /// EIN Formatierer statt bei jedem Aufruf ein neuer. Das Zaehlen der Flamme fragt fuenfmal je
+    /// Tag der Serie nach dem Schluessel, und ein DateFormatter ist teuer im Aufbau.
+    ///
+    private static let isoDay: DateFormatter = {
         let f = DateFormatter()
         f.calendar = Calendar(identifier: .gregorian)
         f.locale = Locale(identifier: "en_US_POSIX")
         f.dateFormat = "yyyy-MM-dd"
-        return f.string(from: date)
-    }
+        return f
+    }()
 
     static func answer(_ prayer: TrackedPrayer, on day: Date = Date()) -> TrackerAnswer? {
         guard let raw = AppGroup.defaults.string(forKey: key(prayer, day)) else { return nil }
@@ -136,7 +160,8 @@ enum PrayerTracker {
     /// Mittagszeit zählen. Gibt zurück, ob die Antwort gezählt hat.
     @discardableResult
     static func record(_ prayer: TrackedPrayer, _ value: TrackerAnswer,
-                       at now: Date = Date(), on day: Date = Date()) -> Bool {
+                       at now: Date = Date(), on day: Date? = nil) -> Bool {
+        let day = day ?? activeDay(prayer, at: now)
         guard let w = window(prayer, on: day), now >= w.open, now <= w.close else { return false }
         AppGroup.defaults.set(value.rawValue, forKey: key(prayer, day))
         // Die Flamme steht auch im Widget. Ohne diesen Anstoss zaehlt sie dort erst Stunden
@@ -145,7 +170,8 @@ enum PrayerTracker {
         return true
     }
 
-    static func state(_ prayer: TrackedPrayer, at now: Date = Date(), on day: Date = Date()) -> TrackerState {
+    static func state(_ prayer: TrackedPrayer, at now: Date = Date(), on day: Date? = nil) -> TrackerState {
+        let day = day ?? activeDay(prayer, at: now)
         if let a = answer(prayer, on: day) { return a == .yes ? .prayed : .notPrayed }
         guard let w = window(prayer, on: day) else { return .missed }
         if now < w.open { return .upcoming(opensAt: w.open) }

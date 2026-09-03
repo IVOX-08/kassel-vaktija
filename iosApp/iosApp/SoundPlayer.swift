@@ -3,7 +3,7 @@ import AVFoundation
 // Plays the notification-tone previews ("Adhan testen" / sound picker): adhan_short.mp3
 // (Kurzer Adhan) and chime.wav (Signalton). Both sit at the bundle root rather than in an
 // "audio" subfolder, because UNNotificationSound only looks there — see project.yml.
-final class SoundPlayer {
+final class SoundPlayer: NSObject, AVAudioPlayerDelegate {
     static let shared = SoundPlayer()
     private var player: AVAudioPlayer?
 
@@ -12,8 +12,27 @@ final class SoundPlayer {
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
         try? AVAudioSession.sharedInstance().setActive(true)
         player = try? AVAudioPlayer(contentsOf: url)
+        player?.delegate = self
         player?.prepareToPlay()
         player?.play()
+    }
+
+    /// Die Sitzung wieder abgeben, sobald der Ton durch ist.
+    ///
+    /// Vorher wurde sie aktiviert und nie zurueckgegeben: Wer beim Einstellen Musik oder einen
+    /// Podcast hoerte, hoerte nach dem Probeton nichts mehr — bis die App beendet war. Mit
+    /// `notifyOthersOnDeactivation` sagt iOS der anderen App, dass sie weitermachen darf.
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        release()
+    }
+
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        release()
+    }
+
+    private func release() {
+        player = nil
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 }
 

@@ -148,8 +148,6 @@
 "news_delete" = "Sil";
 "news_delete_confirm" = "Bu duyuru silinsin mi?";
 "settings_notification_sound" = "Bildirim sesi";
-"settings_play_when_silent" = "Sessiz modda ezanı çal";
-"settings_play_when_silent_hint" = "Kapalı: Telefon sessizde veya titreşimdeyken yalnızca sessiz bir bildirim gösterilir.";
 "sound_short_adhan" = "Kısa ezan";
 "sound_chime" = "Uyarı sesi";
 "notif_channel_news" = "Duyurular";
@@ -256,7 +254,6 @@
 "sound_gong" = "Gong";
 "sound_soft" = "Yumuşak ton";
 "sound_announcement" = "Varsayılan ton";
-"settings_news_sound" = "Duyuru sesi";
 "qibla_calibrate" = "Pusula hassas değil – telefonu 8 çizer gibi hareket ettir.";
 "qibla_use_device" = "Konumumu kullan";
 "qibla_use_mosque" = "Camiyi kullan";
@@ -264,3 +261,7 @@
 "admin_import_done" = "%1$d cemaat yazıldı.";
 "admin_cleanup_communities" = "Eski kopyaları kaldır";
 "admin_cleanup_done" = "Kaldırıldı: %1$d";
+"news_translating" = "Çevriliyor…";
+"news_translate_partial" = "Bazı dillere çeviri yapılamadı. Yine de yayımlansın mı?";
+"news_post_failed" = "Duyuru gönderilemedi.";
+"widget_description" = "Bir sonraki namaz vakti ve geri sayım.";

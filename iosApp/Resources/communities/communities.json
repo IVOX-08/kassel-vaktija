@@ -57,7 +57,7 @@
       {
         "id": "frankfurt-am-main",
         "name": "Frankfurt am Main",
-        "vaktijaSlug": "frankfurt-am-main",
+        "vaktijaSlug": "frankfurt",
         "latitude": 50.107925,
         "longitude": 8.657263
       }
@@ -716,7 +716,7 @@
       {
         "id": "muenchen",
         "name": "München",
-        "vaktijaSlug": "munchen",
+        "vaktijaSlug": "muenchen",
         "latitude": 48.09233,
         "longitude": 11.50371
       }
@@ -1614,7 +1614,7 @@
       {
         "id": "muenchen",
         "name": "München",
-        "vaktijaSlug": "munchen",
+        "vaktijaSlug": "muenchen",
         "latitude": 48.14612,
         "longitude": 11.44626
       }

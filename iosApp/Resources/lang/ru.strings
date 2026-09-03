@@ -148,8 +148,6 @@
 "news_delete" = "Удалить";
 "news_delete_confirm" = "Удалить это объявление?";
 "settings_notification_sound" = "Звук уведомления";
-"settings_play_when_silent" = "Воспроизводить азан в беззвучном режиме";
-"settings_play_when_silent_hint" = "Выкл.: если телефон в беззвучном режиме или на вибрации, приходит только тихое уведомление.";
 "sound_short_adhan" = "Короткий азан";
 "sound_chime" = "Сигнал";
 "notif_channel_news" = "Объявления";
@@ -256,7 +254,6 @@
 "sound_gong" = "Гонг";
 "sound_soft" = "Тихий сигнал";
 "sound_announcement" = "Стандартный сигнал";
-"settings_news_sound" = "Сигнал сообщений";
 "qibla_calibrate" = "Компас неточен – подвигай телефон в форме восьмёрки.";
 "qibla_use_device" = "Использовать моё местоположение";
 "qibla_use_mosque" = "Использовать мечеть";
@@ -264,3 +261,7 @@
 "admin_import_done" = "Записано общин: %1$d.";
 "admin_cleanup_communities" = "Удалить старые дубликаты";
 "admin_cleanup_done" = "Удалено: %1$d";
+"news_translating" = "Перевод…";
+"news_translate_partial" = "Не удалось перевести на некоторые языки. Всё равно опубликовать?";
+"news_post_failed" = "Не удалось отправить сообщение.";
+"widget_description" = "Ближайший намаз с обратным отсчётом.";
