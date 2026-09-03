@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.ui.dashboard
 
+import de.igbdsandzakkassel.vaktija.core.text.ltr
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.animation.animateColorAsState
@@ -270,7 +271,7 @@ private fun Header(state: DashboardUiState, gregorianDate: String, hijriDate: St
             val address = state.locationAddress ?: state.locationName
             HeaderSideItem(
                 icon = Icons.Filled.Place,
-                label = "⁦" + address + "⁩",
+                label = ltr(address),
                 emphasized = false,
                 alignment = Alignment.Start,
                 onClick = { if (address.isNotBlank()) uriHandler.openUri(mapsUrl(address)) },

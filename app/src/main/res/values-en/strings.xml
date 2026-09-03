@@ -230,7 +230,7 @@
     <string name="admin_alert_wrong_community">%1$s tried to sign in at %2$s.</string>
     <string name="admin_alert_dismiss">Dismiss</string>
     <string name="library_zakat">Zakat</string>
-    <string name="zakat_intro">Enter your assets. The app applies 2.5 % once you pass the nisab.</string>
+    <string name="zakat_intro" formatted="false">Enter your assets. The app applies 2.5 % once you pass the nisab.</string>
     <string name="zakat_assets">Assets</string>
     <string name="zakat_cash">Cash</string>
     <string name="zakat_bank">Money in the bank</string>
@@ -244,7 +244,7 @@
     <string name="zakat_nisab_hint">Ask your imam for the current nisab — it depends on the gold or silver price.</string>
     <string name="zakat_total_assets">Total assets</string>
     <string name="zakat_net">Net assets</string>
-    <string name="zakat_due">Zakat (2.5 %)</string>
+    <string name="zakat_due" formatted="false">Zakat (2.5 %)</string>
     <string name="zakat_enter_nisab">Enter the nisab to see the obligation.</string>
     <string name="zakat_above_nisab">You are above the nisab — zakat is due.</string>
     <string name="zakat_below_nisab">You are below the nisab — no zakat is due.</string>

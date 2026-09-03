@@ -218,7 +218,7 @@
     <string name="admin_alert_wrong_community">%1$s نے %2$s پر سائن ان کرنے کی کوشش کی۔</string>
     <string name="admin_alert_dismiss">ٹھیک ہے</string>
     <string name="library_zakat">زکات</string>
-    <string name="zakat_intro">اپنے اثاثے درج کریں۔ نصاب سے اوپر ہونے پر ایپ 2.5 % شمار کرتی ہے۔</string>
+    <string name="zakat_intro" formatted="false">اپنے اثاثے درج کریں۔ نصاب سے اوپر ہونے پر ایپ 2.5 % شمار کرتی ہے۔</string>
     <string name="zakat_assets">اثاثے</string>
     <string name="zakat_cash">نقد رقم</string>
     <string name="zakat_bank">بینک میں رقم</string>
@@ -232,7 +232,7 @@
     <string name="zakat_nisab_hint">موجودہ نصاب کے لیے اپنے امام سے پوچھیں — یہ سونے یا چاندی کی قیمت پر منحصر ہے۔</string>
     <string name="zakat_total_assets">کل اثاثے</string>
     <string name="zakat_net">خالص اثاثے</string>
-    <string name="zakat_due">زکات (2.5 %)</string>
+    <string name="zakat_due" formatted="false">زکات (2.5 %)</string>
     <string name="zakat_enter_nisab">وجوب دیکھنے کے لیے نصاب درج کریں۔</string>
     <string name="zakat_above_nisab">آپ نصاب سے اوپر ہیں — زکات واجب ہے۔</string>
     <string name="zakat_below_nisab">آپ نصاب سے نیچے ہیں — زکات واجب نہیں۔</string>
@@ -272,4 +272,20 @@
     <string name="settings_news_sound">اعلان کی آواز</string>
     <string name="admin_cleanup_communities">پرانے دوہرے اندراج حذف کریں</string>
     <string name="admin_cleanup_done">حذف شدہ: %1$d</string>
+
+    <!-- Admin- und Mitteilungs-Oberflaeche -->
+    <string name="admin_bajram_set">نمازِ عید کا اعلان کریں (تاریخ اور وقت)</string>
+    <string name="admin_bajram_remove">عید کا اعلان ہٹائیں</string>
+    <string name="admin_email">ای میل</string>
+    <string name="admin_login_failed">ای میل یا پاس ورڈ غلط ہے۔ براہِ کرم اپنی معلومات جانچیں۔</string>
+    <string name="admin_login_title">ایڈمن لاگ اِن</string>
+    <string name="admin_password">پاس ورڈ</string>
+    <string name="admin_save">محفوظ کریں</string>
+    <string name="admin_saved">محفوظ ہو گیا</string>
+    <string name="admin_section_header">ایڈمن</string>
+    <string name="admin_sign_in">لاگ اِن</string>
+    <string name="admin_sign_out">لاگ آؤٹ</string>
+    <string name="news_post_failed">اشاعت ناکام رہی۔</string>
+    <string name="news_translate_partial">شائع ہو گیا، مگر کچھ زبانوں کا ترجمہ نہ ہو سکا (اصل متن دکھایا جا رہا ہے)۔ مشورہ: Wi-Fi پر شائع کریں۔</string>
+    <string name="news_translating">ترجمہ اور اشاعت جاری ہے…</string>
 </resources>

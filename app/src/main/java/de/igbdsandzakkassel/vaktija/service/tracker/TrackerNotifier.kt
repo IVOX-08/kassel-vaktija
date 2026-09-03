@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.service.tracker
 
+import android.annotation.SuppressLint
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -52,6 +53,10 @@ object TrackerNotifier {
     }
 
     /** Asks about [prayer], with Yes and No as actions. [lang] is the user's chosen app language. */
+    // Lint cannot see the guard: the permission is checked in post()/above, and the call
+    // is wrapped in runCatching for the case where it is revoked in between. Both of the
+    // things this check asks for are done -- it just cannot follow them across a helper.
+    @SuppressLint("MissingPermission")
     fun ask(context: Context, prayer: Prayer, date: LocalDate, lang: String?) {
         if (!hasPermission(context)) return
         // A receiver can run in a process where the Application class has not created channels yet.

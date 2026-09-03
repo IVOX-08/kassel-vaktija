@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.ui.settings
 
+import de.igbdsandzakkassel.vaktija.core.text.ltr
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
@@ -549,16 +550,7 @@ private const val PAYPAL_URL =
 private const val MAPS_URL =
     "https://www.google.com/maps/search/?api=1&query=Schwanenweg+13%2C+34123+Kassel"
 
-/**
- * Wraps a left-to-right value (phone number, street address) in Unicode isolates so it keeps its
- * natural LTR order even when the UI language is RTL (Arabic). Without this, "0176 3037 2402"
- * renders as "2402 3037 0176". LRI (U+2066) … PDI (U+2069).
- */
-private fun ltr(value: String): String = "⁦$value⁩"
 
-private const val IMAM_NAME = "Alen Golac"
-private const val IMAM_PHONE_DISPLAY = "0176 3037 2402"
-private const val IMAM_PHONE_DIAL = "017630372402"
 private const val DEV_PHONE_DISPLAY = "0176 6188 7123"
 private const val DEV_PHONE_DIAL = "017661887123"
 private const val DEV_EMAIL = "muhamedgolac311@gmail.com"

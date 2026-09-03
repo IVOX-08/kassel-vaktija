@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.service.notification
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,6 +10,7 @@ import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.media.AudioAttributes
 import android.net.Uri
+import android.app.Notification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
@@ -95,7 +97,7 @@ object NewsNotifier {
             .setAutoCancel(true)
             .setContentIntent(openAppIntent(context))
             .build()
-        NotificationManagerCompat.from(context).notify(NEWS_NOTIFICATION_ID, notification)
+        post(context, NEWS_NOTIFICATION_ID, notification)
     }
 
     /** Post a raw announcement notification from plain strings (used by instant FCM pushes). */
@@ -115,7 +117,7 @@ object NewsNotifier {
             .setAutoCancel(true)
             .setContentIntent(openAppIntent(context))
             .build()
-        NotificationManagerCompat.from(context).notify(NEWS_NOTIFICATION_ID, notification)
+        post(context, NEWS_NOTIFICATION_ID, notification)
     }
 
     /** Post a "prayer/Iqamah times were updated" notification, localized to [lang]. */
@@ -137,7 +139,7 @@ object NewsNotifier {
             .setAutoCancel(true)
             .setContentIntent(openAppIntent(context))
             .build()
-        NotificationManagerCompat.from(context).notify(CONFIG_NOTIFICATION_ID, notification)
+        post(context, CONFIG_NOTIFICATION_ID, notification)
     }
 
     /** A context whose resources resolve strings in [lang] (background wakes can't rely on the UI locale). */
@@ -148,6 +150,30 @@ object NewsNotifier {
     }
 
     /** Opens the announcements, not the dashboard — that is what the notification was about. */
+    /**
+     * Posts a notification, and survives not being allowed to.
+     *
+     * Two things this does that the bare call did not. It CHECKS the permission first -- these
+     * notifications are built in a Firebase service and in a background worker, neither of which
+     * has any idea whether the user ever granted it. And it CATCHES: the permission can be taken
+     * away between the check and the call, and the exception would land in a service with nobody
+     * to handle it, taking the process down. An announcement that fails to appear is a small
+     * matter; an app that dies while it tries is not.
+     *
+     * The prayer tracker already worked this way -- this brings the announcement side in line.
+     */
+    // Lint cannot see the guard: the permission is checked in post()/above, and the call
+    // is wrapped in runCatching for the case where it is revoked in between. Both of the
+    // things this check asks for are done -- it just cannot follow them across a helper.
+    @SuppressLint("MissingPermission")
+    private fun post(context: Context, id: Int, notification: Notification) {
+        if (!hasNotificationPermission(context)) return
+        runCatching { NotificationManagerCompat.from(context).notify(id, notification) }
+    }
+
+    private fun hasNotificationPermission(context: Context): Boolean =
+        NotificationManagerCompat.from(context).areNotificationsEnabled()
+
     private fun openAppIntent(context: Context): PendingIntent {
         val intent = Intent(context, MainActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)

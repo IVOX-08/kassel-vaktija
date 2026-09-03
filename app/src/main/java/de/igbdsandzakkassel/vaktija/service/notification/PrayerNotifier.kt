@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.service.notification
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -106,6 +107,10 @@ object PrayerNotifier {
      * playing the Adhan out loud. The channel is silent; on vibrate mode the caller
      * ([de.igbdsandzakkassel.vaktija.service.alarm.PrayerAlarmReceiver]) also fires an explicit buzz.
      */
+    // Lint cannot see the guard: the permission is checked in post()/above, and the call
+    // is wrapped in runCatching for the case where it is revoked in between. Both of the
+    // things this check asks for are done -- it just cannot follow them across a helper.
+    @SuppressLint("MissingPermission")
     fun postAdhanSilently(context: Context, prayer: Prayer, isJumua: Boolean = false) {
         val loc = loc(context)
         if (!hasNotificationPermission(context)) return
@@ -119,10 +124,16 @@ object PrayerNotifier {
             .setAutoCancel(true)
             .setContentIntent(openAppIntent(context))
             .build()
-        NotificationManagerCompat.from(context).notify(ADHAN_NOTIFICATION_ID, notification)
+        // Caught: the permission can be revoked between the check above and this line, and
+        // this runs inside a broadcast receiver where an uncaught exception kills the process.
+        runCatching { NotificationManagerCompat.from(context).notify(ADHAN_NOTIFICATION_ID, notification) }
     }
 
     /** Pre-warning notification ("Dhuhr in 10 min" / "Jumu'ah in 30 min"). */
+    // Lint cannot see the guard: the permission is checked in post()/above, and the call
+    // is wrapped in runCatching for the case where it is revoked in between. Both of the
+    // things this check asks for are done -- it just cannot follow them across a helper.
+    @SuppressLint("MissingPermission")
     fun postPreWarning(context: Context, prayer: Prayer, minutes: Int, isJumua: Boolean = false) {
         val loc = loc(context)
         val notification = NotificationCompat.Builder(context, CHANNEL_PREWARN)
@@ -137,11 +148,18 @@ object PrayerNotifier {
             .setContentIntent(openAppIntent(context))
             .build()
         if (hasNotificationPermission(context)) {
-            NotificationManagerCompat.from(context).notify(PREWARN_BASE_ID + prayer.ordinal, notification)
+            runCatching {
+                NotificationManagerCompat.from(context)
+                    .notify(PREWARN_BASE_ID + prayer.ordinal, notification)
+            }
         }
     }
 
     /** Gentle weekly reminder to read some dhikr and a hadith. */
+    // Lint cannot see the guard: the permission is checked in post()/above, and the call
+    // is wrapped in runCatching for the case where it is revoked in between. Both of the
+    // things this check asks for are done -- it just cannot follow them across a helper.
+    @SuppressLint("MissingPermission")
     fun postWeeklyReminder(context: Context) {
         val loc = loc(context)
         ensureChannels(context)
@@ -158,7 +176,7 @@ object PrayerNotifier {
             .setAutoCancel(true)
             .setContentIntent(openAppIntent(context))
             .build()
-        NotificationManagerCompat.from(context).notify(REMINDER_NOTIFICATION_ID, notification)
+        runCatching { NotificationManagerCompat.from(context).notify(REMINDER_NOTIFICATION_ID, notification) }
     }
 
     /**

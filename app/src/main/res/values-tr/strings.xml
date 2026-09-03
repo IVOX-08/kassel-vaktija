@@ -218,7 +218,7 @@
     <string name="admin_alert_wrong_community">%1$s, %2$s cemaatinde giriş yapmayı denedi.</string>
     <string name="admin_alert_dismiss">Tamam</string>
     <string name="library_zakat">Zekât</string>
-    <string name="zakat_intro">Varlıklarınızı girin. Nisabı aşarsanız uygulama %2,5 hesaplar.</string>
+    <string name="zakat_intro" formatted="false">Varlıklarınızı girin. Nisabı aşarsanız uygulama %2,5 hesaplar.</string>
     <string name="zakat_assets">Varlıklar</string>
     <string name="zakat_cash">Nakit</string>
     <string name="zakat_bank">Bankadaki para</string>
@@ -232,7 +232,7 @@
     <string name="zakat_nisab_hint">Güncel nisap için imamınıza sorun — altın veya gümüş fiyatına bağlıdır.</string>
     <string name="zakat_total_assets">Toplam varlık</string>
     <string name="zakat_net">Net varlık</string>
-    <string name="zakat_due">Zekât (%2,5)</string>
+    <string name="zakat_due" formatted="false">Zekât (%2,5)</string>
     <string name="zakat_enter_nisab">Yükümlülüğü görmek için nisabı girin.</string>
     <string name="zakat_above_nisab">Nisabın üzerindesiniz — zekât gerekir.</string>
     <string name="zakat_below_nisab">Nisabın altındasınız — zekât gerekmez.</string>
@@ -272,4 +272,20 @@
     <string name="settings_news_sound">Duyuru sesi</string>
     <string name="admin_cleanup_communities">Eski kopyaları kaldır</string>
     <string name="admin_cleanup_done">Kaldırıldı: %1$d</string>
+
+    <!-- Admin- und Mitteilungs-Oberflaeche -->
+    <string name="admin_bajram_set">Bayram namazını duyur (tarih ve saat)</string>
+    <string name="admin_bajram_remove">Bayram duyurusunu kaldır</string>
+    <string name="admin_email">E-posta</string>
+    <string name="admin_login_failed">E-posta veya şifre yanlış. Lütfen bilgilerinizi kontrol edin.</string>
+    <string name="admin_login_title">Yönetici girişi</string>
+    <string name="admin_password">Şifre</string>
+    <string name="admin_save">Kaydet</string>
+    <string name="admin_saved">Kaydedildi</string>
+    <string name="admin_section_header">Yönetici</string>
+    <string name="admin_sign_in">Giriş yap</string>
+    <string name="admin_sign_out">Çıkış yap</string>
+    <string name="news_post_failed">Yayınlama başarısız oldu.</string>
+    <string name="news_translate_partial">Yayınlandı, ancak bazı diller çevrilemedi (özgün hâliyle gösteriliyor). İpucu: Wi-Fi ile yayınlayın.</string>
+    <string name="news_translating">Çevriliyor ve yayınlanıyor…</string>
 </resources>

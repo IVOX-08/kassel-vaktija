@@ -218,7 +218,7 @@
     <string name="admin_alert_wrong_community">%1$s пытался войти в %2$s.</string>
     <string name="admin_alert_dismiss">Готово</string>
     <string name="library_zakat">Закят</string>
-    <string name="zakat_intro">Введите своё имущество. Приложение считает 2,5 %, если вы превысили нисаб.</string>
+    <string name="zakat_intro" formatted="false">Введите своё имущество. Приложение считает 2,5 %, если вы превысили нисаб.</string>
     <string name="zakat_assets">Имущество</string>
     <string name="zakat_cash">Наличные</string>
     <string name="zakat_bank">Деньги на счёте</string>
@@ -232,7 +232,7 @@
     <string name="zakat_nisab_hint">Спросите своего имама о текущем нисабе — он зависит от цены золота или серебра.</string>
     <string name="zakat_total_assets">Всего имущества</string>
     <string name="zakat_net">Чистое имущество</string>
-    <string name="zakat_due">Закят (2,5 %)</string>
+    <string name="zakat_due" formatted="false">Закят (2,5 %)</string>
     <string name="zakat_enter_nisab">Введите нисаб, чтобы увидеть обязанность.</string>
     <string name="zakat_above_nisab">Вы выше нисаба — закят обязателен.</string>
     <string name="zakat_below_nisab">Вы ниже нисаба — закят не обязателен.</string>
@@ -272,4 +272,20 @@
     <string name="settings_news_sound">Сигнал сообщений</string>
     <string name="admin_cleanup_communities">Удалить старые дубликаты</string>
     <string name="admin_cleanup_done">Удалено: %1$d</string>
+
+    <!-- Admin- und Mitteilungs-Oberflaeche -->
+    <string name="admin_bajram_set">Объявить байрам-намаз (дата и время)</string>
+    <string name="admin_bajram_remove">Убрать объявление о байраме</string>
+    <string name="admin_email">Эл. почта</string>
+    <string name="admin_login_failed">Неверная почта или пароль. Проверьте данные.</string>
+    <string name="admin_login_title">Вход администратора</string>
+    <string name="admin_password">Пароль</string>
+    <string name="admin_save">Сохранить</string>
+    <string name="admin_saved">Сохранено</string>
+    <string name="admin_section_header">Администратор</string>
+    <string name="admin_sign_in">Войти</string>
+    <string name="admin_sign_out">Выйти</string>
+    <string name="news_post_failed">Не удалось опубликовать.</string>
+    <string name="news_translate_partial">Опубликовано, но некоторые языки не переведены (показаны в оригинале). Совет: публикуйте по Wi-Fi.</string>
+    <string name="news_translating">Перевод и публикация…</string>
 </resources>

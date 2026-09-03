@@ -230,7 +230,7 @@
     <string name="admin_alert_wrong_community">%1$s hat versucht, sich bei %2$s anzumelden.</string>
     <string name="admin_alert_dismiss">Erledigt</string>
     <string name="library_zakat">Zakat</string>
-    <string name="zakat_intro">Tragen Sie Ihr Vermögen ein. Die App rechnet 2,5 %, sobald Sie den Nisab überschreiten.</string>
+    <string name="zakat_intro" formatted="false">Tragen Sie Ihr Vermögen ein. Die App rechnet 2,5 %, sobald Sie den Nisab überschreiten.</string>
     <string name="zakat_assets">Vermögen</string>
     <string name="zakat_cash">Bargeld</string>
     <string name="zakat_bank">Guthaben auf dem Konto</string>
@@ -244,7 +244,7 @@
     <string name="zakat_nisab_hint">Fragen Sie Ihren Imam nach dem aktuellen Nisab — er hängt vom Gold- bzw. Silberpreis ab.</string>
     <string name="zakat_total_assets">Vermögen gesamt</string>
     <string name="zakat_net">Nettovermögen</string>
-    <string name="zakat_due">Zakat (2,5 %)</string>
+    <string name="zakat_due" formatted="false">Zakat (2,5 %)</string>
     <string name="zakat_enter_nisab">Tragen Sie den Nisab ein, um die Pflicht zu sehen.</string>
     <string name="zakat_above_nisab">Sie liegen über dem Nisab — Zakat ist fällig.</string>
     <string name="zakat_below_nisab">Sie liegen unter dem Nisab — es fällt kein Zakat an.</string>

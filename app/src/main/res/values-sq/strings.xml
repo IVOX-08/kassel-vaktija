@@ -218,7 +218,7 @@
     <string name="admin_alert_wrong_community">%1$s u përpoq të hyjë te %2$s.</string>
     <string name="admin_alert_dismiss">Në rregull</string>
     <string name="library_zakat">Zekati</string>
-    <string name="zakat_intro">Shënoni pasurinë tuaj. Aplikacioni llogarit 2,5 % kur kaloni nisabin.</string>
+    <string name="zakat_intro" formatted="false">Shënoni pasurinë tuaj. Aplikacioni llogarit 2,5 % kur kaloni nisabin.</string>
     <string name="zakat_assets">Pasuria</string>
     <string name="zakat_cash">Para në dorë</string>
     <string name="zakat_bank">Para në bankë</string>
@@ -232,7 +232,7 @@
     <string name="zakat_nisab_hint">Pyesni imamin tuaj për vlerën aktuale të nisabit — varet nga çmimi i arit ose argjendit.</string>
     <string name="zakat_total_assets">Pasuria totale</string>
     <string name="zakat_net">Pasuria neto</string>
-    <string name="zakat_due">Zekati (2,5 %)</string>
+    <string name="zakat_due" formatted="false">Zekati (2,5 %)</string>
     <string name="zakat_enter_nisab">Shënoni nisabin për të parë detyrimin.</string>
     <string name="zakat_above_nisab">Jeni mbi nisab — zekati është i detyrueshëm.</string>
     <string name="zakat_below_nisab">Jeni nën nisab — zekati nuk është i detyrueshëm.</string>
@@ -272,4 +272,20 @@
     <string name="settings_news_sound">Toni i njoftimeve</string>
     <string name="admin_cleanup_communities">Hiq dublikatat e vjetra</string>
     <string name="admin_cleanup_done">U hoqën: %1$d</string>
+
+    <!-- Admin- und Mitteilungs-Oberflaeche -->
+    <string name="admin_bajram_set">Njofto namazin e Bajramit (data dhe ora)</string>
+    <string name="admin_bajram_remove">Hiq njoftimin e Bajramit</string>
+    <string name="admin_email">E-mail</string>
+    <string name="admin_login_failed">E-mail ose fjalëkalim i gabuar. Ju lutemi kontrolloni të dhënat.</string>
+    <string name="admin_login_title">Hyrje si administrator</string>
+    <string name="admin_password">Fjalëkalimi</string>
+    <string name="admin_save">Ruaj</string>
+    <string name="admin_saved">U ruajt</string>
+    <string name="admin_section_header">Administrator</string>
+    <string name="admin_sign_in">Hyr</string>
+    <string name="admin_sign_out">Dil</string>
+    <string name="news_post_failed">Publikimi dështoi.</string>
+    <string name="news_translate_partial">U publikua, por disa gjuhë nuk u përkthyen (shfaqen në origjinal). Këshillë: publikoni me Wi-Fi.</string>
+    <string name="news_translating">Duke përkthyer dhe publikuar…</string>
 </resources>

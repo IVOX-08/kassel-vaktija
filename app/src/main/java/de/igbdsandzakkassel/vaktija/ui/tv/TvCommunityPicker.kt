@@ -75,6 +75,12 @@ fun TvCommunityPicker(
     // so Kassel (Kassel, Hann. Münden, Korbach) has to be narrowed down before we can continue.
     var chosen by remember { mutableStateOf<Community?>(null) }
 
+    // Collected once, up here, and not read as `.value` further down: reading a StateFlow's value
+    // inside composition does not subscribe to it, so the "no community found" line would have been
+    // decided by whatever the query happened to be at the last recomposition -- one keystroke
+    // behind, or not updating at all. The search field and that message must agree.
+    val query by viewModel.query.collectAsStateWithLifecycle()
+
     val picked = chosen
     // A community that runs a single town needs no second question.
     LaunchedEffect(picked) {
@@ -107,7 +113,6 @@ fun TvCommunityPicker(
             // faster than pressing DOWN sixty times. Only shown on the community step; a community
             // has a handful of towns at most.
             if (picked == null) {
-                val query by viewModel.query.collectAsStateWithLifecycle()
                 TextField(
                     value = query,
                     onValueChange = viewModel::onQueryChange,
@@ -140,7 +145,7 @@ fun TvCommunityPicker(
                 !loaded && communities.isEmpty() -> CentredNote(
                     "Gemeinden werden geladen …\nUčitavanje džemata …",
                 )
-                communities.isEmpty() && viewModel.query.value.isNotBlank() -> CentredNote(
+                communities.isEmpty() && query.isNotBlank() -> CentredNote(
                     "Keine Gemeinde gefunden\nNema pronađenih džemata",
                 )
                 communities.isEmpty() -> CentredNote(

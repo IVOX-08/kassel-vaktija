@@ -91,12 +91,12 @@
     <!-- TV board: the universal transliterated prayer names (defined once here; same in every locale,
          so the big wall-display board reads Fajr/Dhuhr/Asr/Maghrib/Isha regardless of TV language).
          Sunrise keeps its localized word (prayer_sunrise) — it isn't a prayer. -->
-    <string name="tv_prayer_fajr">Fajr</string>
-    <string name="tv_prayer_dhuhr">Dhuhr</string>
-    <string name="tv_prayer_asr">Asr</string>
-    <string name="tv_prayer_maghrib">Maghrib</string>
-    <string name="tv_prayer_isha">Isha</string>
-    <string name="tv_prayer_jumua">Jumu\'ah</string>
+    <string name="tv_prayer_fajr" translatable="false">Fajr</string>
+    <string name="tv_prayer_dhuhr" translatable="false">Dhuhr</string>
+    <string name="tv_prayer_asr" translatable="false">Asr</string>
+    <string name="tv_prayer_maghrib" translatable="false">Maghrib</string>
+    <string name="tv_prayer_isha" translatable="false">Isha</string>
+    <string name="tv_prayer_jumua" translatable="false">Jumu\'ah</string>
 
     <!-- Language switching -->
     <string name="action_change_language">Promijeni jezik</string>
@@ -284,7 +284,7 @@
     <string name="admin_alert_wrong_community">%1$s se pokušao prijaviti kod %2$s.</string>
     <string name="admin_alert_dismiss">U redu</string>
     <string name="library_zakat">Zekat</string>
-    <string name="zakat_intro">Unesite svoju imovinu. Aplikacija računa 2,5 % ako pređete nisab.</string>
+    <string name="zakat_intro" formatted="false">Unesite svoju imovinu. Aplikacija računa 2,5 % ako pređete nisab.</string>
     <string name="zakat_assets">Imovina</string>
     <string name="zakat_cash">Gotovina</string>
     <string name="zakat_bank">Novac na računu</string>
@@ -298,7 +298,7 @@
     <string name="zakat_nisab_hint">Pitajte svog imama za trenutnu vrijednost nisaba — ovisi o cijeni zlata odnosno srebra.</string>
     <string name="zakat_total_assets">Ukupna imovina</string>
     <string name="zakat_net">Neto imovina</string>
-    <string name="zakat_due">Zekat (2,5 %)</string>
+    <string name="zakat_due" formatted="false">Zekat (2,5 %)</string>
     <string name="zakat_enter_nisab">Unesite nisab da biste vidjeli obavezu.</string>
     <string name="zakat_above_nisab">Iznad ste nisaba — zekat je obavezan.</string>
     <string name="zakat_below_nisab">Ispod ste nisaba — zekat nije obavezan.</string>
