@@ -136,10 +136,36 @@ final class PrayerStore: ObservableObject {
     nonisolated private static var cacheKey: String { "vaktija_today_\(CommunitySelection.communityId)" }
     nonisolated private static var calibKey: String { "vaktija_calibration_\(CommunitySelection.communityId)" }
 
+    private var communityObserver: NSObjectProtocol?
+
     init() {
         today = PrayerStore.cachedOfficial() ?? PrayerStore.localToday()
         official = PrayerStore.cachedOfficial() != nil
         calibration = PrayerStore.calibration()
+        // Nach einem Gemeindewechsel stehen sonst bis zum naechsten Start die Zeiten der alten
+        // Stadt auf der Startseite: `refresh()` laeuft nur einmal, wenn die Ansicht erscheint.
+        communityObserver = NotificationCenter.default.addObserver(
+            forName: .communityDidChange, object: nil, queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in await self?.reloadForNewCommunity() }
+        }
+    }
+
+    deinit {
+        if let communityObserver { NotificationCenter.default.removeObserver(communityObserver) }
+    }
+
+    /// Sofort auf den Stand der neuen Gemeinde, dann nachladen.
+    ///
+    /// Der Zwischenspeicher traegt die Gemeinde im Schluessel, also liegt hier entweder ihr
+    /// gespeicherter Stand oder — beim ersten Mal — die oertliche Rechnung. Beides ist richtiger
+    /// als die Zeiten der Gemeinde, die man gerade verlassen hat.
+    private func reloadForNewCommunity() async {
+        let cached = PrayerStore.cachedOfficial()
+        today = cached ?? PrayerStore.localToday()
+        official = cached != nil
+        calibration = PrayerStore.calibration()
+        await refresh()
     }
 
     func refresh() async {

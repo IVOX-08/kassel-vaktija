@@ -6,6 +6,9 @@ import SwiftUI
 struct NewsView: View {
     @StateObject private var store = NewsStore()
     @ObservedObject private var admin = AdminStore.shared
+    /// Beobachtet: Die drei Symbole und die Absenderzeile gehoeren der gewaehlten Gemeinde und
+    /// muessen beim Wechsel mitwandern.
+    @ObservedObject private var catalog = CommunityCatalog.shared
     @State private var showBroadcast = false
     @State private var viewerImage: Data?
     @State private var showCompose = false
@@ -17,7 +20,7 @@ struct NewsView: View {
     /// echten Logos der drei Netze duerfen nicht nachgezeichnet werden, und eine schlechte Kopie
     /// waere ohnehin schlechter als ein klares Symbol.
     @ViewBuilder private var socialLinks: some View {
-        let community = CommunityCatalog.shared.selected
+        let community = catalog.selected
         HStack(spacing: 14) {
             socialLink(community?.instagramUrl,
                        SocialIconShape(paths: SocialIcon.instagram, dot: (17.8, 5.1, 1.1)))
@@ -127,6 +130,9 @@ private struct NewsCard: View {
     let onDelete: () -> Void
 
     @Environment(\.colorScheme) private var scheme
+    /// Die Absenderzeile nennt die Gemeinde — beobachtet, damit sie nach einem Wechsel nicht die
+    /// alte weiternennt.
+    @ObservedObject private var catalog = CommunityCatalog.shared
     @State private var flyer: Data?
     @State private var flyerLoaded = false
 
@@ -192,7 +198,7 @@ private struct NewsCard: View {
             }
             Text(item.isBroadcast
                  ? L("news_sent_by_union")
-                 : String(format: L("news_sent_by"), CommunityCatalog.shared.selected?.name ?? ""))
+                 : String(format: L("news_sent_by"), catalog.selected?.name ?? ""))
                 .font(.inter(12)).foregroundColor(.appOnSurfaceVariant)
                 .lineLimit(2)
             Spacer()

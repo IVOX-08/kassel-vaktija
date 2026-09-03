@@ -17,16 +17,41 @@ final class CommunityRuleStore: ObservableObject {
     @Published private(set) var rule: CommunityRule
 
     private var listener: ListenerRegistration?
+    /// Wessen Regeln gerade gehoert werden — siehe NewsStore, gleicher Grund.
+    private var listeningTo: String?
+    private var communityObserver: NSObjectProtocol?
 
     private init() {
         rule = CommunityRule.cachedRule()
+        communityObserver = NotificationCenter.default.addObserver(
+            forName: .communityDidChange, object: nil, queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in self?.restart() }
+        }
     }
 
     deinit { listener?.remove() }
 
+    /// Von vorn, fuer die neue Gemeinde.
+    ///
+    /// Bis die neuen Regeln da sind, gelten die Auslieferungswerte — NICHT die der alten
+    /// Gemeinde. Ikamet-Zeiten einer fremden Stadt unter dem eigenen Namen sind schlimmer als
+    /// die allgemeinen Vorgaben, und der Zwischenspeicher gehoerte ebenfalls der alten Gemeinde.
+    private func restart() {
+        listener?.remove()
+        listener = nil
+        listeningTo = nil
+        rule = .fallback
+        CommunityRule.cache(.fallback)
+        start()
+    }
+
     /// Live document — the board's edit reaches open apps without a restart.
     func start() {
-        guard listener == nil, FirebaseApp.app() != nil else { return }
+        guard FirebaseApp.app() != nil else { return }
+        if listener != nil, listeningTo == Community.id { return }
+        listener?.remove()
+        listeningTo = Community.id
         listener = Community.rules
             .addSnapshotListener { [weak self] snapshot, _ in
                 guard let data = snapshot?.data() else { return }

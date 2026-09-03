@@ -8,6 +8,16 @@ import Foundation
 /// Die gewählte Gemeinde. Bewusst über UserDefaults und nicht über den ObservableObject-Speicher
 /// erreichbar, weil Code ausserhalb der Oberfläche sie braucht — Firestore-Pfade, die Zeitquelle
 /// und die geplanten Benachrichtigungen.
+extension Notification.Name {
+    /// Die gewaehlte Gemeinde hat sich geaendert.
+    ///
+    /// Jeder Zuhoerer auf Firestore haengt an EINEM Pfad — `communities/{id}/news`,
+    /// `communities/{id}/config/rules`. Der Pfad wird beim Anmelden festgelegt und aendert sich
+    /// nicht mehr. Ohne dieses Signal blieben Mitteilungen und Ikamet-Zeiten nach einem Wechsel
+    /// bei der alten Gemeinde stehen, bis jemand die App beendet und neu startet.
+    static let communityDidChange = Notification.Name("de.igbdsandzakkassel.vaktija.communityDidChange")
+}
+
 enum CommunitySelection {
     private static let communityKey = "selected_community_id"
     private static let locationKey = "selected_location_id"
@@ -65,6 +75,7 @@ enum CommunitySelection {
 
     static func set(community: String, location: String?, vaktijaSlug: String?, name: String? = nil,
                     latitude: Double? = nil, longitude: Double? = nil) {
+        let changed = AppGroup.defaults.string(forKey: communityKey) != community
         AppGroup.defaults.set(community, forKey: communityKey)
         AppGroup.defaults.set(location, forKey: locationKey)
         if let vaktijaSlug { AppGroup.defaults.set(vaktijaSlug, forKey: slugKey) }
@@ -74,6 +85,11 @@ enum CommunitySelection {
         if let latitude, let longitude, latitude != 0, longitude != 0 {
             AppGroup.defaults.set(latitude, forKey: latKey)
             AppGroup.defaults.set(longitude, forKey: lngKey)
+        }
+        // Erst schreiben, dann rufen: Wer auf das Signal hin nachliest, soll den neuen Stand
+        // vorfinden, nicht den alten.
+        if changed {
+            NotificationCenter.default.post(name: .communityDidChange, object: nil)
         }
     }
 

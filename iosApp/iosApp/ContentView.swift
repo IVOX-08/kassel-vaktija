@@ -8,6 +8,10 @@ struct ContentView: View {
     @StateObject private var store = PrayerStore()
     // Iqamah/Jumua/Eid come from the board's Firestore document; observed so an edit lands live.
     @ObservedObject private var community = CommunityRuleStore.shared
+    /// Ausdrücklich beobachtet. Adresse, Wappen und Name lasen den Katalog bisher nur direkt —
+    /// dass die Kopfzeile nach einem Wechsel trotzdem umsprang, lag allein am Sekundentakt für
+    /// den Countdown, der die Ansicht ohnehin neu zeichnet. Ein Zufall, kein Zusammenhang.
+    @ObservedObject private var catalog = CommunityCatalog.shared
 
     @State private var now = Date()
     @Environment(\.colorScheme) private var scheme
@@ -38,7 +42,7 @@ struct ContentView: View {
         }
         .onReceive(ticker) { now = $0 }
         .task { await store.refresh() }
-        .onAppear { community.start() }
+        .onAppear { community.start(); catalog.start() }
     }
 
     // MARK: Header
@@ -71,7 +75,6 @@ struct ContentView: View {
     /// Adresse der GEWÄHLTEN Gemeinde. Ohne Adresse im Verzeichnis bleibt der Ortsname stehen —
     /// besser als eine fremde Adresse unter dem eigenen Gemeindenamen.
     private var headerAddress: String {
-        let catalog = CommunityCatalog.shared
         if let address = catalog.selected?.address, !address.isEmpty {
             // "Schwanenweg 13, 34123 Kassel" -> zwei Zeilen, wie bisher gesetzt.
             return address.replacingOccurrences(of: ", ", with: "\n")
@@ -89,14 +92,13 @@ struct ContentView: View {
     /// dann keinen Link daraus). Ein Knopf, der zur falschen Kasse führt, wäre schlimmer als
     /// einer, der wartet, bis die Gemeinde ihren Link schickt.
     private var donateURLForSelection: URL? {
-        guard let raw = CommunityCatalog.shared.selected?.donationUrl,
+        guard let raw = catalog.selected?.donationUrl,
               !raw.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
         return URL(string: raw)
     }
 
     /// Karten-Link auf die gewählte Gemeinde statt fest auf Kassel.
     private var mapsURLForSelection: URL? {
-        let catalog = CommunityCatalog.shared
         let query = catalog.selected?.address ?? catalog.selectedLocation?.name ?? ""
         guard !query.isEmpty,
               let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -141,7 +143,7 @@ struct ContentView: View {
             Image(uiImage: UIImage(named: scheme == .dark ? "logo_igbd_dark" : "logo_igbd") ?? UIImage())
                 .resizable().scaledToFit()
                 .frame(height: 96)
-            Text(CommunityCatalog.shared.selected?.name ?? "")
+            Text(catalog.selected?.name ?? "")
                 .font(.inter(11, .semibold)).foregroundColor(.brandGreen)
                 .multilineTextAlignment(.center)
                 // Zwei Zeilen: „Islamski kulturni centar Bošnjaka u Berlinu" passt nicht auf eine,
@@ -157,7 +159,7 @@ struct ContentView: View {
     }
 
     private var communityLogoURL: URL? {
-        guard let raw = CommunityCatalog.shared.selected?.logoUrl, !raw.isEmpty else { return nil }
+        guard let raw = catalog.selected?.logoUrl, !raw.isEmpty else { return nil }
         return URL(string: raw)
     }
 

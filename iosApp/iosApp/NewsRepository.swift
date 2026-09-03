@@ -71,15 +71,46 @@ final class NewsStore: ObservableObject {
     private var broadcastItems: [NewsItem] = []
     /// Flyers already fetched this session. They are only loaded when a card scrolls into view.
     private var imageCache: [String: Data] = [:]
+    /// Wessen Mitteilungen gerade gehoert werden. Der Pfad steckt im Zuhoerer und laesst sich
+    /// nicht nachtraeglich umbiegen — beim Wechsel muss er neu angelegt werden.
+    private var listeningTo: String?
+    private var communityObserver: NSObjectProtocol?
+
+    init() {
+        communityObserver = NotificationCenter.default.addObserver(
+            forName: .communityDidChange, object: nil, queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in self?.restart() }
+        }
+    }
 
     deinit {
         newsListener?.remove()
         broadcastListener?.remove()
+        if let communityObserver { NotificationCenter.default.removeObserver(communityObserver) }
+    }
+
+    /// Von vorn, fuer die neue Gemeinde.
+    ///
+    /// Die alten Beitraege werden weggeworfen, nicht stehen gelassen: Sie gehoeren einer anderen
+    /// Gemeinde, und sie in der Liste zu belassen, bis die neuen eintreffen, waere schlimmer als
+    /// ein kurzer Ladezustand.
+    private func restart() {
+        stop()
+        communityItems = []
+        broadcastItems = []
+        imageCache = [:]
+        items = nil
+        start()
     }
 
     /// Live feed, newest first. Firestore serves the local cache first, so this works offline.
     func start() {
-        guard newsListener == nil, FirebaseApp.app() != nil else { return }
+        guard FirebaseApp.app() != nil else { return }
+        // Haengt der Zuhoerer schon an DIESER Gemeinde, ist nichts zu tun.
+        if newsListener != nil, listeningTo == Community.id { return }
+        stop()
+        listeningTo = Community.id
         newsListener = Community.news
             .order(by: "createdAt", descending: true)
             .addSnapshotListener { [weak self] snapshot, _ in
@@ -107,6 +138,7 @@ final class NewsStore: ObservableObject {
         newsListener = nil
         broadcastListener?.remove()
         broadcastListener = nil
+        listeningTo = nil
     }
 
     private func merge() {
