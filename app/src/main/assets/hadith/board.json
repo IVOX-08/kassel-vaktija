@@ -1,69 +1,1440 @@
 {
  "metadata": {
   "name": "Hadith des Tages — Auswahl für die Wandanzeige / Hadis dana — odabir za zidni ekran",
-  "note": "Kurze, in sich vollständige Hadithe für die TV-Tafel im Moschee-Eingang — bewusst ausgewählt, weil ihre echte, gedruckte Übersetzung in EINFACHER, klarer Sprache ist (für eine Gemeinde, die nicht perfekt Deutsch versteht). Jeder ist hier OHNE Überliefererkette und Quellenangabe gespeichert (nur der eigentliche Spruch). Texte wortgetreu aus den im Projekt gebündelten Übersetzungen.",
-  "sources": "bs/de überwiegend: Enciklopedija prevedenih vjerovjesničkih hadisa / Enzyklopädie der übersetzten prophetischen Hadithe (hadeethenc.com, bosnische & deutsche Ausgabe) — moderne, einfache Sprache. Zwei Hadithe (Nevevi 13 & 15) aus den 40 Nevevijevih hadisa / An-Nawawi 40 (bs: Bilal Dervišić; de: Ahmad von Denffer)."
+  "note": "Kurze, in sich vollständige Hadithe für die TV-Tafel im Moschee-Eingang. Jeder ist OHNE Überliefererkette und Quellenangabe gespeichert (nur der eigentliche Spruch), wortgetreu aus der veröffentlichten Übersetzung — nichts ist nacherzählt, gekürzt oder maschinell übersetzt. Bosnisch und Deutsch gehören über die Kennung zusammen, nicht über ähnlichen Text. Erzeugt mit tools/build_board_hadiths.py — nicht von Hand ändern.",
+  "sources": "Enciklopedija prevedenih vjerovjesničkih hadisa / Enzyklopädie der übersetzten prophetischen Hadithe (hadeethenc.com), bosnische und deutsche Ausgabe. Die Kennung je Hadith ist die dortige.",
+  "count": 286
  },
  "hadiths": [
   {
-   "ref": "Riyad 7",
+   "ref": "hadeethenc 10412",
+   "bs": "Naš Uzvišeni Gospodar spušta se svake noći na zemaljsko nebo kada ostane zadnja trećina noći i govori: 'Ko šta moli, da mu udovoljim? Ko šta traži, da mu dam? Ko Me moli za oprost, da mu oprostim?",
+   "de": "Unser Herr kommt jede Nacht zum irdischen Himmel hinab, wenn nur noch das letzte Drittel der Nacht bleibt und sagt: ‚Wer ruft Mich mit seinen Bittgebeten an, auf dass Ich es ihm gewähre? Wer bittet Mich, auf dass Ich es ihm gebe? Wer bittet Mich um Vergebung, auf dass Ich ihm vergebe?"
+  },
+  {
+   "ref": "hadeethenc 5280",
+   "bs": "Kada čovjek zijeva, neka svoju ruku stavi na usta, jer šejtan tada ulazi.",
+   "de": "Wenn einer von euch gähnt, so soll er seinen Mund mit der Hand bedecken, denn der Satan tritt (von dort) ein."
+  },
+  {
+   "ref": "hadeethenc 5830",
+   "bs": "Nisam ostavio veće iskušenje za muškarce od žena.",
+   "de": "Ich habe nach mir keine Versuchung hinterlassen, die schädlicher für die Männer ist als die Frauen."
+  },
+  {
+   "ref": "hadeethenc 65083",
+   "bs": "Ako neko od vas osjeti nešto u stomaku pa ne bude siguran da li je pustio vjetar ili nije, neka ne napušta namaz sve dok ne čuje zvuk ili dok ne osjeti miris.",
+   "de": "Wenn einer von euch etwas in seinem Bauch verspürt und sich unsicher ist, ob etwas herausgekommen ist oder nicht, soll er die Moschee nicht verlassen, bis er ein Geräusch hört oder einen Geruch wahrnimmt."
+  },
+  {
+   "ref": "hadeethenc 5907",
+   "bs": "Obnavljajte ovaj Kur'an! Tako mi Onoga u Čijoj ruci je Muhammedova duša, on se gubi iz pamćenja brže od nezavezane deve.",
+   "de": "Macht euch diesen Quran zur Angewohnheit, denn bei Dem, in Dessen Hand die Seele Muhammeds liegt, er (der Quran) entflieht einem schneller als Kamele in ihren Fußfesseln."
+  },
+  {
+   "ref": "hadeethenc 3088",
+   "bs": "Nema namaza u prisustvu hrane, niti u slučaju kada čovjek ima nagon da obavi fiziološku potrebu.",
+   "de": "Es gibt kein Gebet, wenn das Essen serviert wird, und auch nicht, wenn man die beiden natürlichen Bedürfnisse (den Stuhlgang und das Urinieren) zurückhält."
+  },
+  {
+   "ref": "hadeethenc 6257",
+   "bs": "Kada se dva muslimana sretnu pa se rukuju, grijesi im budu oprošteni prije nego se rastanu.",
+   "de": "Kein Muslim begegnet einem anderen Muslim und beide geben einander die Hand, ohne dass ihnen vergeben wird, bevor sie sich wieder trennen."
+  },
+  {
+   "ref": "hadeethenc 5330",
+   "bs": "Allahu, ko preuzme odgovornost nad nekim pitanjima moga umeta, pa mu oteža, otežaj i Ti njemu! A onaj ko preuzme odgovornost nad nekim pitanjima moga ummeta, pa im olakša, olakšaj i Ti njemu!",
+   "de": "O Allah, wer immer von meiner Gemeinschaft Verantwortung für etwas übernimmt und es ihnen schwer macht, mache es ihm ebenfalls schwer. Und wer immer von meiner Gemeinschaft Verantwortung für etwas übernimmt und es ihnen erleichtert, erleichtere es ihm."
+  },
+  {
+   "ref": "hadeethenc 8904",
+   "bs": "Neka muškarac ne gleda u stidni dio tijela drugog muškarca, a neka ni žena ne gleda stidni dio tijela druge žene. Neka muškarac ne liježe sa drugim muškarcem pod istim pokrivačem, a neka ni žena ne liježe sa drugom pod istim pokrivačem.",
+   "de": "Ein Mann soll nicht auf die Blöße ('Awrah) eines anderen Mannes schauen, und eine Frau soll nicht auf die Blöße einer anderen Frau schauen. Ein Mann soll nicht mit einem anderen Mann unter einer Decke liegen, und eine Frau soll nicht mit einer anderen Frau unter einer Decke liegen."
+  },
+  {
+   "ref": "hadeethenc 6018",
+   "bs": "Stavi ruku na mjesto gdje te boli i reci: 'Bismillah' tri puta, a onda prouči sedam puta: 'Utječem se Allahovom silom i moći od zla kojeg osjećam i kojeg se bojim!",
+   "de": "Leg deine Hand auf die schmerzende Stelle deines Körpers und sag dreimal 'Bismillah' (Im Namen Allahs); und siebenmal 'Audhu billahi wa qudratihi min scharri ma ajidu wa uhadhir' (Ich suche Zuflucht bei Allah und bei Seiner Allmacht vor dem Übel, das ich vorfinde und das ich befürchte)."
+  },
+  {
+   "ref": "hadeethenc 5509",
+   "bs": "Kod Allaha nema ništa vrijednije od dove.",
+   "de": "Es gibt nichts, das bei Allah - erhaben ist Er - ehrenwerter ist als das Bittgebet."
+  },
+  {
+   "ref": "hadeethenc 65017",
+   "bs": "Allah voli da se primjenjuju Njegove olakšice, kao što voli da se primjenjuju obaveze.",
+   "de": "Wahrlich, Allah liebt es, dass man Seinen Erleichterungen nachkommt, so wie Er es liebt, dass man den Dingen nachkommt, in denen einem keine Erleichterung zugestanden wurde!"
+  },
+  {
+   "ref": "hadeethenc 8902",
+   "bs": "Upitao sam Allahovog Poslanika, sallallahu alejhi ve sellem, o iznenadnom pogledu pa mi je naredio da ga oborim.",
+   "de": "Ich fragte den Gesandten Allahs - Allahs Segen und Frieden auf ihm - über den unbeabsichtigten Blick, und er befahl mir, meinen Blick abzuwenden."
+  },
+  {
+   "ref": "hadeethenc 6361",
+   "bs": "Dvije osobine koje se nalaze pri ljudima su (mali) kufr: ruganje nekome (ismijavanje, vrijeđanje) zbog njegovog porijekla i naricanje za umrlim.",
+   "de": "Zwei Dinge befinden sich unter den Menschen, durch welche sie ungläubig sind: Das Schmähen der Abstammung und die (laute) Klage über den Toten."
+  },
+  {
+   "ref": "hadeethenc 65085",
+   "bs": "Došao sam Allahovom Poslaniku, sallallahu alejhi ve sellem, želeći da primim islam, pa mi je naredio da se okupam vodom i sidrom.",
+   "de": "Ich kam zum Propheten - Allahs Segen und Frieden auf ihm -, um den Islam anzunehmen. Er befahl mir, mich mit Wasser und Sidr zu waschen."
+  },
+  {
+   "ref": "hadeethenc 5351",
    "bs": "Nije jak onaj koji pobjeđuje ljude svojom snagom, već je jak onaj koji kontroliše sebe u ljutnji.",
-   "de": "Der Starke ist nicht derjenige, der (andere) im Ringen besiegt; der Starke ist vielmehr derjenige, der sich im Zorn beherrschen kann."
+   "de": "Der Starke ist nicht derjenige, der jemanden im Ringen besiegt, sondern der Starke ist derjenige, der sich selbst beim Zorn beherrschen kann."
   },
   {
-   "ref": "Riyad 11",
+   "ref": "hadeethenc 5989",
+   "bs": "Onoliko koliko čovjek nauči astrologije, u tolikoj mjeri je naučio sihra. Jedno se povećava sa drugim.",
+   "de": "Wer etwas von der Sternenkunde erlernt, hat damit etwas von der Zauberei erlernt - je mehr es ist, desto mehr wird es."
+  },
+  {
+   "ref": "hadeethenc 65869",
+   "bs": "Vjernik ne vrijeđa, niti proklinje, nije vulgaran i prost.",
+   "de": "Der Gläubige ist nicht jemand, der andere verleumdet oder verflucht, und er ist nicht obszön oder unverschämt."
+  },
+  {
+   "ref": "hadeethenc 3701",
+   "bs": "Neće vjernik osjetiti umor, niti bol, niti brigu (za nešto što će biti), niti tugu (za nešto što je bilo), niti neprijatnost, niti će ga ophrvati žalost, niti će trn ubosti a da mu Allah ne obriše grijehe.",
+   "de": "Es gibt keine Strapaze, die den Muslim trifft, keine Krankheit, Sorge, Trauer, nichts, was ihn stört und keinen Kummer - selbst ein Stachel, der ihn sticht - ,außer dass Allah ihm damit etwas von seinen Sünden vergibt."
+  },
+  {
+   "ref": "hadeethenc 5799",
+   "bs": "Vjernik sa lijepim ponašanjem dostiže stepene onoga ko stalno posti i klanja.",
+   "de": "Ein Gläubiger erreicht durch seinen guten Charakter die Stufe der Person, die fastet und im Gebet steht."
+  },
+  {
+   "ref": "hadeethenc 4508",
+   "bs": "Neka niko od vas ne posti dan ili dva prije ramazana osim onoga koji posti na svoj uobičajen način, pa neka posti i taj dan!",
+   "de": "Fastet nicht ein oder zwei Tage vor Ramadan, ausgenommen ist derjenige, der für gewöhnlich fastet; er soll sein Fasten fortführen."
+  },
+  {
+   "ref": "hadeethenc 5915",
+   "bs": "Reci: 'Allahu moj, uputi me i učini me ispravnim.' Uputa je kao tvoje koračenje ispravnim putem, a ispravnost je kao preciznost tvoje strijele.",
+   "de": "Sag: 'O Allah leite mich recht und festige mich.' Erwähne durch die Rechtleitung die Rechtleitung deines Weges und durch die Festigung die Festigung des Pfeils."
+  },
+  {
+   "ref": "hadeethenc 5433",
+   "bs": "Ko god propisno i lijepo uzme abdest, zatim ode na džuma-namaz, i šuteći sasluša hutbu, oprošteni su mu grijesi između dvije džume (za sedmicu dana) i još plus tri dana, ali ko samo obični kamenčić bez potrebe dotakne (za vrijeme hutbe), obezvrijedio je džumansku nagradu.",
+   "de": "Wer die Gebetswaschung vornimmt und sie gut verrichtet, dann zum Freitagsgebet kommt, zuhört und aufmerksam ist, dem wird vergeben, was zwischen ihm und dem nächsten Freitag liegt, und zusätzlich drei Tage. Und wer die Kieselsteine berührt, hat Nichtiges getan."
+  },
+  {
+   "ref": "hadeethenc 3437",
+   "bs": "Ko opremi jednog gaziju na Allahovom putu, kao da se i on sam borio. A ko se pobrine za ono što gazija ostavlja iza sebe, kao da se i on borio.",
+   "de": "Wer einen Kämpfer auf dem Weg Allahs ausrüstet, der hat selbst gekämpft, und wer einen Kämpfer auf dem Weg Allahs in guter Weise ablöst / ersetzt, der hat selbst gekämpft."
+  },
+  {
+   "ref": "hadeethenc 3573",
+   "bs": "Hoćete li da vas obavijestim o džennetlijama? To je svaki slabašni i potlačeni, koji kada bi preklinjao Allaha za nešto, On bi mu to ispunio. Hoćete li da vam kažem ko su džehenemlije? To je svaki onaj po zlu poznat, uobraženi i oholi.",
+   "de": "Soll ich euch nicht über die Bewohner des Paradieses berichten? Jeder Schwache und Bescheidene; wenn er bei Allah schwören würde, würde Er ihn erfüllen. Soll ich euch nicht über die Bewohner des Feuers berichten? Jeder Grobe, Hartherzige und Arrogante."
+  },
+  {
+   "ref": "hadeethenc 3779",
+   "bs": "Nemoj da iko od vas umre, a da nema lijepo mišljenje o Allahu.",
+   "de": "Keiner von euch soll sterben, außer dass er gut über Allah denkt."
+  },
+  {
+   "ref": "hadeethenc 3469",
+   "bs": "Budite ustrajni i postojani, te se trudite da što ispravnije radite. Znajte da se niko od vas neće spasiti džehennemske kazne svojim djelima.\" Ashabi su upitali: \"Zar ni ti, Allahov Poslaniče?\" Kazao je: \"Ni ja, osim ako me Allah, iz Svoje dobrote, obaspe Svojom milošću.",
+   "de": "Nähert euch und strebt nach der Vollkommenheit, und wisset, dass keiner von euch durch seine Taten gerettet wird.‘ Sie sagten: ‚O Gesandter Allahs, auch nicht du?‘ Er sagte: ‚Auch nicht ich, außer dass Allah mich mit Seiner Barmherzigkeit und Seiner Huld bedeckt."
+  },
+  {
+   "ref": "hadeethenc 3354",
+   "bs": "Allah je ljubomoran, a i vjernik je. Allahova ljubomora biva onda kada vjernik čini ono što mu je Allah zabranio.",
+   "de": "Allah ist eifersüchtig, und der Gläubige ist eifersüchtig, und Allahs Eifersucht ist, dass/wenn der Gläubige das tut, was Ihm verboten ist."
+  },
+  {
+   "ref": "hadeethenc 3534",
+   "bs": "Allah ne prima namaz nikome ko nema abdest, sve dok ga ne uzme.",
+   "de": "Allah nimmt das Gebet von einem von euch nicht an, wenn er den Zustand der (rituellen) Reinheit verlor, bis er die rituelle Gebetswaschung vollzogen hat."
+  },
+  {
+   "ref": "hadeethenc 5798",
+   "bs": "Uzvišeni voli kada Njegov rob nešto pojede pa Mu se na tome zahvali i kada nešto popije pa Mu se na tome zahvali.",
+   "de": "Wahrlich, Allah ist zufrieden mit dem Diener, der einen Bissen isst und Ihn dafür lobt, oder einen Schluck trinkt und Ihn dafür lobt."
+  },
+  {
+   "ref": "hadeethenc 3714",
+   "bs": "Neko je spomenuo jednog čovjeka u prisustvu Poslanika, sallallahu alejhi ve sellem, te je rekao da dotični spava cijelu noć sve do svanuća. Poslanik se osvrnu kazavši: 'Tom se čovjeku šejtan pomokrio u uši', ili je rekao: 'U uho.",
+   "de": "Beim Propheten - Allahs Segen und Frieden auf ihm - wurde ein Mann erwähnt, der die ganze Nacht bis zum Morgen schlief. Er sagte: ‚Das ist ein Mann, in dessen Ohren der Satan uriniert hat‘ oder er sagte: ‚in sein Ohr."
+  },
+  {
+   "ref": "hadeethenc 5889",
+   "bs": "Srebro za zlato je kamata, osim na licu mjesta (iz ruke u ruku); pšenica za pšenicu je kamata, osim na licu mjesta; ječam za ječam je kamata osim na licu mjesta, i hurme za hurme je kamata, osim na licu mjesta.",
+   "de": "Silber gegen Gold ist Zins, außer es wird ausgetauscht. Und Weizen gegen Weizen ist Zins, und Gerste gegen Gerste ist Zins, außer es wird ausgetauscht. Und Datteln gegen Datteln ist Zins, außer es wird ausgetauscht."
+  },
+  {
+   "ref": "hadeethenc 5520",
+   "bs": "O ljudi! Širite selam, dijelite hranu sirotinji, pomažite i pazite rodbinu i Allahu se molite kad svijet spava – pa ćete ući u Džennet, sigurni i spašeni.",
+   "de": "O ihr Menschen, verbreitet den Friedensgruß, speist (die Menschen) mit Essen, pflegt die Verwandtschaftsbande und betet in der Nacht, wenn die Menschen schlafen, dann werdet ihr in Frieden ins Paradies eintreten."
+  },
+  {
+   "ref": "hadeethenc 65054",
+   "bs": "Reći će se učaču Kur'ana na Sudnjem danu: 'Uči i penji se, uči lijepo i razgovjetno, kao što si i na dunjaluku učio, jer uistinu je tvoje mjesto kod posljednjeg ajeta kojeg proučiš.",
+   "de": "Es wird zum Träger/Gefährten des Quran gesagt: ›Lies, steige empor und rezitiere, wie du im Diesseits zu rezitieren pflegtest, denn deine Stufe ist beim letzten Vers, den du liest."
+  },
+  {
+   "ref": "hadeethenc 8959",
+   "bs": "Ne kunite se kumirima (et-tavagi) niti svojim očevima.",
+   "de": "Schwört nicht bei den Tyrannen und (auch) nicht bei euren Vätern."
+  },
+  {
+   "ref": "hadeethenc 2986",
+   "bs": "Ko bude nosio svilu na ovome, neće je nositi na onome svijetu.",
+   "de": "Wer im Diesseits Seide trägt, wird sie im Jenseits nicht tragen."
+  },
+  {
+   "ref": "hadeethenc 65039",
+   "bs": "Sve je određeno, pa čak i ostavljanje i činjenje djela', ili: 'činjenje i ostavljanje djela.",
+   "de": "Alle Dinge sind vorherbestimmt, sogar die Unfähigkeit und die Geschicklichkeit oder die Geschicklichkeit und die Unfähigkeit!"
+  },
+  {
+   "ref": "hadeethenc 3017",
+   "bs": "Kada neko od vas zavoli svoga brata, neka mu to kaže.",
+   "de": "Wenn jemand seinen Bruder liebt, soll er ihm sagen, dass er ihn liebt."
+  },
+  {
+   "ref": "hadeethenc 58259",
+   "bs": "Sve što opija je alkoholno piće, a sve što opija je haram. Ko umre, a ustrajavao je u pijenju vina, neće piti vino na budućem svijetu.",
+   "de": "Jedes berauschende Getränk ist Alkohol, und jedes berauschende Getränk ist verboten. Wer Alkohol im Diesseits trinkt und stirbt, während er süchtig danach ist und nicht bereut, wird ihn im Jenseits nicht trinken."
+  },
+  {
+   "ref": "hadeethenc 3053",
+   "bs": "Dunjaluk je sladak i zelen. Allah vas je stvorio na njemu da vidi kako ćete raditi. Prema tome, bojte se dunjaluka i bojte se žena, zaista je prvo iskušenje Israelćana poteklo od žena.",
+   "de": "Wahrlich, das diesseitige Leben ist süß und grün, und wahrlich, Allah hat euch zu Nachfolgern auf ihr gemacht, damit Er sieht, wie ihr handelt. So hütet euch vor dem diesseitigen Leben und hütet euch vor den Frauen, denn wahrlich, die erste Versuchung der Kinder Israels geschah durch Frauen."
+  },
+  {
+   "ref": "hadeethenc 4186",
+   "bs": "Ko odgodi rok za vraćanje duga onome ko nije u stanju da ga vrati ili mu dug oprosti, Allah će ga postaviti u hlad Svoga Arša na Sudnjem danu. Toga dana neće biti drugog hlada osim Njegovog.",
+   "de": "Wer jemandem in Zahlungsnot Aufschub gewährt, oder ihm etwas erlässt, dem gewährt Allah Schatten unter Seinem Thron am Tag der Auferstehung, am Tag, an dem es keinen Schatten gibt, außer Seinem Schatten!"
+  },
+  {
+   "ref": "hadeethenc 4716",
+   "bs": "Neka ti je jezik neprestano vlažan od spominjanja Allaha.",
+   "de": "Deine Zunge soll immer feucht sein vom Gedenken an Allah."
+  },
+  {
+   "ref": "hadeethenc 4196",
+   "bs": "Ko isposti ramazan vjerujući u Allaha i nadajući se Njegovoj nagradi, biće mu oprošteni grijesi koje je prethodno učinio.",
+   "de": "Wer den Ramadan aus Glauben heraus und in Hoffnung auf den Lohn fastend verbringt, dessen vergangene Sünden werden vergeben."
+  },
+  {
+   "ref": "hadeethenc 8357",
+   "bs": "Kada voda dostigne količinu dva kulleta (oko 210 l), ne može je ništa onečistiti.",
+   "de": "Wenn das Wasser Qullatayn erreicht, trägt es keine Unreinheit."
+  },
+  {
+   "ref": "hadeethenc 3159",
+   "bs": "Mu’mina i mu’minku ne prestaju pogađati razne nedaće u njima samima, ili njihovoj djeci i imetku, sve dok im se ne izbrišu svi grijesi, tako da se susretnu sa Allahom Uzvišenim, bez ijednog grijeha.",
+   "de": "Die Heimsuchung wird den gläubigen Mann und die gläubige Frau weiterhin in ihrer Person, ihren Kindern und ihrem Besitz treffen, bis sie Allah begegnen und keine Sünde mehr auf ihnen lastet."
+  },
+  {
+   "ref": "hadeethenc 5803",
+   "bs": "Allahov Poslanik, sallallahu alejhi ve sellem, nije bio razvratan niti bestidan, govorio je: 'Najbolji od vas su oni koji imaju najljepše karakterne osobine.",
+   "de": "Der Prophet - Allahs Segen und Frieden auf ihm - war weder unzüchtig noch unangemessen in seinem Verhalten. Er sagte: ‚Wahrlich, von euren besten Menschen sind die, die die besten Charaktereigenschaften haben."
+  },
+  {
+   "ref": "hadeethenc 8377",
+   "bs": "Kada se neko od vas probudi i uzme abdest, neka ušmrkne vodu i izbaci je tri puta, jer šejtan boravi (prenoći) u nosnoj šupljini dok čovjek spava noću.",
+   "de": "Wenn einer von euch aus seinem Schlaf aufwacht, soll er seine Nase dreimal ausspülen, denn der Schaytan übernachtet an seinen Nasenlöchern."
+  },
+  {
+   "ref": "hadeethenc 4564",
+   "bs": "Ostavi ono što ti stvara sumnju u duši, a prihvati ono što nije sumnjivo. Istina je smirenost, a laž je sumnja.",
+   "de": "Lasse das, was in dir Zweifel weckt, für das, was in dir keine Zweifel weckt, denn die Wahrhaftigkeit ist (innere) Ruhe und die Lüge ist Zweifel."
+  },
+  {
+   "ref": "hadeethenc 65255",
+   "bs": "Od čovjekovog lijepog islama je da se kloni onoga što ga se ne tiče.",
+   "de": "Zum guten Islam einer Person gehört, das zu lassen, was ihn nichts angeht."
+  },
+  {
+   "ref": "hadeethenc 65094",
+   "bs": "Ugovor izmeđ nas i njih je namaz. Onaj ko ga ostavi, učinio je kufr.",
+   "de": "Wahrlich, das Abkommen zwischen uns und ihnen ist das Gebet; wer es unterlässt, hat Unglauben begangen."
+  },
+  {
+   "ref": "hadeethenc 66519",
+   "bs": "Ostavi ono što ti je sumnjivo, a prihvati se onoga što ti nije sumnjivo.",
+   "de": "Lasse das, was Zweifel in dir weckt, für das, was keine Zweifel in dir weckt."
+  },
+  {
+   "ref": "hadeethenc 6331",
+   "bs": "Uistinu su srca svih ljudi između dva prsta Milostivog, kao da se radi o samo jednome srcu. On njima upravlja onako kako želi.\" Zatim je Poslanik, sallallahu alejhi ve sellem, proučio: \"Allahu, Ti Koji okrećeš srca, okreni i usmjeri naša srca ka pokornosti Tebi.",
+   "de": "Wahrlich, die Herzen der Kinder Adams befinden sich allesamt zwischen zwei Fingern des Allerbarmers, wie ein einziges Herz. Er lenkt sie, wie Er will.“ Dann sagte der Gesandte Allahs - Allahs Segen und Frieden auf ihm -: „O Allah, Lenker der Herzen, lenke unsere Herzen zu Deinem Gehorsam."
+  },
+  {
+   "ref": "hadeethenc 3144",
+   "bs": "Pet stvari je od fitre: obrezivanje, brijanje stidnih dlačica, skraćivanje brkova, rezanje noktiju i čupanje dlaka ispod pazuha.",
+   "de": "Die natürliche Veranlagung (Fitrah) liegt in fünf: Die Beschneidung, das Rasieren der Schamhaare, das Kürzen des Schnurrbarts, das Schneiden der Nägel und das Zupfen der Achselhaare."
+  },
+  {
+   "ref": "hadeethenc 11000",
+   "bs": "Nemojte vrijeđati moje ashabe! Da neko od vas udijeli zlata težine brda Uhud, ne bi dostigao vrijednost pregršti hrane koju oni udijele, pa ni vrijednost pola pregršti.",
+   "de": "Beschimpft meine Gefährten nicht! Denn selbst wenn einer von euch so viel Gold wie der Berg Uhud ausgeben würde, würde er nicht den Lohn von einem von ihnen erreichen - und nicht einmal die Hälfte davon."
+  },
+  {
+   "ref": "hadeethenc 3364",
+   "bs": "Da se ne bojim da ću otežati vjernicima,\" ili: \"Svome ummetu, naredio bih im korištenje misvaka kod svakog namaza.",
+   "de": "Wenn es für die Gläubigen - oder: meine Gemeinschaft - nicht zu beschwerlich wäre, würde ich ihnen befehlen, vor jedem Gebet den Siwak (zur Reinigung der Zähne) zu benutzen."
+  },
+  {
+   "ref": "hadeethenc 65047",
+   "bs": "Ne učite znanje kako biste se nadmetali sa učenjacima, niti da biste se raspravljali sa neznalicama, niti da biste zauzimali pročelja na sijelima. Ko učini to - Džehennem, Džehennem!",
+   "de": "Lernt nicht das Wissen, um damit die Gelehrten zu beeindrucken, noch um damit mit denen zu diskutieren, die keinen Verstand haben, und nicht, um euch damit den besten Platz in einer Versammlung aussuchen zu dürfen! Denn wer das tut, (für den ist) das Feuer, das Feuer!"
+  },
+  {
+   "ref": "hadeethenc 4521",
+   "bs": "Ženi muslimanki nije dozvoljeno da putuje na daljinu u trajanju od jedne noći, a da sa njom ne bude mahrem.",
+   "de": "Es ist einer muslimischen Frau nicht erlaubt, eine Reise von (der Dauer einer) Nacht zu unternehmen, außer mit einem Mahram."
+  },
+  {
+   "ref": "hadeethenc 3686",
+   "bs": "Prenosite i dostavite od mene, pa makar i jedan ajet. Osim toga, nema smetnje da pripovijedate od Benu Israila, a ko na mene namjerno slaže, neka sebi pripremi mjesto u Vatri.",
+   "de": "Verkündet von mir und wenn es auch nur ein einziger Vers sein sollte! Und berichtet von den Banu Israil und darin liegt kein Problem! Und wer über mich vorsätzlich lügt, soll seinen Platz im Feuer einnehmen!"
+  },
+  {
+   "ref": "hadeethenc 65019",
+   "bs": "Munafik (Licemjer) je poput smetene (izgubljene i zalutale) ovce, koja se dvoumi između dva stada: sada se prikloni i priđe jednom, a sada drugom.",
+   "de": "Das Gleichnis eines Heuchlers ist das Gleichnis eines Schafes, das nicht weiß, zu welcher Herde es gehört; mal folgt es dieser, mal jener!"
+  },
+  {
+   "ref": "hadeethenc 5394",
+   "bs": "Kada neko od vas hoće na džumu namaz, neka se okupa.",
+   "de": "Wer von euch zum Freitagsgebet kommt, der soll die rituelle Ganzkörperwaschung (Ghusl) vollziehen."
+  },
+  {
+   "ref": "hadeethenc 66517",
+   "bs": "Ono što vam zabranim – toga se klonite, a ono što vam naredim – izvršavajte koliko možete. One prije vas uništilo je pretjerano zapitkivanje i njihovo protivljenje vjerovjesnicima.",
+   "de": "Was ich euch verboten habe, so meidet es. Und was ich euch befohlen habe, so kommt dem nach, soweit es euch möglich ist. Denn wahrlich, diejenigen vor euch richteten ihre vielen Fragen und ihr vermehrter Widerspruch ihren Propheten gegenüber zu Grunde."
+  },
+  {
+   "ref": "hadeethenc 4525",
+   "bs": "Ko zaboravi da posti, pa pojede nešto ili se napije, neka nastavi svoj post, jer ga je Allah nahranio i napojio.",
+   "de": "Wer vergisst, dass er fastet, und daraufhin isst oder trinkt, soll sein Fasten fortsetzen, denn Allah hat ihn gespeist und getränkt."
+  },
+  {
+   "ref": "hadeethenc 2962",
+   "bs": "Prvo za šta će ljudima biti presuđeno na Sudnjem danu jeste prolivena krv.",
+   "de": "Das erste, über das am Tage des Jüngsten Gerichts gerichtet/entschieden wird, ist das Blutvergießen."
+  },
+  {
+   "ref": "hadeethenc 3150",
+   "bs": "Kada bi Allahov Poslanik, salallahu alejhi ve sellem, htio da uđe u toalet rekao bi: 'Allahumme inni e'uzu bike minel-hubusi wel-habais' / Allahu, utječem ti se od muških i ženskih šejtana.",
+   "de": "Der Prophet -Allahs Segen und Frieden auf ihm - pflegte, wenn er die Toilette betrat, zu sagen: ‚O Allah, ich suche Zuflucht bei Dir vor den männlichen und weiblichen unreinen Jinn."
+  },
+  {
+   "ref": "hadeethenc 5514",
+   "bs": "Ko zaštiti čast svog brata muslimana, Allah će mu na Sudnjem danu zaštititi lice od Džehennema.",
+   "de": "Wer den Ruf seines Bruders verteidigt, dessen Gesicht wird Allah am Tag der Auferstehung vor dem Feuer schützen."
+  },
+  {
+   "ref": "hadeethenc 3018",
+   "bs": "Vjerovjesniku, sallallahu alejhi ve sellem, sviđalo se da prioritet daje desnoj strani pri oblačenju svoje obuće, češljanju, čišćenju i u svim situacijama (stanjima).",
+   "de": "Dem Propheten - Allahs Segen und Frieden auf ihm - gefiel es, mit rechts zu beginnen; beim Anziehen seiner Sandalen, beim Kämmen seiner Haare, bei seiner Reinigung und bei allen (übrigen) seiner Angelegenheiten."
+  },
+  {
+   "ref": "hadeethenc 4538",
+   "bs": "Oporučio mi je moj prisni prijatelj, Poslanik, sallallahu alejhi ve sellem, troje: da postim tri dana tokom svakog mjeseca, da klanjam dva rekata duha-namaza i da prije spavanja klanjam vitr-namaz.",
+   "de": "Mein geliebter Freund, Allahs Segen und Frieden auf ihm, empfahl mir drei Sachen: Das Fasten von drei Tagen in jedem Monat, zwei Gebetseinheiten vormittags (zu verrichten) und das Witr-Gebet zu verrichten, bevor ich schlafe."
+  },
+  {
+   "ref": "hadeethenc 65093",
+   "bs": "Između čovjeka i između širka i kufra je obavljanje namaza.",
+   "de": "Zwischen einer Person und dem Götzendienst (Schirk) und dem Unglauben (Kufr) steht die Unterlassung des Gebets."
+  },
+  {
+   "ref": "hadeethenc 3777",
+   "bs": "Čovjek neće sakriti mahane nekoga drugog na dunjaluku, a da Allah neće njegove sakriti na Kijametskom danu.",
+   "de": "Kein Diener deckt einen anderen Diener in dieser Welt, ohne dass Allah ihn am Tag der Auferstehung bedeckt."
+  },
+  {
+   "ref": "hadeethenc 65090",
+   "bs": "Namaz u ovoj mojoj džamiji je bolji hiljadu puta od namaza na drugom mjestu izuzev El-Mesdžidul-Harama.",
+   "de": "Ein Gebet in dieser meiner Moschee ist besser als tausend Gebete an anderen Orten, außer in der Heiligen Moschee (Al-Masjid Al-Haram)."
+  },
+  {
+   "ref": "hadeethenc 3350",
+   "bs": "Ne činite svoje kuće grobnicama, i ne činite moj mezar svetilištem. Donosite salavat na mene, jer će on doprijeti do mene gdje god vi bili.",
+   "de": "Macht eure Häuser nicht zu Gräbern und macht mein Grab nicht zu einem Ort der Feierlichkeiten. Und sprecht Segenswünsche über mich, denn eure Segenswünsche erreichen mich, wo immer ihr auch sein solltet."
+  },
+  {
+   "ref": "hadeethenc 3470",
+   "bs": "Zaista, kada ljudi vide nasilnika i ne spriječe ga u njegovim djelima, sve ih čeka skora kazna od Allaha.",
+   "de": "Wenn die Menschen einen Ungerechten sehen und ihn nicht an seinen Händen packen, dann ist es nahe, dass Allah sie alle mit einer Strafe von Ihm erfasst."
+  },
+  {
+   "ref": "hadeethenc 5516",
+   "bs": "Ko kaže: 'Subhanallahi we bi hamdihi', u jednom danu stotinu puta, biće mu obrisani grijesi makar ih bilo poput morske pjene.",
+   "de": "Wer am Tag hundertmal ‚Gepriesen sei Allah und Ihm gebührt das Lob‘ (‚Subhanallahi wa bihamdih‘) sagt, von dem werden seine Sünden genommen, selbst wenn sie wie der Meeresschaum sein sollten."
+  },
+  {
+   "ref": "hadeethenc 3868",
+   "bs": "Noge čovjeka, koje su se zaprašile na Allahovom putu, neće doticati Vatra.",
+   "de": "Die Füße eines Dieners, die auf dem Weg Allahs staubig werden, wird das Feuer nicht berühren."
+  },
+  {
+   "ref": "hadeethenc 4311",
+   "bs": "Po mlijeku se zabranjuje sve što se zabranjuje po rođenju.",
+   "de": "Das Stillen verbietet das, was die Geburt/Verwandtschaft verbietet."
+  },
+  {
+   "ref": "hadeethenc 5365",
+   "bs": "Nije dozvoljeno nikome da izbjegava svoga brata više od tri dana. Sretnu se, pa se obojica jedan od drugog okrenu, a najbolji od njih je onaj koji prvi nazove selam.",
+   "de": "Es ist nicht erlaubt für einen Mann, seinen Bruder für mehr als drei Nächte zu meiden. Sie treffen sich, und dieser wendet sich ab, und jener wendet sich ab. Der Beste von diese beiden ist derjenige, der mit dem Friedensgruß beginnt."
+  },
+  {
+   "ref": "hadeethenc 5348",
    "bs": "Nemoj potcjenjivati nijedno dobro djelo, pa makar da vedrog lica sretneš svoga brata.",
-   "de": "Schätze keine gute Tat gering, und sei es auch nur, dass du deinem Bruder mit einem freundlichen Gesicht begegnest."
+   "de": "Schätze keine gute Tat gering, selbst wenn es nur ist, dass du deinem Bruder mit einem freundlichen Gesicht begegnest."
   },
   {
-   "ref": "Riyad 6",
-   "bs": "Milostivi će se smilovati onima koji imaju milosti. Smilujte se onima koji su na Zemlji, smilovat će vam se Onaj Koji je na nebesima.",
-   "de": "Die Barmherzigen werden vom Allerbarmer Barmherzigkeit erfahren. Seid barmherzig mit den Bewohnern der Erde, so ist Derjenige im Himmel barmherzig mit euch."
+   "ref": "hadeethenc 65001",
+   "bs": "Ko od vas vidi nešto nevaljalo, neka to promijeni i ukloni rukom, a ako ne mogne rukom, onda jezikom, a ako ne mogne ni jezikom, onda srcem, a to je najslabiji vid imana (vjerovanja).",
+   "de": "Wer von euch etwas Übles sieht, so soll er es mit seiner Hand ändern. Wenn er dazu nicht imstande ist, dann mit seiner Zunge. Wenn er (auch) dazu nicht imstande ist, dann mit seinem Herzen, und dies ist die schwächste Art des Glaubens."
   },
   {
-   "ref": "Riyad 8",
+   "ref": "hadeethenc 3157",
+   "bs": "Ko iskreno od Allaha traži šehadet (da pogine kao šehid), Allah će mu podariti stepen šehida, pa makar umro i u svojoj postelji (a ne na bojnom polju).",
+   "de": "Wer Allah aufrichtig um das Märtyrertum bittet, den wird Allah die Stufen der Märtyrer erreichen lassen, auch wenn er auf seinem Bett stirbt."
+  },
+  {
+   "ref": "hadeethenc 5986",
+   "bs": "Ko ode gataru i pita ga o nečemu, neće mu biti primljen namaz četrdeset dana.",
+   "de": "Wer einen Wahrsager aufsucht und ihn nach etwas fragt, dessen Gebet wird vierzig Nächte lang nicht angenommen."
+  },
+  {
+   "ref": "hadeethenc 6460",
+   "bs": "Kada čovjek potroši imetka na svoju porodicu, nadajući se nagradi, to će mu se računati kao sadaka.",
+   "de": "Wenn ein Mann für seine Familie ausgibt und dabei die Absicht hat, dies als Gottesdienst anzusehen, dann wird es für ihn als Almosen angerechnet."
+  },
+  {
+   "ref": "hadeethenc 5934",
+   "bs": "Alija ibn Ebi Talib mi je rekao: 'Želiš li da te zadužim onim čime je mene Allahov Poslanik zadužio? Sruši svaki kip i poravnaj svaki uzdignuti kabur!",
+   "de": "Ali Ibn Abi Talib sagte zu mir: ‚Soll ich dich nicht mit dem beauftragen, womit mich der Gesandte Allahs - Allahs Segen und Frieden auf ihm - beauftragt hat? Nämlich, dass du keine Statue stehen lässt, ohne sie zu beseitigen, und kein überhöhtes Grab, ohne es zu ebnen."
+  },
+  {
+   "ref": "hadeethenc 66535",
+   "bs": "Niko od vas neće biti pravi vjernik sve dok njegova strast ne bude slijedila ono sa čime sam poslan.",
+   "de": "Keiner von euch glaubt, bis seine Neigung dem untergeordnet ist (und folgt), womit ich gekommen bin."
+  },
+  {
+   "ref": "hadeethenc 4498",
+   "bs": "Sehurite, jer u sehuru je, zaista, berićet (blagoslov).",
+   "de": "Nehmt die Sahur-Mahlzeit ein, denn im Sahur liegt fürwahr Segen."
+  },
+  {
+   "ref": "hadeethenc 8883",
+   "bs": "Neće nijedan čovjek optužiti drugog da je grešnik ili nevjernik, a da se to neće vratiti na njega ukoliko ovaj ne bude takav.",
+   "de": "Kein Mann beschuldigt einen anderen Mann des Frevels oder des Unglaubens, außer das es auf ihn zurückfällt, wenn sein Gefährte nicht so ist."
+  },
+  {
+   "ref": "hadeethenc 3422",
+   "bs": "Nema 'adve (natprirodnog prenošenja zaraze), ni sujevjerja, a fe'l (optimizam) mi se sviđa.\" Neko upita: \"A šta je to fe'l?\" \"Lijepa riječ\", odgovori Poslanik.",
+   "de": "Es gibt keine Ansteckung (durch Krankheiten von selbst) und kein schlechtes Omen. Und ich mag den Optimismus.“ Es wurde gefragt: „Was ist der Optimismus?“ Er sagte: „Das gute Wort."
+  },
+  {
+   "ref": "hadeethenc 6379",
+   "bs": "Ko se zakune i u svojoj zakletvi kaže: ’Tako mi Lata i Uzzaa!’ - neka kaže: ’La ilahe illallah!’ (Nema Boga osim Allaha!), a ko svome drugu kaže: ’Dođi da se kockamo!’ – neka podijeli sadaku!",
+   "de": "Wer schwor und in seinem Schwur sagte: „Bei Al-Lat und Al-'Uzza“, soll sagen: „La ilaha illa Allah.“ Und wer zu seinem Gefährten sagte: „Komm, lass uns Glücksspiele spielen“, soll Almosen geben."
+  },
+  {
+   "ref": "hadeethenc 4935",
+   "bs": "Zaista su pravedni kod Allaha na minberima od svjetlosti; pored desne ruke Milostivog, a obje su Njegove ruke desnice. To su oni koji su pravedni u svojim presudama, prema svojim obiteljima i onome što im je dato u namjesništvo (na upravu).",
+   "de": "Wahrlich, die Gerechten sind bei Allah auf Stufen aus Licht, zur Rechten des Allerbarmers, und beide Seine Hände sind rechts. Dies sind diejenigen, die in ihrem Urteil, mit ihren Angehörigen und in allem, was ihnen anvertraut wurde, gerecht sind."
+  },
+  {
+   "ref": "hadeethenc 5512",
+   "bs": "Davanje sadake neće umanjiti imetak. Allah će čovjeku koji prašta samo povećati ponos i ugled, te se niko neće poniziti zbog Allaha, da ga On neće uzdići.",
+   "de": "Wohlstand wird nicht durch Spenden verringert, und Allah mehrt einem Diener durch Vergebung nur an Ehre, und niemand demütigt sich vor Allah, außer dass Allah ihn erhöht."
+  },
+  {
+   "ref": "hadeethenc 5439",
+   "bs": "Onaj ko nema milosti prema ljudima, Allah neće imati milosti ni prema njemu.",
+   "de": "Wer den Menschen keine Barmherzigkeit erweist, dem wird Allah - mächtig und majestätisch ist Er - keine Barmherzigkeit erweisen."
+  },
+  {
+   "ref": "hadeethenc 6263",
+   "bs": "Ko se na lijep način abdesti, njegovi grijesi će izaći iz njegovog tijela, pa čak i ispod njegovih noktiju.",
+   "de": "Wer die Gebetswaschung verrichtet und die Waschung gut macht, dessen Fehler verlassen seinen Körper, bis sie sogar unter seinen Nägeln herauskommen."
+  },
+  {
+   "ref": "hadeethenc 5792",
+   "bs": "Vjernici sa najpotpunijim vjerovanjem su oni koji imaju najljepše ponašanje, a najbolji od vas su oni koji se najbolje ophode prema svojim ženama.",
+   "de": "Die vollkommensten Gläubigen im Glauben sind die, die die besten Charaktereigenschaften haben, und die besten von euch sind die, die am besten zu ihren Frauen sind."
+  },
+  {
+   "ref": "hadeethenc 3060",
+   "bs": "Nikada nisam vidjela Allahovog Posalanika, sallallahu 'alejhi ve sellem, da se grohotom smije i da mu se pri tom vidi resica. On bi se samo osmjehivao.",
+   "de": "Ich habe den Propheten - Allahs Segen und Frieden auf ihm - niemals so lachen sehen, dass sein Gaumenzäpfchen sichtbar wurde. Vielmehr pflegte er nur zu lächeln."
+  },
+  {
+   "ref": "hadeethenc 65038",
+   "bs": "Allah je odredio sudbinu svakog živog bića na pedeset hiljada godina prije nego što su stvorena nebesa i Zemlja, dok je Njegovo prijestolje iznad vode bilo.",
+   "de": "Allah hat die Vorherbestimmungen der Geschöpfe fünfzigtausend Jahre bevor Er die Himmel und die Erde erschuf niedergeschrieben!‘ Er sagte: ‚Und Sein Thron war über dem Wasser."
+  },
+  {
+   "ref": "hadeethenc 66510",
+   "bs": "Zaista je Allah propisao farzove, pa ih nemojte zanemarivati, i postavio je granice, pa ih nemojte prelaziti, i zabranio je neke stvari, pa ih nemojte činiti, dok je prešutio neke stvari, iz Svoje milosti Allah prema vama, pa ih nemojte istraživati.",
+   "de": "Wahrlich, Allah hat Pflichten auferlegt, so vernachlässigt diese nicht. Und Er hat Grenzen festgelegt, so überschreitet diese nicht. Und Er hat Dinge verboten, so begeht diese nicht. Und Er hat zu Dingen geschwiegen - aus Barmherzigkeit zu euch, nicht aus Vergesslichkeit -, so forscht nicht danach."
+  },
+  {
+   "ref": "hadeethenc 5863",
+   "bs": "Ko je od vas u stanju da se oženi neka to uradi; a ko to nije u stanju neka posti, jer mu je post najbolja zaštita.",
+   "de": "Wer in der Lage ist zu heiraten, der soll heiraten, denn es senkt den Blick und schützt die Keuschheit. Wer dazu nicht in der Lage ist, soll fasten, denn es ist ein Schutz für ihn."
+  },
+  {
+   "ref": "hadeethenc 3379",
+   "bs": "Nema ni jednog dana u kojem ljudi osvanu, a da ne siđu dva meleka od kojih jedan kaže: 'Allahu nadomjesti onome koji udjeljuje', a drugi kaže: 'Allahu uništi imetak onome ko škrtari.",
+   "de": "Es gibt keinen Tag, an dem die Diener aufwachen, ohne dass zwei Engel herabsteigen. Da sagt einer von ihnen: ‚O Allah, gib dem Ausgebenden Ersatz!‘ Und der andere sagt: ‚O Allah, gib dem Zurückhaltenden Verlust/Verderben!"
+  },
+  {
+   "ref": "hadeethenc 4809",
+   "bs": "O ljudi, pokajte se Allahu i tražite od Njega oprost! Doista se ja Allahu kajem stotinu puta dnevno.",
+   "de": "O ihr Menschen, wendet euch reuevoll zu Allah. Wahrlich, ich wende mich Ihm gegenüber jeden Tag hundertmal in Reue zu."
+  },
+  {
+   "ref": "hadeethenc 5332",
+   "bs": "Čuvajte se sumnjičenja, zaista je to najlažniji govor. Nemojte jedni druge uhoditi, špijunirati, niti jedni drugima zavidjeti, nemojte se okretati jedni od drugih i nemojte se mrziti. Allahovi robovi, budite braća!",
+   "de": "Hütet euch vor (bösen) Vermutungen, denn Vermutungen sind die größten Lügen. Und spioniert nicht, und belauert euch nicht, und beneidet euch nicht, und wendet euch nicht voneinander ab, und hasst euch nicht, und seid Diener Allahs als Brüder."
+  },
+  {
+   "ref": "hadeethenc 4202",
+   "bs": "Ko provede Lejletu-l-kadr u noćnom namazu vjerujući u Allaha i nadajući se Njegovoj nagradi, biće mu oprošteni grijesi koje je prethodno uradio.",
+   "de": "Wer die Nacht der Bestimmung (Laylatul Qadr) aus Glauben heraus und in Hoffnung auf den Lohn betend verbringt, dessen vergangene Sünden werden vergeben."
+  },
+  {
+   "ref": "hadeethenc 6982",
+   "bs": "Ko prenese od mene govor za koji misli da je izmišljen na mene, onda je on jedan od lažljivaca.",
+   "de": "Wer über mich etwas berichtet, von dem angenommen wird, dass es eine Lüge ist, so gehört er zu den Lügnern."
+  },
+  {
+   "ref": "hadeethenc 5372",
+   "bs": "Ko želi da mu bude obilna opskrba i da mu se produži život, neka održava rodbinske veze.",
+   "de": "Wer möchte, dass sein Lebensunterhalt ausgeweitet wird und seine Lebensdauer verlängert wird, der soll seine Verwandtschaftsbande pflegen."
+  },
+  {
+   "ref": "hadeethenc 3718",
+   "bs": "Ponižen je, ponižen je, ponižen je.\" Neko upita: \"Ko, Allahov Poslaniče?\" A on reče: \"Ko dočeka starost jednog od svojih roditelja, a (zbog njih) ne uđe u Džennet!",
+   "de": "Möge seine Nase an der Erde haften, dann möge seine Nase an der Erde haften, dann möge seine Nase an der Erde haften.“ Es wurde gefragt: „Wer, o Gesandter Allahs?“ Er sagte: „Derjenige, der seine Eltern im hohen Alter erreicht, einen von ihnen oder beide, und (dadurch) nicht ins Paradies eingeht."
+  },
+  {
+   "ref": "hadeethenc 58090",
+   "bs": "Proklet je onaj ko sa svojom suprugom ima analni snošaj.",
+   "de": "Verflucht ist, wer mit seiner Frau den Analverkehr vollzieht."
+  },
+  {
+   "ref": "hadeethenc 58144",
+   "bs": "Uzvišeni Allah oprostio je mojim sljedbenicima ono što u sebi pomisle, samo ne ako to (zaista) urade ili jezikom iskažu.",
+   "de": "Wahrlich, Allah hat meiner Gemeinschaft vergeben, was sie sich innerlich sagen (und denken), solange sie nicht danach handeln oder darüber sprechen."
+  },
+  {
+   "ref": "hadeethenc 4549",
+   "bs": "Kada vidite mlađak (ramazana), postite, a kada ga (opet) vidite, prestanite! A ako on bude zastrt oblakom, odredite ga (računanjem)!",
+   "de": "Wenn ihr sie (die Mondsichel) sieht, dann fastet und wenn ihr sie sieht, dann beendet das Fasten und sollte sie euch verborgen bleiben, so (zählt nach und) schätzt."
+  },
+  {
+   "ref": "hadeethenc 10950",
+   "bs": "Onoga ko prouči Ajetul-kursi nakon svakog obaveznog namaza, od ulaska u Džennet sprečava samo smrt.",
+   "de": "Wer den Thronvers (Ayat Al-Kursi) nach jedem vorgeschriebenen Gebet liest, den wird nichts am Eintritt in das Paradies hindern, außer, dass er stirbt."
+  },
+  {
+   "ref": "hadeethenc 3352",
+   "bs": "Nemojte govoriti: 'Šta Allah hoće i taj i taj.' Recite umjesto toga: 'Šta Allah hoće, a zatim taj i taj.",
+   "de": "Sagt nicht: ‚Was Allah will und was soundso will‘, sondern sagt: ‚Was Allah will, dann was soundso will."
+  },
+  {
+   "ref": "hadeethenc 2758",
+   "bs": "Ko obavi hadž, a ne bude nepristojne i ružne riječi govorio, te ne bude kršio propise, vratit će se bez grijeha kao na dan kada ga je majka rodila.",
+   "de": "Wer die Pilgerfahrt (Hajj) für Allah vollzieht und dabei auf den Beischlaf (und seine Einleitungen) und den Frevel verzichtet, kehrt zurück wie an dem Tag, an dem er von seiner Mutter geboren wurde."
+  },
+  {
+   "ref": "hadeethenc 3029",
+   "bs": "Imam stalni odljev krvi i ne mogu se očistiti, pa da li ću izostavljati namaz?\" \"Ne, to je krvarenje iz vene. Izostavljaj namaz onoliko dana (u mjesecu) koliko ti je obično trajala ranije menstruacija, a onda se okupaj i klanjaj!",
+   "de": "Ich habe anhaltende Blutungen und werde nicht rein. Soll ich das Gebet unterlassen?“ Er sagte: „Nein, das ist (nur) eine Ader. Aber unterlasse das Gebet für die Anzahl der Tage, an denen du normalerweise deine Menstruation hattest. Dann wasche dich und bete."
+  },
+  {
+   "ref": "hadeethenc 65020",
+   "bs": "Zaista se iman troši u vašim prsima kao što se troši odjeća, pa molite Allaha da obnovi iman u vašim srcima.",
+   "de": "Der Glaube wird im Inneren abgenutzt, genau wie das abgetragene Gewand abgenutzt wird; also bittet Allah darum, den Glauben in euren Herzen zu erneuern!"
+  },
+  {
+   "ref": "hadeethenc 3107",
+   "bs": "Kada čovjeku na petak dok imam drži hutbu kažeš: 'Šuti!', počinio si prekršaj.",
+   "de": "Wenn du am Freitag zu deinem Sitznachbarn sagst: ‚Hör zu‘, während der Imam predigt, dann hast du sinnlose Rede geführt."
+  },
+  {
+   "ref": "hadeethenc 4318",
+   "bs": "Uzvišeni Allah pruža Svoju ruku noću kako bi se pokajao onaj ko zgriješi danju, a pruža Svoju ruku danju kako bi se pokajao onaj ko zgriješi noću, i tako sve dok ne izađe Sunce sa zapada.",
+   "de": "Wahrlich, Allah - mächtig und majestätisch ist Er - streckt Seine Hand in der Nacht aus, damit der Sünder des Tages bereut, und Er streckt Seine Hand am Tag aus, damit der Sünder der Nacht bereut, bis die Sonne im Westen aufgeht."
+  },
+  {
+   "ref": "hadeethenc 3586",
+   "bs": "Dobri (lijepi) snovi su od Allaha, a ružna snoviđenja su od šejtana. Kada neko od vas vidi u snu nešto što ga uplaši, neka pljucne na lijevu stranu i neka zatraži utočište kod Allaha od zla kojeg mogu donijeti takvi snovi, te mu u tom slučaju oni neće nauditi.",
+   "de": "Ein guter Traum ist von Allah, und ein böser Traum ist vom Satan. Wenn also jemand von euch einen bösen Traum hat, vor dem er sich fürchtet, soll er nach links spucken und bei Allah Zuflucht vor seinem Übel suchen, denn es wird ihm nicht schaden."
+  },
+  {
+   "ref": "hadeethenc 4206",
+   "bs": "Musliman, kada bude upitan u kaburu, svjedočit će da nema istinskog boga osim Allaha i da je Muhammed Allahov poslanik, a na to upućuju riječi Uzvišenog: 'Allah će vjernike postojanom riječju učvrstiti i na ovome i na onome svijetu.' (Ibrahim, 27).",
+   "de": "Wenn der Muslim im Grab befragt wird, bezeugt er, dass es keinen Gott gibt außer Allah und dass Muhammad der Gesandte Allahs ist. Dies ist Seine (Allahs) Aussage: ‚Allah festigt diejenigen, die glauben, mit dem festen Wort im diesseitigen Leben und im Jenseits.‘ [Ibrahim: 27]."
+  },
+  {
+   "ref": "hadeethenc 3910",
+   "bs": "Koji god ljudi ustanu sa sijela na kojem nisu spominjali Allaha, biće im kao da su bili za trpezom na kojoj je bila lešina magarca. Oni će zbog toga zažaliti.",
+   "de": "Keine Gruppe von Menschen steht von einer Versammlung auf, in der sie Allah nicht erwähn(t)en, außer dass sie aufstehen, als hätten sie sich bei etwas Ähnlichem wie dem Kadaver eines Esels befunden; und sie werden Bedauern empfinden."
+  },
+  {
+   "ref": "hadeethenc 5794",
+   "bs": "Dunjaluk je užitak, a najveći njegov užitak je dobra supruga.",
+   "de": "Die Welt ist ein Genuss, und der beste Genuss der Welt ist eine rechtschaffene Frau."
+  },
+  {
+   "ref": "hadeethenc 4792",
+   "bs": "Onaj ko uvede u našu vjeru ono što nije od nje, to mu se odbija.\" Ovaj hadis bilježe Buharija i Muslim, a kod Muslima se također navodi: \"Ko uradi djelo koje nije zasnovano na našoj vjeri, ono mu se odbija.",
+   "de": "Wer in dieser, unserer Sache (der Religion), etwas (neu) einführt, was nicht von ihr ist, so wird es abgelehnt.‘“ (Überliefert bei Al-Bukhari und Muslim). Und bei Muslim heißt es: „Wer eine Tat ausführt, die nicht von dieser, unserer Angelegenheit (der Religion), ist, so wird diese abgelehnt."
+  },
+  {
+   "ref": "hadeethenc 6274",
+   "bs": "Ko navečer prouči posljednja dva ajeta sure el-Bekare u jednoj noći, biće mu dovoljna.",
+   "de": "Wer in einer Nacht die beiden Verse vom Ende der Surah Al-Baqarah liest, dem sind sie genug."
+  },
+  {
+   "ref": "hadeethenc 3375",
+   "bs": "Od najgorih ljudi su oni koje žive zatekne Sudnji dan i oni koji od kaburova prave mjesta obavljanja namaza.",
+   "de": "Zu den schlimmsten Menschen gehören diejenigen, die von der Stunde (das Jüngste Gericht) lebend erfasst werden, und diejenigen, die Gräber zu Moscheen machen."
+  },
+  {
+   "ref": "hadeethenc 2971",
+   "bs": "Poslanik, sallallahu alejhi ve sellem, zaklao je dva crno-bijela rogata ovna svojom rukom i pritom proučio Bismillu i tekbir, stavivši nogu na njihov bok.",
+   "de": "Der Prophet - Allahs Segen und Frieden auf ihm - opferte zwei gehörnte, schwarz-weiße Widder. Er schlachtete sie mit seiner eigenen Hand, sagte ‚Bismillah‘ und ‚Allahu Akbar‘, und legte seinen Fuß auf ihre Seiten."
+  },
+  {
+   "ref": "hadeethenc 4216",
+   "bs": "Doista je Allah mome ummetu prešao preko onoga što urade nenamjerno, ili iz zaborava, ili pod prisilom.",
+   "de": "Wahrlich, Allah hat meinetwegen meiner Gemeinschaft die Fehler, Vergesslichkeit und wozu sie gezwungen worden sind, nachgesehen."
+  },
+  {
+   "ref": "hadeethenc 10036",
+   "bs": "Kupanje petkom je dužnost svakoj punoljetnoj osobi, čišćenje zuba misvakom i mazanje miomirisom, ukoliko ga ima.",
+   "de": "Die Ganzkörperwaschung am Freitag ist für jeden Erwachsenen, der die Pubertät erreicht hat, verpflichtend, und dass er sich die Zähne putzen und Parfüm auftragen soll, wenn er etwas (dafür) vorfindet."
+  },
+  {
+   "ref": "hadeethenc 6265",
+   "bs": "Ko zapamti prvih deset ajeta sure El-Kehf, biće sačuvan Dedždžala.\" U drugoj verziji stoji: \"Zadnjih deset ajeta sure El-Kehf.",
+   "de": "Wer zehn Verse vom Anfang der Surah Al-Kahf auswendig lernt, wird vor dem Dajjal bewahrt.“ In einer anderen Überlieferung heißt es: „vom Ende der Surah Al-Kahf."
+  },
+  {
+   "ref": "hadeethenc 10927",
+   "bs": "Kada činiš sedždu, položi dlanove (na tlo), te podigni laktove.",
+   "de": "Wenn du dich niederwirfst, lege deine Handflächen auf den Boden und hebe deine Ellbogen an."
+  },
+  {
+   "ref": "hadeethenc 6270",
+   "bs": "Ko posjeti bolesnika kojem nije došao njegov edžel (smrt), i kod njega sedam puta prouči: ‘Molim Velikog Allaha, Gospodara velikog Arša, da te izliječi (ES'ELULLAHEL-AZIME, RABBEL-'ARŠIL-'AZIMI EN JEŠFIJEKE)’, Allah će ga izliječiti od te bolesti.",
+   "de": "Wer einen Kranken besucht, dessen Todeszeit noch nicht gekommen ist, und bei ihm siebenmal sagt: ‚Ich bitte Allah, den Gewaltigen, den Herrn des gewaltigen Thrones, dass Er dich heilt‘, den (also diesen Kranken) wird Allah von seiner Krankheit heilen."
+  },
+  {
+   "ref": "hadeethenc 2945",
+   "bs": "Allah vam zabranjuje da se zaklinjete vašim očevima!\" Omer je kazao: \"Tako mi Allaha, otkako sam čuo da je to rekao Allahov Poslanik nisam se precima svojim zakleo, ni sam od sebe, ni prenoseći od drugih.",
+   "de": "Wahrlich, Allah - mächtig und majestätisch ist Er - verbietet euch, bei euren Vätern zu schwören.‘“ 'Umar sagte: „Bei Allah, ich habe nicht mehr bei ihnen geschworen, seit ich den Gesandten Allahs - Allahs Segen und Frieden auf ihm - dies untersagen hörte, weder bewusst noch unbewusst."
+  },
+  {
+   "ref": "hadeethenc 11299",
+   "bs": "Najbolji saf za muškarce jest prvi, a najgori je zadnji, a najbolji saf za žene jest zadnji, a najgori je prvi.",
+   "de": "Die beste Reihe für die Männer ist die erste, und die schlechteste ist die letzte. Die beste Reihe für die Frauen ist die letzte, und die schlechteste ist die erste."
+  },
+  {
+   "ref": "hadeethenc 8392",
+   "bs": "Kada neko od vas uzme abdest i obuje mestve, neka potire po njima i neka klanja u njima. Ako hoće, neka ih ne skida, osim zbog džunupluka.",
+   "de": "Wenn einer von euch die Gebetswaschung verrichtet und dann seine Ledersocken anzieht, soll er darin beten und er soll wenn er möchte über sie streichen und sie danach nicht ausziehen, außer bei (der Reinigung von) Janabah."
+  },
+  {
+   "ref": "hadeethenc 6215",
+   "bs": "U Vatru neće ući onaj ko klanja prije izlaska i zalaska Sunca.",
+   "de": "Niemand wird das Höllenfeuer betreten, der vor Sonnenaufgang und vor Sonnenuntergang betet."
+  },
+  {
+   "ref": "hadeethenc 10951",
+   "bs": "Klanjaj stojeći. Ako ne možeš, onda sjedeći, a ako ne, onda ležeći na boku!",
+   "de": "Bete im Stehen. Wenn du das nicht kannst, dann im Sitzen. Wenn du das nicht kannst, dann auf der Seite."
+  },
+  {
+   "ref": "hadeethenc 5518",
+   "bs": "Kome Allah želi dobro, poduči ga vjeri. Ja sam samo onaj koji dijeli, a Allah je Taj Koji daje. Ovaj će ummet uvijek biti na istini, neće mu naštetiti niko ko mu se bude protivio sve dok ne nastupi Allahova odredba.",
+   "de": "Wem Allah Gutes will, lässt er die Religion verstehen. Und ich bin nur der Verteiler und Allah gibt. Diese Gemeinschaft wird weiterhin auf dem Befehl Allahs bestehen bleiben, es wird ihnen nicht schaden, wer auch immer gegen sie sein mag, bis Allahs Befehl eintritt."
+  },
+  {
+   "ref": "hadeethenc 65051",
+   "bs": "Allahov Poslanik, sallallahu 'alejhi ve sellem, nije znao kada jedna sura prestaje, a kada počinje druga sve dok mu se ne objavi: 'Bismillahir-rahmanir-rahim.",
+   "de": "Der Prophet - Allahs Segen und Frieden auf ihm - kannte nicht den Beginn einer Surah, bis ihm ‚Im Namen Allahs, des Allerbarmers, des Barmherzigen‘ (Bismilllahi-r-Rahmani-r-Rahim) offenbart wurde."
+  },
+  {
+   "ref": "hadeethenc 3071",
+   "bs": "Neka vjernik ne mrzi vjernicu. Ako prezire jednu njenu osobinu, zadovoljan je njenim drugim osobinama.",
+   "de": "Ein gläubiger Mann soll eine gläubige Frau nicht hassen. Wenn er einen Charakterzug an ihr verabscheut, so wird er einen anderen an ihr mögen.‘ Oder er sagte: ‚einen anderen (Charakterzug)."
+  },
+  {
+   "ref": "hadeethenc 3711",
+   "bs": "Najbolji dan u kojem se Sunce rodilo, jeste petak; toga dana stvoren je Adem, toga dana uveden je u Džennet, toga dana izveden je iz njega, i Sudnji dan nastupit će u petak.",
+   "de": "Der beste Tag, an dem die Sonne aufging, ist der Freitag. An diesem Tag wurde Adam erschaffen, an diesem Tag wurde er ins Paradies eingelassen und an diesem Tag wurde er daraus vertrieben. Und die Stunde wird nur an einem Freitag eintreten."
+  },
+  {
+   "ref": "hadeethenc 4436",
+   "bs": "Ko isposti jedan dan na Allahovom putu, On će mu udaljiti njegovo lice od vatre sedamdeset godina.",
+   "de": "Wer einen Tag auf dem Weg Allahs fastet, dessen Gesicht wird Allah siebzig Jahre lang vom Feuer fernhalten."
+  },
+  {
+   "ref": "hadeethenc 3079",
+   "bs": "Neka niko od vas ne drži svoj polni organ desnom rukom dok mokri, neka se nakon obavljene nužde ne čisti desnom rukom i neka ne puše u posudu.",
+   "de": "Keiner von euch soll sein Glied mit der rechten Hand halten, während er uriniert, und keiner soll sich nach dem Stuhlgang mit der rechten Hand reinigen, und keiner soll in ein Trinkgefäß ein- und ausatmen."
+  },
+  {
+   "ref": "hadeethenc 3702",
+   "bs": "Džehennem je opkoljen (ograđen) ovosvjetskim užicima, a Džennet je opkoljen (ograđen) neprijatnostima.",
+   "de": "Das Feuer ist umgeben von Gelüsten und das Paradies ist umgeben von verhassten (unangenehmen) Dingen!"
+  },
+  {
+   "ref": "hadeethenc 2997",
+   "bs": "Nije od nas onaj ko na nas podigne oružje.",
+   "de": "Wer die Waffe gegen uns erhebt, der gehört nicht zu uns."
+  },
+  {
+   "ref": "hadeethenc 5364",
+   "bs": "Nemojte vrijeđati umrle, oni su se, zaista, susreli sa djelima koja su radili.",
+   "de": "Beschimpft nicht die Toten, denn sie sind bereits zu dem gelangt, was sie (zu Lebzeiten) vorausgeschickt haben."
+  },
+  {
+   "ref": "hadeethenc 3359",
+   "bs": "Onaj ko se zakune nečim drugim mimo Allaha, počinio je djelo nevjerstva ili je počinio širk.",
+   "de": "Wer bei etwas anderem als bei Allah schwört, hat Unglauben oder Schirk begangen!"
+  },
+  {
+   "ref": "hadeethenc 5335",
+   "bs": "Nema nijednog roba kome je Allah dao da bude pretpostavljeni svojim podanicima, a da mu Allah neće, kada umre, zabraniti ulazak u Džennet, ukoliko bude varao svoje podanike.",
+   "de": "Kein Diener, dem Allah Verantwortung für eine Gemeinschaft übertragen hat, wird sterben, während er seiner Verantwortung gegenüber betrügerisch ist, ohne dass Allah ihm das Paradies verwehrt."
+  },
+  {
+   "ref": "hadeethenc 3854",
+   "bs": "Ne održava rodbinske veze onaj ko samo uzvrati na posjetu njegove rodbine. Naprotiv, rodbinske veze istinski ostvaruje onaj koji održava vezu s rodbinom koja njega zaboravi ili odbaci.",
+   "de": "Derjenige, der die verwandtschaftlichen Beziehungen pflegt, ist nicht der, der gleiches mit gleichem vergilt! Vielmehr ist derjenige, der die verwandtschaftlichen Beziehungen pflegt, der, der sie pflegt, wenn sie abgebrochen wurden!"
+  },
+  {
+   "ref": "hadeethenc 58125",
+   "bs": "Ako čovjek bude imao dvije žene, pa jednoj dadne prednost nauštrb druge, kada dođe na Sudnji dan jedna strana tijela će mu biti iskrivljena.",
+   "de": "Wer zwei Frauen hat und sich einer von ihnen zuneigt, wird am Tag der Auferstehung mit einer schief hängenden Körperhälfte erscheinen."
+  },
+  {
+   "ref": "hadeethenc 5507",
+   "bs": "Dvije riječi su lahke na jeziku, teške na vagi i drage Milostivom: \"Subhanallahi ve bihamdihi, Subhanallahil-'azim\" (Uzvišen je Allah i Njemu pripada hvala; Uzvišen je Allah, Moćni).",
+   "de": "Zwei Worte, die leicht auf der Zunge, schwer auf der Waage und Allah, dem Allerbarmer, lieb sind: Subhanallahil-'Adhim (Gepriesen sei Allah, der Erhabene), Subhanallahi wa bihamdih (Gepriesen sei Allah und Ihm gebührt das Lob)."
+  },
+  {
+   "ref": "hadeethenc 3236",
+   "bs": "Gospodar je Svome robu najbliži u posljednjem dijelu noći, pa ako si ikako u mogućnosti biti među onima koji te trenutke provode u spominjanju Allaha - budi!",
+   "de": "Am nächsten ist der Herr dem Diener im letzten Teil der Nacht. Wenn du also zu denen gehören kannst, die Allah in dieser Stunde gedenken, dann tu es (und gehöre zu ihnen)."
+  },
+  {
+   "ref": "hadeethenc 58122",
+   "bs": "Kada neko od vas jede, neka jede desnom rukom; a kada pije, neka i to radi desnom rukom. Zaista, šejtan jede i pije sa lijevom.",
+   "de": "Wenn einer von euch isst, soll er mit seiner rechten Hand essen, und wenn er trinkt, soll er mit seiner rechten Hand trinken, denn der Satan isst mit seiner linken Hand und trinkt mit seiner linken Hand."
+  },
+  {
+   "ref": "hadeethenc 5474",
+   "bs": "Najgori čovjek kod Allaha je zajedljivi svadljivac.",
+   "de": "Wahrlich, der verhassteste Mensch vor Allah ist der streitsüchtige Widersacher."
+  },
+  {
+   "ref": "hadeethenc 5787",
+   "bs": "Čuvajte se nepravde! Zaista će nepravda biti tmine na Sudnjem danu. Čuvajte se škrtosti! Zaista je škrtost uništila one prije vas. Navela ih je da prolijevaju krv i da sebi dozvole ono što je zabranjeno.",
+   "de": "Hütet euch vor Ungerechtigkeit, denn Ungerechtigkeit ist Finsternisse am Tag der Auferstehung. Und hütet euch vor Geiz, denn Geiz hat diejenigen vor euch zugrunde gerichtet. Er hat sie dazu verleitet, ihr Blut zu vergießen und das für erlaubt zu erklären, was ihnen verboten war."
+  },
+  {
+   "ref": "hadeethenc 4721",
    "bs": "Kada biste se vi oslanjali na Allaha istinski, On bi vam davao opskrbu kao što pticama daje. One osvanu gladne, a omrknu site.",
-   "de": "Würdet ihr euch auf Allah verlassen, wie es Ihm wahrhaftig gebührt, so würde Er euch versorgen, wie Er die Vögel versorgt: Sie fliegen morgens mit leerem Magen hinaus und kehren abends mit vollem zurück."
+   "de": "Wenn ihr euch auf Allah wahrhaftig (mit wahrhaftem Vertrauen) verlassen würdet, so würde Er euch versorgen, wie Er die Vögel versorgt: Sie fliegen morgens mit leerem Magen hinaus und kehren abends mit vollem zurück."
   },
   {
-   "ref": "Riyad 4",
+   "ref": "hadeethenc 65095",
+   "bs": "O Bilale, uspostavi namaz kako bi nas odmorio njime!",
+   "de": "O Bilal, rufe zum Gebet, damit wir dadurch Ruhe/Erholung finden."
+  },
+  {
+   "ref": "hadeethenc 64637",
+   "bs": "Ko ubije onoga ko je sklopio dogovor sa muslimanima, neće osjetiti ni miris Dženneta, a njegov se miris, doista, osjeća na udaljenosti od četrdeset godina.",
+   "de": "Wer einen Schutzbefohlenen tötet, wird den Duft des Paradieses nicht riechen, und wahrlich sein Duft ist bereits aus einer Distanz von vierzig Jahren wahrnehmbar."
+  },
+  {
+   "ref": "hadeethenc 4457",
+   "bs": "Sehurili smo s Vjerovjesnikom, sallallahu alejhi ve sellem, a zatim je ustajao da klanja namaz.\" “Koliko je bilo između ezana i sehura?” “Onoliko koliko treba vremena da se prouči pedeset ajeta.” - Zejd je odgovorio.",
+   "de": "Wir nahmen die Sahur-Mahlzeit mit dem Propheten - Allahs Segen und Frieden auf ihm - ein. Anschließend stand er zum Gebet auf. Ich fragte: ‚Wie viel Zeit lag zwischen dem Sahur und dem Gebetsruf?‘ Er sagte: ‚Etwa fünfzig Verse."
+  },
+  {
+   "ref": "hadeethenc 3143",
+   "bs": "Kada se pas napije iz posude nekog od vas, neka je opere sedam puta.\" U rivajetu kod Muslima: \"Prvi put zemljom.",
+   "de": "Wenn ein Hund aus dem Gefäß eines von euch trinkt, dann soll er es siebenmal waschen.‘“ Und in einer Überlieferung bei/von Muslim heißt es: „Die erste davon (dieser Waschungen) mit Erde."
+  },
+  {
+   "ref": "hadeethenc 8950",
+   "bs": "Meleki ne ulaze u kuću u kojoj se nalazi pas ili slika.",
+   "de": "Die Engel betreten kein Haus, in dem sich ein Hund oder ein Bild befindet."
+  },
+  {
+   "ref": "hadeethenc 5436",
+   "bs": "Ko ode u džamiju početkom ili krajem dana, Allah će mu pripremiti darove (počasti) u Džennetu svaki put kada ode.",
+   "de": "Wer morgens oder abends zur Moschee kommt, dem bereitet Allah im Paradies eine Stellung vor, jedes Mal wenn er morgens oder abends kommt."
+  },
+  {
+   "ref": "hadeethenc 10101",
+   "bs": "Musliman je onaj od čijih ruku i jezika su mirni drugi muslimani, a muhadžir je onaj koji napusti sve ono što je Allah zabranio.",
+   "de": "Ein Muslim ist derjenige, vor dessen Zunge und Hand die Muslime sicher sind. Und ein Auswanderer (Muhajir) ist derjenige, der das verlässt, was Allah verboten hat."
+  },
+  {
+   "ref": "hadeethenc 5333",
+   "bs": "Vrijeđanje muslimana je grijeh, a borba protiv njega je nevjerstvo.",
+   "de": "Das Beleidigen des Muslim ist Frevel, und ihn zu töten ist Unglaube."
+  },
+  {
+   "ref": "hadeethenc 65092",
+   "bs": "Kada neko od vas želi da uđe u džamiju neka kaže: 'Allahummeftahli ebwabe rahmetike' (Allahu, otvori mi vrata Svoje milosti), a kada želi da izađe neka kaže: 'Allahumme inni es'eluke min fadlike' (Allahu, podari mi Svoje blagodati).",
+   "de": "Wenn einer von euch die Moschee betritt, soll er sagen: „O Allah, öffne mir die Tore Deiner Barmherzigkeit.“ Und wenn er hinausgeht, soll er sagen: „O Allah, ich bitte Dich um Deine Gunst."
+  },
+  {
+   "ref": "hadeethenc 6180",
+   "bs": "Allahov Poslanik, sallallahu alejhi ve sellem, imao je najljepše ponašanje.",
+   "de": "Der Gesandte Allahs - Allahs Segen und Frieden auf ihm - war der Mensch mit dem besten Charakter."
+  },
+  {
+   "ref": "hadeethenc 3044",
+   "bs": "Veliki grijesi su: Pripisivanje druga Allahu, neposlušnost roditeljima, bespravno ubistvo i lažna zakletva.",
+   "de": "Die großen Sünden sind: Allah etwas beigesellen, das schlechte Benehmen gegenüber den Eltern, der Mord und der Meineid."
+  },
+  {
+   "ref": "hadeethenc 4540",
+   "bs": "Tražite Lejletul-kadr u neparnim noćima zadnjih deset dana ramazana.",
+   "de": "Sucht die Nacht der Bestimmung in den ungeraden Nächten der letzten zehn Nächte des Ramadans."
+  },
+  {
+   "ref": "hadeethenc 5795",
+   "bs": "Zaista je vjera lagana, bez tegoba. Ko god u vjeri navaljuje s dodacima, vjera ga savlada. Zato se držite umjerenosti (sredine), a ako neko od vas ne bude u stanju nešto uraditi potpuno, neka ga uradi koliko može. Budite radosni, i pomažite se jutrom, krajem dana i jednim dijelom noći.",
+   "de": "Gewiss, die Religion ist Erleichterung. Und niemand überfordert sich in der Religion, außer dass sie ihn überwältigt. So handelt richtig und kommt der Vollkommenheit nahe. Und verkündet frohe Botschaft! Und sucht Hilfe am Morgen, am Nachmittag und in einem Teil der Nacht!"
+  },
+  {
+   "ref": "hadeethenc 5273",
+   "bs": "Zaista su rukje (u kojima ima širka), zapisi (hamajlije) i tivele (nešto što su ljudi radili misleći da to omiljava ženu njenom mužu i muža njegovoj ženi) širk.",
+   "de": "Wahrlich, Amulette, Talismane und Zauberei sind Schirk."
+  },
+  {
+   "ref": "hadeethenc 4704",
+   "bs": "Budi na ovom svijetu kao stranac, ili putnik u prolazu.'\" Ibn Omer, radijallahu 'anhu, imao je običaj kazati: \"Kada omrkneš ne očekuj da ćeš osvanuti, a kada osvaneš ne očekuj da ćeš omrknuti, u zdravlju se pripremi za bolest, i u životu se pripremi za smrt.",
+   "de": "Sei im Diesseits wie ein Fremder oder ein Durchreisender.‘“ Und Ibn 'Umar pflegte zu sagen: „Wenn du den Abend erlebst, dann erwarte nicht den Morgen und wenn du den Morgen erlebst, dann erwarte nicht den Abend. Nimm von deiner Gesundheit für deine Krankheit und von deinem Leben für deinen Tod."
+  },
+  {
+   "ref": "hadeethenc 4309",
+   "bs": "Ova vjera je savjet/iskren odnos.\" Upitali smo: \"Za koga?\" Rekao je: \"Za Allaha, Njegovu Knjigu, Njegovog Poslanika, za vođe muslimana i za obične ljude.",
+   "de": "Die Religion ist aufrichtiger Rat („Nasihah“)!“ Wir fragten: „Gegenüber wem?“ Er sagte: „Gegenüber Allah, Seinem Buch, Seinem Gesandten, den Führern der Muslime und ihrer Allgemeinheit!"
+  },
+  {
+   "ref": "hadeethenc 4438",
+   "bs": "Ljudi će biti u dobru sve dok budu požurivali sa iftarom.",
+   "de": "Den Menschen wird es (weiterhin) gut gehen, solange sie sich beeilen, ihr Fasten zu brechen."
+  },
+  {
+   "ref": "hadeethenc 10925",
+   "bs": "Naređeno mi je da sedždu obavljam na sedam dijelova tijela: na čelu\", pokazujući rukom i na nos, \"dlanovima, koljenima i vrhovima stopala. Također, naređeno mi je da ne skupljam odjeću i kosu.",
+   "de": "Mir wurde befohlen mich auf sieben Knochen niederzuwerfen; auf der Stirn - und er zeigte mit seiner Hand auf seine Nase - , den beiden Händen, beiden Knien und den Zehenspitzen. Und wir sollen weder Kleider noch Haare zusammenbinden."
+  },
+  {
+   "ref": "hadeethenc 3361",
+   "bs": "Nećete ući u Džennet sve dok ne budete vjerovali, a nećete vjerovati sve dok se ne budete voljeli. Želite li da vas uputim na nešto, ako ga budete činili, voljet ćete se međusobno? Nazivajte selam jedni drugima!",
+   "de": "Ihr werdet das Paradies nicht betreten, bis ihr gläubig seid und ihr werdet nicht (vollkommen) gläubig sein, bis ihr einander liebt. Soll ich euch denn nicht auf eine Sache hinweisen, durch die ihr euch gegenseitig liebt, wenn ihr sie ausführt? Verbreitet den Friedensgruß untereinander!"
+  },
+  {
+   "ref": "hadeethenc 3652",
+   "bs": "Upitao sam Aišu, radijallahu anha: 'Šta bi Vjerovjesnik, sallallahu alejhi ve sellem, prvo počeo raditi kada bi ušao u kuću?', a ona odgovori: 'Prvo bi upotrijebio misvak.",
+   "de": "Ich fragte 'Aischah: ‚Womit pflegte der Prophet - Allahs Segen und Frieden auf ihm - zu beginnen, wenn er sein Haus betrat?‘ Sie sagte: ‚Mit (der Reinigung seiner Zähne mit) dem Siwak (Zahnreinigungshölzchen)."
+  },
+  {
+   "ref": "hadeethenc 3122",
+   "bs": "Čovjek je vjere svoga prijatelja; zato pazite sa kim se družite!",
+   "de": "Der Mann befindet sich auf der Religion seines engen Freundes, so soll jeder von euch schauen, wen er sich zum engen Freund nimmt."
+  },
+  {
+   "ref": "hadeethenc 5431",
+   "bs": "Ko nakon jela kaže: 'Neka je hvaljen Allah Koji me je ovim nahranio, i dao mi opskrbu bez moje snage i moći', biće mu oprošteni prethodni grijesi.",
+   "de": "Wer eine Mahlzeit isst und dann sagt: „Alles Lob gebührt Allah, Der mich damit gespeist und versorgt hat, ohne Macht von mir und ohne Kraft“, dem werden seine vergangenen Sünden vergeben."
+  },
+  {
+   "ref": "hadeethenc 5403",
+   "bs": "Škrtac je onaj u čijem prisustvu budem spomenut, a on na mene ne donese salavat.",
+   "de": "Der Geizige ist derjenige, bei dem ich erwähnt werde und der keine Segenswünsche auf mich spricht."
+  },
+  {
+   "ref": "hadeethenc 65055",
+   "bs": "Onaj ko naglas uči Kur'an je poput onoga ko javno udjeljuje sadaku, a onaj ko u sebi uči Kur'an nalik je onome ko u tajnosti daje sadaku.",
+   "de": "Derjenige, der den Quran laut rezitiert, ist wie derjenige, der ein Almosen öffentlich gibt, und derjenige, der den Quran still rezitiert, ist wie derjenige, der ein Almosen im Geheimen gibt."
+  },
+  {
+   "ref": "hadeethenc 11169",
+   "bs": "Hasan i Husejn bit će prvaci džennetskih mladića.",
+   "de": "Al-Hasan und Al-Husayn sind die Herren der jungen Menschen des Paradieses."
+  },
+  {
+   "ref": "hadeethenc 3013",
+   "bs": "Kada čujete ezan, govorite isto što i muezzin govori.",
+   "de": "Wenn ihr den Gebetsruf hört, so sprecht das nach, was der Gebetsrufer sagt."
+  },
+  {
+   "ref": "hadeethenc 2759",
+   "bs": "O Allahov Poslaniče, vidimo da je džihad najvredniji posao, a zar nećemo (mi žene) ići u džihad?' On je odgovorio: 'Ne, ali je najvrijedniji džihad za vas primljen hadž.",
+   "de": "O Gesandter Allahs, wir sehen das Abmühen (Al-Jihad) als die beste Tat an. Sollen wir uns nicht auch abmühen?“ Er sagte: „Nein, für euch Frauen ist die beste Abmühung eine angenommene Pilgerfahrt (Hajj)."
+  },
+  {
+   "ref": "hadeethenc 65027",
+   "bs": "Neće nastupiti Sudnji dan sve dok vrijeme ne bude veoma brzo prolazilo, tako da će godina izgledati kao mjesec, mjesec će izgledati kao sedmica, sedmica kao dan, dan kao sat, a sat će izgledati kao vrijeme koje je potrebno da sagori jedan palmin list.",
+   "de": "Die Stunde wird nicht kommen, bis die Zeit sich zusammenzieht, sodass das Jahr wie ein Monat sein wird, und der Monat wie eine Woche, und die Woche wie ein Tag, und der Tag wie eine Stunde, und die Stunde wie das Verbrennen eines Palmblattes."
+  },
+  {
+   "ref": "hadeethenc 3418",
+   "bs": "Onaj Ko sretne Allaha, a nije Mu ništa pridružio, ući će u Džennet, a ko Ga sretne, a pridružio Mu je druga, ući će u Džehennem.",
+   "de": "Wer auf Allah trifft ohne Ihm etwas beigesellt zu haben, betritt das Paradies und wer auf Allah trifft und Ihm etwas beigesellt hat, betritt das Feuer!"
+  },
+  {
+   "ref": "hadeethenc 3156",
+   "bs": "Desiće se uzurpiranje, sebičnost, i druge stvari koje ćete osuđivati (od strane vladara).\" \"Allahov Poslaniče, šta nam naređuješ?\", upitaše ashabi. \"Izvršavajte svoje obavez a tražite od Allaha pravo koje vam pripada.\", odgovori im Poslanik.",
+   "de": "Es wird Spuren und Dinge geben, die ihr missbilligen werdet.“ Sie sagten: „O Gesandter Allahs, was befiehlst du uns?“ Er sagte: „Ihr erfüllt die Pflichten, die euch obliegen, und bittet Allah um das, was euch zusteht."
+  },
+  {
+   "ref": "hadeethenc 11161",
+   "bs": "Allahov Poslanik, sallallahu alejhi ve sellem, je rekao u vezi sa Ebu Bekrom i Omerom sljedeće: 'Njih dvojica će biti prvaci svih ranijih i kasnijih odraslih ljudi u Džennetu, izuzev vjerovjesnika i poslanika.",
+   "de": "Der Gesandte Allahs - Allahs Segen und Frieden auf ihm - sagte zu Abu Bakr und 'Umar: ‚Diese beiden sind die Herren der älteren Menschen des Paradieses von den Ersten und den Letzten, außer den Propheten und Gesandten."
+  },
+  {
+   "ref": "hadeethenc 6021",
+   "bs": "Najpreči uslovi koje morate ispoštovati su oni sa kojima ste dozvolili stidna mjesta.",
+   "de": "Wahrlich, die Bedingungen, die am ehesten von euch erfüllt werden sollten, sind die, durch die euch die Schamteile (der Frauen durch Heirat) erlaubt worden sind."
+  },
+  {
+   "ref": "hadeethenc 3031",
+   "bs": "Poravnajte vaše safove, jer zaista je poravnavanje safova dio cjelovitosti i potpunosti namaza.",
+   "de": "Richtet eure Reihen gerade, denn das Geraderichten der Reihe gehört zur Vervollständigung des Gebets."
+  },
+  {
+   "ref": "hadeethenc 8951",
+   "bs": "Meleci se neće pridružiti onim ljudima pri kojima se nalazi pas ili zvono.",
+   "de": "Die Engel begleiten keine Reisegruppe, mit der sich ein Hund oder eine Glocke befindet."
+  },
+  {
+   "ref": "hadeethenc 4302",
+   "bs": "Boj se Allaha gdje god da si, i poslije lošeg djela učini dobro djelo koje će obrisati loše, i prema ljudima se lijepo ophodi.",
+   "de": "Habe Furcht vor Allah wo immer du dich befindest. Und lasse der schlechten Tat eine gute folgen, so löscht sie diese dann aus. Und begegne den Menschen mit gutem Charakter (mit gutem Benehmen)."
+  },
+  {
+   "ref": "hadeethenc 65018",
+   "bs": "Allahov Poslaniče, reci mi nešto o islamu, o čemu poslije tebe više nikoga neću morati pitati?” Allahov Poslanik, sallallahu alejhi ve sellem, mu reče: \"Reci: ‘Vjerujem u Allaha’, a zatim ustraj u tome.",
+   "de": "Ich sagte: ‚O Gesandter Allahs, berichte mir etwas vom Islam, worüber ich niemanden außer dich befragen kann.‘ Er sagte: ‚Sag: ‚Ich glaube an Allah‘; und verhalte dich hierauf recht (und sei rechtschaffen)."
+  },
+  {
+   "ref": "hadeethenc 5367",
+   "bs": "Neće ući u Džennet onaj ko prekida rodbinske veze.",
+   "de": "Derjenige, der die verwandtschaftlichen Beziehungen abbricht, wird nicht ins Paradies eintreten."
+  },
+  {
+   "ref": "hadeethenc 3135",
+   "bs": "Ko se bude starao o udovicama i siromašnima, biće poput borca na Allahovom putu, i biće poput onoga koji noću klanja, a danju posti.",
+   "de": "Derjenige, der sich um eine Witwe und einen Armen kümmert, ist wie der Kämpfer auf dem Wege Allahs oder wie der, der in der Nacht (im Gebet) steht und tagsüber fastet."
+  },
+  {
+   "ref": "hadeethenc 4722",
+   "bs": "Kad bi se ljudima davalo shodno njihovim tvrdnjama, onda bi neki ljudi (olahko) optužili nekog kako im duguje neki imetak ili kako imaju pravo na izvršenje odmazde nad tim nekim. Međutim, onaj koji optužuje dužan je donijeti dokaz, a onaj ko negira dužan je zakleti se da nije kriv.",
+   "de": "Würde den Menschen entsprechend ihrer Behauptungen gegeben, so würden manche den Besitz und das Blut anderer für sich (als erlaubt) beanspruchen. Jedoch obliegt die Erbringung des Beweises demjenigen, der etwas behauptet, und der Eid obliegt demjenigen, der etwas leugnet."
+  },
+  {
+   "ref": "hadeethenc 4555",
+   "bs": "Allah ne gleda u vaše izglede niti u vaše imetke. On, zapravo, gleda u vaša srca i djela.",
+   "de": "Allah schaut weder auf euer Aussehen noch auf euer Vermögen, sondern Er schaut auf eure Herzen und Taten!"
+  },
+  {
+   "ref": "hadeethenc 8886",
+   "bs": "Uistinu je šejtan izgubio svaku nadu da će na Arapskom poluotoku biti obožavan od strane onih koji obavljaju namaz, ali nije izgubio nadu u to da će ih zavaditi i ubaciti neprijateljstvo među njih.",
+   "de": "Der Satan hat die Hoffnung aufgegeben, dass die Betenden auf der Arabischen Halbinsel ihn anbeten werden, doch er hofft (weiterhin) auf die Zwietracht zwischen ihnen."
+  },
+  {
+   "ref": "hadeethenc 5511",
+   "bs": "Nijedna skupina neće se sastati na jednom mjestu, bez spominjanja Allaha i bez donošenja salavata na Poslanika, sallallahu alejhi ve sellem, a da se neće zbog toga pokajati. Ako bude htio, Allah će ih kazniti, a ako ne, oprostit će im.",
+   "de": "Kein Volk sitzt in einer Versammlung zusammen, in der sie Allah nicht gedenken und nicht über Seinen Propheten Segenswünsche sprechen, ohne dass diese Versammlung für sie ein Verlust ist. Wenn Er will, bestraft Er sie, und wenn Er will, vergibt Er ihnen."
+  },
+  {
+   "ref": "hadeethenc 3045",
+   "bs": "Jedan od najvećih džihada jeste reći riječ istine kod nepravednog vladara.",
+   "de": "Wahrlich, zu den gewaltigsten Formen des Jihad (Sichabmühen) gehört ein Wort der Gerechtigkeit vor einem ungerechten Herrscher."
+  },
+  {
+   "ref": "hadeethenc 65084",
+   "bs": "Svaki musliman se mora okupati (makar) jednom u sedam dana tako da opere glavu i cijelo tijelo.",
+   "de": "Es ist verpflichtend für jeden Muslim, sich alle sieben Tage einmal zu waschen, wobei er seinen Kopf und seinen Körper (mit)wäscht."
+  },
+  {
+   "ref": "hadeethenc 65080",
+   "bs": "Allahov Vjerovjesnik, sallallahu alejhi ve sellem, abdestio se za svaki namaz.\" Amr je upitao: \"Kako ste vi postupali?\" Enes mu odgovori: \"Dovoljno nam je ako jednom uzmemo abdest, dokle god ga ne izgubimo.",
+   "de": "Der Prophet - Allahs Segen und Frieden auf ihm - pflegte vor jeder Gebetszeit die rituelle Gebetswaschung zu vollziehen. Ich fragte: ‚Wie habt ihr es gemacht?‘ Er antwortete: ‚Eine rituelle Gebetswaschung ist ausreichend, solange man sich nicht verunreinigt hat."
+  },
+  {
+   "ref": "hadeethenc 3373",
+   "bs": "Ko poziva u dobro imat će nagradu onih koji ga čine, a to njihovu nagradu neće umanjiti, a ko poziva u zlo ponijet će grijeh onih koji ga čine, a to njihove grijehe neće umanjiti.",
+   "de": "Wer zu Rechtleitung aufruft, erhält den gleichen Lohn wie diejenigen, die ihm folgen, ohne dass dies ihren Lohn im Geringsten schmälert. Und wer zu Irreleitung aufruft, trägt die gleiche Sünde wie diejenigen, die ihm folgen, ohne dass dies ihre Sünden im Geringsten schmälert."
+  },
+  {
+   "ref": "hadeethenc 65100",
+   "bs": "Najgori je onaj koji krade od namaza.\" Ebu Hurejre upita: \"Kako krade od namaza?\" \"Kada nepotpuno obavlja ruku’ i sedždu\", odgovori Poslanik.",
+   "de": "Der schlimmste Dieb unter den Menschen ist derjenige, der sein Gebet stiehlt.‘ Es wurde gefragt: ‚Wie stiehlt man sein Gebet?‘ Er sagte: ‚Indem man seine Verbeugung und seine Niederwerfung nicht vollständig ausführt."
+  },
+  {
+   "ref": "hadeethenc 4243",
+   "bs": "Neka onaj ko jaše poselami onoga ko hoda, onaj ko hoda onoga ko sjedi i neka manja skupina poselami veću.\" U hadisu kod Buharije stoji: \"Neka mlađi poselami starijieg, onaj koji hoda onoga koji stoji, a manja skupina veću skupinu.",
+   "de": "Der Reitende grüßt den Fußgänger, der Fußgänger grüßt den Sitzenden, und die Wenigen grüßen die Vielen.‘“ Und bei Al-Bukhari heißt es: „Der Jüngere grüßt den Älteren, der Vorbeigehende grüßt den Sitzenden, und die Wenigen grüßen die Vielen."
+  },
+  {
+   "ref": "hadeethenc 6261",
+   "bs": "Požurite sa ikindija-namazom! Čuo sam Allahovog Poslanika, sallallahu alejhi ve sellem, da je kazao: 'Ko izostavi ikindija-namaz, djela će mu propasti.",
+   "de": "Verrichtet das Nachmittagsgebet früh, denn der Prophet - Allahs Segen und Frieden auf ihm - sagte: ‚Wer das Nachmittagsgebet vernachlässigt, dessen Taten sind nichtig."
+  },
+  {
+   "ref": "hadeethenc 11251",
+   "bs": "Allah neće kazniti Vatrom onoga ko bude čuvao četiri rekata prije i četiri poslije podnevskog farza.",
+   "de": "Wer vier Gebetseinheiten vor dem Mittagsgebet und vier danach regelmäßig betet, den wird Allah vor dem (Höllen-)Feuer schützen."
+  },
+  {
+   "ref": "hadeethenc 4947",
+   "bs": "Svi će iz moga ummeta ući u Džennet osim onih koji to odbiju.\" Ashabi rekoše: \"Allahov poslaniče, a ko će to odbiti?\" \"Onaj ko mi bude pokoran ući će u Džennet, a onaj ko mi bude nepokoran, takav je odbio\", odgovori im on.",
+   "de": "Meine gesamte Glaubensgemeinschaft wird ins Paradies eintreten, außer diejenigen, die es ablehnen.“ Sie fragten: „O Gesandter Allahs, und wer lehnt es ab?“ Er sagte: „Wer mir gehorcht, wird ins Paradies eintreten, und wer mir nicht gehorcht, hat es abgelehnt."
+  },
+  {
+   "ref": "hadeethenc 10639",
+   "bs": "Neka niko od vas ne klanja u jednodijelnoj odjeći, a da ne prebaci nešto na ramena.",
+   "de": "Keiner von euch soll in einem einzelnen Gewand beten, ohne dass etwas auf seinen Schultern liegt."
+  },
+  {
+   "ref": "hadeethenc 3086",
+   "bs": "Zar se ne boji neko od vas kada podigne glavu prije imama, da mu ju Allah ne pretvori u glavu magarca, ili da njegov izgled ne bude nalikovao izgledu magarca?!",
+   "de": "Fürchtet keiner von euch, wenn er seinen Kopf vor dem Imam erhebt, dass Allah seinen Kopf in den eines Esels verwandeln könnte, oder dass Allah seine Gestalt in die eines Esels verwandeln könnte?"
+  },
+  {
+   "ref": "hadeethenc 3360",
+   "bs": "Ko odgoji dvije kćeri, o njima se pobrine dok ne odrastu, kada dođe na Sudnji dan on i ja ćemo biti kao ova dva prsta', pa je sastavio svoje prste.",
+   "de": "Wer zwei Mädchen großzieht, bis sie erwachsen sind, wird am Tag der Auferstehung mit mir sein‘, und er fügte seine Finger zusammen."
+  },
+  {
+   "ref": "hadeethenc 65566",
+   "bs": "Kada čovjek umre, prekidaju mu se djela, osim troga: trajne sadake koju je dao, korisnog znanja kojem je nekoga podučio ili dobrog djeteta koje dovi za njega.",
+   "de": "Wenn der Mensch stirbt, enden seine Taten, bis auf drei: eine fortwährende Spende, Wissen, von dem man Nutzen zieht, oder ein rechtschaffenes Kind, welches Bittgebete für ihn spricht."
+  },
+  {
+   "ref": "hadeethenc 3552",
+   "bs": "Kada neko od vas sretne svoga brata muslimana, neka mu nazove selam; ako ih razdvoji drvo, zid ili kamen, neka mu ponovo nazove selam kada se sretnu.",
+   "de": "Wenn jemand von euch seinen Bruder antrifft, soll er ihn grüßen. Wenn zwischen ihnen ein Baum, eine Mauer oder ein Stein trennt und er ihn dann erneut antrifft, soll er ihn auch (erneut) grüßen."
+  },
+  {
+   "ref": "hadeethenc 8387",
+   "bs": "Vjerovjesnik, sallallahu alejhi ve sellem, kupao sa jednim sa’om (četiri mudda), do pet muddova vode, a uzimao je abdest sa jednim muddom.",
+   "de": "Der Prophet - Allahs Segen und Frieden auf ihm - pflegte sich mit einem Sa' bis zu fünf Mudd zu waschen oder zu baden, und er verrichtete die Gebetswaschung mit einem Mudd."
+  },
+  {
+   "ref": "hadeethenc 3520",
+   "bs": "Bojte se Allaha, vašeg Gospodara! Klanjajte pet namaza, postite vaš mjesec, izdvajajte zekat iz imetka i budite pokorni pretpostavljenim! Ući ćete u Džennet!",
+   "de": "Fürchtet Allah, euren Herrn, verrichtet eure fünf Gebete, fastet euren Monat, entrichtet die Almosensteuer eures Vermögens und gehorcht eurem Herrscher, dann werdet ihr in das Paradies eures Herrn eintreten."
+  },
+  {
+   "ref": "hadeethenc 5495",
+   "bs": "Na Sudnjem danu proklinjači neće biti ni šefa'adžije niti svjedoci.",
+   "de": "Diejenigen, die andere verfluchen, werden am Tag der Auferstehung weder Zeugen noch Fürsprecher sein."
+  },
+  {
+   "ref": "hadeethenc 5953",
+   "bs": "Niko od vas neće vjerovati sve dok mu ne budem draži od roditelja, djeteta i svih ljudi.",
+   "de": "Keiner von euch glaubt (wirklich), bis ich ihm lieber bin als sein Vater, sein Kind und alle Menschen."
+  },
+  {
+   "ref": "hadeethenc 5435",
+   "bs": "Ko obavi sabah-namaz, on je u Allahovoj zaštiti i okrilju. Neka nipošto niko od vas ne prekida Njegovu zaštitu! Ko to bude uradio, Allah će ga baciti s pognutim licem prema dolje u Džehennem.",
+   "de": "Wer das Morgengebet betet, der ist unter dem Schutz Allahs. So möge Allah euch nicht aus Seinem Schutz aufgrund einer Sache entfernen, denn wer aus Seinem Schutz aufgrund einer Sache entfernt wird, den wird Er erreichen und wird ihn auf seinem Gesicht in das Höllenfeuer werfen."
+  },
+  {
+   "ref": "hadeethenc 5370",
+   "bs": "Allah neće pogledati u čovjeka koji iz oholosti pusti da mu se odjeća vuče.",
+   "de": "Allah wird (am Tag der Auferstehung) nicht auf denjenigen schauen, der sein Gewand aus Hochmut hinter sich herzieht."
+  },
+  {
+   "ref": "hadeethenc 4204",
+   "bs": "Kome Allah želi dobro, dadne mu iskušenje.",
+   "de": "Wem Allah Gutes will, den lässt Er (mit Prüfungen) treffen!"
+  },
+  {
+   "ref": "hadeethenc 4292",
+   "bs": "Allahov Poslanik, sallallahu alejhi ve sellem, je uzeo svilu u lijevu ruku, a zlato u desnu, potom ih je podigao, te je kazao: 'Ovo dvoje su zabranjeni muškarcima moga ummeta, a dozvoljeni su ženama.",
+   "de": "Der Gesandte Allahs - Allahs Segen und Frieden auf ihm - nahm Seide in seine linke Hand und Gold in seine rechte Hand. Dann hob er beide Hände und sagte: ‚Diese beiden sind für die Männer meiner Gemeinschaft verboten, aber für ihre Frauen erlaubt."
+  },
+  {
+   "ref": "hadeethenc 5805",
+   "bs": "Uzvišeni je rekao: 'Ademov sine, udjeljuj, pa ću i ja tebi udjeljivati!",
+   "de": "Allah hat gesagt: ‚Gib aus, o Sohn Adams, und Ich werde für dich ausgeben."
+  },
+  {
+   "ref": "hadeethenc 65022",
+   "bs": "Neće nastupiti Sudnji dan sve dok čovjek ne prođe pored kabura pa će reći: 'Kamo sreće da sam na njegovom mjestu!",
+   "de": "Die Stunde wird nicht kommen, bis ein Mann am Grab eines anderen Mannes vorbeigeht und sagt: ‚Ich wünschte, ich wäre an seiner Stelle."
+  },
+  {
+   "ref": "hadeethenc 5437",
+   "bs": "Ko vjeruje u Allaha i Sudnji dan neka govori što je dobro, ili neka šuti. Ko vjeruje u Allaha i Sudnji dan neka počasti komšiju. Ko vjeruje u Allaha i Sudnji dan neka počasti gosta.",
+   "de": "Wer an Allah und den Jüngsten Tag glaubt, der soll Gutes sprechen oder schweigen. Und wer an Allah und den Jüngsten Tag glaubt, der soll seinen Nachbarn ehren. Und wer an Aḷḷāh und den Jüngsten Tag glaubt, der soll seinen Gast ehren."
+  },
+  {
+   "ref": "hadeethenc 5888",
+   "bs": "Čuvajte se osamljivanja sa ženama (koje vam nisu bliža rodbina)!\" Jedan ensarija upita: \"A mužev brat?\" \"Mužev brat je smrt.",
+   "de": "Wehe euch vor dem Eintreten bei den Frauen.“ Da sagte ein Mann von den Ansar: „O Gesandter Allahs, was sagst du über den Schwager?“ Er sagte: „Der Schwager ist der Tod."
+  },
+  {
+   "ref": "hadeethenc 5488",
+   "bs": "Allahumme inni e'uzu bike min zevali n'imetike ve tehavvuli 'afijetike ve fudža'eti nikmetike ve džemi'i sehatike / Allahu moj, utječem Ti se od nestanka Tvoje blagodati, i od toga da se blagostanje koje daješ izmijeni, i od Tvoje iznenadne kazne, i od svake Tvoje srdžbe.",
+   "de": "O Allah ich suche Zuflucht bei dir vor dem Verschwinden Deiner Gnaden, und vor dem Vergehen Deines Wohlbefinden, und vor Deiner plötzlichen Strafe und vor Deinem gesamten Zorn."
+  },
+  {
+   "ref": "hadeethenc 65091",
+   "bs": "Kada neko od vas uđe u džamiju, neka klanja dva rekata prije nego sjedne.",
+   "de": "Wenn einer von euch die Moschee betritt, soll er zwei Gebetseinheiten beten, bevor er sich setzt."
+  },
+  {
+   "ref": "hadeethenc 65040",
+   "bs": "Kada Allah odredi da Njegov rob umre u nekoj zemlji, On dadne da on u toj zemlji ima neku potrebu.",
+   "de": "Wenn Allah für einen Diener bestimmt hat, an einem bestimmten Ort zu sterben, bestimmt Er ihm einen Anlass dazu (dorthin zu gehen)."
+  },
+  {
+   "ref": "hadeethenc 58148",
+   "bs": "Pero je podignuto od trojice: spavača dok se ne probudi, djeteta dok ne postane punoljetno i bezumnika dok mu se razum ne vrati.",
+   "de": "Der Stift ist von dreien aufgehoben: vom Schlafenden, bis er erwacht, vom Kind, bis es die Pubertät erreicht, und vom Geisteskranken, bis er wieder zu Verstand kommt."
+  },
+  {
+   "ref": "hadeethenc 5489",
+   "bs": "Allahumme inni e'uzu bike min galebetid-dejni, ve galebetil-'aduvvi, ve šematetil-e'adai – Allahu moj, utječem Ti se od toga da me nadvlada dug, da me nadvlada neprijatelj i od likovanja neprijatelja.",
+   "de": "O Allah ich suche Zuflucht bei Dir vor der Überwältigung der Schuld, der Überwältigung des Feinds und der Schadenfreude der Feinde."
+  },
+  {
+   "ref": "hadeethenc 5479",
+   "bs": "Dova između ezana i ikameta se ne odbija.",
+   "de": "Das Bittgebet zwischen Adhan und Iqamah wird nicht abgelehnt."
+  },
+  {
+   "ref": "hadeethenc 4307",
+   "bs": "Vjerovjesnik, sallallahu alejhi ve sellem, mu reče: ‘Sustegni se od dunjaluka, voljet će te Allah, i sustegni se od onoga što je u rukama ljudi, voljet će te ljudi.",
+   "de": "Sei enthaltsam/genügsam im Diesseits, so liebt dich Allah. Und sei enthaltsam in dem, was die Menschen besitzen, so lieben dich die Menschen."
+  },
+  {
+   "ref": "hadeethenc 3588",
+   "bs": "Misvak je sredstvo prirodnog porijekla adekvatno za održavanje oralne higijene i njegovim korišćenjem čovjek postiže Allahovo zadovoljstvo.",
+   "de": "Der Siwak reinigt den Mund und stellt den Herrn zufrieden."
+  },
+  {
+   "ref": "hadeethenc 5936",
+   "bs": "Zakletva koristi u prodaji robe, ali se njome uklanja berićet zarade.",
+   "de": "Das Schwören macht die Ware leichter verkäuflich, lässt jedoch den Gewinn schwinden."
+  },
+  {
+   "ref": "hadeethenc 5449",
+   "bs": "Dvije blagodati neiskorištene su kod velikog broja ljudi: zdravlje i slobodno vrijeme.",
+   "de": "Zwei Gunstgaben werden von vielen Menschen nicht richtig geschätzt (wörtl. bei denen viele Menschen im Verlust sind): die Gesundheit und die freie Zeit."
+  },
+  {
+   "ref": "hadeethenc 8265",
+   "bs": "Majko pravovjernih, kaži mi nešto o moralu Allahovog Poslanika, sallallahu alejhi ve sellem!\" Ona će na to: „Zar ne učiš Kur'an?\" „Učim\", odgovori on. „Njegov moral je bio Kur'an\", uzvrati mu ona.",
+   "de": "O Mutter der Gläubigen, erzähle mir vom Charakter des Gesandten Allahs - Allahs Segen und Frieden auf ihm.“ Sie sagte: „Liest du nicht den Quran?“ Ich antwortete: „Doch.“ Sie sagte: „Denn der Charakter des Propheten Allahs - Allahs Segen und Frieden auf ihm - war der Quran."
+  },
+  {
+   "ref": "hadeethenc 3407",
+   "bs": "Nema (natprirodne) zaraze, sujevjerja, sove, a nema ni vjerovanje da je mjesec safer baksuzan. Pored toga, bježi od zaraženog kao što bježiš od lava.",
+   "de": "Es gibt keine Ansteckung (durch bloße Berührung), kein böses Omen, keinen Aberglauben bezüglich Eulen und keinen Aberglauben bezüglich (des Monats) Safar. Und fliehe vor dem Leprakranken, wie du vor einem Löwen fliehen würdest."
+  },
+  {
+   "ref": "hadeethenc 65479",
+   "bs": "Između svaka dva ezana je namaz, između svaka dva ezana je namaz\", a potom je kod trećeg puta kazao: \"Za onoga ko tako želi.",
+   "de": "Zwischen jeweils zwei Gebetsrufen liegt ein Gebet, zwischen jeweils zwei Gebetsrufen liegt ein Gebet.‘ Dann sagte er beim dritten Mal: ‚Für denjenigen, der will."
+  },
+  {
+   "ref": "hadeethenc 4969",
+   "bs": "Vjernici u svojoj međusobnoj ljubavi, milosti i suosjećanju su poput jednog tijela; kada se jedan organ razboli, sa njim se solidariše ostatak tijela, bdijenjem i temperaturom.",
+   "de": "Das Gleichnis der Gläubigen in ihrer gegenseitigen Liebe, ihrem Erbarmen und ihrer Anteilnahme ist wie das Gleichnis eines Körpers: Wenn ein Glied davon erkrankt, reagiert der gesamte Körper mit Schlaflosigkeit und Fieber."
+  },
+  {
+   "ref": "hadeethenc 65030",
+   "bs": "Moj Havd se prostire onoliko koliko se pređe za mjesec dana hoda. Njegova voda je bjelja od mlijeka, a miris ugodniji od miska, posude na njemu su blistave i brojne poput zvijezda na nebu. Ko se sa njega jednom napije, nikad više neće ožednjeti.",
+   "de": "Mein Becken hat die Größe einer Monatsreise, sein Wasser ist weißer als Milch, sein Duft schöner als Moschus und seine Becher sind wie die Sterne im Himmel. Wer daraus trinkt, wird danach nie wieder Durst verspüren!"
+  },
+  {
+   "ref": "hadeethenc 5499",
+   "bs": "Doista se vaš Gospodar stidi i plemenit je. Stidi se da ruke roba koje Mu podigne, tražeći nešto, vrati prazne.",
+   "de": "Wahrlich, euer Herr ist schamhaft und großzügig. Er schämt sich, wenn Sein Diener seine Hände zu Ihm erhebt, sie leer zurückzuweisen."
+  },
+  {
+   "ref": "hadeethenc 6259",
+   "bs": "Riječi, čijim izgovaranjem govornik neće propasti, izgovaraju se poslije svakog propisanog namaza: trideset i tri puta subhanallah, trideset i tri puta elhamdulillah, te trideset i tri puta Allahu ekber.",
+   "de": "Es gibt Dinge nach jedem Pflichtgebet, die derjenige, der sie spricht - oder der sie umsetzt - nicht enttäuscht wird. Dreiunddreißigmal Tasbih (Subhanallah), dreiunddreißigmal Tahmid (Alhamdulillah) und vierunddreißigmal Takbir (Allahu Akbar)."
+  },
+  {
+   "ref": "hadeethenc 5382",
+   "bs": "Rob je najbliži svome Gospodaru dok je na sedždi, pa upućujte što više dova.",
+   "de": "Der Diener ist seinem Herrn am nächsten, wenn er sich im Zustand der Niederwerfung (As-Sujud) befindet, so vermehrt das Bittgebet."
+  },
+  {
+   "ref": "hadeethenc 4717",
+   "bs": "Niko od vas neće biti pravi vjernik sve dok ne bude želio svome bratu ono što želi samome sebi.",
+   "de": "Keiner von euch glaubt, bis er für seinen Bruder das wünscht, was er für sich selbst wünscht."
+  },
+  {
+   "ref": "hadeethenc 3475",
+   "bs": "Ko mi garantira da će sačuvati jezik i spolni organ, ja mu garantiram Džennet.",
+   "de": "Wer mir für das garantiert, was zwischen seinen Kiefern und zwischen seinen Beinen ist, dem garantiere ich das Paradies!"
+  },
+  {
+   "ref": "hadeethenc 6208",
+   "bs": "Ne činite svoje kuće grobljima, zaista šejtan bježi iz kuće u kojoj se uči sura el-Bekare.",
+   "de": "Macht eure Häuser nicht zu Friedhöfen. Wahrlich, der Schaytan (Satan) flieht aus einem Haus, in dem Surah Al-Baqarah gelesen wird."
+  },
+  {
+   "ref": "hadeethenc 5886",
+   "bs": "Allahov Poslanik, sallallahu alejhi ve sellem, volio je učiti sveobuhvatne i sadržajne dove, a one koje nisu takve ne bi učio.",
+   "de": "Der Gesandte Allahs - Allahs Segen und Frieden auf ihm - bevorzugte umfassende Bittgebete und ließ andere Bittgebete außer Acht."
+  },
+  {
+   "ref": "hadeethenc 65081",
+   "bs": "Allahov Poslanik, sallallahu alejhi ve sellem, je (jedne prilike) uzeo abdest perući dijelove tijela jedanput.",
+   "de": "Der Prophet - Allahs Segen und Frieden auf ihm - vollzog die rituelle Gebetswaschung mit einmaligen Waschungen."
+  },
+  {
+   "ref": "hadeethenc 10014",
+   "bs": "Sufru i kudru (smeđkasto-crvenkastu tekućinu) nismo smatrali problematičnom nakon što se ustanovi čistoća.",
+   "de": "Wir pflegten weder das Trübe noch das Gelbe nach der Reinheit als etwas (aufhebendes) zu betrachten."
+  },
+  {
+   "ref": "hadeethenc 65613",
+   "bs": "Allahov Poslaniče, Ummu Sa'd je preselila. Koja je sadaka najbolja?\" \"Voda\", odgovori Poslanik. Sa'd je potom iskopao bunar, te je kazao: \"Ovo je za Ummu Sa'd.",
+   "de": "O Gesandter Allahs, die Mutter von Sa'd ist gestorben. Welche Spende ist die beste?“ Er sagte: „Wasser.“ Er sagte: „Also grub er einen Brunnen und sagte: ‚Dies ist für die Mutter von Sa'd."
+  },
+  {
+   "ref": "hadeethenc 4559",
+   "bs": "U ono što je svijet od prijašnjih vjerovjesnika zapamtio spadaju i riječi: 'Ako te nije stid, čini šta hoćeš.",
+   "de": "Wahrlich, zu dem, was die Menschen von den Worten des anfänglichen Prophetentums erreicht hat, gehört: ‚Wenn du dich nicht schämst, so mach, was du willst."
+  },
+  {
+   "ref": "hadeethenc 3420",
+   "bs": "Propali i stradali su cjepidlake!\" Rekao je to tri puta.",
+   "de": "Diejenigen, die übertreiben (und verkomplizieren), gehen zu Grunde!‘ Er sagte es dreimal."
+  },
+  {
+   "ref": "hadeethenc 6222",
+   "bs": "Niko me neće poselamiti a da mi Uzvišeni Allah neće vratiti dušu kako bih mu uzvratio na selam.",
+   "de": "Niemand spricht die Friedenswünsche auf mich, außer dass Allah meine Seele zu mir zurückkehren lässt und ich ihm den Friedensgruß erwidere."
+  },
+  {
+   "ref": "hadeethenc 2985",
+   "bs": "Ne oblačite svilu i brokat, ne pijte iz zlatnog i srebrenog posuđa i ne jedite iz njihovih posuda; To je za njih na ovom svijetu, a vama na budućem.",
+   "de": "Tragt weder Seide noch Brokat, und trinkt nicht aus Gefäßen aus Gold und Silber, und esst nicht von ihren Tellern, denn sie sind für sie (die Ungläubigen) im Diesseits und für uns im Jenseits."
+  },
+  {
+   "ref": "hadeethenc 5371",
    "bs": "Ništa teže na vagi na Sudnjem danu neće biti od lijepog ahlaka, a Allah doista prezire razvratnika i prostaka.",
    "de": "Nichts wiegt schwerer auf der Waage des Gläubigen am Tag der Auferstehung als ein guter Charakter. Und wahrlich, Allah verabscheut denjenigen, der unzüchtig und obszön ist."
   },
   {
-   "ref": "Riyad 1",
-   "bs": "Allah se više obraduje pokajanju Njegova roba, nego što bi se neko od vas obradovao pronalasku svoje izgubljene deve u pustinji.",
-   "de": "Allah ist mehr erfreut über die Reue Seines Dieners als einer von euch es wäre, wenn er sein in einer gewaltigen Wüste verlorenes Reitkamel plötzlich wiederfindet."
+   "ref": "hadeethenc 3553",
+   "bs": "Kada vjernik bude bolestan ili na putu, bude mu upisana nagrada za ono što je radio kada je bio kod kuće i kada je bio zdrav.",
+   "de": "Erkrankt der Diener oder verreist, erhält er denselben Lohn gutgeschrieben wie für das, was er zu tun pflegte, als er gesund und sesshaft war."
   },
   {
-   "ref": "Riyad 10",
-   "bs": "Zaista je Allah blag i On voli blagost (ljubaznost), i daje na osnovu blagosti (na dunjaluku lijep spomen i ostvarivanje želja, a na ahiretu lijepu nagradu) ono što ne daje na temelju grubosti niti bilo čega drugog.",
-   "de": "O 'Aischa, wahrlich, Allah ist gütig und Er liebt die Güte; und Er gewährt für die Güte, was Er für die Härte nicht gewährt, und was Er für nichts anderes gewährt."
+   "ref": "hadeethenc 4198",
+   "bs": "Ko klanja sabah i ikindiju (berdejn) ući će u Džennet.",
+   "de": "Wer die beiden kühlen Gebete verrichtet, wird das Paradies betreten."
   },
   {
-   "ref": "Riyad 2",
-   "bs": "Čudan li je primjer vjernika! Svako stanje u kojem se nađe je dobro za njega, a to nije slučaj ni sa kim drugim osim sa vjernikom. Ako ga zadesi kakva radost on se na njoj zahvali, pa mu bude dobro, a ako ga zadesi kakva nedaća on se strpi pa mu opet bude dobro.",
-   "de": "Verwunderlich ist die Angelegenheit des Gläubigen! Wahrlich, seine gesamte Angelegenheit ist gut, und dies gilt für niemanden außer für den Gläubigen: Wenn ihm etwas Gutes widerfährt, ist er dankbar, und das ist gut für ihn; und wenn ihm etwas Schlechtes widerfährt, ist er geduldig, und das ist gut für ihn."
+   "ref": "hadeethenc 3591",
+   "bs": "Pet dnevnih namaza, džuma do džume i ramazan do ramazana iskupljuju grijehe koji se počine između njih, ukoliko se čovjek kloni velikih grijeha.",
+   "de": "Die fünf Pflichtgebete, das eine Freitagsgebet zum nächsten Freitagsgebet und Ramadan zum nächsten Ramadan sind eine Sühne für die Sünden, die zwischen ihnen liegen, wenn die großen Sünden gemieden werden."
   },
   {
-   "ref": "Nawawi 13",
-   "bs": "Niko od vas neće biti vjernik sve dok ne bude želio svome bratu ono što želi i sebi.",
-   "de": "Keiner von euch ist gläubig, bis er für seinen Bruder wünscht, was er für sich selbst wünscht."
+   "ref": "hadeethenc 3317",
+   "bs": "Allahov Poslanik, alejhisselam, kada bi kihnuo, stavljao bi ruku ili odjeću na svoja usta i spustio bi glas.",
+   "de": "Wenn der Gesandte Allahs - Allahs Segen und Frieden auf ihm - nieste, legte er seine Hand oder sein Gewand über seinen Mund und senkte - oder dämpfte - damit seine Stimme."
   },
   {
-   "ref": "Nawawi 15",
-   "bs": "Ko vjeruje u Allaha i Sudnji dan, neka govori dobro ili neka šuti; ko vjeruje u Allaha i Sudnji dan, neka bude pažljiv prema svom komšiji; ko vjeruje u Allaha i Sudnji dan, neka počasti svoga gosta.",
-   "de": "Wer an Allah und den Jüngsten Tag glaubt, der soll Gutes sprechen, oder er soll schweigen. Wer an Allah und den Jüngsten Tag glaubt, der soll seinen Nachbarn ehren. Wer an Allah und den Jüngsten Tag glaubt, der soll seinen Gast ehren."
+   "ref": "hadeethenc 3383",
+   "bs": "Sujevjerje je širk, sujevjerje je širk, sujevjerje je širk\", tri puta. Zatim je kazao: \"Svakoga od nas to zadesi, ali Allah to odagnava od čovjeka putem oslanjanja na Njega.",
+   "de": "Aberglaube ist Schirk (Götzendienst), Aberglaube ist Schirk, Aberglaube ist Schirk“ – dreimal. (Ibn Mas'ud sagte:) „Und es gibt niemanden unter uns, der davon völlig frei ist, aber Allah - mächtig und majestätisch ist Er - entfernt es durch das Vertrauen auf Ihn."
   },
   {
-   "ref": "Nawawi 18",
-   "bs": "Boj se Allaha ma gdje bio, a poslije lošeg djela uradi dobro djelo koje će ga izbrisati, i lijepo se prema ljudima ophodi.",
-   "de": "Fürchte Allah, wo immer du bist, und lasse der bösen Tat die gute Tat folgen, sie damit auszulöschen, und begegne den Menschen mit gutem Wesen."
+   "ref": "hadeethenc 5913",
+   "bs": "Najbolji od vas su oni koji nauče Kur'an i njemu druge podučavaju.",
+   "de": "Der Beste unter euch ist derjenige, der den Quran lernt und ihn lehrt."
   },
   {
-   "ref": "Riyad 12",
-   "bs": "Ko mi garantira da će sačuvati jezik i spolni organ, ja mu garantiram Džennet.",
-   "de": "Wer mir für das bürgt, was zwischen seinen Kiefern und was zwischen seinen Beinen ist, dem bürge ich für das Paradies."
+   "ref": "hadeethenc 5020",
+   "bs": "Ibadet u vrijeme velikih smutnji je poput hidžre meni.",
+   "de": "Die Anbetung (Allahs) in Zeiten der Unruhen ist wie eine Auswanderung zu mir."
+  },
+  {
+   "ref": "hadeethenc 65116",
+   "bs": "Onaj ko bude zadovoljan da mu je Allah Gospodar, islam vjera i Muhammed Poslanik, osjetit će slast vjerovanja.",
+   "de": "Die Süße des Glaubens hat derjenige gekostet, der mit Allah als Herrn, mit dem Islam als Religion und mit Muhammad als Gesandten zufrieden ist."
+  },
+  {
+   "ref": "hadeethenc 5545",
+   "bs": "Allah voli bogobojaznog, neovisnog i nenametljivog roba.",
+   "de": "Allah liebt den gottesfürchtigen, begnügsamen, verborgenen Diener."
+  },
+  {
+   "ref": "hadeethenc 3063",
+   "bs": "Kada bi se Poslanik, sallallahu alejhi ve sellem, probudio noću, čistio bi svoja usta misvakom.",
+   "de": "Der Gesandte Allahs - Allahs Segen und Frieden auf ihm - pflegte seinen Mund mit einem Siwak (Hölzchen zum Reinigen der Zähne) zu säubern, wenn er nachts (für das Gebet) aufstand."
+  },
+  {
+   "ref": "hadeethenc 65025",
+   "bs": "Tako mi Onoga u Čijoj ruci je moja duša, uskoro će se među vama spustiti sin Merjeme kao pravedan vladar. Slomit će krst, ubit će svinju i ukinut će džizju. Tada će imetka biti u izobilju tako da ga niko neće htjeti prihvatiti kao sadaku.",
+   "de": "Bei Dem, in Dessen Hand meine Seele ist, wahrlich, der Sohn Maryams wird bald als gerechter Richter unter euch herabsteigen. Er wird das Kreuz brechen, das Schwein töten, die Jizyah abschaffen, und der Reichtum wird überfließen, bis niemand ihn mehr annehmen wird."
+  },
+  {
+   "ref": "hadeethenc 3716",
+   "bs": "Allah se smilovao čovjeku koji je velikodušan kada kupuje, kada prodaje i kada svoj dug traži.",
+   "de": "Möge Allah mit dem Mann barmherzig sein, der nachsichtig ist, wenn er verkauft, wenn er kauft und wenn er eine Schuld einfordert!"
+  },
+  {
+   "ref": "hadeethenc 5887",
+   "bs": "Dijelove nasljedstva koji su šerijatski precizno određeni (el-feraid) dodijelite onima kojima oni pripadaju, a zatim ono što preostane najbližoj muškoj osobi (po srodstvu).",
+   "de": "Lasst die Pflichtanteile (der Erbschaft) denen zukommen, für die sie bestimmt sind. Was dann nach der Pflichtaufteilung übrig bleibt, so gebührt es der (dem Verstorbenen) nächsten männlichen Person."
+  },
+  {
+   "ref": "hadeethenc 4965",
+   "bs": "Džibril mi nije prestajao oporučivati da se dobro ophodim prema komšiji sve dok nisam pomislio da će ga moći naslijediti.",
+   "de": "Jibril hörte nicht auf, mich (zur Güte) mit dem Nachbarn zu ermahnen, bis ich dachte, dass er ihn für erbberechtigt erklärt."
+  },
+  {
+   "ref": "hadeethenc 4220",
+   "bs": "Najmanju džehennemsku kaznu imat će onaj kome se pod noge stave dvije nanule od vatre od čije vreline će ključati mozak. On će smatrati da niko nije žešće kažnjen od njega, ali njegova kazna će biti najlakša.",
+   "de": "Gewiss, derjenige mit der geringsten Strafe im Höllenfeuer wird zwei Sandalen und zwei Riemen aus Feuer haben; von denen sein Gehirn kocht, so wie ein Kessel kocht. Er wird nicht denken, dass jemand eine schlimmere Strafe hat als er, obwohl er die geringste Strafe erleidet."
+  },
+  {
+   "ref": "hadeethenc 5368",
+   "bs": "U Džennet neće ući onaj koji prenosi tuđi govor (kako bi ljude zavadio).",
+   "de": "Der Verleumder wird nicht ins Paradies eintreten."
+  },
+  {
+   "ref": "hadeethenc 3581",
+   "bs": "Džennet je bliži svakom od vas nego remen njegove papuče, a i Džehennem, također.",
+   "de": "Das Paradies ist jedem von euch näher als sein Schnürsenkel und dasselbe gilt auch für das Feuer!"
+  },
+  {
+   "ref": "hadeethenc 3336",
+   "bs": "Allahu, ne daj da moj mezar postane idol koji će se obožavati! Neka se Allahova srdžba poveća prema narodima koji su mezare svojih vjerovjesnika pretvorili u džamije!",
+   "de": "O Allah, mache mein Grab nicht zu einem Götzen! Allah verfluchte ein Volk, welches die Gräber seiner Propheten zu Gebetsstätten nahm!"
+  },
+  {
+   "ref": "hadeethenc 5380",
+   "bs": "Ne pripada nama onaj ko se udara po obrazima, dere odjeću i koristi džahilijetske pozive.",
+   "de": "Nicht von uns ist, wer die Wangen schlägt, die Taschen (Kleidung) zerreißt und mit der Klage der Jahiliyyah (die Zeit der Unwissenheit vor dem Islam) klagt."
+  },
+  {
+   "ref": "hadeethenc 6820",
+   "bs": "Neka Allah učini život udobnim onome ko čuje moj govor pa ga prenese onako kako je čuo. Možda će onaj kome je preneseno bolje razumjeti od onoga koji je prvobitno čuo.",
+   "de": "Möge Allah das Angesicht eines Menschen erstrahlen lassen, der von uns etwas hört und es so weitergibt, wie er es gehört hat. Denn vielleicht versteht derjenige, dem es übermittelt wird, es besser als derjenige, der es gehört hat."
+  },
+  {
+   "ref": "hadeethenc 5378",
+   "bs": "Nema namaza onaj ko ne prouči suru el-Fatiha.",
+   "de": "Es gibt kein Gebet für den, der nicht die Eröffnende (Al-Fatihah) des Buches liest."
+  },
+  {
+   "ref": "hadeethenc 3014",
+   "bs": "Bio sam sa Allahovim Poslanikom, sallallahu alejhi ve sellem, na jednom putovanju, pa sam krenuo da mu skinem mestve kada je uzimao abdest, a on mi je rekao: 'Ostavi ih! Obukao sam ih na čistoću', te je potom potrao po njima.",
+   "de": "Ich war mit dem Propheten - Allahs Segen und Frieden auf ihm - auf einer Reise und ich wollte mich beugen, um ihm die Ledersocken auszuziehen. Da sagte er: ‚Lass sie, denn ich habe sie in einem reinen Zustand angezogen.‘, und er strich über sie."
+  },
+  {
+   "ref": "hadeethenc 8289",
+   "bs": "Milostivi će se smilovati onima koji imaju milosti. Smilujte se onima koji su na Zemlji, smilovat će vam se Onaj Koji je na nebesima.",
+   "de": "Die Barmherzigen werden von dem Allerbarmer Barmherzigkeit erfahren. Seid barmherzig mit den Bewohnern der Erde, so ist Derjenige im Himmel barmherzig mit euch."
+  },
+  {
+   "ref": "hadeethenc 4939",
+   "bs": "Ko bude uskraćen od blagosti uskraćen je od svakog dobra.",
+   "de": "Wem Sanftmut verwehrt wird, dem wird alles Gute verwehrt."
+  },
+  {
+   "ref": "hadeethenc 4711",
+   "bs": "Ne smije se nanositi šteta, niti na nanesenu štetu štetom uzvraćati. Ko bude drugome nanosio štetu, Allah će njemu nanijeti štetu; a ko drugome bude otežavao, Allah će njemu otežati.",
+   "de": "Es darf weder (anfänglichen) Schaden geben noch (nachfolgende) Schädigung."
+  },
+  {
+   "ref": "hadeethenc 3602",
+   "bs": "Upitao sam: 'Allahov Poslaniče, u čemu je spas?' On reče: 'Čuvaj svoj jezik, neka ti tvoja kuća bude dovoljna i plači nad svojim grijesima.",
+   "de": "Ich sagte: ‚O Gesandter Allahs, worin liegt die Rettung?‘ Er erwiderte: ‚Halte deine Zunge unter Kontrolle, lass dir dein Haus genügen und weine über deine Sünden."
+  },
+  {
+   "ref": "hadeethenc 65076",
+   "bs": "Pred kraj vremena biće ljudi koji će vam govoriti ono što niste čuli ni vi, ni vaši preci. Pričuvajte se takvih!",
+   "de": "Es wird in meiner späteren Gemeinschaft (Ummah) Menschen geben, die euch Dinge erzählen werden, die ihr und eure Väter nicht gehört habt. So wehe ihnen und wehe euch!"
+  },
+  {
+   "ref": "hadeethenc 65043",
+   "bs": "Ko na mene namjerno slaže, neka sebi pripremi mjesto u Džehennemu.",
+   "de": "Wer absichtlich Lügen über mich verbreitet, soll seinen Platz im Höllenfeuer einnehmen."
+  },
+  {
+   "ref": "hadeethenc 3706",
+   "bs": "Musliman je dužan prema svome bratu muslimanu ispuniti pet stvari: odgovoriti mu na selam, obići ga kada se razboli, dženazu mu ispratiti, odazvati mu se na poziv i kada kihne reći mu 'jerhamukellah' (Allah ti se smilovao).",
+   "de": "Das Recht des Muslims gegenüber einem anderen Muslim sind fünf: den Friedensgruß erwidern, den Kranken besuchen, dem Beerdigungszug folgen, die Einladung annehmen und für den Niesenden das Bittgebet (um Barmherzigkeit) sprechen."
+  },
+  {
+   "ref": "hadeethenc 5796",
+   "bs": "Blagost se ne nađe ni u čemu, a da to ne uljepša, niti se ne ukloni ni iz čega, a da se to neće izopačiti.",
+   "de": "Güte befindet sich in keiner Angelegenheit ohne sie zu verschönern und wird keiner Angelegenheit beraubt ohne sie zu entstellen."
+  },
+  {
+   "ref": "hadeethenc 10647",
+   "bs": "Ne sjedite na kaburima i ne klanjate prema njima!",
+   "de": "Setzt euch nicht auf Gräber und betet nicht in ihre Richtung."
+  },
+  {
+   "ref": "hadeethenc 5331",
+   "bs": "Zaista, postoje ljudi koji na nepropisan način koriste imetak muslimana. Bit će kažnjeni Džehennemom na Sudnjem danu.",
+   "de": "Wahrlich, es gibt Männer, die sich unrechtmäßig an dem Vermögen Allahs vergreifen; für sie ist das Feuer am Tag der Auferstehung bestimmt."
+  },
+  {
+   "ref": "hadeethenc 5866",
+   "bs": "Olakšavajte, a ne otežavajte; obveseljujte, a nemojte rastjerivati!",
+   "de": "Macht die Dinge leicht und nicht schwer und verkündet Gutes und schreckt nicht ab."
+  },
+  {
+   "ref": "hadeethenc 65013",
+   "bs": "Šejtan dođe čovjeku i zapitkuje ga: 'Ko je stvorio ovo, a ko je stvorio ono?' Sve dok ga ne upita: \"A ko je stvorio tvoga Gospodara?' Pa, kada se to desi, neka zatraži utočište kod Allaha i neka prestane razmišljati o tome.",
+   "de": "Der Schaytan kommt zu einem von euch und sagt: ›Wer hat das erschaffen? Wer hat das erschaffen?‹ Bis er schließlich sagt: ›Wer hat deinen Herrn erschaffen?‹ Kommt man da an, soll man Zuflucht bei Allah suchen und dies (sofort) lassen!"
+  },
+  {
+   "ref": "hadeethenc 4968",
+   "bs": "Šta mislite, kada bi pred vratima nekoga od vas bila rijeka u kojoj bi se pet puta dnevno kupao, da li bi na njemu ostalo imalo prljavštine?\" \"Ne bi.\", odgovoriše prisutni, a Poslanik dodade: \"Tako je sa pet dnevnih namaza kojima Allah briše počinjene grijehe.",
+   "de": "Was meint ihr, wenn vor der Tür eines von euch ein Fluss wäre, in dem er sich jeden Tag fünfmal wäscht, würde das etwas von seinem Schmutz übriglassen?“ Sie sagten: „Es würde nichts von seinem Schmutz übriglassen.“ Er sagte: „So ist es mit den fünf Gebeten, Allah tilgt damit die Sünden."
+  },
+  {
+   "ref": "hadeethenc 4195",
+   "bs": "Koga raduje da ga Allah spasi teškoće na Sudnjem danu, neka olakša dužniku koji nije u mogućnosti vratiti dug, ili neka mu ga oprosti.",
+   "de": "Wer möchte, dass Allah ihn von den Schwierigkeiten des Tages der Auferstehung befreit, der soll einem Schuldner Aufschub gewähren oder ihm (einen Teil der Schulden) erlassen."
+  },
+  {
+   "ref": "hadeethenc 5375",
+   "bs": "Ko nanosi štetu nekome, Allah će i njemu štetu nanijeti; a ko drugima otežava, Allah će i njemu otežati.",
+   "de": "Wer (jemandem) Schaden zufügt, dem wird Allah ebenfalls Schaden zufügen, und wer (jemandem) Schwierigkeiten bereitet, dem wird Allah Schwierigkeiten bereiten."
+  },
+  {
+   "ref": "hadeethenc 58091",
+   "bs": "Allah neće pogledati čovjeka koji opći s drugim muškarcem ili opći sa ženom u analni otvor.",
+   "de": "Allah schaut keinen Mann an, der mit einem Mann oder einer Frau in den Anus verkehrt."
   }
  ]
 }
