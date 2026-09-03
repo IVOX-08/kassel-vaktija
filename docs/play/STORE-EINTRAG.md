@@ -183,7 +183,7 @@ eigener Trefferbereich in der Play-Suche, kostet aber nichts als die Übersetzun
 
 ---
 
-## 6 · Versionshinweise („Was ist neu") für 1.2.2
+## 6 · Versionshinweise („Was ist neu") für 1.2.3
 
 Grenze: 500 Zeichen je Sprache. Geprüft: Deutsch 499, Bosnisch 438.
 

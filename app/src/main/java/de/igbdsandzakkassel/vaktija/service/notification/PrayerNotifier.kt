@@ -6,13 +6,16 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import de.igbdsandzakkassel.vaktija.MainActivity
 import de.igbdsandzakkassel.vaktija.R
+import de.igbdsandzakkassel.vaktija.core.locale.LocaleController
 import de.igbdsandzakkassel.vaktija.data.model.Prayer
+import java.util.Locale
 
 /**
  * Notification channels + builders. The Adhan channel is silent because the audio is played by
@@ -32,6 +35,7 @@ object PrayerNotifier {
     private const val REMINDER_NOTIFICATION_ID = 4001
 
     fun ensureChannels(context: Context) {
+        val loc = loc(context)
         val manager = context.getSystemService<NotificationManager>() ?: return
         // Remove the old v1 Adhan channel whose (locked) vibration setting some devices ignored.
         manager.deleteNotificationChannel("prayer_adhan")
@@ -41,28 +45,28 @@ object PrayerNotifier {
         runCatching { manager.deleteNotificationChannel("weekly_reminder") }
         val adhan = NotificationChannel(
             CHANNEL_ADHAN,
-            context.getString(R.string.notif_channel_adhan),
+            loc.getString(R.string.notif_channel_adhan),
             NotificationManager.IMPORTANCE_HIGH,
         ).apply {
-            description = context.getString(R.string.notif_channel_adhan_desc)
+            description = loc.getString(R.string.notif_channel_adhan_desc)
             setSound(null, null) // audio handled by the foreground service
             enableVibration(false) // vibration is fired explicitly (alarm usage) from the receiver
         }
         val preWarn = NotificationChannel(
             CHANNEL_PREWARN,
-            context.getString(R.string.notif_channel_prewarn),
+            loc.getString(R.string.notif_channel_prewarn),
             NotificationManager.IMPORTANCE_HIGH,
         ).apply {
-            description = context.getString(R.string.notif_channel_prewarn_desc)
+            description = loc.getString(R.string.notif_channel_prewarn_desc)
         }
         // Gentle weekly reminder — its own channel with the system default tone (distinct from the
         // Adhan and announcement sounds).
         val reminder = NotificationChannel(
             CHANNEL_REMINDER,
-            context.getString(R.string.notif_channel_reminder),
+            loc.getString(R.string.notif_channel_reminder),
             NotificationManager.IMPORTANCE_HIGH,
         ).apply {
-            description = context.getString(R.string.notif_channel_reminder_desc)
+            description = loc.getString(R.string.notif_channel_reminder_desc)
             enableVibration(true)
         }
         manager.createNotificationChannel(adhan)
@@ -82,17 +86,20 @@ object PrayerNotifier {
         stopIntent: PendingIntent,
         isJumua: Boolean = false,
         showStop: Boolean = true,
-    ): Notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
-        .setSmallIcon(R.drawable.ic_stat_adhan)
-        .setLargeIcon(communityLogo(context))
-        .setContentTitle(context.getString(R.string.notif_adhan_title, prayerLabel(context, prayer, isJumua)))
-        .setContentText(context.getString(R.string.notif_adhan_text))
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
-        .setCategory(NotificationCompat.CATEGORY_ALARM)
-        .setContentIntent(openAppIntent(context))
-        .setOngoing(true)
-        .apply { if (showStop) addAction(0, context.getString(R.string.notif_stop), stopIntent) }
-        .build()
+    ): Notification {
+        val loc = loc(context)
+        return NotificationCompat.Builder(context, CHANNEL_ADHAN)
+            .setSmallIcon(R.drawable.ic_stat_adhan)
+            .setLargeIcon(communityLogo(context))
+            .setContentTitle(loc.getString(R.string.notif_adhan_title, prayerLabel(loc, prayer, isJumua)))
+            .setContentText(loc.getString(R.string.notif_adhan_text))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setContentIntent(openAppIntent(context))
+            .setOngoing(true)
+            .apply { if (showStop) addAction(0, loc.getString(R.string.notif_stop), stopIntent) }
+            .build()
+    }
 
     /**
      * Quiet prayer-time notice used when the phone is muted/on vibrate and the user hasn't opted into
@@ -100,12 +107,13 @@ object PrayerNotifier {
      * ([de.igbdsandzakkassel.vaktija.service.alarm.PrayerAlarmReceiver]) also fires an explicit buzz.
      */
     fun postAdhanSilently(context: Context, prayer: Prayer, isJumua: Boolean = false) {
+        val loc = loc(context)
         if (!hasNotificationPermission(context)) return
         val notification = NotificationCompat.Builder(context, CHANNEL_ADHAN)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(communityLogo(context))
-            .setContentTitle(context.getString(R.string.notif_adhan_title, prayerLabel(context, prayer, isJumua)))
-            .setContentText(context.getString(R.string.notif_adhan_text))
+            .setContentTitle(loc.getString(R.string.notif_adhan_title, prayerLabel(loc, prayer, isJumua)))
+            .setContentText(loc.getString(R.string.notif_adhan_text))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setAutoCancel(true)
@@ -116,11 +124,12 @@ object PrayerNotifier {
 
     /** Pre-warning notification ("Dhuhr in 10 min" / "Jumu'ah in 30 min"). */
     fun postPreWarning(context: Context, prayer: Prayer, minutes: Int, isJumua: Boolean = false) {
+        val loc = loc(context)
         val notification = NotificationCompat.Builder(context, CHANNEL_PREWARN)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(communityLogo(context))
             .setContentTitle(
-                context.getString(R.string.notif_prewarn_title, prayerLabel(context, prayer, isJumua), minutes),
+                loc.getString(R.string.notif_prewarn_title, prayerLabel(loc, prayer, isJumua), minutes),
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
@@ -134,13 +143,14 @@ object PrayerNotifier {
 
     /** Gentle weekly reminder to read some dhikr and a hadith. */
     fun postWeeklyReminder(context: Context) {
+        val loc = loc(context)
         ensureChannels(context)
         if (!hasNotificationPermission(context)) return
-        val body = context.getString(R.string.notif_reminder_text)
+        val body = loc.getString(R.string.notif_reminder_text)
         val notification = NotificationCompat.Builder(context, CHANNEL_REMINDER)
             .setSmallIcon(R.drawable.ic_stat_adhan)
             .setLargeIcon(communityLogo(context))
-            .setContentTitle(context.getString(R.string.notif_reminder_title))
+            .setContentTitle(loc.getString(R.string.notif_reminder_title))
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -151,6 +161,27 @@ object PrayerNotifier {
         NotificationManagerCompat.from(context).notify(REMINDER_NOTIFICATION_ID, notification)
     }
 
+    /**
+     * The context whose language these notifications are written in.
+     *
+     * NOT simply `context`. On Android 13 and newer the system applies the per-app language to
+     * every context, so the plain one happens to be right; below 13 the AndroidX backport only
+     * reaches Activities, and a broadcast receiver would fall back to the app's BASE resources --
+     * which are Bosnian. A user on Android 8 to 12 who chose German would have been getting the
+     * Adhan and the pre-warning in Bosnian, and minSdk here is 26.
+     *
+     * The language itself comes from [LocaleController.resolvedTag], which never guesses -- see the
+     * comment there, and the tracker bug that made it necessary.
+     */
+    private fun loc(context: Context): Context =
+        LocaleController.resolvedTag(context)
+            ?.let { tag ->
+                val config = Configuration(context.resources.configuration)
+                config.setLocale(Locale.forLanguageTag(tag))
+                context.createConfigurationContext(config)
+            }
+            ?: context
+
     private fun openAppIntent(context: Context): PendingIntent {
         val intent = Intent(context, MainActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -160,9 +191,12 @@ object PrayerNotifier {
         )
     }
 
-    /** The prayer's display name — "Jumu'ah" for the Friday Dhuhr slot, otherwise the normal label. */
-    private fun prayerLabel(context: Context, prayer: Prayer, isJumua: Boolean): String =
-        context.getString(if (isJumua) R.string.prayer_jumua else prayer.labelRes)
+    /**
+     * The prayer's display name — "Jumu'ah" for the Friday Dhuhr slot, otherwise the normal label.
+     * Takes the ALREADY localized context; every caller passes its own `loc`.
+     */
+    private fun prayerLabel(loc: Context, prayer: Prayer, isJumua: Boolean): String =
+        loc.getString(if (isJumua) R.string.prayer_jumua else prayer.labelRes)
 
     private fun hasNotificationPermission(context: Context): Boolean =
         NotificationManagerCompat.from(context).areNotificationsEnabled()
