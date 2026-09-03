@@ -208,9 +208,14 @@ struct QiblaView: View {
 
     private var coordinate: CLLocationCoordinate2D? { useDevice ? model.coordinate : nil }
 
+    /// Die Richtung — ab dem Geraet oder ab der eigenen Moschee.
+    ///
+    /// `QiblaKt.qiblaDegrees()` ohne Argumente rechnet fest ab Kassel. Darunter stand aber „ab der
+    /// Adresse deiner Moschee": Wer in Muenchen die Zahl seiner Moschee ablas, bekam Kassels.
     private var qibla: Double {
-        guard let c = coordinate else { return QiblaKt.qiblaDegrees() }
-        return QiblaKt.qiblaDegrees(latitude: c.latitude, longitude: c.longitude)
+        let c = coordinate
+        return QiblaKt.qiblaDegrees(latitude: c?.latitude ?? CommunitySelection.latitude,
+                                    longitude: c?.longitude ?? CommunitySelection.longitude)
     }
 
     /// Wohin die Nadel auf dem Zifferblatt zeigt.
@@ -390,10 +395,11 @@ private extension Path {
     /// Ein Strich vom Rand nach innen, an einem Winkel gemessen von oben im Uhrzeigersinn.
     mutating func addLine(from center: CGPoint, radius: CGFloat, degree: Double, length: CGFloat) {
         let angle = (degree - 90) * .pi / 180
-        move(to: CGPoint(x: center.x + cos(angle) * (radius - length),
-                         y: center.y + sin(angle) * (radius - length)))
-        addLine(to: CGPoint(x: center.x + cos(angle) * radius,
-                            y: center.y + sin(angle) * radius))
+        let dx = CGFloat(cos(angle)), dy = CGFloat(sin(angle))
+        move(to: CGPoint(x: center.x + dx * (radius - length),
+                         y: center.y + dy * (radius - length)))
+        addLine(to: CGPoint(x: center.x + dx * radius,
+                            y: center.y + dy * radius))
     }
 }
 

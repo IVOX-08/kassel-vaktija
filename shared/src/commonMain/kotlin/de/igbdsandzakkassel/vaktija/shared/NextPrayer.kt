@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.shared
 
+import com.batoulapps.adhan2.Coordinates
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
@@ -17,16 +18,21 @@ data class NextPrayerInfo(
 )
 
 /**
- * The next of the five daily prayers (Fajr, Dhuhr, Asr, Maghrib, Isha) from now, in Kassel.
+ * The next of the five daily prayers (Fajr, Dhuhr, Asr, Maghrib, Isha) from now.
  * After Isha it wraps to tomorrow's Fajr. Sunrise is informational and not counted as a prayer.
+ *
+ * [latitude]/[longitude]: die Koordinaten der gewaehlten Gemeinde.
  */
-fun nextPrayerNow(): NextPrayerInfo {
+fun nextPrayerNow(
+    latitude: Double = PrayerTimesCalculator.KASSEL_LAT,
+    longitude: Double = PrayerTimesCalculator.KASSEL_LNG,
+): NextPrayerInfo {
     val tz = TimeZone.currentSystemDefault()
     val now = Clock.System.now()
     val today = now.toLocalDateTime(tz).date
     val tomorrow = today.plus(1, DateTimeUnit.DAY)
 
-    val calc = PrayerTimesCalculator()
+    val calc = PrayerTimesCalculator(Coordinates(latitude, longitude))
     val todayT = calc.compute(today, tz)
     val tomorrowT = calc.compute(tomorrow, tz)
 

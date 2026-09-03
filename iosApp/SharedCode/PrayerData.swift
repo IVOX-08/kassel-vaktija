@@ -129,8 +129,12 @@ final class PrayerStore: ObservableObject {
     @Published private(set) var calibration: [Int]
 
     // `nonisolated`: Beide Schluessel werden auch aus dem Hintergrund gelesen (times(on:)).
-    nonisolated private static let cacheKey = "vaktija_today"
-    nonisolated private static let calibKey = "vaktija_calibration" // 6 ints, minutes
+    //
+    // Die GEMEINDE steht im Schluessel. Vorher war es je ein Schluessel fuer alle, und geprueft
+    // wurde nur das Datum: Wer die Gemeinde wechselte, sah bis zum naechsten geglueckten Abruf
+    // die offiziellen Zeiten der alten Gemeinde unter dem neuen Namen — ohne Netz den ganzen Tag.
+    nonisolated private static var cacheKey: String { "vaktija_today_\(CommunitySelection.communityId)" }
+    nonisolated private static var calibKey: String { "vaktija_calibration_\(CommunitySelection.communityId)" }
 
     init() {
         today = PrayerStore.cachedOfficial() ?? PrayerStore.localToday()
@@ -191,8 +195,12 @@ final class PrayerStore: ObservableObject {
     }
 
     // Local adhan fallback via the shared Kotlin dashboard rows ("HH:MM" strings → minutes).
+    //
+    // Mit den Koordinaten der GEWAEHLTEN Gemeinde. Ohne sie rechnete diese Zeile fuer jede der
+    // einundachtzig Gemeinden Kassel — und das ist der Wert, der ohne Netz auf dem Schirm steht.
     nonisolated static func localToday() -> DayTimes {
-        let rows = DashboardDataKt.dashboardRowsForToday()
+        let rows = DashboardDataKt.dashboardRowsForToday(
+            latitude: CommunitySelection.latitude, longitude: CommunitySelection.longitude)
         func mins(_ name: String) -> Int {
             guard let r = rows.first(where: { $0.name == name }) else { return 0 }
             let p = r.adhan.split(separator: ":")
@@ -231,20 +239,33 @@ final class PrayerStore: ObservableObject {
     nonisolated(unsafe) private static var monthCache: [String: [CalendarDay]] = [:]
     nonisolated(unsafe) private static let monthLock = NSLock()
 
-    nonisolated private static func localDay(_ day: Date) -> CalendarDay? {
-        let cal = Calendar.current
-        let year = cal.component(.year, from: day)
-        let month = cal.component(.month, from: day)
-        let key = "\(year)-\(month)"
+    /// Ein ganzer Monat, gepuffert.
+    ///
+    /// Der Kalender rief die Kotlin-Rechnung bisher unmittelbar auf — bei JEDEM Neuzeichnen der
+    /// Ansicht, also fuer dreissig Tage neu. Hier teilt er sich den Puffer mit den geplanten
+    /// Meldungen und dem Tracker.
+    nonisolated static func month(year: Int, month: Int) -> [CalendarDay] {
+        cachedMonth(year: year, month: month)
+    }
+
+    nonisolated private static func cachedMonth(year: Int, month: Int) -> [CalendarDay] {
+        // Die Gemeinde gehoert in den Schluessel: Sonst liefert der Puffer nach einem Wechsel
+        // weiter den Monat der alten Stadt.
+        let key = "\(year)-\(month)-\(CommunitySelection.communityId)"
         monthLock.lock()
         defer { monthLock.unlock() }
-        let days: [CalendarDay]
-        if let cached = monthCache[key] {
-            days = cached
-        } else {
-            days = CalendarDataKt.monthForDisplay(year: Int32(year), month: Int32(month))
-            monthCache[key] = days
-        }
+        if let cached = monthCache[key] { return cached }
+        let days = CalendarDataKt.monthForDisplay(
+            year: Int32(year), month: Int32(month),
+            latitude: CommunitySelection.latitude, longitude: CommunitySelection.longitude)
+        monthCache[key] = days
+        return days
+    }
+
+    nonisolated private static func localDay(_ day: Date) -> CalendarDay? {
+        let cal = Calendar.current
+        let days = cachedMonth(year: cal.component(.year, from: day),
+                               month: cal.component(.month, from: day))
         let dayOfMonth = cal.component(.day, from: day)
         return days.first { Int($0.day) == dayOfMonth }
     }

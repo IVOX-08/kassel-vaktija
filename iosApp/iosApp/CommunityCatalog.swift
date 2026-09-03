@@ -34,6 +34,18 @@ struct CommunityInfo: Codable, Identifiable, Equatable {
     let instagramUrl: String?
     let youtubeUrl: String?
 
+    /// Wie die Gemeinde erreichbar ist. Diese fuenf Felder sind der Grund, warum eine neue Gemeinde
+    /// kuenftig ohne Codeaenderung auskommt: Sie stehen in `communities.json` und in Firestore,
+    /// nicht im Quelltext. `phone`, `email` und `website` lagen schon in der Datei — die Struktur
+    /// kannte sie nur nicht, und Swift ueberliest unbekannte Felder stillschweigend.
+    let phone: String?
+    let email: String?
+    let website: String?
+    /// Der Imam der Gemeinde. Bis hierher stand Kassels Imam fest im Code und erschien bei allen
+    /// einundachtzig Gemeinden.
+    let imamName: String?
+    let imamPhone: String?
+
     /// Ikamet und Dzuma, mit denen eine Gemeinde ANFAENGT. Nur fuer den Import: Sobald die
     /// Gemeinde ihre eigenen Zeiten gesetzt hat, gilt das Dokument in Firestore, nicht das hier.
     let fajrIqamah: String?
@@ -93,7 +105,9 @@ final class CommunityCatalog: ObservableObject {
         CommunitySelection.set(community: community.id,
                                location: place?.id,
                                vaktijaSlug: place?.vaktijaSlug,
-                               name: community.name)
+                               name: community.name,
+                               latitude: place?.latitude,
+                               longitude: place?.longitude)
         // Wappen, Zeiten und Name im Widget haengen an dieser Wahl.
         WidgetRefresh.now()
         applySelection()
@@ -111,7 +125,8 @@ final class CommunityCatalog: ObservableObject {
         if let place {
             CommunitySelection.set(community: found?.id ?? CommunitySelection.communityId,
                                    location: place.id, vaktijaSlug: place.vaktijaSlug,
-                                   name: found?.name)
+                                   name: found?.name,
+                                   latitude: place.latitude, longitude: place.longitude)
         }
     }
 
@@ -127,7 +142,7 @@ final class CommunityCatalog: ObservableObject {
     /// ersetzt. In der App hiess das: beim Start drei Symbole, eine Sekunde spaeter keine mehr.
     private static func merged(_ live: [CommunityInfo]) -> [CommunityInfo] {
         let seed = Dictionary(bundled().map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
-        return live.map { remote in
+        let overlaid: [CommunityInfo] = live.map { remote in
             guard let base = seed[remote.id] else { return remote }
             return CommunityInfo(
                 id: remote.id,
@@ -140,6 +155,11 @@ final class CommunityCatalog: ObservableObject {
                 facebookUrl: remote.facebookUrl ?? base.facebookUrl,
                 instagramUrl: remote.instagramUrl ?? base.instagramUrl,
                 youtubeUrl: remote.youtubeUrl ?? base.youtubeUrl,
+                phone: remote.phone ?? base.phone,
+                email: remote.email ?? base.email,
+                website: remote.website ?? base.website,
+                imamName: remote.imamName ?? base.imamName,
+                imamPhone: remote.imamPhone ?? base.imamPhone,
                 fajrIqamah: base.fajrIqamah,
                 jumua: base.jumua,
                 dhuhrOffsetMin: base.dhuhrOffsetMin,
@@ -148,6 +168,13 @@ final class CommunityCatalog: ObservableObject {
                 ishaOffsetMin: base.ishaOffsetMin
             )
         }
+        // Was Firestore (noch) nicht kennt, bleibt aus dem Paket stehen.
+        //
+        // Vorher war das Ergebnis genau die Firestore-Liste. Eine Gemeinde, die im Paket steht,
+        // aber noch nicht importiert wurde, war beim Start eine Sekunde lang sichtbar und danach
+        // weg — mitten aus der Auswahl heraus, ohne Meldung.
+        let known = Set(overlaid.map(\.id))
+        return overlaid + seed.values.filter { !known.contains($0.id) }
     }
 
     private static func bundled() -> [CommunityInfo] {
@@ -180,6 +207,11 @@ final class CommunityCatalog: ObservableObject {
             facebookUrl: d["facebookUrl"] as? String,
             instagramUrl: d["instagramUrl"] as? String,
             youtubeUrl: d["youtubeUrl"] as? String,
+            phone: d["phone"] as? String,
+            email: d["email"] as? String,
+            website: d["website"] as? String,
+            imamName: d["imamName"] as? String,
+            imamPhone: d["imamPhone"] as? String,
             // Nicht aus Firestore: die gelebten Regeln stehen in `config/rules` und werden von
             // CommunityRuleStore gelesen. Hier stehen nur die Startwerte aus dem Paket.
             fajrIqamah: nil, jumua: nil,

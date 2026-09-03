@@ -1,5 +1,6 @@
 package de.igbdsandzakkassel.vaktija.shared
 
+import com.batoulapps.adhan2.Coordinates
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
@@ -9,13 +10,17 @@ import kotlinx.datetime.todayIn
 data class PrayerRow(val name: String, val time: String)
 
 /**
- * Today's six Kassel prayer rows, formatted as strings. Returns plain Strings on purpose so the
+ * Today's six prayer rows for the given position, formatted as strings. Returns plain Strings on purpose so the
  * SwiftUI app can show them without wrestling with kotlinx-datetime types across the Kotlin↔Swift
  * bridge.
  */
-fun prayerRowsForToday(): List<PrayerRow> {
+fun prayerRowsForToday(
+    latitude: Double = PrayerTimesCalculator.KASSEL_LAT,
+    longitude: Double = PrayerTimesCalculator.KASSEL_LNG,
+): List<PrayerRow> {
     val tz = TimeZone.currentSystemDefault()
-    val t = PrayerTimesCalculator().compute(Clock.System.todayIn(tz), tz)
+    val t = PrayerTimesCalculator(Coordinates(latitude, longitude))
+        .compute(Clock.System.todayIn(tz), tz)
     return listOf(
         PrayerRow("Fajr", t.fajr.toHhMm()),
         PrayerRow("Sunrise", t.sunrise.toHhMm()),

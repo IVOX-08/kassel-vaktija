@@ -27,9 +27,14 @@ struct CalendarView: View {
         return String(format: "%02d:%02d", total / 60, total % 60)
     }
     private var days: [CalendarDay] {
-        CalendarDataKt.monthForDisplay(year: Int32(year), month: Int32(month))
+        PrayerStore.month(year: year, month: month)
     }
-    private let columns = ["Morg.", "Aufg.", "Mitt.", "Nachm", "Abend", "Nacht"]
+    /// Die Spaltenkoepfe standen fest auf Deutsch — in einer App, die acht Sprachen kann. Die
+    /// Kurzformen liegen laengst uebersetzt vor (`prayer_abbr_*`), sie wurden nur nie benutzt.
+    private var columns: [String] {
+        ["prayer_abbr_fajr", "prayer_abbr_sunrise", "prayer_abbr_dhuhr",
+         "prayer_abbr_asr", "prayer_abbr_maghrib", "prayer_abbr_isha"].map(L)
+    }
 
     var body: some View {
         VStack(spacing: 0) {

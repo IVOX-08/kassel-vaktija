@@ -53,8 +53,9 @@ struct Provider: TimelineProvider {
 
     /// Das nächste Gebet aus DEN GELADENEN Zeiten der gewählten Gemeinde.
     ///
-    /// Die geteilte Kotlin-Rechnung bleibt als Rückfall — sie rechnet für Kassel und lag beim
-    /// Morgengebet um Stunden daneben, taugt also nur, solange noch nie etwas geladen wurde.
+    /// Die geteilte Kotlin-Rechnung bleibt als Rückfall — sie rechnet inzwischen für die
+    /// Koordinaten der gewählten Gemeinde, lag beim Morgengebet aber trotzdem um Stunden daneben
+    /// (hohe Breite), taugt also nur, solange noch nie etwas geladen wurde.
     private func currentEntry() -> PrayerEntry {
         let now = Date()
         let cal = Calendar.current
@@ -83,7 +84,8 @@ struct Provider: TimelineProvider {
                                target: at, asking: Self.openQuestion())
         }
 
-        let n = NextPrayerKt.nextPrayerNow()
+        let n = NextPrayerKt.nextPrayerNow(latitude: CommunitySelection.latitude,
+                                           longitude: CommunitySelection.longitude)
         return PrayerEntry(date: now, nameKey: Self.key(n.name), timeHHmm: n.time,
                            target: now.addingTimeInterval(Double(n.inSeconds)),
                            asking: Self.openQuestion())
