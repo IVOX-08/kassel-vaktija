@@ -45,14 +45,15 @@ IGBD Vaktija – Gebetszeiten
 **Kurzbeschreibung**
 
 ```
-Gebetszeiten, Adhan und Mitteilungen für alle IGBD-Gemeinden in Deutschland.
+Gebetszeiten und Adhan deiner Gemeinde. Von der IGBD-Gemeinde Sandžak-Kassel.
 ```
 
 **Vollständige Beschreibung**
 
 ```
-IGBD Vaktija bringt die Gebetszeiten deiner Gemeinde auf dein Telefon – für alle Gemeinden der
-Islamischen Gemeinschaft der Bosniaken in Deutschland.
+IGBD Vaktija ist die App der IGBD-Gemeinde Sandžak-Kassel e. V. Sie bringt die Gebetszeiten
+deiner Gemeinde auf dein Telefon – für bosnische Gemeinden in ganz Deutschland, die ihre Zeiten
+selbst eintragen.
 
 Du wählst deine Gemeinde aus, und die App zeigt genau deren Zeiten: Fajr, Sonnenaufgang, Dhuhr,
 Asr, Maghrib und Isha, dazu die Iqamah-Zeiten und den Džuma-Namaz, so wie deine Moschee sie
@@ -96,6 +97,9 @@ groß, die Uhr, der Countdown bis zum nächsten Gebet und der Hadith des Tages �
 Bosnisch und Deutsch.
 
 Die App ist kostenlos und ohne Werbung.
+
+Herausgegeben von der IGBD-Gemeinde Sandžak-Kassel e. V. Ein Angebot dieser Gemeinde, nicht
+der IGBD als Verband.
 ```
 
 ---
@@ -111,14 +115,14 @@ IGBD Vaktija – vaktovi
 **Kurzbeschreibung**
 
 ```
-Vaktovi, ezan i obavijesti za sve džemate IGBD-a u Njemačkoj.
+Vaktovi i ezan tvoga džemata. Od džemata IGBD Sandžak-Kassel.
 ```
 
 **Vollständige Beschreibung**
 
 ```
-IGBD Vaktija donosi vaktove tvoga džemata na tvoj telefon – za sve džemate Islamske zajednice
-Bošnjaka u Njemačkoj.
+IGBD Vaktija je aplikacija džemata IGBD Sandžak-Kassel e. V. Donosi vaktove tvoga džemata na
+tvoj telefon – za bošnjačke džemate širom Njemačke, koji svoje vaktove sami upisuju.
 
 Odabereš svoj džemat i aplikacija pokazuje upravo njegove vaktove: sabah, izlazak sunca, podne,
 ikindiju, akšam i jaciju, uz ikamete i džuma-namaz, onako kako ih je odredila tvoja džamija. Nije
@@ -161,6 +165,8 @@ Na Android televizoru aplikacija postaje zidna ploča za ulaz: svi vaktovi krupn
 odbrojavanje do sljedećeg namaza i hadis dana – naizmjenično na bosanskom i njemačkom.
 
 Aplikacija je besplatna i bez reklama.
+
+Izdaje džemat IGBD Sandžak-Kassel e. V. Ovo je ponuda ovoga džemata, a ne IGBD-a kao saveza.
 ```
 
 ---
@@ -183,14 +189,14 @@ eigener Trefferbereich in der Play-Suche, kostet aber nichts als die Übersetzun
 
 ---
 
-## 6 · Versionshinweise („Was ist neu") für 1.2.4
+## 6 · Versionshinweise („Was ist neu") für 1.2.5
 
 Grenze: 500 Zeichen je Sprache. Geprüft: Deutsch 499, Bosnisch 438.
 
 **Deutsch**
 
 ```
-Neu: IGBD Vaktija – jetzt für alle Gemeinden der IGBD in Deutschland.
+Neu: IGBD Vaktija – jetzt für Gemeinden in ganz Deutschland.
 
 • Gemeinde auswählen: die Zeiten deiner eigenen Moschee, mit Iqamah und Džuma
 • Gebets-Tracker: nach jedem Gebet eine kurze Frage, dazu deine Serie
@@ -204,7 +210,7 @@ Neu: IGBD Vaktija – jetzt für alle Gemeinden der IGBD in Deutschland.
 **Bosanski**
 
 ```
-Novo: IGBD Vaktija – sada za sve džemate IGBD-a u Njemačkoj.
+Novo: IGBD Vaktija – sada za džemate širom Njemačke.
 
 • Odabir džemata: vaktovi tvoje džamije, sa ikametima i džumom
 • Praćenje namaza: kratko pitanje poslije svakog namaza i tvoj niz

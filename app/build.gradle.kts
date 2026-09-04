@@ -33,8 +33,8 @@ android {
         applicationId = "de.igbdsandzakkassel.vaktija"
         minSdk = 26
         targetSdk = 36
-        versionCode = 19
-        versionName = "1.2.4"
+        versionCode = 20
+        versionName = "1.2.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

@@ -43,7 +43,7 @@
     <string name="quran_continue">Weiterlesen</string>
     <string name="quran_bookmarks">Lesezeichen</string>
     <string name="onb_welcome_title">Willkommen</string>
-    <string name="onb_welcome_body">Die App der IGBD — Gebetszeiten, Koran, Hadithe und mehr, in Ihrer Sprache.</string>
+    <string name="onb_welcome_body">Die App der IGBD-Gemeinde Sandžak-Kassel — Gebetszeiten, Koran, Hadithe und mehr, in Ihrer Sprache.</string>
     <string name="onb_notif_title">Gebet &amp; Adhan</string>
     <string name="onb_notif_body">Genaue Gebetszeiten mit Benachrichtigungen. Wählen Sie pro Gebet den Adhan oder einen kurzen Ton und passen Sie die Benachrichtigungen an — in den Einstellungen.</string>
     <string name="onb_content_title">Koran, Hadith &amp; Dhikr</string>
@@ -250,7 +250,7 @@
     <string name="zakat_below_nisab">Sie liegen unter dem Nisab — es fällt kein Zakat an.</string>
     <string name="zakat_disclaimer">Dies ist eine Rechenhilfe, keine Fatwa. Fragen Sie für Ihren Fall Ihren Imam.</string>
     <string name="news_sent_by">Gesendet von %1$s</string>
-    <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_sender_federation" translatable="false">IGBD Sandžak-Kassel</string>
     <string name="news_like">Gefällt mir</string>
     <string name="news_dislike">Kann nicht kommen</string>
     <string name="qibla_from_mosque">Ausgehend von Ihrer Moschee</string>

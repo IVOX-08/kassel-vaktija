@@ -43,7 +43,7 @@
     <string name="quran_continue">پڑھنا جاری رکھیں</string>
     <string name="quran_bookmarks">بک مارکس</string>
     <string name="onb_welcome_title">خوش آمدید</string>
-    <string name="onb_welcome_body">IGBD کی ایپ — نماز کے اوقات، قرآن، حدیث اور بہت کچھ، آپ کی اپنی زبان میں۔</string>
+    <string name="onb_welcome_body">جماعت IGBD Sandžak-Kassel کی ایپ — نماز کے اوقات، قرآن، حدیث اور بہت کچھ، آپ کی اپنی زبان میں۔</string>
     <string name="onb_notif_title">نماز اور اذان</string>
     <string name="onb_notif_body">اطلاعات کے ساتھ نماز کے درست اوقات۔ ہر نماز کے لیے اذان یا مختصر دھن منتخب کریں اور یاد دہانیاں ترتیب دیں — سب کچھ ترتیبات میں۔</string>
     <string name="onb_content_title">قرآن، حدیث اور ذکر</string>
@@ -238,7 +238,7 @@
     <string name="zakat_below_nisab">آپ نصاب سے نیچے ہیں — زکات واجب نہیں۔</string>
     <string name="zakat_disclaimer">یہ حساب میں مدد ہے، فتویٰ نہیں۔ اپنے معاملے کے لیے امام سے پوچھیں۔</string>
     <string name="news_sent_by">بھیجا گیا: %1$s</string>
-    <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_sender_federation" translatable="false">IGBD Sandžak-Kassel</string>
     <string name="news_like">پسند</string>
     <string name="news_dislike">نہیں آ سکتا</string>
     <string name="qibla_from_mosque">آپ کی مسجد کے مطابق</string>

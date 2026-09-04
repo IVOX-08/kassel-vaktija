@@ -43,7 +43,7 @@
     <string name="quran_continue">متابعة القراءة</string>
     <string name="quran_bookmarks">العلامات المرجعية</string>
     <string name="onb_welcome_title">أهلاً وسهلاً</string>
-    <string name="onb_welcome_body">تطبيق الجالية البوسنية في ألمانيا (IGBD): مواقيت الصلاة، والقرآن الكريم، والحديث، والمزيد، بلغتك.</string>
+    <string name="onb_welcome_body">تطبيق جماعة سنجق-كاسل (IGBD Sandžak-Kassel): مواقيت الصلاة، والقرآن الكريم، والحديث، والمزيد، بلغتك.</string>
     <string name="onb_notif_title">الصلاة والأذان</string>
     <string name="onb_notif_body">مواقيت دقيقة للصلاة مع التنبيهات. اختر لكل صلاة الأذان أو نغمة قصيرة، واضبط التنبيهات، كل ذلك من الإعدادات.</string>
     <string name="onb_content_title">القرآن والحديث والذكر</string>
@@ -238,7 +238,7 @@
     <string name="zakat_below_nisab">أنت دون النصاب — لا زكاة عليك.</string>
     <string name="zakat_disclaimer">هذه أداة حساب وليست فتوى. اسأل إمامك عن حالتك.</string>
     <string name="news_sent_by">أرسلها %1$s</string>
-    <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_sender_federation" translatable="false">IGBD Sandžak-Kassel</string>
     <string name="news_like">إعجاب</string>
     <string name="news_dislike">لا أستطيع الحضور</string>
     <string name="qibla_from_mosque">بناءً على مسجدك</string>

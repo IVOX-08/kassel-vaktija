@@ -43,7 +43,7 @@
     <string name="quran_continue">Okumaya devam et</string>
     <string name="quran_bookmarks">Yer imleri</string>
     <string name="onb_welcome_title">Hoş geldiniz</string>
-    <string name="onb_welcome_body">IGBD\'nin uygulaması — namaz vakitleri, Kur\'an, hadis ve daha fazlası, kendi dilinizde.</string>
+    <string name="onb_welcome_body">IGBD Sandžak-Kassel cemaatinin uygulaması — namaz vakitleri, Kur\'an, hadis ve daha fazlası, kendi dilinizde.</string>
     <string name="onb_notif_title">Namaz ve Ezan</string>
     <string name="onb_notif_body">Bildirimlerle doğru namaz vakitleri. Her namaz için ezanı ya da kısa bir sesi seçin ve uyarıları ayarlayın — hepsi Ayarlar\'da.</string>
     <string name="onb_content_title">Kur\'an, Hadis ve Zikir</string>
@@ -238,7 +238,7 @@
     <string name="zakat_below_nisab">Nisabın altındasınız — zekât gerekmez.</string>
     <string name="zakat_disclaimer">Bu bir hesaplama yardımıdır, fetva değildir. Kendi durumunuz için imamınıza sorun.</string>
     <string name="news_sent_by">Gönderen: %1$s</string>
-    <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_sender_federation" translatable="false">IGBD Sandžak-Kassel</string>
     <string name="news_like">Beğen</string>
     <string name="news_dislike">Gelemiyorum</string>
     <string name="qibla_from_mosque">Camiinize göre</string>

@@ -43,7 +43,7 @@
     <string name="quran_continue">Продолжить чтение</string>
     <string name="quran_bookmarks">Закладки</string>
     <string name="onb_welcome_title">Добро пожаловать</string>
-    <string name="onb_welcome_body">Приложение IGBD — время намаза, Коран, хадисы и многое другое на вашем языке.</string>
+    <string name="onb_welcome_body">Приложение общины IGBD Sandžak-Kassel — время намаза, Коран, хадисы и многое другое на вашем языке.</string>
     <string name="onb_notif_title">Намаз и азан</string>
     <string name="onb_notif_body">Точное время намаза с уведомлениями. Для каждого намаза выберите азан или короткий сигнал и настройте оповещения — всё в настройках.</string>
     <string name="onb_content_title">Коран, хадисы и зикр</string>
@@ -238,7 +238,7 @@
     <string name="zakat_below_nisab">Вы ниже нисаба — закят не обязателен.</string>
     <string name="zakat_disclaimer">Это расчётная помощь, а не фетва. По своему случаю спросите имама.</string>
     <string name="news_sent_by">Отправил: %1$s</string>
-    <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_sender_federation" translatable="false">IGBD Sandžak-Kassel</string>
     <string name="news_like">Нравится</string>
     <string name="news_dislike">Не смогу прийти</string>
     <string name="qibla_from_mosque">По вашей мечети</string>

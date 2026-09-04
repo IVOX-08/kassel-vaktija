@@ -43,7 +43,7 @@
     <string name="quran_continue">Continue reading</string>
     <string name="quran_bookmarks">Bookmarks</string>
     <string name="onb_welcome_title">Welcome</string>
-    <string name="onb_welcome_body">The app of the IGBD — prayer times, Qur\'an, hadith and more, in your language.</string>
+    <string name="onb_welcome_body">The app of the IGBD-Gemeinde Sandžak-Kassel — prayer times, Qur\'an, hadith and more, in your language.</string>
     <string name="onb_notif_title">Prayer &amp; Adhan</string>
     <string name="onb_notif_body">Accurate prayer times with notifications. For each prayer choose the Adhan or a short tone and adjust alerts — all in Settings.</string>
     <string name="onb_content_title">Qur\'an, Hadith &amp; Dhikr</string>
@@ -250,7 +250,7 @@
     <string name="zakat_below_nisab">You are below the nisab — no zakat is due.</string>
     <string name="zakat_disclaimer">This is a calculation aid, not a fatwa. Ask your imam about your own case.</string>
     <string name="news_sent_by">Sent by %1$s</string>
-    <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_sender_federation" translatable="false">IGBD Sandžak-Kassel</string>
     <string name="news_like">Like</string>
     <string name="news_dislike">Cannot come</string>
     <string name="qibla_from_mosque">Based on your mosque</string>

@@ -43,7 +43,7 @@
     <string name="quran_continue">Vazhdo leximin</string>
     <string name="quran_bookmarks">Faqeshënuesit</string>
     <string name="onb_welcome_title">Mirë se vini</string>
-    <string name="onb_welcome_body">Aplikacioni i IGBD-së — kohët e namazit, Kur\'ani, hadithet dhe më shumë, në gjuhën tuaj.</string>
+    <string name="onb_welcome_body">Aplikacioni i xhematit IGBD Sandžak-Kassel — kohët e namazit, Kur\'ani, hadithet dhe më shumë, në gjuhën tuaj.</string>
     <string name="onb_notif_title">Namazi dhe Ezani</string>
     <string name="onb_notif_body">Kohë të sakta të namazit me njoftime. Për çdo namaz zgjidhni ezanin ose një tingull të shkurtër dhe rregulloni njoftimet — të gjitha te Cilësimet.</string>
     <string name="onb_content_title">Kur\'ani, Hadithi dhe Dhikri</string>
@@ -238,7 +238,7 @@
     <string name="zakat_below_nisab">Jeni nën nisab — zekati nuk është i detyrueshëm.</string>
     <string name="zakat_disclaimer">Kjo është një ndihmë llogaritëse, jo fetva. Për rastin tuaj pyesni imamin.</string>
     <string name="news_sent_by">Dërguar nga %1$s</string>
-    <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_sender_federation" translatable="false">IGBD Sandžak-Kassel</string>
     <string name="news_like">Pëlqej</string>
     <string name="news_dislike">Nuk mund të vij</string>
     <string name="qibla_from_mosque">Sipas xhamisë suaj</string>

@@ -53,7 +53,7 @@
 
     <!-- Onboarding -->
     <string name="onb_welcome_title">Dobro došli</string>
-    <string name="onb_welcome_body">Aplikacija Islamske zajednice Bošnjaka u Njemačkoj — namaska vremena, Kur\'an, hadisi i još mnogo toga, na vašem jeziku.</string>
+    <string name="onb_welcome_body">Aplikacija džemata IGBD Sandžak-Kassel — namaska vremena, Kur\'an, hadisi i još mnogo toga, na vašem jeziku.</string>
     <string name="onb_notif_title">Namaz i ezan</string>
     <string name="onb_notif_body">Tačna namaska vremena uz obavijesti. Za svaki namaz birajte ezan ili kratki zvuk i podesite obavijesti — sve u Postavkama.</string>
     <string name="onb_content_title">Kur\'an, hadis i zikr</string>
@@ -304,7 +304,7 @@
     <string name="zakat_below_nisab">Ispod ste nisaba — zekat nije obavezan.</string>
     <string name="zakat_disclaimer">Ovo je pomoćni račun, a ne fetva. Za svoj slučaj pitajte imama.</string>
     <string name="news_sent_by">Poslao: %1$s</string>
-    <string name="news_sender_federation" translatable="false">IGBD</string>
+    <string name="news_sender_federation" translatable="false">IGBD Sandžak-Kassel</string>
     <string name="news_like">Sviđa mi se</string>
     <string name="news_dislike">Ne mogu doći</string>
     <string name="qibla_from_mosque">Prema vašoj džamiji</string>
