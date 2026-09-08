@@ -5,6 +5,21 @@ Both had the OLD name on them ("Kassel Vaktija"), so both have to be remade for 
 are generated rather than drawn by hand for the same reason the launcher icon is: the mark is
 governed by a standards book, and a hand-placed mark drifts.
 
+WHY THE COMMUNITY'S OWN CREST AND NOT THE FEDERATION MARK
+---------------------------------------------------------
+Google Play REJECTED the update on 7 September 2026 under the impersonation policy, naming exactly
+these two files: the feature graphic and the hi-res icon. Both carried the Islamic Community's
+mark, and the board has confirmed no permission from the federation was ever obtained. The appeal
+route needs a licence or authorisation SIGNED BY BOTH PARTIES -- e-mails and screenshots are
+explicitly listed as insufficient -- so there was nothing to appeal with.
+
+The crest of IGBD-Gemeinde Sandzak-Kassel e. V. is the association's OWN, it names them correctly,
+and Google carried it for months before the August rebrand. Going back to it is not a compromise;
+it is the honest mark for an app this association publishes.
+
+The NAME stays "IGBD Vaktija" by the owner's decision: Sandzak-Kassel is an IGBD member community,
+and Google objected to the mark, not to the name.
+
 Rules from the standards book that this script obeys (docs/marke/README.md):
 
   - The mark is never recoloured. On a green ground the book's own NEGATIVE version is used --
@@ -27,7 +42,7 @@ ROOT = os.path.dirname(HERE)
 RES = os.path.join(ROOT, "app", "src", "main", "res")
 OUT = os.path.join(ROOT, "docs", "play")
 
-MARK_NEGATIVE = os.path.join(RES, "drawable-nodpi", "logo_igbd_negative.png")
+CREST = os.path.join(RES, "drawable-nodpi", "logo_emblem.png")
 FONT = os.path.join(RES, "font", "inter_variable.ttf")
 
 # IZ zelena and the app's gold. The green is the protected brand colour; the gold is the app's own
@@ -58,12 +73,27 @@ SUBTITLE = u"Gebetszeiten · Vaktovi"
 
 
 def draw_panel(size, mark_box):
-    """Green panel with the white mark on it. The wording is added by each caller."""
+    """Green panel carrying the community crest. The wording is added by each caller.
+
+    The crest sits on a white rounded tile rather than straight on the green: its own outer ring is
+    green too, and without the tile the emblem loses its edge and reads as a smudge.
+    """
     img = vertical_gradient(size, GREEN, GREEN_DEEP)
-    mark = Image.open(MARK_NEGATIVE).convert("RGBA")
-    side = mark_box[2]
-    mark = mark.resize((side, side), Image.LANCZOS)
-    img.paste(mark, (mark_box[0], mark_box[1]), mark)
+    x, y, side = mark_box
+
+    tile = Image.new("RGBA", (side, side), (0, 0, 0, 0))
+    ImageDraw.Draw(tile).rounded_rectangle([0, 0, side - 1, side - 1],
+                                           radius=int(side * 0.22), fill=WHITE + (255,))
+    img.paste(tile, (x, y), tile)
+
+    crest = Image.open(CREST).convert("RGBA")
+    inner = int(side * 0.84)
+    scale = min(inner / float(crest.width), inner / float(crest.height))
+    crest = crest.resize((max(1, int(crest.width * scale)), max(1, int(crest.height * scale))),
+                         Image.LANCZOS)
+    img.paste(crest,
+              (x + (side - crest.width) // 2, y + (side - crest.height) // 2),
+              crest)
     return img
 
 
