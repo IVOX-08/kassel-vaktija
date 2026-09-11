@@ -1,7 +1,6 @@
 package de.igbdsandzakkassel.vaktija.data.store
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -35,7 +34,7 @@ class StoreLinksRepository @Inject constructor(
     fun observe(): Flow<StoreLinks> = callbackFlow {
         // Emit the fallback at once so the board never waits on the network to draw its Android
         // code — that link has been fixed since the first release and cannot change.
-        trySend(StoreLinks(android = PLAY_URL, ios = ""))
+        trySend(StoreLinks(android = PLAY_URL, ios = APP_STORE_URL))
         val registration = firestore.collection(CONFIG).document(APPS)
             .addSnapshotListener { snapshot, _ ->
                 // A document that does not exist yet still arrives here — Firestore reports the
@@ -47,26 +46,12 @@ class StoreLinksRepository @Inject constructor(
                     StoreLinks(
                         android = snapshot.getString("androidUrl")?.takeIf { it.isNotBlank() }
                             ?: PLAY_URL,
-                        ios = snapshot.getString("iosUrl").orEmpty().trim(),
+                        ios = snapshot.getString("iosUrl")?.takeIf { it.isNotBlank() }?.trim()
+                            ?: APP_STORE_URL,
                     ),
                 )
             }
         awaitClose { registration.remove() }
-    }
-
-    /**
-     * Store the App Store link. Head admin only — the published rule on `config/{docId}` enforces
-     * that; this just sends the write.
-     *
-     * `set` with merge rather than `update`: on the very first save the document does not exist yet,
-     * and `update` would fail on a missing document instead of creating it.
-     *
-     * Fire-and-forget like the app's other admin writes: Firestore commits locally at once and
-     * syncs when there is a connection, whereas awaiting would hang whenever the phone is offline.
-     */
-    fun setIosLink(url: String) {
-        firestore.collection(CONFIG).document(APPS)
-            .set(mapOf("iosUrl" to url.trim()), SetOptions.merge())
     }
 
     companion object {
@@ -76,6 +61,21 @@ class StoreLinksRepository @Inject constructor(
         /** The Play listing. Fixed by the application id, which can never change once published. */
         const val PLAY_URL =
             "https://play.google.com/store/apps/details?id=de.igbdsandzakkassel.vaktija"
+
+        /**
+         * The App Store listing. Built in since the iPhone app went live on 4 September 2026 —
+         * the numeric id Apple assigns is permanent, so there is nothing left to fill in.
+         *
+         * The short form on purpose: without the country segment it opens in the viewer's own
+         * store (there are Bosnian and Turkish Apple accounts in these communities), and it is
+         * four QR modules smaller than the long one with the app name in it — which on a wall
+         * board means bigger squares and an easier scan.
+         *
+         * Firestore may still override it: a board picks up `config/apps` within seconds, so if
+         * Apple ever changes something, no TV has to wait for an app update. That safety net is
+         * why this stayed a repository instead of becoming a constant in the TV screen.
+         */
+        const val APP_STORE_URL = "https://apps.apple.com/app/id6803973938"
     }
 }
 
