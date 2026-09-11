@@ -1,5 +1,7 @@
 package de.igbdsandzakkassel.vaktija.ui.tv
 
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
@@ -264,19 +266,38 @@ private fun BoardBody(state: DashboardUiState, german: Boolean, ctx: Context) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Image(
-                // Kassel's own crest; every other community carries the federation's, exactly as
-                // the phone does. A board in Nürnberg showing Kassel's coat of arms above
-                // Nürnberg's prayer times would be plainly wrong.
-                painter = painterResource(
-                    if (state.isHomeCommunity) R.drawable.logo_emblem else R.drawable.logo_igbd_positive,
-                ),
-                contentDescription = stringResource(R.string.cd_app_logo),
-                // Sized against the slack under the hero card, measured with the WORST case on
-                // screen (the 3-line German hadith, which makes the band below tallest). Going
-                // much past this starts clipping the countdown.
-                modifier = Modifier.height(104.dp),
-            )
+            // Kassel's own crest, a community's own uploaded mark, or the federation's —
+            // in that order. A board in Nürnberg showing Kassel's coat of arms above Nürnberg's
+            // prayer times would be plainly wrong.
+            //
+            // Sized against the slack under the hero card, measured with the WORST case on screen
+            // (the 3-line German hadith, which makes the band below tallest). Going much past this
+            // starts clipping the countdown.
+            val emblem = Modifier.height(104.dp)
+            val logoUrl = state.communityLogoUrl?.takeIf { it.isNotBlank() }
+            when {
+                state.isHomeCommunity -> Image(
+                    painter = painterResource(R.drawable.logo_emblem),
+                    contentDescription = stringResource(R.string.cd_app_logo),
+                    modifier = emblem,
+                )
+                logoUrl != null -> AsyncImage(
+                    model = logoUrl,
+                    contentDescription = stringResource(R.string.cd_app_logo),
+                    contentScale = ContentScale.Fit,
+                    // The board hangs unattended for months. Whatever happens to the network, the
+                    // federation's mark is what stands there instead of a hole.
+                    placeholder = painterResource(R.drawable.logo_igbd_positive),
+                    error = painterResource(R.drawable.logo_igbd_positive),
+                    fallback = painterResource(R.drawable.logo_igbd_positive),
+                    modifier = emblem,
+                )
+                else -> Image(
+                    painter = painterResource(R.drawable.logo_igbd_positive),
+                    contentDescription = stringResource(R.string.cd_app_logo),
+                    modifier = emblem,
+                )
+            }
             Spacer(Modifier.height(6.dp))
             HeroCard(state, german, ctx, Modifier.fillMaxWidth())
         }

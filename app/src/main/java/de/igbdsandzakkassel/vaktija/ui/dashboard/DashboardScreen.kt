@@ -376,14 +376,32 @@ private fun CommunityEmblem(state: DashboardUiState, modifier: Modifier = Modifi
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Image(
-            painter = painterResource(R.drawable.logo_igbd),
-            contentDescription = stringResource(R.string.cd_app_logo),
-            contentScale = ContentScale.Fit,
-            // The same height as Kassel's crest. Weighting it inside a fixed box made every other
-            // community's mark visibly smaller than the home one, which read as second class.
-            modifier = Modifier.height(EMBLEM_HEIGHT),
-        )
+        // A community that has uploaded its own mark shows THAT. Berlin asked for theirs the day
+        // they joined, and it is the first thing a member looks for. Everyone else keeps the
+        // federation's mark — which is also what shows while the picture is still loading and if
+        // it never arrives, so the header is never empty.
+        val logoUrl = state.communityLogoUrl?.takeIf { it.isNotBlank() }
+        // The same height as Kassel's crest. Weighting it inside a fixed box made every other
+        // community's mark visibly smaller than the home one, which read as second class.
+        val emblem = Modifier.height(EMBLEM_HEIGHT)
+        if (logoUrl == null) {
+            Image(
+                painter = painterResource(R.drawable.logo_igbd),
+                contentDescription = stringResource(R.string.cd_app_logo),
+                contentScale = ContentScale.Fit,
+                modifier = emblem,
+            )
+        } else {
+            AsyncImage(
+                model = logoUrl,
+                contentDescription = stringResource(R.string.cd_app_logo),
+                contentScale = ContentScale.Fit,
+                placeholder = painterResource(R.drawable.logo_igbd),
+                error = painterResource(R.drawable.logo_igbd),
+                fallback = painterResource(R.drawable.logo_igbd),
+                modifier = emblem,
+            )
+        }
         Text(
             text = state.communityName,
             style = MaterialTheme.typography.labelSmall,

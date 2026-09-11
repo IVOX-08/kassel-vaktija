@@ -1,5 +1,9 @@
 package de.igbdsandzakkassel.vaktija.service.widget
 
+import coil.request.SuccessResult
+import coil.request.ImageRequest
+import coil.ImageLoader
+import androidx.core.graphics.drawable.toBitmap
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -113,13 +117,40 @@ class PrayerTimesWidgetReceiver : AppWidgetProvider() {
             // Whose mark the widget carries. The crest is Kassel's own; every other community
             // shows the federation's, exactly as the dashboard does — a widget showing Kassel's
             // coat of arms above Nürnberg's prayer times would be plainly wrong.
-            val isHome = runCatching {
-                entryPoint.communityRepository().observeSelection().first()?.community?.id
-            }.getOrNull() == CommunityCatalog.KASSEL_ID
-            views.setImageViewResource(
-                R.id.widget_logo,
-                if (isHome) R.drawable.widget_crest else R.drawable.logo_igbd,
-            )
+            val community = runCatching {
+                entryPoint.communityRepository().observeSelection().first()?.community
+            }.getOrNull()
+            val isHome = community?.id == CommunityCatalog.KASSEL_ID
+            val logoUrl = community?.logoUrl?.takeIf { it.isNotBlank() }
+
+            // A community that uploaded its own mark gets it here too — the widget is the part of
+            // the app people see most, so this is the last place it should be missing.
+            //
+            // Fetched as a bitmap rather than handed to the view as a URL: a RemoteViews lives in
+            // the launcher's process and cannot load anything itself. This whole refresh already
+            // runs in a coroutine (goAsync above), so the fetch has somewhere to happen.
+            val remoteLogo = if (isHome || logoUrl == null) null else runCatching {
+                val request = ImageRequest.Builder(appContext)
+                    .data(logoUrl)
+                    // The widget's slot is small; decoding a 2000 px logo at full size to draw it
+                    // at 40 dp wastes memory in a process that is not ours to strain.
+                    .size(256)
+                    .allowHardware(false)   // hardware bitmaps cannot cross into RemoteViews
+                    .build()
+                (ImageLoader(appContext).execute(request) as? SuccessResult)
+                    ?.drawable?.toBitmap()
+            }.getOrNull()
+
+            if (remoteLogo != null) {
+                views.setImageViewBitmap(R.id.widget_logo, remoteLogo)
+            } else {
+                // Kassel's crest, or the federation's mark — which is also what stands there when
+                // the picture could not be fetched, so the widget is never left with a hole.
+                views.setImageViewResource(
+                    R.id.widget_logo,
+                    if (isHome) R.drawable.widget_crest else R.drawable.logo_igbd,
+                )
+            }
 
             if (times == null) {
                 views.setTextViewText(R.id.widget_prayer_name, "—")
